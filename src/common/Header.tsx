@@ -9,10 +9,11 @@ import EthIcon from "../images/ethereum-eth.svg";
 import LogoutIcon from "../images/logout-icon.svg";
 import { clearAccount } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
+import { getDataApi } from "../services";
 import { AppDispatch } from "../store";
 import { Address, Content, Currency, Deposit, DepositContent, InforUser } from "../styled/header";
 import { Loader } from "../styled/loading";
-import { formatAddress, handleNotices } from "../utils/common";
+import { convertDataToHex, convertHexToData, formatAddress, handleNotices } from "../utils/common";
 import { DEPOSIT_INFO, ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
 import { DepositInfoType, MetadataType } from "../utils/interface";
 import { createNotifications } from "./Notification";
@@ -25,7 +26,7 @@ const Header = () => {
     const [balance, setBalance] = useState<number>(0)
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-
+    const metadata: MetadataType = useSelector((state: any) => state.auth.metadata)
     const authState = useSelector((state: any) => state.auth)
     const { address, isDepositUpdate } = authState
 
@@ -41,12 +42,21 @@ const Header = () => {
                 const data = {
                     action: DEPOSIT_INFO,
                 }
-                const noticeKeys = await sendInput(data);
-                handleNotices(noticeKeys?.epoch_index, noticeKeys?.input_index, ((payload: DepositInfoType) => {
-                    const amount = payload.amount - payload.used_amount
+                const newMetadata = {
+                    ...metadata,
+                    timestamp: Date.now()
+                }
+                const payloadHex = convertDataToHex(data, newMetadata)
+                const res: any = await getDataApi(payloadHex)
+                const obj = convertHexToData(res.reports[0].payload)
+                if (!obj.error) {
+                    const amount = obj.amount - obj.used_amount
+                    console.log('obj', obj)
                     setBalance(amount)
                     setIsLoading(false)
-                }))
+                } else {
+                    createNotifications(NOTI_TYPE.DANGER, obj.error)
+                }
             } catch (error: any) {
                 createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
                 setIsLoading(false)
