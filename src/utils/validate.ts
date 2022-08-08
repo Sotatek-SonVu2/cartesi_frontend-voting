@@ -1,0 +1,87 @@
+import moment from "moment"
+import { FORMAT_DATETIME } from "./contants"
+import { OptionType } from "./interface"
+
+const validateText: any = {
+    name: 'Name is required.',
+    description: 'Description is required',
+    startDate: 'Start Date is required.',
+    endDate: 'End Date is required.',
+    brief_introduction: 'Brief Introduction is required.',
+}
+
+export const validateField = (fieldName: string, value: string | Date) => {
+    let errorText = ''
+    if (!value) {
+        errorText = validateText[fieldName]
+    }
+    return {
+        [fieldName]: errorText
+    }
+}
+
+export const validateDate = (fieldName: string, value: string | Date, endDate: Date, startDate: Date) => {
+    const valueFormat = value && moment(value).format(FORMAT_DATETIME)
+    const date = fieldName === 'startDate' ? endDate : startDate
+    const dateFormat = date && moment(date).format(FORMAT_DATETIME)
+    const isAfter = moment(valueFormat).isAfter(dateFormat)
+    const isSame = moment(valueFormat).isSame(dateFormat)
+    let error
+    if (value) {
+        if (fieldName === 'startDate' && isAfter || isSame) {
+            error = {
+                startDate: 'Invalid datetime!'
+            }
+        } else if (fieldName === 'endDate' && !isAfter && !isSame) {
+            error = {
+                startDate: 'Invalid datetime!'
+            }
+        } else {
+            error = {
+                startDate: '',
+                endDate: ''
+            }
+        }
+    } else {
+        error = validateField(fieldName, value)
+    }
+    return error
+}
+
+export const validateFields = (object: any) => {
+    delete object.formErrors
+    let formErrors = { name: '', description: '', startDate: '', endDate: '' }
+    let isError: boolean = false
+    for (const property in object) {
+        const validate = validateField(property, object[property])
+        if (validate[property]) isError = true
+        formErrors = { ...formErrors, ...validate }
+    }
+    return {
+        formErrors,
+        isError
+    }
+}
+
+export const validateOptions = (options: OptionType[]) => {
+    let isError: boolean = false
+    const data = options.map((item: OptionType) => {
+        let nameError: any = { name: '' }
+        let briefError: any = { brief_introduction: '' }
+        if (!item.name) {
+            nameError = validateField('name', item.name)
+        }
+        if (!item.brief_introduction) {
+            briefError = validateField('brief_introduction', item.brief_introduction)
+        }
+        if (nameError['name'] || briefError['brief_introduction']) isError = true
+        return {
+            ...item,
+            formErrors: { ...item.formErrors, ...nameError, ...briefError },
+        }
+    })
+    return {
+        data,
+        isError
+    }
+}
