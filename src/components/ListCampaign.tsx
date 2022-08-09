@@ -38,7 +38,6 @@ const ListCampaign = () => {
             const payloadHex = convertDataToHex(data, newMetadata)
             const res: any = await getDataApi(payloadHex)
             const obj = convertHexToData(res.reports[0].payload)
-            console.log('obj', obj)
             if (!obj.error) {
                 setItems(obj.data)
                 setPaging({

@@ -3,15 +3,43 @@ import { createNotifications } from '../common/Notification';
 import { getNotice } from '../helper/notices';
 import { sendInput } from '../helper/sendInput';
 import { getDataApi } from '../services';
-import { convertHexToData, JsonStringifyFormat } from '../utils/common';
-import { DEPOSIT_INFO, NOTI_TYPE } from '../utils/contants';
+import { convertDataToHex, convertHexToData, JsonStringifyFormat } from '../utils/common';
+import { DEPOSIT_INFO, ERROR_MESSAGE, NOTI_TYPE } from '../utils/contants';
 import { AuthState } from '../utils/interface';
 
-
+export const getDepositInfo = createAsyncThunk(
+    'auth/depositInfo',
+    async () => {
+        try {
+            const data = {
+                action: DEPOSIT_INFO,
+            }
+            const metadata = {
+                msg_sender: '',
+                epoch_index: 0,
+                input_index: 0,
+                block_number: 0,
+                timestamp: Date.now()
+            }
+            const payloadHex = convertDataToHex(data, metadata)
+            const res: any = await getDataApi(payloadHex)
+            const obj = convertHexToData(res.reports[0].payload)
+            if (!obj.error) {
+                const amount = obj.amount - obj.used_amount
+                return amount
+            } else {
+                createNotifications(NOTI_TYPE.DANGER, obj.error)
+            }
+        } catch (error: any) {
+            createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
+            throw error
+        }
+    }
+)
 
 const initialState: AuthState = {
     address: '',
-    isDepositUpdate: false,
+    deposit_amount: 0,
     metadata: {
         msg_sender: '',
         epoch_index: 0,
@@ -21,9 +49,6 @@ const initialState: AuthState = {
     },
     isLoading: false
 };
-
-
-
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -42,17 +67,29 @@ export const authSlice = createSlice({
             state = data
             return state
         },
-        onDepositUpdate: (state) => {
-            state.isDepositUpdate = !state.isDepositUpdate
-            return state
-        },
         clearAccount: (state) => {
             state = initialState
             return state
         },
     },
+    extraReducers: builder => {
+        builder.addCase(getDepositInfo.pending, (state, action) => {
+            state.isLoading = true
+            return state
+        })
+        builder.addCase(getDepositInfo.fulfilled, (state, action) => {
+            state.deposit_amount = action.payload || 0
+            state.isLoading = false
+            return state
+        })
+        builder.addCase(getDepositInfo.rejected, (state, action) => {
+            state.isLoading = false
+            state.deposit_amount = 0
+            return state
+        })
+    },
 })
 
-export const { setAccount, clearAccount, onDepositUpdate } = authSlice.actions
+export const { setAccount, clearAccount } = authSlice.actions
 
 export default authSlice.reducer

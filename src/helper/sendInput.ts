@@ -1,7 +1,9 @@
 import { ContractReceipt, ethers } from "ethers";
-import { JsonStringifyFormat } from "../utils/common";
+import { checkAccountOnMetamask, JsonStringifyFormat } from "../utils/common";
 import { NoticeKeys } from "../generated-src/graphql";
 import { inputContract } from "./contractWithSigner";
+import { createNotifications } from "../common/Notification";
+import { NOTI_TYPE } from "../utils/contants";
 
 export const findNoticeKeys = (receipt: ContractReceipt): NoticeKeys => {
     // get InputAddedEvent from transaction receipt

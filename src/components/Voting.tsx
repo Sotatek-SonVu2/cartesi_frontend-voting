@@ -130,7 +130,7 @@ const Voting = () => {
                 const payloadHex = convertDataToHex(data, newMetadata)
                 const res: any = await getDataApi(payloadHex)
                 const obj = convertHexToData(res.reports[0].payload)
-                if (!obj.error) {
+                if (obj?.campaign?.length > 0 && !obj.error) {
                     const isStartTime = new Date(obj.campaign[0].start_time) < new Date()
                     const isEndTime = new Date(obj.campaign[0].end_time) > new Date()
                     const isVisibleActionButton = {
@@ -150,8 +150,8 @@ const Voting = () => {
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, obj.error)
                 }
-            } catch (error) {
-                createNotifications(NOTI_TYPE.DANGER, 'Something went wrong!')
+            } catch (error: any) {
+                createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
                 throw error
             } finally {
                 setTimeout(() => setIsLoading(false), 1500)

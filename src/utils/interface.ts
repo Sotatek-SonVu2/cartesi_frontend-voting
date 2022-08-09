@@ -8,9 +8,9 @@ export interface MetadataType {
 
 export interface AuthState {
     address: string
-    isDepositUpdate: boolean
     metadata: MetadataType
     isLoading: boolean
+    deposit_amount: number
 }
 
 export interface isVisibleActionButton {

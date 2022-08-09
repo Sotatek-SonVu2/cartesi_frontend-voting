@@ -26,7 +26,7 @@ export const LoadingAbsolute = styled.div`
    position: absolute;
    left: 0;
    top: 0;
-   background: rgb(195 195 195 / 14%);
+   background: rgb(0 0 0 / 12%);
    z-index: 10;
    width: 100%;
    display: flex;
@@ -34,7 +34,6 @@ export const LoadingAbsolute = styled.div`
    justify-content: center;
    align-items: center;
    height: 100%;
-   min-height: 310px;
 `
 
 export const LoadingWrapper = styled.div`

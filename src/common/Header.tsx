@@ -3,32 +3,22 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import DepositModal from "../components/DepositModal";
-import { sendInput } from "../helper/sendInput";
 import logo from '../images/Cartesi_Logo_White.svg';
-import EthIcon from "../images/ethereum-eth.svg";
+import EthIcon from "../images/cartesi_icon.png";
 import LogoutIcon from "../images/logout-icon.svg";
-import { clearAccount } from "../reducers/authSlice";
+import { clearAccount, getDepositInfo } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
-import { getDataApi } from "../services";
 import { AppDispatch } from "../store";
 import { Address, Content, Currency, Deposit, DepositContent, InforUser } from "../styled/header";
 import { Loader } from "../styled/loading";
-import { convertDataToHex, convertHexToData, formatAddress, handleNotices } from "../utils/common";
-import { DEPOSIT_INFO, ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
-import { DepositInfoType, MetadataType } from "../utils/interface";
-import { createNotifications } from "./Notification";
-
+import { formatAddress } from "../utils/common";
 
 const Header = () => {
     let navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>()
     const [isVisible, setIsVisible] = useState<boolean>(false);
-    const [balance, setBalance] = useState<number>(0)
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-
-    const metadata: MetadataType = useSelector((state: any) => state.auth.metadata)
     const authState = useSelector((state: any) => state.auth)
-    const { address, isDepositUpdate } = authState
+    const { address, deposit_amount, isLoading } = authState
 
     const handleLogout = async () => {
         dispatch(clearAccount())
@@ -36,48 +26,21 @@ const Header = () => {
     }
 
     useEffect(() => {
-        const getDeposetInfo = async () => {
-            try {
-                setIsLoading(true)
-                const data = {
-                    action: DEPOSIT_INFO,
-                }
-                const newMetadata = {
-                    ...metadata,
-                    timestamp: Date.now()
-                }
-                const payloadHex = convertDataToHex(data, newMetadata)
-                const res: any = await getDataApi(payloadHex)
-                const obj = convertHexToData(res.reports[0].payload)
-                if (!obj.error) {
-                    const amount = obj.amount - obj.used_amount
-                    console.log('obj', obj)
-                    setBalance(amount)
-                    setIsLoading(false)
-                } else {
-                    createNotifications(NOTI_TYPE.DANGER, obj.error)
-                }
-            } catch (error: any) {
-                createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
-                setIsLoading(false)
-                throw error
-            }
-        }
-
-        getDeposetInfo()
-    }, [isDepositUpdate])
+        dispatch(getDepositInfo())
+    }, [])
 
     useEffect(() => {
         if (!window.ethereum) return;
 
         window.ethereum.on("accountsChanged", handleLogout);
-        // window.ethereum.on("chainChanged", handleLogout);
         window.ethereum.on("disconnect", handleLogout);
-
+        // window.ethereum.on("chainChanged", () => {
+        //     window.location.reload();
+        // });
         return () => {
             if (window.ethereum.removeListener) {
                 window.ethereum.removeListener("accountsChanged", handleLogout);
-                window.ethereum.removeListener("chainChanged", handleLogout);
+                // window.ethereum.removeListener("chainChanged", handleLogout);
                 window.ethereum.removeListener("disconnect", handleLogout);
             }
         };
@@ -101,7 +64,7 @@ const Header = () => {
                         <Currency>
                             {isLoading && (<Loader />)}
                             <img src={EthIcon} alt="ethIcon" width={15} />
-                            <span>{balance} CTSI</span>
+                            <span>{deposit_amount} CTSI</span>
 
                         </Currency>
                     </div>

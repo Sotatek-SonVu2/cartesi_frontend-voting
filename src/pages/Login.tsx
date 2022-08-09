@@ -18,16 +18,21 @@ const Login = () => {
     const connectWallet = async () => {
         try {
             if (window.ethereum) {
-                const instance = await web3Modal.connect();
-                const provider = new ethers.providers.Web3Provider(instance);
-                const address = await provider.getSigner().getAddress();
-                dispatch(setAccount(address))
-                navigate(ROUTER_PATH.HOMEPAGE, { replace: true });
+                try {
+                    const instance = await web3Modal.connect();
+                    const provider = new ethers.providers.Web3Provider(instance);
+                    const address = await provider.getSigner().getAddress();
+                    dispatch(setAccount(address))
+                    navigate(ROUTER_PATH.HOMEPAGE, { replace: true });
+                } catch (error: any) {
+                    createNotifications(NOTI_TYPE.DANGER, '123123123')
+                }
+
             } else {
                 createNotifications(NOTI_TYPE.DANGER, 'Please install the MetaMask App!')
             }
-        } catch (error) {
-            createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
+        } catch (error: any) {
+            createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
             throw error
         }
     };

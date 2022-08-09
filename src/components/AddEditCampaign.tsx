@@ -138,6 +138,7 @@ const AddEditCampaign = () => {
             setIsLoading(true)
             const noticeKeys = await sendInput(data);
             handleNotices(noticeKeys?.epoch_index, noticeKeys?.input_index, ((payload: any) => {
+                console.log('payload create', payload)
                 if (!payload.error) {
                     setDataForm(initialValue)
                     setOptions(OptionDefault)
@@ -146,12 +147,12 @@ const AddEditCampaign = () => {
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, payload.error)
                 }
+                setIsLoading(false)
             }))
         } catch (error: any) {
             createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
-            throw error
-        } finally {
             setIsLoading(false)
+            throw error
         }
     }
 
@@ -159,7 +160,7 @@ const AddEditCampaign = () => {
         try {
             setIsLoading(true)
             const noticeKeys = await sendInput(data);
-            handleNotices(noticeKeys?.epoch_index, noticeKeys?.input_index, ((payload: any) => {
+            await handleNotices(noticeKeys?.epoch_index, noticeKeys?.input_index, ((payload: any) => {
                 if (!payload.error) {
                     setDataForm(initialValue)
                     setOptions(OptionDefault)
@@ -168,12 +169,12 @@ const AddEditCampaign = () => {
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, payload.error)
                 }
+                setIsLoading(false)
             }))
         } catch (error) {
             createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
-            throw error
-        } finally {
             setIsLoading(false)
+            throw error
         }
     }
 

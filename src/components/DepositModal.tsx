@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import ModalComponent from "../common/Modal"
 import { createNotifications } from "../common/Notification"
+import { NoticeKeys } from "../generated-src/graphql"
 import { cartesiTokenContract, erc20Contract, inputContract } from "../helper/contractWithSigner"
-import { onDepositUpdate } from "../reducers/authSlice"
+import { getDepositInfo } from "../reducers/authSlice"
 import { AppDispatch } from "../store"
 import { ModalTitle, SuccessButton } from "../styled/common"
 import { ErrorText, Input } from "../styled/form"
 import { ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants"
-import { NoticeKeys } from "../generated-src/graphql";
 
 type Props = {
     isVisible: boolean
@@ -143,9 +143,8 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
                 value: '',
                 errorText: ''
             })
+            dispatch(getDepositInfo())
             toggleModal()
-            dispatch(onDepositUpdate())
-
             createNotifications(NOTI_TYPE.SUCCESS, 'Deposit successfully!')
         } catch (error: any) {
             createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
