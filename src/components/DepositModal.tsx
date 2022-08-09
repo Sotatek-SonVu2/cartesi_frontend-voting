@@ -3,7 +3,6 @@ import { ContractReceipt, ethers } from "ethers"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
-// import { NoticeKeys } from "../../generated-src/graphql"
 import ModalComponent from "../common/Modal"
 import { createNotifications } from "../common/Notification"
 import { cartesiTokenContract, erc20Contract, inputContract } from "../helper/contractWithSigner"
@@ -12,6 +11,7 @@ import { AppDispatch } from "../store"
 import { ModalTitle, SuccessButton } from "../styled/common"
 import { ErrorText, Input } from "../styled/form"
 import { ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants"
+import { NoticeKeys } from "../generated-src/graphql";
 
 type Props = {
     isVisible: boolean
@@ -52,7 +52,7 @@ const ERROR_TEXT = 'Please enter amount'
 export const findInputAddedInfo = (
     receipt: ContractReceipt,
     inputContract: IInput | any
-) => {
+): NoticeKeys => {
     if (receipt.events) {
         for (const event of receipt.events) {
             try {

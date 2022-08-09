@@ -1,6 +1,6 @@
 import { ContractReceipt, ethers } from "ethers";
 import { JsonStringifyFormat } from "../utils/common";
-import { NoticeKeys } from "../utils/graphql";
+import { NoticeKeys } from "../generated-src/graphql";
 import { inputContract } from "./contractWithSigner";
 
 export const findNoticeKeys = (receipt: ContractReceipt): NoticeKeys => {

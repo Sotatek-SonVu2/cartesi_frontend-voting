@@ -11,7 +11,11 @@
 
 import { createClient, defaultExchanges } from "@urql/core";
 import fetch from "cross-fetch";
-import { GetNoticeDocument, Notice, NoticeKeys } from "../utils/graphql";
+import {
+    GetNoticeDocument,
+    Notice,
+    NoticeKeys,
+} from "../generated-src/graphql";
 
 
 // we don't get every field of Notice
