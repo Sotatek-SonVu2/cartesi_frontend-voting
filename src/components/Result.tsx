@@ -18,7 +18,7 @@ interface DataType {
 }
 
 const Result = () => {
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const { campaignId }: any = useParams();
     const metadata: MetadataType = useSelector((state: any) => state.auth.metadata)
     const [isLoading, setIsLoading] = useState<boolean>(false)

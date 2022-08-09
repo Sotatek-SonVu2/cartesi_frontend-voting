@@ -14,7 +14,7 @@ import { Loader } from "../styled/loading";
 import { formatAddress } from "../utils/common";
 
 const Header = () => {
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>()
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const authState = useSelector((state: any) => state.auth)

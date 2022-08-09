@@ -10,6 +10,10 @@ interface PaginationType {
     disabled?: boolean
 }
 
+interface ButtonType {
+    disabled?: boolean
+}
+
 export const colorTheme = {
     background: 'radial-gradient(ellipse at bottom,#1b2735 0%,#090a0f 100%)',
     darkBlue: '#1E1941',
@@ -21,15 +25,18 @@ export const colorTheme = {
     success: '#3eb991',
     choose: '#b4d5ffb3',
     error: '#d93025',
-    danger: '#d9534f'
+    danger: '#d9534f',
+    disabled: '#b3b3b3'
 }
 
-export const Button = styled.button`
+export const Button = styled.button<ButtonType>`
     color: #fff;
     font-size: 15px;
     padding: 10px 25px;
     border-radius: 7px;
     cursor: pointer;
+
+    ${props => props.disabled && `background-color: ${colorTheme.disabled} !important`}
 `
 
 export const PrimaryButton = styled(Button)`
@@ -38,8 +45,8 @@ export const PrimaryButton = styled(Button)`
 `
 
 export const DangerButton = styled(Button)`
-border: 1px solid #fff;
-background-color: ${colorTheme.danger};
+    border: 1px solid #fff;
+    background-color: ${colorTheme.danger};
 `
 
 export const SuccessButton = styled(Button)`

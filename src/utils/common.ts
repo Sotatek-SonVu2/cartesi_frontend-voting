@@ -57,7 +57,7 @@ export const handleNotices = async (epoch: number, input: number, callback: any)
         }
         if (++times === 20) {
             clearInterval(myInterval);
-            createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
+            callback('')
         }
     }, 1000)
 }

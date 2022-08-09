@@ -15,7 +15,7 @@ interface PropsType {
 }
 
 const ItemCampaign = ({ data }: PropsType) => {
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const { id, name, total_vote, winning_candidate_name } = data
 
     return (

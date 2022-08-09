@@ -7,6 +7,7 @@ import { VotedType } from "../utils/interface"
 
 const FlexLayoutBetween = styled(FlexLayout)`
     justify-content: space-between;
+    align-items: center;
 `
 
 interface PropsType {

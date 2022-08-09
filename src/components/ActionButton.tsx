@@ -4,15 +4,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Select from 'react-select';
 import styled from "styled-components";
 import { createNotifications } from "../common/Notification";
+import { sendInput } from "../helper/sendInput";
 import { onChangeStatus } from "../reducers/campaignSlice";
 import { ROUTER_PATH } from "../routes/contants";
-import { getDataApi } from "../services";
 import { AppDispatch } from "../store";
 import { DangerButton, PrimaryButton, SuccessButton } from "../styled/common";
 import { FlexLayout } from "../styled/main";
-import { convertDataToHex, convertHexToData } from "../utils/common";
+import { handleNotices } from "../utils/common";
 import { cadidateOptions, DELETE_CAMPAIGN, ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
-import { MetadataType } from "../utils/interface";
 import DeleteModal from "./DeleteModal";
 
 const EditButton = styled(PrimaryButton)`
@@ -40,19 +39,15 @@ const colourStyles = {
 
 const ActionButton = () => {
     const [isVisible, setIsVisible] = useState<boolean>(false);
-    let navigate = useNavigate();
-    const metadata: MetadataType = useSelector((state: any) => state.auth.metadata)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const isVisibleActionButton = useSelector((state: any) => state.campaign.isVisibleActionButton)
     const addressWallet = useSelector((state: any) => state.auth.address)
+    const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>()
     const location = useLocation()
     const pathname = `/${location.pathname.split("/")[1]}`
     const paramId = location.pathname.split("/")[2]
-    console.log('isVisibleActionButton', isVisibleActionButton)
-    console.log('pathname', pathname === ROUTER_PATH.VOTING)
-    console.log('isVisibleActionButton.creator', isVisibleActionButton.creator, addressWallet)
-    console.log('isVisibleActionButton.creator === addressWallet', isVisibleActionButton.creator === addressWallet)
-    console.log('isVisibleActionButton.isOpenVoting', isVisibleActionButton.isOpenVoting)
+
     const onChangeSelect = (opt: any) => {
         dispatch(onChangeStatus(opt.value))
     }
@@ -63,29 +58,29 @@ const ActionButton = () => {
 
     const onDelete = async () => {
         try {
+            setIsLoading(true)
             const data = {
                 action: DELETE_CAMPAIGN,
-                id: parseInt(paramId)
+                id: paramId && parseInt(paramId)
             }
-            const newMetadata = {
-                ...metadata,
-                timestamp: Date.now()
-            }
-
-            const payloadHex = convertDataToHex(data, newMetadata)
-            const res: any = await getDataApi(payloadHex)
-            const obj = convertHexToData(res.reports[0].payload)
-            if (!obj.error) {
-                createNotifications(NOTI_TYPE.SUCCESS, obj.message)
-                navigate(ROUTER_PATH.HOMEPAGE, { replace: true });
-            } else {
-                createNotifications(NOTI_TYPE.DANGER, obj.error)
-            }
+            const noticeKeys = await sendInput(data);
+            handleNotices(noticeKeys?.epoch_index, noticeKeys?.input_index, ((payload: any) => {
+                if (payload && !payload.error) {
+                    createNotifications(NOTI_TYPE.SUCCESS, payload.message)
+                    navigate(ROUTER_PATH.HOMEPAGE, { replace: true });
+                } else {
+                    createNotifications(NOTI_TYPE.DANGER, payload.error)
+                }
+                setIsLoading(false)
+            }))
         } catch (error) {
             createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
+            setIsLoading(false)
             throw error
+        } finally {
+            toggleModal()
         }
-        toggleModal()
+
     }
 
     const render = () => {
@@ -104,7 +99,7 @@ const ActionButton = () => {
                     <CreateButton onClick={() => navigate(ROUTER_PATH.ADD_CAMPAIGN)}>Create new campaign</CreateButton>
                 </FlexLayoutBetween>
             )
-        } else if (pathname === ROUTER_PATH.VOTING && isVisibleActionButton.creator === addressWallet && isVisibleActionButton.isOpenVoting) {
+        } else if (pathname === ROUTER_PATH.VOTING && isVisibleActionButton.creator !== addressWallet && isVisibleActionButton.isOpenVoting) {
             return (
                 <>
                     <FlexLayoutRight>
@@ -116,6 +111,7 @@ const ActionButton = () => {
                             isVisible={isVisible}
                             toggleModal={toggleModal}
                             onClick={onDelete}
+                            isLoading={isLoading}
                         />
                     )}
                 </>

@@ -11,6 +11,7 @@ import { ROUTER_PATH } from "../routes/contants"
 import { getDataApi } from "../services"
 import { AppDispatch } from "../store"
 import { Content, DefaultButton, FlexLayoutBtn, PrimaryButton, SuccessButton, Title } from "../styled/common"
+import { LoadingAbsolute } from "../styled/loading"
 import { convertDataToHex, convertHexToData, handleNotices } from "../utils/common"
 import { CAMPAIGN_DETAIL, ERROR_MESSAGE, NOTI_TYPE, VOTING } from "../utils/contants"
 import { CampaignVotingType, CandidatesVotingType, MetadataType } from "../utils/interface"
@@ -33,6 +34,7 @@ const Voting = () => {
     const [candidateId, setCandidateId] = useState<number>(0)
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isLoadVoting, setIsLoadVoting] = useState<boolean>(false)
     const [isVisibleVoteBtn, setIsVisibleVoteBtn] = useState<boolean>(false)
     const [data, setData] = useState<DataType>({
         campaign: {
@@ -46,12 +48,10 @@ const Voting = () => {
         candidates: [],
         voted: {}
     })
-    // console.log('voted', data.voted)
     const dispatch = useDispatch<AppDispatch>()
     const metadata: MetadataType = useSelector((state: any) => state.auth.metadata)
-
     const { campaignId }: any = useParams();
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const onChooseAnswer = (id: number) => {
         if (data.voted?.candidate_id) return
@@ -62,37 +62,12 @@ const Voting = () => {
         setIsVisible(!isVisible);
     }
 
-    // const handleVoting = async () => {
-    //     if (!candidateId) return createNotifications(NOTI_TYPE.DANGER, 'Please choose a candidate!')
-    //     try {
-    //         const data = {
-    //             action: VOTING,
-    //             candidate_id: candidateId,
-    //             campaign_id: parseInt(campaignId)
-    //         }
-    //         const newMetadata = {
-    //             ...metadata,
-    //             timestamp: Date.now()
-    //         }
-    //         const payloadHex = convertDataToHex(data, newMetadata)
-
-    //         const res: any = await getDataApi(payloadHex)
-    //         const obj = convertHexToData(res.reports[0].payload)
-    //         if (!obj.error) {
-    //             createNotifications(NOTI_TYPE.SUCCESS, 'Vote successfully!')
-    //             navigate(`${ROUTER_PATH.RESULT}/${campaignId}`, { replace: true });
-    //         } else {
-    //             createNotifications(NOTI_TYPE.DANGER, obj.error)
-    //         }
-    //     } catch (error) {
-    //         createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
-    //         throw error
-    //     }
-    // }
 
     const handleVoting = async () => {
+        toggleModal()
         if (!candidateId) return createNotifications(NOTI_TYPE.DANGER, 'Please choose a candidate!')
         try {
+            setIsLoadVoting(true)
             const data = {
                 action: VOTING,
                 candidate_id: candidateId,
@@ -100,16 +75,19 @@ const Voting = () => {
             }
             const noticeKeys = await sendInput(data);
             handleNotices(noticeKeys?.epoch_index, noticeKeys?.input_index, ((payload: any) => {
-                console.log('error', payload)
-                if (!payload.error) {
+                if (payload && !payload.error) {
                     createNotifications(NOTI_TYPE.SUCCESS, 'Vote successfully!')
                     navigate(`${ROUTER_PATH.RESULT}/${campaignId}`, { replace: true });
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload.error)
+                    createNotifications(NOTI_TYPE.DANGER, payload.error || ERROR_MESSAGE)
+                    setCandidateId(0)
+                    setIsLoadVoting(false)
                 }
             }))
         } catch (error: any) {
             createNotifications(NOTI_TYPE.DANGER, error.messgae || ERROR_MESSAGE)
+            setCandidateId(0)
+            setIsLoadVoting(false)
             throw error
         }
     }
@@ -194,6 +172,11 @@ const Voting = () => {
                             toggleModal={toggleModal}
                             onClick={handleVoting}
                         />
+                    )}
+                    {isLoadVoting && (
+                        <LoadingAbsolute>
+                            <Loading />
+                        </LoadingAbsolute>
                     )}
                 </Content >
             )}

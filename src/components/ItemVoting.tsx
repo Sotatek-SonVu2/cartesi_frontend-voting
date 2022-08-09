@@ -23,7 +23,7 @@ const FlexLayoutBetween = styled(FlexLayout)`
 `
 
 const ItemVoting = ({ data, handleClick, active }: PropsType) => {
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const { id, name, campaign_id, avatar } = data
 
     const onClick = () => {

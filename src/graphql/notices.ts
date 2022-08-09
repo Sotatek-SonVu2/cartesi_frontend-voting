@@ -46,12 +46,8 @@ export const getNotices = async (
 ): Promise<PartialNotice[]> => {
     // create GraphQL client to reader server
     const client = createClient({ url, exchanges: defaultExchanges, fetch });
-    console.log('client', client)
     // query the GraphQL server for notices of our input
     // keeping trying forever (or until user kill the process)
-    console.log(
-        `querying ${url} for notices of ${JSON.stringify(noticeKeys)}...`
-    );
     const { data, error } = await client
         .query(GetNoticeDocument, { query: noticeKeys })
         .toPromise();

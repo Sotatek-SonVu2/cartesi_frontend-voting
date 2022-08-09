@@ -12,7 +12,7 @@ import { Container, LoginButton, Logo, MainWrapper } from "../styled/login";
 import { ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
 
 const Login = () => {
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const dispatch = useDispatch()
 
     const connectWallet = async () => {

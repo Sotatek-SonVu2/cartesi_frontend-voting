@@ -17,7 +17,7 @@ const Description = () => {
         name: '',
         description: ''
     })
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>()
     const metadata: MetadataType = useSelector((state: any) => state.auth.metadata)
     const params = useParams();

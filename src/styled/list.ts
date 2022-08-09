@@ -21,9 +21,11 @@ export const Wrapper = styled.div`
   }
 `
 export const ResultItem = styled.div`
-  width: 85%;
+  width: 80%;
   padding: 5px 10px;
   position: relative;
+  display: flex;
+  align-items: center;
 `
 
 export const ItemList = styled.div`
