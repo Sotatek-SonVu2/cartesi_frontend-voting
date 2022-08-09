@@ -20,8 +20,8 @@ const ItemCampaign = ({ data }: PropsType) => {
 
     return (
         <Wrapper key={id}>
-            <BoxContent onClick={() => navigate(`${ROUTER_PATH.VOTING}/${id}`)}>
-                <FlexList>
+            <BoxContent>
+                <FlexList onClick={() => navigate(`${ROUTER_PATH.VOTING}/${id}`)}>
                     {name}
                 </FlexList>
                 <ActionList>
@@ -34,8 +34,8 @@ const ItemCampaign = ({ data }: PropsType) => {
                     <ActionItem>
                         {total_vote || 0} vote
                     </ActionItem>
-                    <ActionItem>
-                        <img src={DescriptionIcon} alt="description icon" width={20} onClick={() => navigate(`${ROUTER_PATH.DESCRIPTION}/1`)} />
+                    <ActionItem onClick={() => navigate(`${ROUTER_PATH.DESCRIPTION}/${id}`)}>
+                        <img src={DescriptionIcon} alt="description icon" width={20} />
                         <span>Detail</span>
                     </ActionItem>
                 </ActionList>

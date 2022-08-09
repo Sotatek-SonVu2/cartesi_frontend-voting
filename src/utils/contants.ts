@@ -11,7 +11,7 @@ export const DELETE_CAMPAIGN = 'DELETE_CAMPAIGN'
 export const DEPOSIT_INFO = 'DEPOSIT_INFO'
 
 export const FORMAT_DATETIME = 'YYYY-MM-DD HH:mm:ss'
-export const ERROR_MESSAGE = 'Something went wrong!'
+export const ERROR_MESSAGE = 'Something went wrong! Please try again!'
 
 export const NOTI_TYPE = {
     SUCCESS: 'success',

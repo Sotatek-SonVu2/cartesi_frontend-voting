@@ -1,16 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createNotifications } from '../common/Notification';
-import { getNotice } from '../helper/notices';
-import { sendInput } from '../helper/sendInput';
 import { getDataApi } from '../services';
-import { convertDataToHex, convertHexToData, JsonStringifyFormat } from '../utils/common';
-import { DEPOSIT_INFO, ERROR_MESSAGE, NOTI_TYPE } from '../utils/contants';
+import { convertDataToHex, convertHexToData } from '../utils/common';
+import { ADDRESS_WALLET, DEPOSIT_INFO, ERROR_MESSAGE, NOTI_TYPE } from '../utils/contants';
 import { AuthState } from '../utils/interface';
 
 export const getDepositInfo = createAsyncThunk(
     'auth/depositInfo',
     async () => {
         try {
+            console.log('getDepositInfo')
             const data = {
                 action: DEPOSIT_INFO,
             }
@@ -38,7 +37,7 @@ export const getDepositInfo = createAsyncThunk(
 )
 
 const initialState: AuthState = {
-    address: '',
+    address: localStorage.getItem(ADDRESS_WALLET) || '',
     deposit_amount: 0,
     metadata: {
         msg_sender: '',
@@ -55,20 +54,23 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         setAccount: (state, action: PayloadAction<string>) => {
+            const { payload } = action
             const data = {
                 ...state,
-                address: action.payload,
+                address: payload,
                 metadata: {
                     ...state.metadata,
-                    msg_sender: action.payload,
+                    msg_sender: payload,
                     timestamp: Date.now()
                 }
             }
             state = data
+            localStorage.setItem(ADDRESS_WALLET, payload);
             return state
         },
         clearAccount: (state) => {
             state = initialState
+            localStorage.setItem(ADDRESS_WALLET, '');
             return state
         },
     },

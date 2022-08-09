@@ -34,7 +34,8 @@ const FlexLayoutRight = styled(FlexLayout)`
 `
 
 const colourStyles = {
-    control: (styles: any) => ({ ...styles, width: '200px', }),
+    control: (styles: any) => ({ ...styles, width: '200px', backgroundColor: 'transparent', }),
+    singleValue: (styles: any) => ({ ...styles, color: '#fff' }),
 };
 
 const ActionButton = () => {

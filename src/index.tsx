@@ -1,15 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 import 'react-datepicker/dist/react-datepicker.css';
-import "react-notifications-component/dist/theme.css";
-import { persistor, store } from './store';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/lib/integration/react';
+import ReactDOM from 'react-dom/client';
 import { ReactNotifications } from 'react-notifications-component';
+import "react-notifications-component/dist/theme.css";
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
+import { store } from './store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -17,12 +16,10 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter>
-          <ReactNotifications />
-          <App />
-        </BrowserRouter>
-      </PersistGate>
+      <BrowserRouter>
+        <ReactNotifications />
+        <App />
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>
 );

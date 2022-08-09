@@ -41,6 +41,7 @@ export const JsonStringifyFormat = (data: any) => {
 }
 
 export const handleNotices = async (epoch: number, input: number, callback: any) => {
+    var times = 0;
     const myInterval = setInterval(async () => {
         const result: any = await getNotice({
             epoch,
@@ -53,6 +54,10 @@ export const handleNotices = async (epoch: number, input: number, callback: any)
                 const payload = JSON.parse(result[0]?.payload)
                 callback(payload)
             }
+        }
+        if (++times === 20) {
+            clearInterval(myInterval);
+            createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
         }
     }, 1000)
 }

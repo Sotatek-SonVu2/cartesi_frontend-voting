@@ -13,7 +13,7 @@ import { ErrorText, Form, FormItem, Input, TextArea } from "../styled/form";
 import { Loader, LoadingAbsolute } from "../styled/loading";
 import { convertDataToHex, convertHexToData, handleNotices } from "../utils/common";
 import { CAMPAIGN_DETAIL, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE } from "../utils/contants";
-import { DataPayloadType, DepositInfoType, MetadataType, OptionType } from "../utils/interface";
+import { DataPayloadType, MetadataType, OptionType } from "../utils/interface";
 import { validateDate, validateField, validateFields, validateOptions } from "../utils/validate";
 import CandidateOptions from "./CandidateOptions";
 
@@ -110,35 +110,11 @@ const AddEditCampaign = () => {
         })
     }
 
-    // CALL BY INSPECT
-    // const createCampaign = async (data: DataPayloadType, metadata: MetadataType) => {
-    //     try {
-    //         setIsLoading(true)
-    //         const payloadHex = convertDataToHex(data, metadata)
-    //         const res: any = await getDataApi(payloadHex)
-    //         const obj = convertHexToData(res.reports[0].payload)
-    //         if (!obj.error) {
-    //             setDataForm(initialValue)
-    //             setOptions(OptionDefault)
-    //             createNotifications(NOTI_TYPE.SUCCESS, 'Add campaign successfully!')
-    //             navigate(`${ROUTER_PATH.VOTING}/${obj.id}`, { replace: true });
-    //         } else {
-    //             createNotifications(NOTI_TYPE.DANGER, obj.error)
-    //         }
-    //     } catch (error) {
-    //         createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
-    //         throw error
-    //     } finally {
-    //         setIsLoading(false)
-    //     }
-    // }
-
     const createCampaign = async (data: DataPayloadType) => {
         try {
             setIsLoading(true)
             const noticeKeys = await sendInput(data);
             handleNotices(noticeKeys?.epoch_index, noticeKeys?.input_index, ((payload: any) => {
-                console.log('payload create', payload)
                 if (!payload.error) {
                     setDataForm(initialValue)
                     setOptions(OptionDefault)

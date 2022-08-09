@@ -121,7 +121,7 @@ const Voting = () => {
                 setIsLoading(true)
                 const data = {
                     action: CAMPAIGN_DETAIL,
-                    campaign_id: parseInt(campaignId)
+                    campaign_id: campaignId && parseInt(campaignId)
                 }
                 const newMetadata = {
                     ...metadata,
