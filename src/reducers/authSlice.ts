@@ -9,12 +9,11 @@ export const getDepositInfo = createAsyncThunk(
     'auth/depositInfo',
     async () => {
         try {
-            console.log('getDepositInfo')
             const data = {
                 action: DEPOSIT_INFO,
             }
             const metadata = {
-                msg_sender: '',
+                msg_sender: localStorage.getItem(ADDRESS_WALLET) || '',
                 epoch_index: 0,
                 input_index: 0,
                 block_number: 0,
