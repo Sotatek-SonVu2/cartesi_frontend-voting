@@ -6,6 +6,7 @@ import Loading from "../common/Loading"
 import NoData from "../common/NoData"
 import { createNotifications } from "../common/Notification"
 import { sendInput } from "../helper/sendInput"
+import { getDepositInfo } from "../reducers/authSlice"
 import { onVisibleActionButton } from "../reducers/campaignSlice"
 import { ROUTER_PATH } from "../routes/contants"
 import { getDataApi } from "../services"
@@ -25,8 +26,12 @@ interface DataType {
     voted: any
 }
 
-const Datetime = styled.p`
-    text-align: center
+const SubTitle = styled.div`
+    text-align: center;
+
+    & span {
+        color: red;
+    }
 `
 
 
@@ -36,7 +41,7 @@ const Voting = () => {
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [isLoadVoting, setIsLoadVoting] = useState<boolean>(false)
-    const [isVisibleVoteBtn, setIsVisibleVoteBtn] = useState<boolean>(false)
+    const [isCloseVoting, setIsCloseVoting] = useState<boolean>(false)
     const [data, setData] = useState<DataType>({
         campaign: {
             creator: '',
@@ -77,6 +82,7 @@ const Voting = () => {
             const noticeKeys = await sendInput(data);
             handleNotices(noticeKeys?.epoch_index, noticeKeys?.input_index, ((payload: any) => {
                 if (payload && !payload.error) {
+                    dispatch(getDepositInfo())
                     createNotifications(NOTI_TYPE.SUCCESS, 'Vote successfully!')
                     navigate(`${ROUTER_PATH.RESULT}/${campaignId}`, { replace: true });
                 } else {
@@ -111,21 +117,19 @@ const Voting = () => {
                 const obj = convertHexToData(res.reports[0].payload)
                 if (obj?.campaign?.length > 0 && !obj.error) {
                     const isStartTime = new Date(obj.campaign[0].start_time) < new Date()
-                    const isEndTime = new Date(obj.campaign[0].end_time) > new Date()
+                    const isEndTime = new Date(obj.campaign[0].end_time) < new Date()
                     const isVisibleActionButton = {
                         creator: obj.campaign[0].creator,
                         isOpenVoting: !isStartTime
                     }
-                    console.log('isStartTime', isStartTime)
-                    console.log('isEndTime', isEndTime)
-                    dispatch(onVisibleActionButton(isVisibleActionButton))
-                    setIsVisibleVoteBtn(isStartTime && isEndTime)
+                    setIsCloseVoting(isEndTime)
                     setData({
                         campaign: obj.campaign[0],
                         candidates: obj.candidates,
                         voted: obj.voted
                     })
                     setCandidateId(obj.voted?.candidate_id)
+                    dispatch(onVisibleActionButton(isVisibleActionButton))
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, obj.error || ERROR_MESSAGE)
                 }
@@ -140,6 +144,8 @@ const Voting = () => {
         getData()
     }, [])
 
+    console.log('isCloseVoting', isCloseVoting, data.voted?.candidate_id)
+
     return (
         <>
             {isLoading ? (
@@ -149,9 +155,15 @@ const Voting = () => {
                     <Title>
                         {data.campaign.name}
                     </Title>
-                    <Datetime>{data.campaign.start_time} - {data.campaign.end_time}</Datetime>
+                    <SubTitle>
+                        <p>{data.campaign.start_time} - {data.campaign.end_time}</p>
+                        {isCloseVoting && (
+                            <span>This campaign is closed for voting!</span>
+                        )}
+                    </SubTitle>
+
                     {data.voted?.name && (
-                        <p>Your voted is {data.voted?.name}.</p>
+                        <p>Your voted is: {data.voted?.name}.</p>
                     )}
                     {data?.candidates.length > 0 ? data.candidates.map(item => (
                         <div key={item.id}>
@@ -162,9 +174,7 @@ const Voting = () => {
                     )}
                     <FlexLayoutBtn>
                         <DefaultButton type="button" onClick={() => navigate(ROUTER_PATH.HOMEPAGE)}>Back</DefaultButton>
-                        {!data.voted?.candidate_id && (
-                            <SuccessButton type="button" onClick={toggleModal}>Vote</SuccessButton>
-                        )}
+                        <SuccessButton type="button" onClick={toggleModal} disabled={isCloseVoting || data.voted?.candidate_id}>Vote</SuccessButton>
                         <PrimaryButton type="button" onClick={() => navigate(`${ROUTER_PATH.RESULT}/${campaignId}`)}>Result</PrimaryButton>
                     </FlexLayoutBtn>
                     {isVisible && (

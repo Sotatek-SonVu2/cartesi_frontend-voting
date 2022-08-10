@@ -31,6 +31,8 @@ export const ResultName = styled.div`
 
 export const VotingName = styled.div`
   width: 90%;
+  display: flex;
+  align-items: center;
   text-align: justify;
   padding: 5px 10px;
   position: relative;
@@ -42,16 +44,17 @@ export const CampaignName = styled.div`
   justify-content: center;
   flex-direction: column;
   text-align: justify;
-  padding: 5px 10px;
+  padding: 15px 10px;
   position: relative;
 `
 
 export const ActionList = styled.div`
   display: flex;
   justify-content: space-between;
+  font-size: 13px;
   border-top: 1px solid ${colorTheme.gray};
   align-items: center;
-  background: #f0f0f0;
+  background: #f3f4f6;
   border-radius: 0px 0px 7px 7px;
 `
 
@@ -68,6 +71,8 @@ export const ActionItem = styled.div`
 `
 
 export const WinningCandidate = styled.div`
+  display: flex;
+  margin-left: 7px;
   white-space: nowrap;
   width: 200px;
   overflow: hidden;

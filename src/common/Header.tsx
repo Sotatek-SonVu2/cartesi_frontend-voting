@@ -18,8 +18,8 @@ const Header = () => {
     const dispatch = useDispatch<AppDispatch>()
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const authState = useSelector((state: any) => state.auth)
-    const { address, deposit_amount, isLoading } = authState
-
+    const { address, deposit_info, isLoading } = authState
+    const { amount, used_amount } = deposit_info
     const handleLogout = async () => {
         dispatch(clearAccount())
         navigate(ROUTER_PATH.LOGIN, { replace: true })
@@ -64,8 +64,7 @@ const Header = () => {
                         <Currency>
                             {isLoading && (<Loader />)}
                             <img src={EthIcon} alt="ethIcon" width={15} />
-                            <span>{deposit_amount} CTSI</span>
-
+                            <span>{amount} CTSI [used: {used_amount}]</span>
                         </Currency>
                     </div>
                     <Deposit onClick={toggleModal}>

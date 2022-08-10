@@ -41,7 +41,7 @@ const ItemVoting = ({ data, handleClick, active }: PropsType) => {
                         {name}
                     </VotingName>
                     <ItemIcon>
-                        <img src={DescriptionIcon} alt="description icon" width={25} onClick={() => navigate(`${ROUTER_PATH.DESCRIPTION}/${campaign_id}/${id}`)} />
+                        <img src={DescriptionIcon} alt="description icon" width={20} onClick={() => navigate(`${ROUTER_PATH.DESCRIPTION}/${campaign_id}/${id}`)} />
                     </ItemIcon>
                 </FlexLayoutBetween>
             </BoxContent>

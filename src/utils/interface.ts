@@ -10,7 +10,10 @@ export interface AuthState {
     address: string
     metadata: MetadataType
     isLoading: boolean
-    deposit_amount: number
+    deposit_info: {
+        amount: number
+        used_amount: number
+    }
 }
 
 export interface isVisibleActionButton {

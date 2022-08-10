@@ -11,6 +11,7 @@ import { getDepositInfo } from "../../reducers/authSlice"
 import { AppDispatch } from "../../store"
 import { ModalTitle, SuccessButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
+import { Loader } from "../../styled/loading"
 import { ERROR_MESSAGE, NOTI_TYPE } from "../../utils/contants"
 
 type Props = {
@@ -20,7 +21,7 @@ type Props = {
 }
 
 const DepositButton = styled(SuccessButton)`
-    display: block;
+    display: flex;
     margin: 0 auto;
     padding: 10px 20px;
     margin-top: 30px;
@@ -77,6 +78,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
     const { ethereum } = window;
     const dispatch = useDispatch<AppDispatch>()
     const addressWallet = useSelector((state: any) => state.auth.address)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const [amount, setAmount] = useState({
         value: '',
         errorText: ''
@@ -103,32 +105,24 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
             return
         }
         try {
+            setIsLoading(true)
             const allowance: any = await cartesiTokenContract().functions.allowance(addressWallet, SPENDER_ADDRESS);
-            console.log('allowance', allowance)
             // increase erc20 allowance first if necessary
             const erc20Amount = ethers.BigNumber.from(parseInt(amount.value));
-
             if (allowance[0].lt(erc20Amount)) {
                 const allowanceApproveAmount =
                     ethers.BigNumber.from(erc20Amount).sub(allowance[0]);
-                console.log(
-                    `approving allowance of ${allowanceApproveAmount} tokens...`
-                );
-
                 const tx = await cartesiTokenContract().approve(
                     SPENDER_ADDRESS,
                     allowanceApproveAmount
                 );
-
                 await tx.wait();
-
                 if (tx.hash) {
                     console.log('Approve Token successfully!')
                 }
             }
 
             // send deposit transaction
-            console.log(`depositing ${amount.value} tokens...`);
             const tx = await erc20Contract().erc20Deposit(CARTERSI_TOKEN_ADDRESS, erc20Amount, "0x");
             console.log(`transaction: ${tx.hash}`);
             console.log("waiting for confirmation...");
@@ -149,6 +143,8 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
         } catch (error: any) {
             createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
             throw error
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -169,7 +165,10 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
                     </FormItem>
                 </ModalTitle>
                 <ErrorMessage>{amount.errorText}</ErrorMessage>
-                <DepositButton onClick={handleDeposit}>Deposit</DepositButton>
+                <DepositButton onClick={handleDeposit} disabled={isLoading}>
+                    {isLoading && (<Loader />)}
+                    Deposit
+                </DepositButton>
             </div>
         </ModalComponent>
     )

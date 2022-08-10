@@ -82,7 +82,7 @@ const Result = () => {
                     </Title>
                     <p>Here is the reason, here is what you voted. The results by {data.campaign[0]?.total} votes:</p>
                     {data.voted_candidate?.name && (
-                        <span>Your voted is {data.voted_candidate?.name}.</span>
+                        <span>Your voted is: {data.voted_candidate?.name}.</span>
                     )}
                     {data?.campaign.length > 0 ? data.campaign.map((item) => (
                         <div key={item.id}>

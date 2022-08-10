@@ -1,13 +1,15 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../common/Loading";
 import { createNotifications } from "../common/Notification";
 import { sendInput } from "../helper/sendInput";
+import { getDepositInfo } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
 import { getDataApi } from "../services";
+import { AppDispatch } from "../store";
 import { Content, DefaultButton, FlexLayoutBtn, SuccessButton, Title } from "../styled/common";
 import { ErrorText, Form, FormItem, Input, TextArea } from "../styled/form";
 import { Loader, LoadingAbsolute } from "../styled/loading";
@@ -36,7 +38,7 @@ const AddEditCampaign = () => {
         endDate: new Date(),
         formErrors: { name: '', description: '', startDate: '', endDate: '' },
     }
-
+    const dispatch = useDispatch<AppDispatch>()
     let navigate = useNavigate();
     const { campaignId }: any = useParams();
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -118,6 +120,7 @@ const AddEditCampaign = () => {
                 if (payload && !payload.error) {
                     setDataForm(initialValue)
                     setOptions(OptionDefault)
+                    dispatch(getDepositInfo())
                     createNotifications(NOTI_TYPE.SUCCESS, 'Add campaign successfully!')
                     navigate(`${ROUTER_PATH.VOTING}/${payload.id}`, { replace: true });
                 } else {

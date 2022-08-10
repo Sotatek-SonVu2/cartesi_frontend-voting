@@ -47,7 +47,7 @@ export const handleNotices = async (epoch: number, input: number, callback: any)
             epoch,
             input
         })
-        console.log('result', result)
+        console.log(`Number to calls notices: ${times}, call result:`, result.length > 0 ? true : false)
         if (result.length > 0) {
             if (result[0]?.payload) {
                 clearInterval(myInterval);

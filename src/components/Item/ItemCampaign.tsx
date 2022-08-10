@@ -25,20 +25,18 @@ const ItemCampaign = ({ data }: PropsType) => {
                     {name}
                 </CampaignName>
                 <ActionList>
-                    {winning_candidate_name && (
-                        <ActionItem>
-                            <WinningCandidate>
-                                <img src={StarIcon} alt="star icon" width={20} />
-                                {winning_candidate_name}
-                            </WinningCandidate>
-                        </ActionItem>
-                    )}
+                    <ActionItem>
+                        <WinningCandidate>
+                            <img src={StarIcon} alt="star icon" width={17} />
+                            {winning_candidate_name || '(No data)'}
+                        </WinningCandidate>
+                    </ActionItem>
                     <ActionItem>
                         {total_vote || 0} vote
                     </ActionItem>
                     <ActionItem onClick={() => navigate(`${ROUTER_PATH.DESCRIPTION}/${id}`)}>
-                        <img src={DescriptionIcon} alt="description icon" width={20} />
-                        <span>Detail</span>
+                        <img src={DescriptionIcon} alt="description icon" width={17} />
+                        <span>Description</span>
                     </ActionItem>
                 </ActionList>
 
