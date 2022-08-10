@@ -59,7 +59,7 @@ export const authSlice = createSlice({
                 address: payload,
                 metadata: {
                     ...state.metadata,
-                    msg_sender: payload,
+                    msg_sender: payload.toLowerCase(),
                     timestamp: Date.now()
                 }
             }

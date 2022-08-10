@@ -101,7 +101,13 @@ export const Avatar = styled.div<AvatarType>`
 `
 
 export const AvatarText = styled.div`
-  margin-top: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  height: 100%;
+  line-height: 100%;
   text-align: center;
 `
 

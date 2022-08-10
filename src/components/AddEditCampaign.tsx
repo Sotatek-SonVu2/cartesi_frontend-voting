@@ -121,7 +121,7 @@ const AddEditCampaign = () => {
                     createNotifications(NOTI_TYPE.SUCCESS, 'Add campaign successfully!')
                     navigate(`${ROUTER_PATH.VOTING}/${payload.id}`, { replace: true });
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload.error)
+                    createNotifications(NOTI_TYPE.DANGER, payload.error || ERROR_MESSAGE)
                 }
                 setIsLoading(false)
             }))
@@ -143,7 +143,7 @@ const AddEditCampaign = () => {
                     createNotifications(NOTI_TYPE.SUCCESS, 'Edit campaign successfully!')
                     navigate(`${ROUTER_PATH.VOTING}/${campaignId}`, { replace: true });
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload.error)
+                    createNotifications(NOTI_TYPE.DANGER, payload.error || ERROR_MESSAGE)
                 }
                 setIsLoading(false)
             }))
