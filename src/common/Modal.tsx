@@ -20,6 +20,7 @@ const ModalComponent = ({ isVisible, toggleModal, children, title }: Props) => {
             className="mymodal"
             overlayClassName="myoverlay"
             closeTimeoutMS={500}
+            shouldCloseOnOverlayClick={false}
         >
             <ModalContainer>
                 {title ? (

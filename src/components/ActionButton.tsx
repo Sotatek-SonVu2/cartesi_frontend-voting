@@ -12,7 +12,8 @@ import { DangerButton, PrimaryButton, SuccessButton } from "../styled/common";
 import { FlexLayout } from "../styled/main";
 import { handleNotices } from "../utils/common";
 import { cadidateOptions, DELETE_CAMPAIGN, ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
-import DeleteModal from "./DeleteModal";
+import DeleteModal from "./Modal/DeleteModal";
+
 
 const EditButton = styled(PrimaryButton)`
     margin-right: 10px;
@@ -41,12 +42,13 @@ const ActionButton = () => {
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const isVisibleActionButton = useSelector((state: any) => state.campaign.isVisibleActionButton)
-    const addressWallet = useSelector((state: any) => state.auth.address)
+    const addressWallet = useSelector((state: any) => state.auth.address).toLowerCase()
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>()
     const location = useLocation()
     const pathname = `/${location.pathname.split("/")[1]}`
     const paramId = location.pathname.split("/")[2]
+    const { creator, isOpenVoting } = isVisibleActionButton
 
     const onChangeSelect = (opt: any) => {
         dispatch(onChangeStatus(opt.value))
@@ -68,19 +70,20 @@ const ActionButton = () => {
                 if (payload && !payload.error) {
                     createNotifications(NOTI_TYPE.SUCCESS, payload.message)
                     navigate(ROUTER_PATH.HOMEPAGE, { replace: true });
+                    setIsLoading(false)
+                    toggleModal()
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload.error)
+                    createNotifications(NOTI_TYPE.DANGER, payload.error || ERROR_MESSAGE)
+                    setIsLoading(false)
+                    toggleModal()
                 }
-                setIsLoading(false)
             }))
         } catch (error) {
             createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
             setIsLoading(false)
-            throw error
-        } finally {
             toggleModal()
+            throw error
         }
-
     }
 
     const render = () => {
@@ -99,7 +102,7 @@ const ActionButton = () => {
                     <CreateButton onClick={() => navigate(ROUTER_PATH.ADD_CAMPAIGN)}>Create new campaign</CreateButton>
                 </FlexLayoutBetween>
             )
-        } else if (pathname === ROUTER_PATH.VOTING && isVisibleActionButton.creator !== addressWallet && isVisibleActionButton.isOpenVoting) {
+        } else if (pathname === ROUTER_PATH.VOTING && creator === addressWallet && isOpenVoting) {
             return (
                 <>
                     <FlexLayoutRight>

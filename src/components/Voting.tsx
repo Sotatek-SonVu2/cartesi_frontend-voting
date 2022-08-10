@@ -15,8 +15,9 @@ import { LoadingAbsolute } from "../styled/loading"
 import { convertDataToHex, convertHexToData, handleNotices } from "../utils/common"
 import { CAMPAIGN_DETAIL, ERROR_MESSAGE, NOTI_TYPE, VOTING } from "../utils/contants"
 import { CampaignVotingType, CandidatesVotingType, MetadataType } from "../utils/interface"
-import ItemVoting from "./ItemVoting"
-import VotingModal from "./VotingModal"
+import ItemVoting from "./Item/ItemVoting"
+import VotingModal from "./Modal/VotingModal"
+
 
 interface DataType {
     campaign: CampaignVotingType
@@ -126,7 +127,7 @@ const Voting = () => {
                     })
                     setCandidateId(obj.voted?.candidate_id)
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, obj.error)
+                    createNotifications(NOTI_TYPE.DANGER, obj.error || ERROR_MESSAGE)
                 }
             } catch (error: any) {
                 createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)

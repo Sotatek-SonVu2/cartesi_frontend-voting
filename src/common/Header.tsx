@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import DepositModal from "../components/DepositModal";
+import DepositModal from "../components/Modal/DepositModal";
 import logo from '../images/Cartesi_Logo_White.svg';
 import EthIcon from "../images/cartesi_icon.png";
 import LogoutIcon from "../images/logout-icon.svg";
@@ -34,9 +34,9 @@ const Header = () => {
 
         window.ethereum.on("accountsChanged", handleLogout);
         window.ethereum.on("disconnect", handleLogout);
-        // window.ethereum.on("chainChanged", () => {
-        //     window.location.reload();
-        // });
+        window.ethereum.on("chainChanged", () => {
+            window.location.reload();
+        });
         return () => {
             if (window.ethereum.removeListener) {
                 window.ethereum.removeListener("accountsChanged", handleLogout);

@@ -8,26 +8,22 @@ import cartesiLogo from '../images/Cartesi_Logo_White.svg';
 import sotatekLogo from '../images/Logo_Sotatek.svg';
 import { setAccount } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
+import { AppDispatch } from "../store";
 import { Container, LoginButton, Logo, MainWrapper } from "../styled/login";
 import { ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
 
 const Login = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
 
     const connectWallet = async () => {
         try {
             if (window.ethereum) {
-                try {
-                    const instance = await web3Modal.connect();
-                    const provider = new ethers.providers.Web3Provider(instance);
-                    const address = await provider.getSigner().getAddress();
-                    dispatch(setAccount(address))
-                    navigate(ROUTER_PATH.HOMEPAGE, { replace: true });
-                } catch (error: any) {
-                    createNotifications(NOTI_TYPE.DANGER, '123123123')
-                }
-
+                const instance = await web3Modal.connect();
+                const provider = new ethers.providers.Web3Provider(instance);
+                const address = await provider.getSigner().getAddress();
+                dispatch(setAccount(address))
+                navigate(ROUTER_PATH.HOMEPAGE, { replace: true });
             } else {
                 createNotifications(NOTI_TYPE.DANGER, 'Please install the MetaMask App!')
             }

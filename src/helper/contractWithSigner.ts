@@ -4,7 +4,6 @@ import InputFacet from '../abis/InputFacet.json'
 import cartesiToken from '../abis/CartesiToken.json'
 
 const SPENDER_ADDRESS = process.env.REACT_APP_SPENDER_ADDRESS || ''
-const INPUT_FACE_ADDRESS = process.env.REACT_APP_INPUT_FACE_ADDRESS || ''
 const CARTERSI_TOKEN_ADDRESS = process.env.REACT_APP_CARTERSI_TOKEN_ADDRESS || ''
 
 export const contractWithSigner = (address: string, abi: any) => {

@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { BoxContent } from "../styled/common"
-import { Avatar, AvatarText, ItemIcon, ItemList, Wrapper } from "../styled/list"
-import { getAvatar } from "../utils/common"
-import DescriptionIcon from '../images/desc-icon.svg'
-import { ROUTER_PATH } from "../routes/contants";
+import { BoxContent } from "../../styled/common"
+import { Avatar, AvatarText, ItemIcon, VotingName, Wrapper } from "../../styled/list"
+import { getAvatar } from "../../utils/common"
+import DescriptionIcon from '../../images/desc-icon.svg'
+import { ROUTER_PATH } from "../../routes/contants";
 import styled from "styled-components";
-import { FlexLayout } from "../styled/main";
+import { FlexLayout } from "../../styled/main";
 
 interface PropsType {
     data: {
@@ -34,12 +34,12 @@ const ItemVoting = ({ data, handleClick, active }: PropsType) => {
         <Wrapper key={id}>
             <BoxContent onClick={onClick} active={active === id}>
                 <FlexLayoutBetween>
-                    <ItemList>
+                    <VotingName>
                         <Avatar bgColor={avatar}>
                             <AvatarText>{getAvatar(name)}</AvatarText>
                         </Avatar>
                         {name}
-                    </ItemList>
+                    </VotingName>
                     <ItemIcon>
                         <img src={DescriptionIcon} alt="description icon" width={25} onClick={() => navigate(`${ROUTER_PATH.DESCRIPTION}/${campaign_id}/${id}`)} />
                     </ItemIcon>

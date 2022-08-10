@@ -20,26 +20,28 @@ export const Wrapper = styled.div`
     cursor: pointer;
   }
 `
-export const ResultItem = styled.div`
+export const ResultName = styled.div`
   width: 80%;
+  text-align: justify;
   padding: 5px 10px;
   position: relative;
   display: flex;
   align-items: center;
 `
 
-export const ItemList = styled.div`
+export const VotingName = styled.div`
   width: 90%;
+  text-align: justify;
   padding: 5px 10px;
   position: relative;
   border-right: 1px solid #ccc;
 `
 
-export const FlexList = styled.div`
+export const CampaignName = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  width: 80%;
+  text-align: justify;
   padding: 5px 10px;
   position: relative;
 `
@@ -49,7 +51,6 @@ export const ActionList = styled.div`
   justify-content: space-between;
   border-top: 1px solid ${colorTheme.gray};
   align-items: center;
-  margin-top: 20px;
   background: #f0f0f0;
   border-radius: 0px 0px 7px 7px;
 `
@@ -66,6 +67,13 @@ export const ActionItem = styled.div`
   }
 `
 
+export const WinningCandidate = styled.div`
+  white-space: nowrap;
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
 export const ItemIcon = styled.div`
   display: flex;
   justify-content: center;
@@ -80,7 +88,7 @@ export const Avatar = styled.div<AvatarType>`
   background: ${props => props.bgColor || '#2684ff'};
   color: #fff;
   height: 28px;
-  width: 28px;
+  min-width: 28px;
   overflow: hidden;
   border-radius: 50%;
   text-align: center;
@@ -102,7 +110,7 @@ export const ProcessBar = styled.div<ProcessType>`
   background-color: ${props => props.bgColor};
   position: absolute;
   height: 100%;
-  border-radius: 7px 0px 0px 7px;
+  border-radius: 7px;
   animation-name: processbar${props => props.itemId};
   animation-duration: 3s;
 

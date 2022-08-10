@@ -10,7 +10,8 @@ import { Content, DefaultButton, FlexLayoutBtn, Title } from "../styled/common"
 import { convertDataToHex, convertHexToData } from "../utils/common"
 import { ERROR_MESSAGE, NOTI_TYPE, RESULT } from "../utils/contants"
 import { CampaignType, MetadataType, VotedType } from "../utils/interface"
-import ItemResult from "./ItemResult"
+import ItemResult from "./Item/ItemResult"
+
 
 interface DataType {
     campaign: CampaignType[]

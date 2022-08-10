@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom"
-import DescriptionIcon from '../images/desc-icon.svg'
-import StarIcon from '../images/star.svg'
-import { ROUTER_PATH } from "../routes/contants"
-import { BoxContent } from "../styled/common"
-import { ActionItem, ActionList, FlexList, Wrapper } from "../styled/list"
+import DescriptionIcon from '../../images/desc-icon.svg'
+import StarIcon from '../../images/star.svg'
+import { ROUTER_PATH } from "../../routes/contants"
+import { BoxContent } from "../../styled/common"
+import { ActionItem, ActionList, CampaignName, WinningCandidate, Wrapper } from "../../styled/list"
 
 interface PropsType {
     data: {
@@ -21,14 +21,16 @@ const ItemCampaign = ({ data }: PropsType) => {
     return (
         <Wrapper key={id}>
             <BoxContent>
-                <FlexList onClick={() => navigate(`${ROUTER_PATH.VOTING}/${id}`)}>
+                <CampaignName onClick={() => navigate(`${ROUTER_PATH.VOTING}/${id}`)}>
                     {name}
-                </FlexList>
+                </CampaignName>
                 <ActionList>
                     {winning_candidate_name && (
                         <ActionItem>
-                            <img src={StarIcon} alt="star icon" width={20} />
-                            {winning_candidate_name}
+                            <WinningCandidate>
+                                <img src={StarIcon} alt="star icon" width={20} />
+                                {winning_candidate_name}
+                            </WinningCandidate>
                         </ActionItem>
                     )}
                     <ActionItem>

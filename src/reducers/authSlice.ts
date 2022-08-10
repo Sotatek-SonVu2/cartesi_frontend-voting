@@ -13,7 +13,7 @@ export const getDepositInfo = createAsyncThunk(
                 action: DEPOSIT_INFO,
             }
             const metadata = {
-                msg_sender: localStorage.getItem(ADDRESS_WALLET) || '',
+                msg_sender: localStorage.getItem(ADDRESS_WALLET)?.toLowerCase() || '',
                 epoch_index: 0,
                 input_index: 0,
                 block_number: 0,
@@ -74,7 +74,7 @@ export const authSlice = createSlice({
         },
     },
     extraReducers: builder => {
-        builder.addCase(getDepositInfo.pending, (state, action) => {
+        builder.addCase(getDepositInfo.pending, (state) => {
             state.isLoading = true
             return state
         })
@@ -83,7 +83,7 @@ export const authSlice = createSlice({
             state.isLoading = false
             return state
         })
-        builder.addCase(getDepositInfo.rejected, (state, action) => {
+        builder.addCase(getDepositInfo.rejected, (state) => {
             state.isLoading = false
             state.deposit_amount = 0
             return state

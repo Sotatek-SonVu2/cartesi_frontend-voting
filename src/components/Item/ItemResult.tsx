@@ -1,9 +1,9 @@
 import styled from "styled-components"
-import { BoxContent } from "../styled/common"
-import { Avatar, AvatarText, ItemList, ProcessBar, ResultItem, VotingRate, Wrapper } from "../styled/list"
-import { FlexLayout } from "../styled/main"
-import { getAvatar, randomColor } from "../utils/common"
-import { VotedType } from "../utils/interface"
+import { BoxContent } from "../../styled/common"
+import { Avatar, AvatarText, ProcessBar, ResultName, VotingRate, Wrapper } from "../../styled/list"
+import { FlexLayout } from "../../styled/main"
+import { getAvatar, randomColor } from "../../utils/common"
+import { VotedType } from "../../utils/interface"
 
 const FlexLayoutBetween = styled(FlexLayout)`
     justify-content: space-between;
@@ -30,12 +30,12 @@ const ItemResult = ({ data, voted_candidate }: PropsType) => {
             <BoxContent checked={checked}>
                 <ProcessBar itemId={id} percent={percent} bgColor={randomColor()}></ProcessBar>
                 <FlexLayoutBetween>
-                    <ResultItem>
+                    <ResultName>
                         <Avatar bgColor={avatar}>
                             <AvatarText>{getAvatar(name)}</AvatarText>
                         </Avatar>
                         {name} {checked && '(voted)'}
-                    </ResultItem>
+                    </ResultName>
                     <VotingRate>{percent}% ({votes || 0})</VotingRate>
                 </FlexLayoutBetween>
             </BoxContent>

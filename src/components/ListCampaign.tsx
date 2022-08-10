@@ -9,7 +9,7 @@ import { getDataApi } from "../services";
 import { convertDataToHex, convertHexToData } from "../utils/common";
 import { ERROR_MESSAGE, LIST_CAMPAIGN, NOTI_TYPE } from "../utils/contants";
 import { MetadataType } from "../utils/interface";
-import ItemCampaign from "./ItemCampaign";
+import ItemCampaign from "./Item/ItemCampaign";
 
 const ListCampaign = () => {
     const metadata: MetadataType = useSelector((state: any) => state.auth.metadata)

@@ -1,7 +1,7 @@
 import styled from "styled-components"
-import ModalComponent from "../common/Modal"
-import { SuccessButton, ModalTitle, ModalContent } from "../styled/common"
-import confirmIcon from '../images/exclamation_icon.svg'
+import ModalComponent from "../../common/Modal"
+import { ModalContent, ModalTitle, SuccessButton } from "../../styled/common"
+import confirmIcon from '../../images/exclamation_icon.svg'
 
 type Props = {
     isVisible: boolean

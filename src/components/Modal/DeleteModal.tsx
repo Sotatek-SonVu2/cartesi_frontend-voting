@@ -1,8 +1,9 @@
 import styled from "styled-components"
-import ModalComponent from "../common/Modal"
-import { DangerButton, ModalTitle } from "../styled/common"
-import confirmIcon from '../images/exclamation_icon.svg'
-import { Loader } from "../styled/loading"
+import ModalComponent from "../../common/Modal"
+import { DangerButton, ModalTitle } from "../../styled/common"
+import { Loader } from "../../styled/loading"
+import confirmIcon from '../../images/exclamation_icon.svg'
+
 
 type Props = {
     isVisible: boolean
