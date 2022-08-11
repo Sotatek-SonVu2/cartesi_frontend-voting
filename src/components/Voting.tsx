@@ -5,20 +5,19 @@ import styled from "styled-components"
 import Loading from "../common/Loading"
 import NoData from "../common/NoData"
 import { createNotifications } from "../common/Notification"
+import { handleInspectApi } from "../helper/handleInspectApi"
+import { handleNotices } from "../helper/handleNotices"
 import { sendInput } from "../helper/sendInput"
 import { getDepositInfo } from "../reducers/authSlice"
 import { onVisibleActionButton } from "../reducers/campaignSlice"
 import { ROUTER_PATH } from "../routes/contants"
-import { getDataApi } from "../services"
 import { AppDispatch } from "../store"
 import { Content, DefaultButton, FlexLayoutBtn, PrimaryButton, SuccessButton, Title } from "../styled/common"
 import { LoadingAbsolute } from "../styled/loading"
-import { convertDataToHex, convertHexToData, handleNotices } from "../utils/common"
-import { CAMPAIGN_DETAIL, ERROR_MESSAGE, NOTI_TYPE, VOTING } from "../utils/contants"
+import { CAMPAIGN_DETAIL, CHAIN_ID_ERROR_MESSAGE, ERROR_MESSAGE, NOTI_TYPE, VOTING } from "../utils/contants"
 import { CampaignVotingType, CandidatesVotingType, MetadataType } from "../utils/interface"
 import ItemVoting from "./Item/ItemVoting"
 import VotingModal from "./Modal/VotingModal"
-
 
 interface DataType {
     campaign: CampaignVotingType
@@ -34,7 +33,7 @@ const SubTitle = styled.div`
     }
 `
 
-
+const CHAIN_ID = process.env.REACT_APP_LOCAL_CHAIN_ID || ""
 
 const Voting = () => {
     const [candidateId, setCandidateId] = useState<number>(0)
@@ -59,6 +58,44 @@ const Voting = () => {
     const { campaignId }: any = useParams();
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                setIsLoading(true)
+                const data = {
+                    action: CAMPAIGN_DETAIL,
+                    campaign_id: campaignId && parseInt(campaignId)
+                }
+                const result = await handleInspectApi(data, metadata)
+                if (result?.campaign?.length > 0 && !result.error) {
+                    const isStartTime = new Date(result.campaign[0].start_time) < new Date()
+                    const isEndTime = new Date(result.campaign[0].end_time) < new Date()
+                    const isVisibleActionButton = {
+                        creator: result.campaign[0].creator,
+                        isOpenVoting: !isStartTime
+                    }
+                    setIsCloseVoting(isEndTime)
+                    setData({
+                        campaign: result.campaign[0],
+                        candidates: result.candidates,
+                        voted: result.voted
+                    })
+                    setCandidateId(result.voted?.candidate_id)
+                    dispatch(onVisibleActionButton(isVisibleActionButton))
+                } else {
+                    createNotifications(NOTI_TYPE.DANGER, result.error || ERROR_MESSAGE)
+                }
+            } catch (error: any) {
+                createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
+                throw error
+            } finally {
+                setTimeout(() => setIsLoading(false), 1500)
+            }
+        }
+
+        getData()
+    }, [])
+
     const onChooseAnswer = (id: number) => {
         if (data.voted?.candidate_id) return
         setCandidateId(id)
@@ -71,7 +108,10 @@ const Voting = () => {
 
     const handleVoting = async () => {
         toggleModal()
+        const networkVersion = window.ethereum.networkVersion;
         if (!candidateId) return createNotifications(NOTI_TYPE.DANGER, 'Please choose a candidate!')
+        else if (networkVersion !== CHAIN_ID) return createNotifications(NOTI_TYPE.DANGER, `${CHAIN_ID_ERROR_MESSAGE} ${CHAIN_ID}`)
+
         try {
             setIsLoadVoting(true)
             const data = {
@@ -98,53 +138,6 @@ const Voting = () => {
             throw error
         }
     }
-
-
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                setIsLoading(true)
-                const data = {
-                    action: CAMPAIGN_DETAIL,
-                    campaign_id: campaignId && parseInt(campaignId)
-                }
-                const newMetadata = {
-                    ...metadata,
-                    timestamp: Date.now()
-                }
-                const payloadHex = convertDataToHex(data, newMetadata)
-                const res: any = await getDataApi(payloadHex)
-                const obj = convertHexToData(res.reports[0].payload)
-                if (obj?.campaign?.length > 0 && !obj.error) {
-                    const isStartTime = new Date(obj.campaign[0].start_time) < new Date()
-                    const isEndTime = new Date(obj.campaign[0].end_time) < new Date()
-                    const isVisibleActionButton = {
-                        creator: obj.campaign[0].creator,
-                        isOpenVoting: !isStartTime
-                    }
-                    setIsCloseVoting(isEndTime)
-                    setData({
-                        campaign: obj.campaign[0],
-                        candidates: obj.candidates,
-                        voted: obj.voted
-                    })
-                    setCandidateId(obj.voted?.candidate_id)
-                    dispatch(onVisibleActionButton(isVisibleActionButton))
-                } else {
-                    createNotifications(NOTI_TYPE.DANGER, obj.error || ERROR_MESSAGE)
-                }
-            } catch (error: any) {
-                createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
-                throw error
-            } finally {
-                setTimeout(() => setIsLoading(false), 1500)
-            }
-        }
-
-        getData()
-    }, [])
-
-    console.log('isCloseVoting', isCloseVoting, data.voted?.candidate_id)
 
     return (
         <>

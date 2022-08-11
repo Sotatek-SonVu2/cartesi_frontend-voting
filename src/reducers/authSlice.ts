@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createNotifications } from '../common/Notification';
+import { handleInspectApi } from '../helper/handleInspectApi';
 import { getDataApi } from '../services';
 import { convertDataToHex, convertHexToData } from '../utils/common';
 import { ADDRESS_WALLET, DEPOSIT_INFO, ERROR_MESSAGE, NOTI_TYPE } from '../utils/contants';
@@ -19,17 +20,15 @@ export const getDepositInfo = createAsyncThunk(
                 block_number: 0,
                 timestamp: Date.now()
             }
-            const payloadHex = convertDataToHex(data, metadata)
-            const res: any = await getDataApi(payloadHex)
-            const obj = convertHexToData(res.reports[0].payload)
-            if (!obj.error) {
-                const amount = obj.amount - obj.used_amount
+            const result = await handleInspectApi(data, metadata)
+            if (!result.error) {
+                const amount = result.amount - result.used_amount
                 return {
                     amount,
-                    used_amount: obj.used_amount
+                    used_amount: result.used_amount
                 }
             } else {
-                createNotifications(NOTI_TYPE.DANGER, obj.error)
+                createNotifications(NOTI_TYPE.DANGER, result.error)
             }
         } catch (error: any) {
             createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
@@ -45,7 +44,7 @@ const initialState: AuthState = {
         used_amount: 0
     },
     metadata: {
-        msg_sender: '',
+        msg_sender: localStorage.getItem(ADDRESS_WALLET)?.toLowerCase() || '',
         epoch_index: 0,
         input_index: 0,
         block_number: 0,

@@ -4,10 +4,9 @@ import { useNavigate, useParams } from "react-router-dom"
 import Loading from "../common/Loading"
 import NoData from "../common/NoData"
 import { createNotifications } from "../common/Notification"
+import { handleInspectApi } from "../helper/handleInspectApi"
 import { ROUTER_PATH } from "../routes/contants"
-import { getDataApi } from "../services"
 import { Content, DefaultButton, FlexLayoutBtn, Title } from "../styled/common"
-import { convertDataToHex, convertHexToData } from "../utils/common"
 import { ERROR_MESSAGE, NOTI_TYPE, RESULT } from "../utils/contants"
 import { CampaignType, MetadataType, VotedType } from "../utils/interface"
 import ItemResult from "./Item/ItemResult"
@@ -43,22 +42,21 @@ const Result = () => {
                     action: RESULT,
                     campaign_id: parseInt(campaignId)
                 }
-                const payloadHex = convertDataToHex(data, metadata)
-                const res: any = await getDataApi(payloadHex)
-                const obj = convertHexToData(res.reports[0].payload)
-                if (!obj.error) {
-                    const campaign = obj.campaign.map((item: any) => {
+                const result = await handleInspectApi(data, metadata)
+                console.log('result', result)
+                if (!result.error) {
+                    const campaign = result.campaign.map((item: any) => {
                         return {
                             ...item,
-                            total_vote: obj.total_vote,
+                            total_vote: result.total_vote,
                         }
                     }).sort((a: any, b: any) => b.votes - a.votes)
                     setData({
                         campaign,
-                        voted_candidate: obj.voted_candidate
+                        voted_candidate: result.voted_candidate
                     })
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, obj.error)
+                    createNotifications(NOTI_TYPE.DANGER, result.error)
                 }
             } catch (error) {
                 createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)

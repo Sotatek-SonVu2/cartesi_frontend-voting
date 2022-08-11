@@ -1,12 +1,11 @@
-import { Content, Title } from "../styled/common";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Loading from "../common/Loading";
 import NoData from "../common/NoData";
 import { createNotifications } from "../common/Notification";
 import Pagination from "../common/Pagination";
-import { getDataApi } from "../services";
-import { convertDataToHex, convertHexToData } from "../utils/common";
+import { handleInspectApi } from "../helper/handleInspectApi";
+import { Content, Title } from "../styled/common";
 import { ERROR_MESSAGE, LIST_CAMPAIGN, NOTI_TYPE } from "../utils/contants";
 import { MetadataType } from "../utils/interface";
 import ItemCampaign from "./Item/ItemCampaign";
@@ -31,22 +30,16 @@ const ListCampaign = () => {
                 limit: paging.pageSize,
                 type: listStatus
             }
-            const newMetadata = {
-                ...metadata,
-                timestamp: Date.now()
-            }
-            const payloadHex = convertDataToHex(data, newMetadata)
-            const res: any = await getDataApi(payloadHex)
-            const obj = convertHexToData(res.reports[0].payload)
-            if (!obj.error) {
-                setItems(obj.data)
+            const result = await handleInspectApi(data, metadata)
+            if (!result.error) {
+                setItems(result.data)
                 setPaging({
-                    currentPage: obj.page,
-                    pageSize: obj.limit,
-                    totalPage: obj.total
+                    currentPage: result.page,
+                    pageSize: result.limit,
+                    totalPage: result.total
                 })
             } else {
-                createNotifications(NOTI_TYPE.DANGER, obj.error)
+                createNotifications(NOTI_TYPE.DANGER, result.error)
             }
         } catch (error) {
             createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)

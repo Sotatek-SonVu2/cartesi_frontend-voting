@@ -20,31 +20,33 @@ const Header = () => {
     const authState = useSelector((state: any) => state.auth)
     const { address, deposit_info, isLoading } = authState
     const { amount, used_amount } = deposit_info
+    const { ethereum } = window.ethereum
+
+    useEffect(() => {
+        dispatch(getDepositInfo())
+    }, [])
+
     const handleLogout = async () => {
         dispatch(clearAccount())
         navigate(ROUTER_PATH.LOGIN, { replace: true })
     }
 
     useEffect(() => {
-        dispatch(getDepositInfo())
-    }, [])
+        if (!ethereum) return;
 
-    useEffect(() => {
-        if (!window.ethereum) return;
-
-        window.ethereum.on("accountsChanged", handleLogout);
-        window.ethereum.on("disconnect", handleLogout);
-        window.ethereum.on("chainChanged", () => {
+        ethereum.on("accountsChanged", handleLogout);
+        ethereum.on("disconnect", handleLogout);
+        ethereum.on("chainChanged", () => {
             window.location.reload();
         });
         return () => {
-            if (window.ethereum.removeListener) {
-                window.ethereum.removeListener("accountsChanged", handleLogout);
+            if (ethereum.removeListener) {
+                ethereum.removeListener("accountsChanged", handleLogout);
                 // window.ethereum.removeListener("chainChanged", handleLogout);
-                window.ethereum.removeListener("disconnect", handleLogout);
+                ethereum.removeListener("disconnect", handleLogout);
             }
         };
-    }, [window.ethereum]);
+    }, [ethereum]);
 
     const toggleModal = () => {
         setIsVisible(!isVisible);

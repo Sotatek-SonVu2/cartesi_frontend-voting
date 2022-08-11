@@ -12,7 +12,7 @@ import { AppDispatch } from "../../store"
 import { ModalTitle, SuccessButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
 import { Loader } from "../../styled/loading"
-import { ERROR_MESSAGE, NOTI_TYPE } from "../../utils/contants"
+import { CHAIN_ID_ERROR_MESSAGE, ERROR_MESSAGE, NOTI_TYPE } from "../../utils/contants"
 
 type Props = {
     isVisible: boolean
@@ -93,10 +93,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
 
     const handleDeposit = async () => {
         const networkVersion = ethereum.networkVersion;
-        if (networkVersion !== CHAIN_ID) {
-            createNotifications(NOTI_TYPE.DANGER, `Current Chain ID does not match ${CHAIN_ID}`)
-            return
-        }
+        if (networkVersion !== CHAIN_ID) return createNotifications(NOTI_TYPE.DANGER, `${CHAIN_ID_ERROR_MESSAGE} ${CHAIN_ID}`)
         if (!amount.value) {
             setAmount({
                 ...amount,
@@ -138,12 +135,12 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
                 errorText: ''
             })
             dispatch(getDepositInfo())
-            toggleModal()
             createNotifications(NOTI_TYPE.SUCCESS, 'Deposit successfully!')
         } catch (error: any) {
             createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
             throw error
         } finally {
+            toggleModal()
             setIsLoading(false)
         }
     }

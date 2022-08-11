@@ -5,21 +5,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../common/Loading";
 import { createNotifications } from "../common/Notification";
+import { handleInspectApi } from "../helper/handleInspectApi";
+import { handleNotices } from "../helper/handleNotices";
 import { sendInput } from "../helper/sendInput";
 import { getDepositInfo } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
-import { getDataApi } from "../services";
 import { AppDispatch } from "../store";
 import { Content, DefaultButton, FlexLayoutBtn, SuccessButton, Title } from "../styled/common";
 import { ErrorText, Form, FormItem, Input, TextArea } from "../styled/form";
 import { Loader, LoadingAbsolute } from "../styled/loading";
-import { convertDataToHex, convertHexToData, handleNotices } from "../utils/common";
-import { CAMPAIGN_DETAIL, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE } from "../utils/contants";
+import { CAMPAIGN_DETAIL, CHAIN_ID_ERROR_MESSAGE, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE } from "../utils/contants";
 import { DataPayloadType, MetadataType, OptionType } from "../utils/interface";
 import { validateDate, validateField, validateFields, validateOptions } from "../utils/validate";
 import CandidateOptions from "./CandidateOptions";
 
 const FORMAT_DATE_PICKER = 'MM/dd/yyyy h:mm aa'
+const CHAIN_ID = process.env.REACT_APP_LOCAL_CHAIN_ID || ""
 
 const AddEditCampaign = () => {
     const OptionDefault: OptionType[] = [
@@ -57,12 +58,10 @@ const AddEditCampaign = () => {
                         action: CAMPAIGN_DETAIL,
                         campaign_id: parseInt(campaignId)
                     }
-                    const payloadHex = convertDataToHex(data, metadata)
-                    const res: any = await getDataApi(payloadHex)
-                    const obj = convertHexToData(res.reports[0].payload)
-                    if (!obj.error) {
-                        const dataform = obj.campaign[0]
-                        const options = obj.candidates.map((item: OptionType) => {
+                    const result = await handleInspectApi(data, metadata)
+                    if (!result.error) {
+                        const dataform = result.campaign[0]
+                        const options = result.candidates.map((item: OptionType) => {
                             return {
                                 name: item.name,
                                 brief_introduction: item.brief_introduction,
@@ -79,7 +78,7 @@ const AddEditCampaign = () => {
                         })
                         setOptions(options)
                     } else {
-                        createNotifications(NOTI_TYPE.DANGER, obj.error)
+                        createNotifications(NOTI_TYPE.DANGER, result.error)
                     }
                 } catch (error) {
                     createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
@@ -160,6 +159,9 @@ const AddEditCampaign = () => {
 
     const onSubmit = (e: any) => {
         e.preventDefault()
+        const networkVersion = window.ethereum.networkVersion;
+        if (networkVersion !== CHAIN_ID) return createNotifications(NOTI_TYPE.DANGER, `${CHAIN_ID_ERROR_MESSAGE} ${CHAIN_ID}`)
+
         const checkOptions = validateOptions(options)
         const checkFields = validateFields(dataForm)
         const checkDate = validateDate('startDate', dataForm.startDate, dataForm.endDate, dataForm.startDate)
@@ -193,6 +195,8 @@ const AddEditCampaign = () => {
                 editCampaign(newData)
             }
 
+        } else {
+            createNotifications(NOTI_TYPE.DANGER, 'Please check the entered data!')
         }
     };
 

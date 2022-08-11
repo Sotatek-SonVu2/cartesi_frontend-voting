@@ -4,10 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../common/Loading";
 import NoData from "../common/NoData";
 import { createNotifications } from "../common/Notification";
-import { getDataApi } from "../services";
+import { handleInspectApi } from "../helper/handleInspectApi";
 import { AppDispatch } from "../store";
 import { Content, DefaultButton, FlexLayoutBtn, Title } from "../styled/common";
-import { convertDataToHex, convertHexToData } from "../utils/common";
 import { CAMPAIGN_DETAIL, CANDIDATE_DETAIL, ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
 import { DescriptionType, MetadataType } from "../utils/interface";
 
@@ -33,23 +32,16 @@ const Description = () => {
                         campaign_id: parseInt(campaignId),
                         candidate_id: candidateId ? parseInt(candidateId) : ''
                     }
-                    const newMetadata = {
-                        ...metadata,
-                        timestamp: Date.now()
-                    }
-                    const payloadHex = convertDataToHex(data, newMetadata)
-                    const res: any = await getDataApi(payloadHex)
-                    const obj = convertHexToData(res.reports[0].payload)
-                    console.log('obj', obj)
-                    if (!obj.error) {
-                        const name = campaignId && candidateId ? obj.candidate.name : obj.campaign[0].name
-                        const description = campaignId && candidateId ? obj.candidate.brief_introduction : obj.campaign[0].description
+                    const result = await handleInspectApi(data, metadata)
+                    if (!result.error) {
+                        const name = campaignId && candidateId ? result.candidate.name : result.campaign[0].name
+                        const description = campaignId && candidateId ? result.candidate.brief_introduction : result.campaign[0].description
                         setData({
                             name,
                             description
                         })
                     } else {
-                        createNotifications(NOTI_TYPE.DANGER, obj.error)
+                        createNotifications(NOTI_TYPE.DANGER, result.error)
                     }
                 } catch (error) {
                     createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)

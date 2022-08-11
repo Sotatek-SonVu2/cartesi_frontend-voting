@@ -16,7 +16,7 @@ export const createNotifications = (type: string, message: string) => {
         insert: "top",
         container: "top-right",
         dismiss: {
-            duration: 2000,
+            duration: 3000,
             onScreen: true
         }
     };

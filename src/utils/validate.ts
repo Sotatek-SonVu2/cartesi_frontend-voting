@@ -2,6 +2,8 @@ import moment from "moment"
 import { FORMAT_DATETIME } from "./contants"
 import { OptionType } from "./interface"
 
+const DATE_TIME_ERROR_MESSAGE = 'Invalid datetime! Make sure the start time is before the end time!'
+
 const validateText: any = {
     name: 'Name is required.',
     description: 'Description is required',
@@ -30,11 +32,11 @@ export const validateDate = (fieldName: string, value: string | Date, endDate: D
     if (value) {
         if (fieldName === 'startDate' && isAfter || isSame) {
             error = {
-                startDate: 'Invalid datetime!'
+                startDate: DATE_TIME_ERROR_MESSAGE
             }
         } else if (fieldName === 'endDate' && !isAfter && !isSame) {
             error = {
-                startDate: 'Invalid datetime!'
+                startDate: DATE_TIME_ERROR_MESSAGE
             }
         } else {
             error = {
