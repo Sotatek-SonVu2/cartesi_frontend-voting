@@ -28,5 +28,5 @@ const axiosInstanceBaseApi = () => {
 }
 
 
-export const getDataApi = (payload?: any) =>
+export const getDataApi = (payload?: string) =>
     axiosInstanceBaseApi().get(`/inspect/0x${payload}`)

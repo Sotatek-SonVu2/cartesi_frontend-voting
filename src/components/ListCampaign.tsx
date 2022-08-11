@@ -5,15 +5,16 @@ import NoData from "../common/NoData";
 import { createNotifications } from "../common/Notification";
 import Pagination from "../common/Pagination";
 import { handleInspectApi } from "../helper/handleInspectApi";
+import { RootState } from "../store";
 import { Content, Title } from "../styled/common";
 import { ERROR_MESSAGE, LIST_CAMPAIGN, NOTI_TYPE } from "../utils/contants";
-import { MetadataType } from "../utils/interface";
+import { CampaignDataType, ListCampaignType, MetadataType } from "../utils/interface";
 import ItemCampaign from "./Item/ItemCampaign";
 
 const ListCampaign = () => {
-    const metadata: MetadataType = useSelector((state: any) => state.auth.metadata)
-    const listStatus = useSelector((state: any) => state.campaign.listStatus)
-    const [items, setItems] = useState<any>([])
+    const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
+    const listStatus = useSelector((state: RootState) => state.campaign.listStatus)
+    const [items, setItems] = useState<CampaignDataType[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [paging, setPaging] = useState({
         currentPage: 1,
@@ -30,7 +31,7 @@ const ListCampaign = () => {
                 limit: paging.pageSize,
                 type: listStatus
             }
-            const result = await handleInspectApi(data, metadata)
+            const result: ListCampaignType = await handleInspectApi(data, metadata)
             if (!result.error) {
                 setItems(result.data)
                 setPaging({
@@ -62,22 +63,23 @@ const ListCampaign = () => {
                     <Title>
                         List campaign
                     </Title>
-                    {items?.length > 0 ? items?.map((item: any) => (
+                    {items?.length > 0 ? items?.map((item: CampaignDataType) => (
                         <div key={item.id}>
                             <ItemCampaign data={item} />
                         </div>
                     )) : (
                         <NoData />
                     )}
-
-                    <Pagination
-                        currentPage={paging.currentPage}
-                        totalCount={paging.totalPage}
-                        pageSize={paging.pageSize}
-                        onPageChange={(page: number) => {
-                            setPaging({ ...paging, currentPage: page })
-                        }}
-                    />
+                    {items?.length > 0 && (
+                        <Pagination
+                            currentPage={paging.currentPage}
+                            totalCount={paging.totalPage}
+                            pageSize={paging.pageSize}
+                            onPageChange={(page: number) => {
+                                setPaging({ ...paging, currentPage: page })
+                            }}
+                        />
+                    )}
                 </Content>
             )}
         </>

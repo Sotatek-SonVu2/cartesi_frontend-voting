@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { RootState } from "../store";
 import { ROUTER_PATH } from "./contants";
 
 interface PropsType {
@@ -7,7 +8,7 @@ interface PropsType {
 }
 
 const PrivateOutlet = ({ children }: PropsType) => {
-  const addressWallet = useSelector((state: any) => state.auth.address)
+  const addressWallet = useSelector((state: RootState) => state.auth.address)
   return addressWallet ? children : <Navigate to={ROUTER_PATH.LOGIN} />
 }
 

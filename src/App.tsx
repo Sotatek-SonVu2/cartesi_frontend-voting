@@ -1,4 +1,5 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import AddEditCampaign from "./components/AddEditCampaign";
 import Description from "./components/Description";
 import ListCampaign from "./components/ListCampaign";
@@ -8,8 +9,24 @@ import Login from "./pages/Login";
 import Main from "./pages/Main";
 import { ROUTER_PATH } from "./routes/contants";
 import PrivateOutlet from "./routes/PrivateOutlet";
+import { checkConnected } from "./utils/checkConnected";
+import { ADDRESS_WALLET } from "./utils/contants";
 
 function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkConnectToMetamask = async () => {
+      const isConnected = await checkConnected()
+      if (!isConnected) {
+        localStorage.setItem(ADDRESS_WALLET, '');
+        navigate(ROUTER_PATH.LOGIN, { replace: true })
+      }
+    }
+
+    checkConnectToMetamask()
+  }, [])
+
   return (
     <Routes>
       <Route element={<Login />} path={ROUTER_PATH.LOGIN} />

@@ -5,7 +5,7 @@ import Loading from "../common/Loading";
 import NoData from "../common/NoData";
 import { createNotifications } from "../common/Notification";
 import { handleInspectApi } from "../helper/handleInspectApi";
-import { AppDispatch } from "../store";
+import { AppDispatch, RootState } from "../store";
 import { Content, DefaultButton, FlexLayoutBtn, Title } from "../styled/common";
 import { CAMPAIGN_DETAIL, CANDIDATE_DETAIL, ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
 import { DescriptionType, MetadataType } from "../utils/interface";
@@ -18,7 +18,7 @@ const Description = () => {
     })
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>()
-    const metadata: MetadataType = useSelector((state: any) => state.auth.metadata)
+    const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
     const params = useParams();
     const { campaignId, candidateId } = params
 

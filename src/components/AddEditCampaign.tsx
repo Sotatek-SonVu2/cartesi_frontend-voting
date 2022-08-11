@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -10,12 +10,12 @@ import { handleNotices } from "../helper/handleNotices";
 import { sendInput } from "../helper/sendInput";
 import { getDepositInfo } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
-import { AppDispatch } from "../store";
+import { AppDispatch, RootState } from "../store";
 import { Content, DefaultButton, FlexLayoutBtn, SuccessButton, Title } from "../styled/common";
 import { ErrorText, Form, FormItem, Input, TextArea } from "../styled/form";
 import { Loader, LoadingAbsolute } from "../styled/loading";
 import { CAMPAIGN_DETAIL, CHAIN_ID_ERROR_MESSAGE, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE } from "../utils/contants";
-import { DataPayloadType, MetadataType, OptionType } from "../utils/interface";
+import { AddEditDataType, MetadataType, OptionType } from "../utils/interface";
 import { validateDate, validateField, validateFields, validateOptions } from "../utils/validate";
 import CandidateOptions from "./CandidateOptions";
 
@@ -41,11 +41,11 @@ const AddEditCampaign = () => {
     }
     const dispatch = useDispatch<AppDispatch>()
     let navigate = useNavigate();
-    const { campaignId }: any = useParams();
+    const { campaignId } = useParams();
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [dataForm, setDataForm] = useState(initialValue)
     const [options, setOptions] = useState<OptionType[]>(OptionDefault)
-    const metadata: MetadataType = useSelector((state: any) => state.auth.metadata)
+    const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
     const { name, description, startDate, endDate, formErrors } = dataForm
 
     useEffect(() => {
@@ -102,7 +102,7 @@ const AddEditCampaign = () => {
         })
     }
 
-    const handleChangeDate = (key: string) => (value: any) => {
+    const handleChangeDate = (key: string) => (value: Date) => {
         const validate = validateDate(key, value, dataForm.endDate, dataForm.startDate)
         setDataForm({
             ...dataForm,
@@ -111,7 +111,7 @@ const AddEditCampaign = () => {
         })
     }
 
-    const createCampaign = async (data: DataPayloadType) => {
+    const createCampaign = async (data: AddEditDataType) => {
         try {
             setIsLoading(true)
             const noticeKeys = await sendInput(data);
@@ -134,7 +134,7 @@ const AddEditCampaign = () => {
         }
     }
 
-    const editCampaign = async (data: DataPayloadType) => {
+    const editCampaign = async (data: AddEditDataType) => {
         try {
             setIsLoading(true)
             const noticeKeys = await sendInput(data);
@@ -171,7 +171,7 @@ const AddEditCampaign = () => {
             formErrors: { ...checkFields.formErrors, ...checkDate }
         })
         if (!checkOptions.isError && !checkFields.isError && !checkDate?.startDate) {
-            const data: DataPayloadType = {
+            const data: AddEditDataType = {
                 action: !campaignId ? CREATE_CAMPAIGN : EDIT_CAMPAIGN,
                 name: dataForm.name,
                 description: dataForm.description,
@@ -188,7 +188,7 @@ const AddEditCampaign = () => {
             if (!campaignId) {
                 createCampaign(data)
             } else {
-                const newData: DataPayloadType = {
+                const newData: AddEditDataType = {
                     id: parseInt(campaignId),
                     ...data
                 }

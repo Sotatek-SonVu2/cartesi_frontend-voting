@@ -23,7 +23,7 @@ interface PropsType {
 
 const ItemResult = ({ data, voted_candidate }: PropsType) => {
     const { id, name, votes, avatar, total_vote } = data
-    const percent: any = votes && total_vote ? (votes / total_vote * 100).toFixed(2) : 0
+    const percent: string | number = votes && total_vote ? (votes / total_vote * 100).toFixed(2) : 0
     const checked = voted_candidate?.candidate_id === id
     return (
         <Wrapper key={id}>

@@ -7,7 +7,7 @@ import { createNotifications } from "../common/Notification";
 import { sendInput } from "../helper/sendInput";
 import { onChangeStatus } from "../reducers/campaignSlice";
 import { ROUTER_PATH } from "../routes/contants";
-import { AppDispatch } from "../store";
+import { AppDispatch, RootState } from "../store";
 import { DangerButton, PrimaryButton, SuccessButton } from "../styled/common";
 import { FlexLayout } from "../styled/main";
 import { handleNotices } from "../helper/handleNotices";
@@ -43,8 +43,8 @@ const CHAIN_ID = process.env.REACT_APP_LOCAL_CHAIN_ID || ""
 const ActionButton = () => {
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const isVisibleActionButton = useSelector((state: any) => state.campaign.isVisibleActionButton)
-    const addressWallet = useSelector((state: any) => state.auth.address).toLowerCase()
+    const isVisibleActionButton = useSelector((state: RootState) => state.campaign.isVisibleActionButton)
+    const addressWallet = useSelector((state: RootState) => state.auth.address).toLowerCase()
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>()
     const location = useLocation()

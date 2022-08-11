@@ -3,7 +3,7 @@ import DescriptionIcon from '../../images/desc-icon.svg'
 import StarIcon from '../../images/star.svg'
 import { ROUTER_PATH } from "../../routes/contants"
 import { BoxContent } from "../../styled/common"
-import { ActionItem, ActionList, CampaignName, WinningCandidate, Wrapper } from "../../styled/list"
+import { ActionItem, ActionList, CampaignName, WinnerCandidate, WinnerName, Wrapper } from "../../styled/list"
 
 interface PropsType {
     data: {
@@ -26,10 +26,10 @@ const ItemCampaign = ({ data }: PropsType) => {
                 </CampaignName>
                 <ActionList>
                     <ActionItem>
-                        <WinningCandidate>
+                        <WinnerCandidate>
                             <img src={StarIcon} alt="star icon" width={17} />
-                            {winning_candidate_name || '(No data)'}
-                        </WinningCandidate>
+                            <WinnerName>{winning_candidate_name || '(No data)'}</WinnerName>
+                        </WinnerCandidate>
                     </ActionItem>
                     <ActionItem>
                         {total_vote || 0} vote

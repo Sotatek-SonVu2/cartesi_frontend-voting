@@ -8,7 +8,7 @@ import { createNotifications } from "../../common/Notification"
 import { NoticeKeys } from "../../generated-src/graphql"
 import { cartesiTokenContract, erc20Contract, inputContract } from "../../helper/contractWithSigner"
 import { getDepositInfo } from "../../reducers/authSlice"
-import { AppDispatch } from "../../store"
+import { AppDispatch, RootState } from "../../store"
 import { ModalTitle, SuccessButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
 import { Loader } from "../../styled/loading"
@@ -17,7 +17,6 @@ import { CHAIN_ID_ERROR_MESSAGE, ERROR_MESSAGE, NOTI_TYPE } from "../../utils/co
 type Props = {
     isVisible: boolean
     toggleModal: any
-    onClick?: any
 }
 
 const DepositButton = styled(SuccessButton)`
@@ -77,7 +76,7 @@ export const findInputAddedInfo = (
 const DepositModal = ({ isVisible, toggleModal }: Props) => {
     const { ethereum } = window;
     const dispatch = useDispatch<AppDispatch>()
-    const addressWallet = useSelector((state: any) => state.auth.address)
+    const addressWallet = useSelector((state: RootState) => state.auth.address)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [amount, setAmount] = useState({
         value: '',

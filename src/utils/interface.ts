@@ -43,7 +43,7 @@ export interface CadidatesType {
     brief_introduction: string
 }
 
-export interface DataPayloadType {
+export interface AddEditDataType {
     action: string,
     name: string,
     id?: number,
@@ -97,8 +97,28 @@ export interface CandidatesVotingType {
 }
 
 export interface DepositInfoType {
-    amount: number,
+    amount: number
     used_amount: number
+}
+
+export interface CampaignDataType {
+    creator: string
+    description: string
+    end_time: string
+    id: number
+    name: string
+    start_time: string
+    total_vote: number
+    votes_of_candidate: number | null
+    winning_candidate_name: string
+}
+
+export interface ListCampaignType {
+    data: CampaignDataType[]
+    limit: number
+    page: number
+    total: number
+    error: string
 }
 
 

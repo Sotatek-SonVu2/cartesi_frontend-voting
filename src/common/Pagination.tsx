@@ -3,7 +3,7 @@ import { usePagination, DOTS } from '../hook/usePagination';
 import { ArrowLeft, ArrowRight, PaginationItem, PaginationWrapper } from '../styled/common';
 
 interface PropsType {
-  onPageChange: any,
+  onPageChange: Function,
   totalCount: number,
   siblingCount?: number,
   currentPage: number,
@@ -26,7 +26,7 @@ const Pagination = ({
     pageSize
   });
 
-  if (currentPage === 0 || paginationRange.length < 2) {
+  if (currentPage === 0 || paginationRange?.length < 2) {
     return null;
   }
 
@@ -38,7 +38,7 @@ const Pagination = ({
     onPageChange(currentPage - 1);
   };
 
-  let lastPage = paginationRange[paginationRange.length - 1];
+  let lastPage = paginationRange?.length > 0 ? paginationRange[paginationRange.length - 1] : 0;
 
   return (
     <PaginationWrapper>
@@ -48,11 +48,10 @@ const Pagination = ({
       >
         <ArrowLeft className="arrow" />
       </PaginationItem>
-      {paginationRange.map((pageNumber: any, index: number) => {
+      {paginationRange?.length > 0 && paginationRange.map((pageNumber: string | number, index: number) => {
         if (pageNumber === DOTS) {
           return <li key={index} className="dots">&#8230;</li>;
         }
-        console.log('pageNumber === currentPage', pageNumber, currentPage)
         return (
           <PaginationItem
             key={index}

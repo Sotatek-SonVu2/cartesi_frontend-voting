@@ -14,7 +14,7 @@ interface PropsType {
         campaign_id: number
         avatar: string
     },
-    handleClick?: any
+    handleClick: Function,
     active: number
 }
 

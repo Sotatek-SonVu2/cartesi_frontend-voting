@@ -6,7 +6,7 @@ Modal.setAppElement("#root");
 
 type Props = {
     isVisible: boolean
-    toggleModal: any
+    toggleModal: () => {}
     title?: string
     children: JSX.Element
 }

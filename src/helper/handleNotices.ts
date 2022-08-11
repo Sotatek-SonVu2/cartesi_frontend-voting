@@ -12,11 +12,13 @@ export const handleNotices = async (epoch: number, input: number, callback: any)
             if (result[0]?.payload) {
                 clearInterval(myInterval);
                 const payload = JSON.parse(result[0]?.payload)
+                console.log('Call successful!')
                 callback(payload)
             }
         }
         if (++times === 20) {
             clearInterval(myInterval);
+            console.log('Call fail!')
             callback('')
         }
     }, 1000)

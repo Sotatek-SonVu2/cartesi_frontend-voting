@@ -4,10 +4,11 @@ import TrashIcon from '../images/trash.svg'
 import { validateField } from "../utils/validate"
 import { randomColor } from "../utils/common"
 import { OptionType } from "../utils/interface"
+import { ChangeEvent } from "react"
 
 interface PropsType {
     options: OptionType[],
-    setOptions: any
+    setOptions: Function
 }
 
 const CandidateOptions = ({ options, setOptions }: PropsType) => {
@@ -24,11 +25,11 @@ const CandidateOptions = ({ options, setOptions }: PropsType) => {
 
     const removeOption = (index: number) => {
         if (options.length <= 1) return
-        const data = options.filter((option, idx) => idx !== index)
+        const data = options.filter((_, idx) => idx !== index)
         setOptions(data)
     }
 
-    const handleChange = (event: any, index: number) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>, index: number) => {
         const target = event.target;
         const name = target.name;
         const value = target.value;
@@ -50,9 +51,18 @@ const CandidateOptions = ({ options, setOptions }: PropsType) => {
                             <img src={TrashIcon} alt="trash icon" width={25} onClick={() => removeOption(index)} />
                         )}
                     </OptionLabel>
-                    <Input type="text" value={option.name} name="name" placeholder="Your name.." onChange={(e: any) => handleChange(e, index)} />
+                    <Input
+                        type="text"
+                        value={option.name}
+                        name="name"
+                        placeholder="Your name.."
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, index)} />
                     <ErrorText>{option.formErrors.name}</ErrorText>
-                    <TextArea name="brief_introduction" value={option.brief_introduction} placeholder="Brief Introduction..." onChange={(e: any) => handleChange(e, index)} />
+                    <TextArea
+                        name="brief_introduction"
+                        value={option.brief_introduction}
+                        placeholder="Brief Introduction..."
+                        onChange={(e: ChangeEvent<HTMLTextAreaElement>) => handleChange(e, index)} />
                     <ErrorText>{option.formErrors.brief_introduction}</ErrorText>
                 </div>
             ))}

@@ -36,7 +36,7 @@ export const checkAccountOnMetamask = async (callback: any) => {
     }
 }
 
-export const JsonStringifyFormat = (data: any) => {
+export const JsonStringifyFormat = (data: {}) => {
     return JSON.stringify(data);
 }
 

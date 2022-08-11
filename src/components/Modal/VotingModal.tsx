@@ -6,7 +6,7 @@ import confirmIcon from '../../images/exclamation_icon.svg'
 type Props = {
     isVisible: boolean
     toggleModal: any
-    onClick: any
+    onClick: () => {}
 }
 
 const VotingButton = styled(SuccessButton)`

@@ -8,19 +8,20 @@ import EthIcon from "../images/cartesi_icon.png";
 import LogoutIcon from "../images/logout-icon.svg";
 import { clearAccount, getDepositInfo } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
-import { AppDispatch } from "../store";
+import { AppDispatch, RootState } from "../store";
 import { Address, Content, Currency, Deposit, DepositContent, InforUser } from "../styled/header";
 import { Loader } from "../styled/loading";
 import { formatAddress } from "../utils/common";
+import { Tooltip } from "../styled/list";
 
 const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>()
     const [isVisible, setIsVisible] = useState<boolean>(false);
-    const authState = useSelector((state: any) => state.auth)
+    const [isCopied, setIsCopied] = useState<boolean>(false)
+    const authState = useSelector((state: RootState) => state.auth)
     const { address, deposit_info, isLoading } = authState
     const { amount, used_amount } = deposit_info
-    const { ethereum } = window.ethereum
 
     useEffect(() => {
         dispatch(getDepositInfo())
@@ -29,27 +30,35 @@ const Header = () => {
     const handleLogout = async () => {
         dispatch(clearAccount())
         navigate(ROUTER_PATH.LOGIN, { replace: true })
+        window.location.reload();
     }
 
     useEffect(() => {
-        if (!ethereum) return;
+        if (!window.ethereum) return;
 
-        ethereum.on("accountsChanged", handleLogout);
-        ethereum.on("disconnect", handleLogout);
-        ethereum.on("chainChanged", () => {
+        window.ethereum.on("accountsChanged", handleLogout);
+        window.ethereum.on("disconnect", handleLogout);
+        window.ethereum.on("chainChanged", () => {
             window.location.reload();
         });
         return () => {
-            if (ethereum.removeListener) {
-                ethereum.removeListener("accountsChanged", handleLogout);
+            if (window.ethereum.removeListener) {
+                window.ethereum.removeListener("accountsChanged", handleLogout);
                 // window.ethereum.removeListener("chainChanged", handleLogout);
-                ethereum.removeListener("disconnect", handleLogout);
+                window.ethereum.removeListener("disconnect", handleLogout);
             }
         };
-    }, [ethereum]);
+    }, [window.ethereum]);
 
     const toggleModal = () => {
         setIsVisible(!isVisible);
+    }
+
+    const handleCopy = () => {
+        setIsCopied(true)
+        setTimeout(() => {
+            setIsCopied(false)
+        }, 1000)
     }
 
     return (
@@ -58,9 +67,13 @@ const Header = () => {
                 <img src={logo} alt="logo" width={110} onClick={() => navigate(ROUTER_PATH.HOMEPAGE)} />
                 <InforUser>
                     <div style={{ marginRight: '20px' }}>
-                        <CopyToClipboard text={address}>
+                        <CopyToClipboard text={address} onCopy={handleCopy}>
                             <Address>
-                                <span>{formatAddress(address)}</span>
+                                <Tooltip>
+                                    <span>{formatAddress(address)}</span>
+                                    <div className="tooltiptext">{!isCopied ? 'Copy to Clipboard' : 'Copied!'}</div>
+                                </Tooltip>
+
                             </Address>
                         </CopyToClipboard>
                         <Currency>

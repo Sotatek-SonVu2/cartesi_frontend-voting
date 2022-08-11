@@ -11,7 +11,7 @@ import { sendInput } from "../helper/sendInput"
 import { getDepositInfo } from "../reducers/authSlice"
 import { onVisibleActionButton } from "../reducers/campaignSlice"
 import { ROUTER_PATH } from "../routes/contants"
-import { AppDispatch } from "../store"
+import { AppDispatch, RootState } from "../store"
 import { Content, DefaultButton, FlexLayoutBtn, PrimaryButton, SuccessButton, Title } from "../styled/common"
 import { LoadingAbsolute } from "../styled/loading"
 import { CAMPAIGN_DETAIL, CHAIN_ID_ERROR_MESSAGE, ERROR_MESSAGE, NOTI_TYPE, VOTING } from "../utils/contants"
@@ -54,42 +54,44 @@ const Voting = () => {
         voted: {}
     })
     const dispatch = useDispatch<AppDispatch>()
-    const metadata: MetadataType = useSelector((state: any) => state.auth.metadata)
-    const { campaignId }: any = useParams();
+    const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
+    const { campaignId } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         const getData = async () => {
-            try {
-                setIsLoading(true)
-                const data = {
-                    action: CAMPAIGN_DETAIL,
-                    campaign_id: campaignId && parseInt(campaignId)
-                }
-                const result = await handleInspectApi(data, metadata)
-                if (result?.campaign?.length > 0 && !result.error) {
-                    const isStartTime = new Date(result.campaign[0].start_time) < new Date()
-                    const isEndTime = new Date(result.campaign[0].end_time) < new Date()
-                    const isVisibleActionButton = {
-                        creator: result.campaign[0].creator,
-                        isOpenVoting: !isStartTime
+            if (campaignId) {
+                try {
+                    setIsLoading(true)
+                    const data = {
+                        action: CAMPAIGN_DETAIL,
+                        campaign_id: parseInt(campaignId)
                     }
-                    setIsCloseVoting(isEndTime)
-                    setData({
-                        campaign: result.campaign[0],
-                        candidates: result.candidates,
-                        voted: result.voted
-                    })
-                    setCandidateId(result.voted?.candidate_id)
-                    dispatch(onVisibleActionButton(isVisibleActionButton))
-                } else {
-                    createNotifications(NOTI_TYPE.DANGER, result.error || ERROR_MESSAGE)
+                    const result = await handleInspectApi(data, metadata)
+                    if (result?.campaign?.length > 0 && !result.error) {
+                        const isStartTime = new Date(result.campaign[0].start_time) < new Date()
+                        const isEndTime = new Date() < new Date(result.campaign[0].end_time)
+                        const isVisibleActionButton = {
+                            creator: result.campaign[0].creator,
+                            isOpenVoting: !isStartTime
+                        }
+                        setIsCloseVoting(!isStartTime || !isEndTime)
+                        setData({
+                            campaign: result.campaign[0],
+                            candidates: result.candidates,
+                            voted: result.voted
+                        })
+                        setCandidateId(result.voted?.candidate_id)
+                        dispatch(onVisibleActionButton(isVisibleActionButton))
+                    } else {
+                        createNotifications(NOTI_TYPE.DANGER, result.error || ERROR_MESSAGE)
+                    }
+                } catch (error: any) {
+                    createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
+                    throw error
+                } finally {
+                    setTimeout(() => setIsLoading(false), 1500)
                 }
-            } catch (error: any) {
-                createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
-                throw error
-            } finally {
-                setTimeout(() => setIsLoading(false), 1500)
             }
         }
 
@@ -117,7 +119,7 @@ const Voting = () => {
             const data = {
                 action: VOTING,
                 candidate_id: candidateId,
-                campaign_id: parseInt(campaignId)
+                campaign_id: campaignId && parseInt(campaignId)
             }
             const noticeKeys = await sendInput(data);
             handleNotices(noticeKeys?.epoch_index, noticeKeys?.input_index, ((payload: any) => {
@@ -146,7 +148,7 @@ const Voting = () => {
             ) : (
                 <Content>
                     <Title>
-                        {data.campaign.name}
+                        {data.campaign.name || '(No Data)'}
                     </Title>
                     <SubTitle>
                         <p>{data.campaign.start_time} - {data.campaign.end_time}</p>

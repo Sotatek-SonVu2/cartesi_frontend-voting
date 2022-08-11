@@ -6,7 +6,7 @@ interface AvatarType {
 }
 
 interface ProcessType {
-  percent: number
+  percent: number | string
   bgColor?: string
   itemId: number
 }
@@ -70,11 +70,14 @@ export const ActionItem = styled.div`
   }
 `
 
-export const WinningCandidate = styled.div`
+export const WinnerCandidate = styled.div`
   display: flex;
   margin-left: 7px;
+  width: 180px;
+`
+
+export const WinnerName = styled.div`
   white-space: nowrap;
-  width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
 `
@@ -145,27 +148,28 @@ export const Tooltip = styled.div`
   & .tooltiptext {
     visibility: hidden;
     width: 120px;
-    background-color: black;
-    color: #fff;
+    background-color: #fff;
+    color: #000;
     text-align: center;
-    border-radius: 6px;
+    border-radius: 3px;
     padding: 5px 0;
     position: absolute;
     z-index: 1;
-    bottom: 130%;
+    top: 100%;
     left: 50%;
     margin-left: -58px;
+    box-shadow: #bfbfbf 0px 2px 8px 0px;
   }
 
   & .tooltiptext::after {
     content: "";
     position: absolute;
-    top: 100%;
+    top: -30%;
     left: 50%;
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: black transparent transparent transparent;
+    border-color: transparent transparent #f3f4f6 transparent;
   }
 
   &:hover .tooltiptext {
