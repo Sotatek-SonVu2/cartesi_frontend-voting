@@ -5,15 +5,6 @@ import { web3Modal } from "../helper/provider";
 import { ERROR_MESSAGE, NOTI_TYPE } from "./contants";
 import { MetadataType } from "./interface";
 
-export const getBalance = async () => {
-    const provider = new ethers.providers.JsonRpcProvider();
-    const erc20Address = await provider.getSigner().getAddress();
-    const balance = await provider.getBalance(erc20Address)
-    const balanceEth = parseFloat(ethers.utils.formatEther(balance))
-    const formatBalance = Number((balanceEth).toFixed(4))
-    return formatBalance
-}
-
 export const checkAccountOnMetamask = async (callback: any) => {
     try {
         if (window.ethereum) {

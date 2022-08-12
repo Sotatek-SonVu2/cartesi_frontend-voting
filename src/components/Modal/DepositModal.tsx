@@ -12,7 +12,7 @@ import { AppDispatch, RootState } from "../../store"
 import { ModalTitle, SuccessButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
 import { Loader } from "../../styled/loading"
-import { CHAIN_ID_ERROR_MESSAGE, ERROR_MESSAGE, NOTI_TYPE } from "../../utils/contants"
+import { CHAIN_ID_ERROR_MESSAGE, ERROR_MESSAGE, NONCE_TOO_HIGH_ERROR_MESSAGE, NOTI_TYPE } from "../../utils/contants"
 
 type Props = {
     isVisible: boolean
@@ -57,7 +57,7 @@ export const findInputAddedInfo = (
         for (const event of receipt.events) {
             try {
                 const parsedLog = inputContract.interface.parseLog(event);
-                if (parsedLog.name == "InputAdded") {
+                if (parsedLog.name === "InputAdded") {
                     return {
                         epoch_index: parsedLog.args.epochNumber.toString(),
                         input_index: parsedLog.args.inputIndex.toString(),
@@ -102,40 +102,50 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
         }
         try {
             setIsLoading(true)
-            const allowance: any = await cartesiTokenContract().functions.allowance(addressWallet, SPENDER_ADDRESS);
-            // increase erc20 allowance first if necessary
-            const erc20Amount = ethers.BigNumber.from(parseInt(amount.value));
-            if (allowance[0].lt(erc20Amount)) {
-                const allowanceApproveAmount =
-                    ethers.BigNumber.from(erc20Amount).sub(allowance[0]);
-                const tx = await cartesiTokenContract().approve(
-                    SPENDER_ADDRESS,
-                    allowanceApproveAmount
-                );
-                await tx.wait();
-                if (tx.hash) {
-                    console.log('Approve Token successfully!')
+            const getBalanceOf = await cartesiTokenContract().balanceOf(addressWallet);
+            const balanceOf = parseInt(ethers.utils.formatEther(getBalanceOf))
+            if (balanceOf > 0 && balanceOf > parseInt(amount.value)) {
+                const allowance: any = await cartesiTokenContract().functions.allowance(addressWallet, SPENDER_ADDRESS);
+                // increase erc20 allowance first if necessary
+                const erc20Amount = ethers.BigNumber.from(parseInt(amount.value));
+                if (allowance[0].lt(erc20Amount)) {
+                    const allowanceApproveAmount =
+                        ethers.BigNumber.from(erc20Amount).sub(allowance[0]);
+                    const tx = await cartesiTokenContract().approve(
+                        SPENDER_ADDRESS,
+                        allowanceApproveAmount
+                    );
+                    await tx.wait();
+                    if (tx.hash) {
+                        console.log('Token approval successful!')
+                    }
                 }
+
+                // send deposit transaction
+                const tx = await erc20Contract().erc20Deposit(CARTERSI_TOKEN_ADDRESS, erc20Amount, "0x");
+                console.log(`transaction: ${tx.hash}`);
+                console.log("waiting for confirmation...");
+                const receipt = await tx.wait();
+
+                // find added input information from transaction receipt
+                const inputAddedInfo = findInputAddedInfo(receipt, inputContract());
+                console.log(
+                    `deposit successfully executed as input ${inputAddedInfo?.input_index} of epoch ${inputAddedInfo?.epoch_index}`
+                );
+                setAmount({
+                    value: '',
+                    errorText: ''
+                })
+                dispatch(getDepositInfo())
+                createNotifications(NOTI_TYPE.SUCCESS, 'Deposit successfully!')
+            } else {
+                createNotifications(NOTI_TYPE.DANGER, 'Your account does not have any CTSI tokens!')
             }
 
-            // send deposit transaction
-            const tx = await erc20Contract().erc20Deposit(CARTERSI_TOKEN_ADDRESS, erc20Amount, "0x");
-            console.log(`transaction: ${tx.hash}`);
-            console.log("waiting for confirmation...");
-            const receipt = await tx.wait();
-
-            // find added input information from transaction receipt
-            const inputAddedInfo = findInputAddedInfo(receipt, inputContract());
-            console.log(
-                `deposit successfully executed as input ${inputAddedInfo?.input_index} of epoch ${inputAddedInfo?.epoch_index}`
-            );
-            setAmount({
-                value: '',
-                errorText: ''
-            })
-            dispatch(getDepositInfo())
-            createNotifications(NOTI_TYPE.SUCCESS, 'Deposit successfully!')
         } catch (error: any) {
+            if (error.code === -32603) {
+                return createNotifications(NOTI_TYPE.DANGER, NONCE_TOO_HIGH_ERROR_MESSAGE)
+            }
             createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
             throw error
         } finally {
@@ -146,7 +156,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
 
 
     return (
-        <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title='Deposit'>
+        <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title='Deposit Token'>
             <div>
                 <ModalTitle>
                     <FormItem>
