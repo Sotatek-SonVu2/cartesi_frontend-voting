@@ -89,7 +89,7 @@ export const BoxContent = styled.div<BoxContentType>`
     position: relative;
     width: 100%;
     background: ${colorTheme.white};
-    border: ${props => props.checked ? `2px solid #81cec2` : `1px solid ${colorTheme.borderGray}`};
+    border: 1px solid ${colorTheme.borderGray};
     border-radius: 7px;
     cursor: pointer;
     ${props => props.active && `

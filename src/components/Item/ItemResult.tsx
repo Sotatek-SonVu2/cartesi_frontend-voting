@@ -27,7 +27,7 @@ const ItemResult = ({ data, voted_candidate }: PropsType) => {
     const checked = voted_candidate?.candidate_id === id
     return (
         <Wrapper key={id}>
-            <BoxContent checked={checked}>
+            <BoxContent>
                 <ProcessBar itemId={id} percent={percent} bgColor={randomColor()}></ProcessBar>
                 <FlexLayoutBetween>
                     <ResultName>

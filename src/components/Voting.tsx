@@ -14,7 +14,7 @@ import { ROUTER_PATH } from "../routes/contants"
 import { AppDispatch, RootState } from "../store"
 import { Content, DefaultButton, FlexLayoutBtn, PrimaryButton, SuccessButton, Title } from "../styled/common"
 import { LoadingAbsolute } from "../styled/loading"
-import { CAMPAIGN_DETAIL, CHAIN_ID_ERROR_MESSAGE, ERROR_MESSAGE, NOTI_TYPE, VOTING } from "../utils/contants"
+import { CAMPAIGN_DETAIL, CHAIN_ID_ERROR_MESSAGE, ERROR_MESSAGE, NONCE_TOO_HIGH_ERROR_MESSAGE, NOTI_TYPE, VOTING } from "../utils/contants"
 import { CampaignVotingType, CandidatesVotingType, MetadataType } from "../utils/interface"
 import ItemVoting from "./Item/ItemVoting"
 import VotingModal from "./Modal/VotingModal"
@@ -99,7 +99,7 @@ const Voting = () => {
     }, [])
 
     const onChooseAnswer = (id: number) => {
-        if (data.voted?.candidate_id) return
+        if (data.voted?.candidate_id || isCloseVoting) return
         setCandidateId(id)
     }
 
@@ -134,7 +134,11 @@ const Voting = () => {
                 }
             }))
         } catch (error: any) {
-            createNotifications(NOTI_TYPE.DANGER, error.messgae || ERROR_MESSAGE)
+            if (error.code === -32603) {
+                createNotifications(NOTI_TYPE.DANGER, NONCE_TOO_HIGH_ERROR_MESSAGE)
+            } else {
+                createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
+            }
             setCandidateId(0)
             setIsLoadVoting(false)
             throw error

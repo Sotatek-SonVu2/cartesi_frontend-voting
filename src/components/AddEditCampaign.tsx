@@ -14,7 +14,7 @@ import { AppDispatch, RootState } from "../store";
 import { Content, DefaultButton, FlexLayoutBtn, SuccessButton, Title } from "../styled/common";
 import { ErrorText, Form, FormItem, Input, TextArea } from "../styled/form";
 import { Loader, LoadingAbsolute } from "../styled/loading";
-import { CAMPAIGN_DETAIL, CHAIN_ID_ERROR_MESSAGE, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE } from "../utils/contants";
+import { CAMPAIGN_DETAIL, CHAIN_ID_ERROR_MESSAGE, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NONCE_TOO_HIGH_ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
 import { AddEditDataType, MetadataType, OptionType } from "../utils/interface";
 import { validateDate, validateField, validateFields, validateOptions } from "../utils/validate";
 import CandidateOptions from "./CandidateOptions";
@@ -128,7 +128,11 @@ const AddEditCampaign = () => {
                 setIsLoading(false)
             }))
         } catch (error: any) {
-            createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
+            if (error.code === -32603) {
+                createNotifications(NOTI_TYPE.DANGER, NONCE_TOO_HIGH_ERROR_MESSAGE)
+            } else {
+                createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
+            }
             setIsLoading(false)
             throw error
         }
@@ -149,8 +153,12 @@ const AddEditCampaign = () => {
                 }
                 setIsLoading(false)
             }))
-        } catch (error) {
-            createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
+        } catch (error: any) {
+            if (error.code === -32603) {
+                createNotifications(NOTI_TYPE.DANGER, NONCE_TOO_HIGH_ERROR_MESSAGE)
+            } else {
+                createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
+            }
             setIsLoading(false)
             throw error
         }

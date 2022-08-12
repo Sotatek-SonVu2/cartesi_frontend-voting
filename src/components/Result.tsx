@@ -8,13 +8,14 @@ import { handleInspectApi } from "../helper/handleInspectApi"
 import { ROUTER_PATH } from "../routes/contants"
 import { RootState } from "../store"
 import { Content, DefaultButton, FlexLayoutBtn, Title } from "../styled/common"
-import { ERROR_MESSAGE, NOTI_TYPE, RESULT } from "../utils/contants"
+import { CAMPAIGN_DETAIL, ERROR_MESSAGE, NOTI_TYPE, RESULT } from "../utils/contants"
 import { CampaignType, MetadataType, VotedType } from "../utils/interface"
 import ItemResult from "./Item/ItemResult"
 
 
 interface DataType {
     campaign: CampaignType[]
+    title: string
     voted_candidate: VotedType | null
 }
 
@@ -25,6 +26,7 @@ const Result = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [data, setData] = useState<DataType>({
         campaign: [],
+        title: '',
         voted_candidate: {
             campaign_id: 0,
             candidate_id: 0,
@@ -34,19 +36,25 @@ const Result = () => {
             name: ''
         }
     })
+    const { campaign, title, voted_candidate } = data
 
     useEffect(() => {
         const getData = async () => {
             if (campaignId) {
                 try {
                     setIsLoading(true)
-                    const data = {
+                    const resultPayload = {
                         action: RESULT,
                         campaign_id: parseInt(campaignId)
                     }
-                    const result = await handleInspectApi(data, metadata)
-                    if (!result.error) {
-                        const campaign = result?.campaign?.map((item: CampaignType) => {
+                    const detailPayload = {
+                        action: CAMPAIGN_DETAIL,
+                        campaign_id: parseInt(campaignId)
+                    }
+                    const result = await handleInspectApi(resultPayload, metadata)  // Get result data
+                    const detail = await handleInspectApi(detailPayload, metadata) // Get detail data
+                    if (!result.error && !detail.error) {
+                        const campaign = result.campaign.map((item: CampaignType) => {
                             return {
                                 ...item,
                                 total_vote: result.total_vote,
@@ -54,6 +62,7 @@ const Result = () => {
                         }).sort((a: CampaignType, b: CampaignType) => b.votes - a.votes)
                         setData({
                             campaign,
+                            title: detail?.campaign[0].name,
                             voted_candidate: result.voted_candidate
                         })
                     } else {
@@ -78,15 +87,15 @@ const Result = () => {
             ) : (
                 <Content>
                     <Title>
-                        Who is the UI designer for DApp Voting?
+                        {title || '(NO DATA)'}
                     </Title>
-                    <p>Here is the reason, here is what you voted. The results by {data?.campaign?.length > 0 ? data.campaign[0].total : 0} votes:</p>
-                    {data?.voted_candidate?.name && (
-                        <span>Your voted is: {data.voted_candidate?.name}.</span>
+                    <p>Here is the reason, here is what you voted. The results by {campaign?.length > 0 ? campaign[0].total : 0} votes:</p>
+                    {voted_candidate?.name && (
+                        <span>Your voted is: {voted_candidate?.name}.</span>
                     )}
-                    {data?.campaign?.length > 0 ? data.campaign.map((item) => (
+                    {campaign?.length > 0 ? campaign.map((item) => (
                         <div key={item.id}>
-                            <ItemResult data={item} voted_candidate={data.voted_candidate} />
+                            <ItemResult data={item} voted_candidate={voted_candidate} />
                         </div>
                     )) : (
                         <NoData />
