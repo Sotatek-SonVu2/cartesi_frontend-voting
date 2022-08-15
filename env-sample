@@ -2,16 +2,8 @@ REACT_APP_BASE_URL_API=http://127.0.0.1:81
 REACT_APP_LOCAL_CHAIN_ID=31337
 REACT_APP_RPC_URL=http://localhost:8545
 REACT_APP_MNEMONIC=test test test test test test test test test test test junk
-
-# Copy from ../../../deployments/localhost/CartesiToken.json
 REACT_APP_CARTERSI_TOKEN_ADDRESS=0xa513E6E4b8f2a923D98304ec87F64353C4D5C853
-
-# Copy from ../../../deployments/localhost/ERC20PortalFacet.json
 REACT_APP_CARTESI_DEPOSIT_ADDRESS=0x59b670e9fA9D0A427751Af201D676719a970857b
-
-# Copy from ../../../deployments/localhost/dapp.address
 REACT_APP_SPENDER_ADDRESS=0xa37aE2b259D35aF4aBdde122eC90B204323ED304
-
-# Copy from ../../../deployments/localhost/InputFacet.json
 REACT_APP_INPUT_FACE_ADDRESS=0x4A679253410272dd5232B3Ff7cF5dbB88f295319
 
