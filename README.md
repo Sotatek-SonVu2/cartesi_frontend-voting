@@ -1,4 +1,4 @@
-# Frontend Voting DDAPP
+# Frontend DApp Voting
 
 This project demonstrates how to implement a frontend application to send inputs to a Cartesi Rollups DApp, both running locally and deployed on remote testnet networks.
 It's implemented in Typescript and uses the [ethers](https://docs.ethers.io/v5/) library to communicate with the rollups smart contracts.
