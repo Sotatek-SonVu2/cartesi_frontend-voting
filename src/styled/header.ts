@@ -25,7 +25,7 @@ export const Content = styled.div`
     }
 `
 
-export const InforUser = styled.div`
+export const Menu = styled.div`
     display: flex;
     color: #fff;
     text-align: right;
@@ -36,6 +36,10 @@ export const InforUser = styled.div`
     & .logoutIcon {
         margin-left: 15px;
     }
+`
+
+export const InforUser = styled.div`
+    margin-right: 20px
 `
 
 export const Address = styled.div`

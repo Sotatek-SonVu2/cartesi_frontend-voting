@@ -9,7 +9,7 @@ import LogoutIcon from "../images/logout-icon.svg";
 import { clearAccount, getDepositInfo } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
 import { AppDispatch, RootState } from "../store";
-import { Address, Content, Currency, Deposit, DepositContent, InforUser } from "../styled/header";
+import { Address, Content, Currency, Deposit, DepositContent, InforUser, Menu } from "../styled/header";
 import { Loader } from "../styled/loading";
 import { formatAddress } from "../utils/common";
 import { Tooltip } from "../styled/list";
@@ -65,8 +65,8 @@ const Header = () => {
         <>
             <Content>
                 <img src={logo} alt="logo" width={110} onClick={() => navigate(ROUTER_PATH.HOMEPAGE)} />
-                <InforUser>
-                    <div style={{ marginRight: '20px' }}>
+                <Menu>
+                    <InforUser>
                         <CopyToClipboard text={address} onCopy={handleCopy}>
                             <Address>
                                 <Tooltip>
@@ -81,14 +81,14 @@ const Header = () => {
                             <img src={EthIcon} alt="ethIcon" width={15} />
                             <span>{amount} CTSI [used: {used_amount}]</span>
                         </Currency>
-                    </div>
+                    </InforUser>
                     <Deposit onClick={toggleModal}>
                         <DepositContent>
                             Deposit
                         </DepositContent>
                     </Deposit>
                     <img className="logoutIcon" src={LogoutIcon} alt="logoutIcon" width={20} onClick={handleLogout} />
-                </InforUser>
+                </Menu>
 
                 {isVisible && (
                     <DepositModal

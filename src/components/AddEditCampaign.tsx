@@ -1,5 +1,5 @@
 import moment from "moment";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,13 +14,13 @@ import { AppDispatch, RootState } from "../store";
 import { Content, DefaultButton, FlexLayoutBtn, SuccessButton, Title } from "../styled/common";
 import { ErrorText, Form, FormItem, Input, TextArea } from "../styled/form";
 import { Loader, LoadingAbsolute } from "../styled/loading";
-import { CAMPAIGN_DETAIL, CHAIN_ID_ERROR_MESSAGE, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NONCE_TOO_HIGH_ERROR_CODE, NONCE_TOO_HIGH_ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
+import { checkNetworks } from "../utils/checkNetworks";
+import { CAMPAIGN_DETAIL, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NONCE_TOO_HIGH_ERROR_CODE, NONCE_TOO_HIGH_ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
 import { AddEditDataType, MetadataType, OptionType } from "../utils/interface";
 import { validateDate, validateField, validateFields, validateOptions } from "../utils/validate";
 import CandidateOptions from "./CandidateOptions";
 
 const FORMAT_DATE_PICKER = 'MM/dd/yyyy h:mm aa'
-const CHAIN_ID = process.env.REACT_APP_LOCAL_CHAIN_ID || ""
 
 const AddEditCampaign = () => {
     const OptionDefault: OptionType[] = [
@@ -167,8 +167,7 @@ const AddEditCampaign = () => {
 
     const onSubmit = (e: any) => {
         e.preventDefault()
-        const networkVersion = window.ethereum.networkVersion;
-        if (networkVersion !== CHAIN_ID) return createNotifications(NOTI_TYPE.DANGER, `${CHAIN_ID_ERROR_MESSAGE} ${CHAIN_ID}`)
+        if (!checkNetworks()) return
 
         const checkOptions = validateOptions(options)
         const checkFields = validateFields(dataForm)

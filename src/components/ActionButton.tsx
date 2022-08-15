@@ -4,14 +4,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Select from 'react-select';
 import styled from "styled-components";
 import { createNotifications } from "../common/Notification";
+import { handleNotices } from "../helper/handleNotices";
 import { sendInput } from "../helper/sendInput";
 import { onChangeStatus } from "../reducers/campaignSlice";
 import { ROUTER_PATH } from "../routes/contants";
 import { AppDispatch, RootState } from "../store";
 import { DangerButton, PrimaryButton, SuccessButton } from "../styled/common";
 import { FlexLayout } from "../styled/main";
-import { handleNotices } from "../helper/handleNotices";
-import { cadidateOptions, CHAIN_ID_ERROR_MESSAGE, DELETE_CAMPAIGN, ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
+import { checkNetworks } from "../utils/checkNetworks";
+import { cadidateOptions, DELETE_CAMPAIGN, ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
 import DeleteModal from "./Modal/DeleteModal";
 
 
@@ -38,19 +39,16 @@ const colourStyles = {
     singleValue: (styles: any) => ({ ...styles, color: '#fff' }),
 };
 
-const CHAIN_ID = process.env.REACT_APP_LOCAL_CHAIN_ID || ""
-
 const ActionButton = () => {
-    const [isVisible, setIsVisible] = useState<boolean>(false);
+    const [isVisible, setIsVisible] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const isVisibleActionButton = useSelector((state: RootState) => state.campaign.isVisibleActionButton)
+    const { creator, isOpenVoting } = useSelector((state: RootState) => state.campaign.isVisibleActionButton)
     const addressWallet = useSelector((state: RootState) => state.auth.address).toLowerCase()
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>()
     const location = useLocation()
     const pathname = `/${location.pathname.split("/")[1]}`
     const paramId = location.pathname.split("/")[2]
-    const { creator, isOpenVoting } = isVisibleActionButton
 
     const onChangeSelect = (opt: any) => {
         dispatch(onChangeStatus(opt.value))
@@ -61,8 +59,7 @@ const ActionButton = () => {
     }
 
     const onDelete = async () => {
-        const networkVersion = window.ethereum.networkVersion;
-        if (networkVersion !== CHAIN_ID) return createNotifications(NOTI_TYPE.DANGER, `${CHAIN_ID_ERROR_MESSAGE} ${CHAIN_ID}`)
+        if (!checkNetworks()) return
         try {
             setIsLoading(true)
             const data = {

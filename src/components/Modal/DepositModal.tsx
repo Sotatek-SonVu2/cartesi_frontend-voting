@@ -12,7 +12,8 @@ import { AppDispatch, RootState } from "../../store"
 import { ModalTitle, SuccessButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
 import { Loader } from "../../styled/loading"
-import { CHAIN_ID_ERROR_MESSAGE, ERROR_MESSAGE, NONCE_TOO_HIGH_ERROR_CODE, NONCE_TOO_HIGH_ERROR_MESSAGE, NOTI_TYPE } from "../../utils/contants"
+import { checkNetworks } from "../../utils/checkNetworks"
+import { ERROR_MESSAGE, NONCE_TOO_HIGH_ERROR_CODE, NONCE_TOO_HIGH_ERROR_MESSAGE, NOTI_TYPE } from "../../utils/contants"
 
 type Props = {
     isVisible: boolean
@@ -45,7 +46,6 @@ const FormItem = styled.div`
 const SPENDER_ADDRESS = process.env.REACT_APP_SPENDER_ADDRESS || "";
 const CARTERSI_TOKEN_ADDRESS =
     process.env.REACT_APP_CARTERSI_TOKEN_ADDRESS || "";
-const CHAIN_ID = process.env.REACT_APP_LOCAL_CHAIN_ID || ""
 
 const ERROR_TEXT = 'Please enter amount'
 
@@ -74,7 +74,6 @@ export const findInputAddedInfo = (
 };
 
 const DepositModal = ({ isVisible, toggleModal }: Props) => {
-    const { ethereum } = window;
     const dispatch = useDispatch<AppDispatch>()
     const addressWallet = useSelector((state: RootState) => state.auth.address)
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -91,9 +90,8 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
     }
 
     const handleDeposit = async () => {
-        const networkVersion = ethereum.networkVersion;
-        if (networkVersion !== CHAIN_ID) return createNotifications(NOTI_TYPE.DANGER, `${CHAIN_ID_ERROR_MESSAGE} ${CHAIN_ID}`)
-        if (!amount.value) {
+        if (!checkNetworks()) return
+        else if (!amount.value) {
             setAmount({
                 ...amount,
                 errorText: ERROR_TEXT

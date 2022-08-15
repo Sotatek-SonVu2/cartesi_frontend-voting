@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../common/Loading";
 import NoData from "../common/NoData";
 import { createNotifications } from "../common/Notification";
 import { handleInspectApi } from "../helper/handleInspectApi";
-import { AppDispatch, RootState } from "../store";
+import { RootState } from "../store";
 import { Content, DefaultButton, FlexLayoutBtn, Title } from "../styled/common";
 import { CAMPAIGN_DETAIL, CANDIDATE_DETAIL, ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
 import { DescriptionType, MetadataType } from "../utils/interface";
@@ -17,7 +17,6 @@ const Description = () => {
         description: ''
     })
     const navigate = useNavigate();
-    const dispatch = useDispatch<AppDispatch>()
     const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
     const params = useParams();
     const { campaignId, candidateId } = params

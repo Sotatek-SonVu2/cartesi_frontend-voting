@@ -14,7 +14,8 @@ import { ROUTER_PATH } from "../routes/contants"
 import { AppDispatch, RootState } from "../store"
 import { Content, DefaultButton, FlexLayoutBtn, PrimaryButton, SuccessButton, Title } from "../styled/common"
 import { LoadingAbsolute } from "../styled/loading"
-import { CAMPAIGN_DETAIL, CHAIN_ID_ERROR_MESSAGE, ERROR_MESSAGE, NONCE_TOO_HIGH_ERROR_CODE, NONCE_TOO_HIGH_ERROR_MESSAGE, NOTI_TYPE, VOTING } from "../utils/contants"
+import { checkNetworks } from "../utils/checkNetworks"
+import { CAMPAIGN_DETAIL, ERROR_MESSAGE, NONCE_TOO_HIGH_ERROR_CODE, NONCE_TOO_HIGH_ERROR_MESSAGE, NOTI_TYPE, VOTING } from "../utils/contants"
 import { CampaignVotingType, CandidatesVotingType, MetadataType } from "../utils/interface"
 import ItemVoting from "./Item/ItemVoting"
 import VotingModal from "./Modal/VotingModal"
@@ -32,8 +33,6 @@ const SubTitle = styled.div`
         color: red;
     }
 `
-
-const CHAIN_ID = process.env.REACT_APP_LOCAL_CHAIN_ID || ""
 
 const Voting = () => {
     const [candidateId, setCandidateId] = useState<number>(0)
@@ -107,12 +106,10 @@ const Voting = () => {
         setIsVisible(!isVisible);
     }
 
-
     const handleVoting = async () => {
         toggleModal()
-        const networkVersion = window.ethereum.networkVersion;
-        if (!candidateId) return createNotifications(NOTI_TYPE.DANGER, 'Please choose a candidate!')
-        else if (networkVersion !== CHAIN_ID) return createNotifications(NOTI_TYPE.DANGER, `${CHAIN_ID_ERROR_MESSAGE} ${CHAIN_ID}`)
+        if (!checkNetworks()) return
+        else if (!candidateId) return createNotifications(NOTI_TYPE.DANGER, 'Please choose a candidate!')
 
         try {
             setIsLoadVoting(true)
