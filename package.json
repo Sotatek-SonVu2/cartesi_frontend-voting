@@ -5,7 +5,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "pre-start": "run-s codegen tsc",
+    "pre-build": "run-s codegen tsc",
     "codegen": "graphql-codegen",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

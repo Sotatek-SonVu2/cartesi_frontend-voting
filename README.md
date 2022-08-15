@@ -1,25 +1,28 @@
-# Getting Started with Create React App
+# Frontend Voting DDAPP
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project demonstrates how to implement a frontend application to send inputs to a Cartesi Rollups DApp, both running locally and deployed on remote testnet networks.
+It's implemented in Typescript and uses the [ethers](https://docs.ethers.io/v5/) library to communicate with the rollups smart contracts.
 
-## Available Scripts
+## Requirements
 
-In the project directory, you can run:
+- node.js
+- yarn
 
-### `yarn start`
+## Building
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To build the frontend application, first clone the repository as follows:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```shell
+git clone https://github.com/Sotatek-SonVu2/cartesi_frontend_voting.git
+```
 
-### `yarn test`
+Then, build the application by executing the following commands:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
+```shell
+yarn
+yarn pre-build
+yarn build
+```
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -27,9 +30,34 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Running
+Before running the application, remember to configure the environment file for the project by performing the following steps:
 
-### `yarn eject`
+```shell
+create .env file
+copy the contents of the file env-sample
+paste in the .env file and save
+```
+
+Then, run the application by executing the following command:
+
+```shell
+yarn start
+```
+
+## Testing
+
+```shell
+yarn test
+```
+
+Launches the test runner in the interactive watch mode.
+
+## Ejecting
+
+```shell
+yarn eject
+```
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
@@ -39,8 +67,3 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
