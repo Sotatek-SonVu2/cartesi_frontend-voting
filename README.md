@@ -73,3 +73,7 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
+## Note
+**Here are some things to keep in mind when you run the frontend application. It is some inconvenience that the application is having and it will be fixed in the next versions the future.**
+- Sometimes on the first run, when making 1 transaction via Metamask, you may get the message `Nonce too high! Please reset your account on MetaMask!`. This is an error when sending the wrong nonce. Don't worry, it only appears on the first transaction. What you need to do: `open Metamask > Settings > Advanced > Reset Account`. And then send the transaction that you made earlier.
+

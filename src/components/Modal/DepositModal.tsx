@@ -100,6 +100,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
         }
         try {
             setIsLoading(true)
+            // Check CTSI tokens in your account
             const getBalanceOf = await cartesiTokenContract().balanceOf(addressWallet);
             const balanceOf = parseInt(ethers.utils.formatEther(getBalanceOf))
             if (balanceOf > 0 && balanceOf > parseInt(amount.value)) {

@@ -15,7 +15,6 @@ import { checkNetworks } from "../utils/checkNetworks";
 import { cadidateOptions, DELETE_CAMPAIGN, ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
 import DeleteModal from "./Modal/DeleteModal";
 
-
 const EditButton = styled(PrimaryButton)`
     margin-right: 10px;
 `
