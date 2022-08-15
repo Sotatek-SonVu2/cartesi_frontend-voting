@@ -1,7 +1,6 @@
 import { ethers } from "ethers";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Background from "../common/Background";
 import { createNotifications } from "../common/Notification";
 import { web3Modal } from "../helper/provider";
 import cartesiLogo from '../images/Cartesi_Logo_White.svg';
@@ -9,7 +8,7 @@ import sotatekLogo from '../images/Logo_Sotatek.svg';
 import { setAccount } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
 import { AppDispatch } from "../store";
-import { Container, LoginButton, Logo, MainWrapper } from "../styled/login";
+import { Container, LoginButton, Logo } from "../styled/login";
 import { ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
 
 const Login = () => {
@@ -35,25 +34,21 @@ const Login = () => {
 
 
     return (
-        <MainWrapper>
-            <Background>
-                <>
-                    <Logo>
-                        <img src={cartesiLogo} alt="cartesi logo" width={150} />
-                        <img src={sotatekLogo} alt="sotatek logo" width={150} />
-                    </Logo>
-                    <Container>
-                        <h1>Welcome to <br />Voting Dapp</h1>
-                        <span>Powered by Cartesi</span>
-                        <p>This is the voting system that is used to use the blockchain OS of Cartesi. Users can vote for candidates listed in the system.
-                            This system provides everyone the ability to create their own voting campaign.
-                            (Only people deposited into the system can vote) They can create a campaign with a list of candidates within it.</p>
+        <>
+            <Logo>
+                <img src={cartesiLogo} alt="cartesi logo" width={150} />
+                <img src={sotatekLogo} alt="sotatek logo" width={150} />
+            </Logo>
+            <Container>
+                <h1>Welcome to <br />Voting Dapp</h1>
+                <span>Powered by Cartesi</span>
+                <p>This is the voting system that is used to use the blockchain OS of Cartesi. Users can vote for candidates listed in the system.
+                    This system provides everyone the ability to create their own voting campaign.
+                    (Only people deposited into the system can vote) They can create a campaign with a list of candidates within it.</p>
 
-                        <LoginButton onClick={connectWallet}>Let's start</LoginButton>
-                    </Container>
-                </>
-            </Background>
-        </MainWrapper>
+                <LoginButton onClick={connectWallet}>Let's start</LoginButton>
+            </Container>
+        </>
     );
 }
 

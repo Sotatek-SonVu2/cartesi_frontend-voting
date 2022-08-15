@@ -12,7 +12,7 @@ import { AppDispatch, RootState } from "../../store"
 import { ModalTitle, SuccessButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
 import { Loader } from "../../styled/loading"
-import { CHAIN_ID_ERROR_MESSAGE, ERROR_MESSAGE, NONCE_TOO_HIGH_ERROR_MESSAGE, NOTI_TYPE } from "../../utils/contants"
+import { CHAIN_ID_ERROR_MESSAGE, ERROR_MESSAGE, NONCE_TOO_HIGH_ERROR_CODE, NONCE_TOO_HIGH_ERROR_MESSAGE, NOTI_TYPE } from "../../utils/contants"
 
 type Props = {
     isVisible: boolean
@@ -143,7 +143,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
             }
 
         } catch (error: any) {
-            if (error.code === -32603) {
+            if (error.code === NONCE_TOO_HIGH_ERROR_CODE) {
                 return createNotifications(NOTI_TYPE.DANGER, NONCE_TOO_HIGH_ERROR_MESSAGE)
             }
             createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
@@ -156,7 +156,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
 
 
     return (
-        <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title='Deposit Token'>
+        <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title='Deposit Token' isLoading={isLoading}>
             <div>
                 <ModalTitle>
                     <FormItem>

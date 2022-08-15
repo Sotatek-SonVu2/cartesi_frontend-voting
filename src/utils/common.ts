@@ -1,31 +1,4 @@
-import { ethers } from "ethers";
-import { createNotifications } from "../common/Notification";
-import { getNotice } from "../helper/notices";
-import { web3Modal } from "../helper/provider";
-import { ERROR_MESSAGE, NOTI_TYPE } from "./contants";
 import { MetadataType } from "./interface";
-
-export const checkAccountOnMetamask = async (callback: any) => {
-    try {
-        if (window.ethereum) {
-            try {
-                const instance = await web3Modal.connect();
-                const provider = new ethers.providers.Web3Provider(instance);
-                const address = await provider.getSigner().getAddress();
-                callback(address)
-            } catch (error: any) {
-                callback('')
-                throw error
-            }
-
-        } else {
-            createNotifications(NOTI_TYPE.DANGER, 'Please install the MetaMask App!')
-        }
-    } catch (error: any) {
-        createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
-        throw error
-    }
-}
 
 export const JsonStringifyFormat = (data: {}) => {
     return JSON.stringify(data);

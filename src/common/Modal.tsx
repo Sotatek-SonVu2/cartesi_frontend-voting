@@ -6,12 +6,18 @@ Modal.setAppElement("#root");
 
 type Props = {
     isVisible: boolean
+    isLoading?: boolean
     toggleModal: () => {}
     title?: string
     children: JSX.Element
 }
 
-const ModalComponent = ({ isVisible, toggleModal, children, title }: Props) => {
+const ModalComponent = ({ isVisible, toggleModal, children, title, isLoading }: Props) => {
+    const onToggleModal = () => {
+        if (isLoading) return
+        toggleModal()
+    }
+
     return (
         <Modal
             isOpen={isVisible}
@@ -26,7 +32,7 @@ const ModalComponent = ({ isVisible, toggleModal, children, title }: Props) => {
                 {title ? (
                     <ModalHeader>
                         <span>{title}</span>
-                        <img src={CloseIcon} alt="close icon" width={15} onClick={toggleModal} />
+                        <img src={CloseIcon} alt="close icon" width={15} onClick={() => onToggleModal()} />
                     </ModalHeader>
                 ) : (
                     <img className="closeIcon" src={CloseIcon} alt="close icon" width={15} onClick={toggleModal} />

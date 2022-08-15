@@ -21,7 +21,7 @@ const DeleteButton = styled(DangerButton)`
 
 const DeleteModal = ({ isVisible, toggleModal, onClick, isLoading }: Props) => {
     return (
-        <ModalComponent isVisible={isVisible} toggleModal={toggleModal}>
+        <ModalComponent isVisible={isVisible} toggleModal={toggleModal} isLoading={isLoading}>
             <div>
                 <ModalTitle>
                     <img src={confirmIcon} alt="confirm Icon" width={30} />

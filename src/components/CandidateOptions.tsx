@@ -55,7 +55,7 @@ const CandidateOptions = ({ options, setOptions }: PropsType) => {
                         type="text"
                         value={option.name}
                         name="name"
-                        placeholder="Your name.."
+                        placeholder="Option's name.."
                         onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, index)} />
                     <ErrorText>{option.formErrors.name}</ErrorText>
                     <TextArea

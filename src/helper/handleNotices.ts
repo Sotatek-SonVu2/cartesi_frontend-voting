@@ -1,5 +1,6 @@
 import { getNotice } from "../helper/notices";
 
+// Call notices to get response (If it fail, continue calling. Maximum number of call: 20)
 export const handleNotices = async (epoch: number, input: number, callback: any) => {
     var times = 0;
     const myInterval = setInterval(async () => {

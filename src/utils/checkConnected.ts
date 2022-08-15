@@ -1,6 +1,8 @@
 import { createNotifications } from "../common/Notification"
 import { NOTI_TYPE } from "./contants"
 
+const CONNECT_METAMASK_ERROR_CODE = -32002
+
 export const checkConnected = async () => {
     try {
         const { ethereum } = window
@@ -11,7 +13,7 @@ export const checkConnected = async () => {
         }
         return true
     } catch (error: any) {
-        if (error.code === -32002) {
+        if (error.code === CONNECT_METAMASK_ERROR_CODE) {
             createNotifications(NOTI_TYPE.DANGER, 'Please connect to MetaMask.')
         } else {
             throw error

@@ -1,12 +1,6 @@
 import styled from 'styled-components';
 import { Button } from './common'
 
-export const MainWrapper = styled.div`
-    height: 100vh;
-    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-    overflow: hidden;
-`
-
 export const Logo = styled.div`
     display: flex;
     justify-content: space-between;

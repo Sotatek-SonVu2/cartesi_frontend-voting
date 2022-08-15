@@ -14,6 +14,7 @@ export const FORMAT_DATETIME = 'YYYY-MM-DD HH:mm:ss'
 export const ERROR_MESSAGE = 'Something went wrong! Please try again!'
 export const CHAIN_ID_ERROR_MESSAGE = 'Current Chain ID does not match'
 export const NONCE_TOO_HIGH_ERROR_MESSAGE = 'None too hight! Please reset your account on MetaMask!'
+export const NONCE_TOO_HIGH_ERROR_CODE = -32603
 
 export const NOTI_TYPE = {
     SUCCESS: 'success',
