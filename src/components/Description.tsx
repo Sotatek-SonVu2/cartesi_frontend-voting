@@ -61,7 +61,7 @@ const Description = () => {
             ) : (
                 <Content>
                     <Title>
-                        {data.name}
+                        {data.name || '(NO DATA)'}
                     </Title>
                     <h3>Description: </h3>
                     {data?.description ? (

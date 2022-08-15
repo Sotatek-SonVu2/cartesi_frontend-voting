@@ -149,7 +149,7 @@ const Voting = () => {
             ) : (
                 <Content>
                     <Title>
-                        {data.campaign.name || '(No Data)'}
+                        {data.campaign.name || '(NO DATA)'}
                     </Title>
                     <SubTitle>
                         <p>{data.campaign.start_time} - {data.campaign.end_time}</p>
