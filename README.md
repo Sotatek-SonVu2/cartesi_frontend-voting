@@ -75,5 +75,5 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ## Note
 **Here are some things to keep in mind when you run the frontend application. It is some inconvenience that the application is having and it will be fixed in the next versions the future.**
-- Sometimes on the first run, when making 1 transaction via Metamask, you may get the message `Nonce too high! Please reset your account on MetaMask!`. This is an error when sending the wrong nonce. Don't worry, it only appears on the first transaction. What you need to do: `open Metamask > Settings > Advanced > Reset Account`. And then send the transaction that you made earlier.
+- Sometimes on the first transaction, when making 1 transaction via Metamask, you may get the message `Nonce too high! Please reset your account on MetaMask!`. This is an error when sending the wrong nonce. Don't worry, it only appears on the first transaction. What you need to do: `open Metamask > Settings > Advanced > Reset Account`. And then send the transaction that you made earlier.
 
