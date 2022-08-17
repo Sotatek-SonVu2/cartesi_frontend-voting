@@ -142,8 +142,8 @@ const AddEditCampaign = () => {
         try {
             setIsLoading(true)
             const noticeKeys = await sendInput(data);
-            await handleNotices(noticeKeys?.epoch_index, noticeKeys?.input_index, ((payload: any) => {
-                if (!payload.error) {
+            handleNotices(noticeKeys?.epoch_index, noticeKeys?.input_index, ((payload: any) => {
+                if (payload && !payload.error) {
                     setDataForm(initialValue)
                     setOptions(OptionDefault)
                     createNotifications(NOTI_TYPE.SUCCESS, 'Edit campaign successfully!')
