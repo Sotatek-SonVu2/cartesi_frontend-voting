@@ -104,6 +104,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
             const getBalanceOf = await cartesiTokenContract().balanceOf(addressWallet);
             const balanceOf = parseInt(ethers.utils.formatEther(getBalanceOf))
             if (balanceOf > 0 && balanceOf > parseInt(amount.value)) {
+                console.log("waiting for transaction...");
                 const allowance: any = await cartesiTokenContract().functions.allowance(addressWallet, SPENDER_ADDRESS);
                 // increase erc20 allowance first if necessary
                 const erc20Amount = ethers.BigNumber.from(parseInt(amount.value));

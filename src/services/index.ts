@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { checkConnected } from '../utils/checkConnected';
+import { ADDRESS_WALLET } from '../utils/contants';
 
 const BASE_URL_API = process.env.REACT_APP_BASE_URL_API || ''
 
@@ -8,13 +10,18 @@ const axiosInstanceBaseApi = () => {
         headers: { 'Content-Type': 'application/json' },
     })
 
-    instance.interceptors.request.use(function (config) {
+    instance.interceptors.request.use((async (config) => {
         // Do something before request is sent
+        const isConnected = await checkConnected()
+        if (!isConnected) {
+            localStorage.setItem(ADDRESS_WALLET, '');
+            window.location.reload();
+        }
         return config;
-    }, function (error) {
+    }), ((error) => {
         // Do something with request error
         return Promise.reject(error);
-    });
+    }));
 
 
     instance.interceptors.response.use((response) => {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import Select from 'react-select';
@@ -52,6 +52,12 @@ const ActionButton = () => {
     const onChangeSelect = (opt: any) => {
         dispatch(onChangeStatus(opt.value))
     }
+
+    useEffect(() => {
+        return (() => {
+            dispatch(onChangeStatus(cadidateOptions[0].value))
+        })
+    })
 
     const toggleModal = () => {
         setIsVisible(!isVisible);
