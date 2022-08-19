@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../common/Loading";
 import { createNotifications } from "../common/Notification";
 import { handleInspectApi } from "../helper/handleInspectApi";
-import { handleNotices } from "../helper/handleNotices";
+import { handleResponse } from "../helper/handleResponse";
 import { sendInput } from "../helper/sendInput";
 import { getDepositInfo } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
@@ -16,11 +16,13 @@ import { ErrorText, Form, FormItem, Input, TextArea } from "../styled/form";
 import { Loader, LoadingAbsolute } from "../styled/loading";
 import { checkNetworks } from "../utils/checkNetworks";
 import { CAMPAIGN_DETAIL, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NONCE_TOO_HIGH_ERROR_CODE, NONCE_TOO_HIGH_ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
-import { AddEditDataType, MetadataType, OptionType } from "../utils/interface";
+import { AddEditDataType, MetadataType, OptionType, resInput } from "../utils/interface";
 import { validateDate, validateField, validateFields, validateOptions } from "../utils/validate";
 import CandidateOptions from "./CandidateOptions";
 
 const FORMAT_DATE_PICKER = 'MM/dd/yyyy h:mm aa'
+
+
 
 const AddEditCampaign = () => {
     const OptionDefault: OptionType[] = [
@@ -114,8 +116,8 @@ const AddEditCampaign = () => {
     const createCampaign = async (data: AddEditDataType) => {
         try {
             setIsLoading(true)
-            const noticeKeys = await sendInput(data);
-            handleNotices(noticeKeys?.epoch_index, noticeKeys?.input_index, ((payload: any) => {
+            const { epoch_index, input_index }: resInput = await sendInput(data);
+            handleResponse(epoch_index, input_index, ((payload: any) => {
                 if (payload && !payload.error) {
                     setDataForm(initialValue)
                     setOptions(OptionDefault)
@@ -141,8 +143,8 @@ const AddEditCampaign = () => {
     const editCampaign = async (data: AddEditDataType) => {
         try {
             setIsLoading(true)
-            const noticeKeys = await sendInput(data);
-            handleNotices(noticeKeys?.epoch_index, noticeKeys?.input_index, ((payload: any) => {
+            const { epoch_index, input_index }: resInput = await sendInput(data);
+            handleResponse(epoch_index, input_index, ((payload: any) => {
                 if (payload && !payload.error) {
                     setDataForm(initialValue)
                     setOptions(OptionDefault)

@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Select from 'react-select';
 import styled from "styled-components";
 import { createNotifications } from "../common/Notification";
-import { handleNotices } from "../helper/handleNotices";
+import { handleResponse } from "../helper/handleResponse";
 import { sendInput } from "../helper/sendInput";
 import { onChangeStatus } from "../reducers/campaignSlice";
 import { ROUTER_PATH } from "../routes/contants";
@@ -13,6 +13,7 @@ import { DangerButton, PrimaryButton, SuccessButton } from "../styled/common";
 import { FlexLayout } from "../styled/main";
 import { checkNetworks } from "../utils/checkNetworks";
 import { cadidateOptions, DELETE_CAMPAIGN, ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
+import { resInput } from "../utils/interface";
 import DeleteModal from "./Modal/DeleteModal";
 
 const EditButton = styled(PrimaryButton)`
@@ -71,8 +72,8 @@ const ActionButton = () => {
                 action: DELETE_CAMPAIGN,
                 id: paramId && parseInt(paramId)
             }
-            const noticeKeys = await sendInput(data);
-            handleNotices(noticeKeys?.epoch_index, noticeKeys?.input_index, ((payload: any) => {
+            const { epoch_index, input_index }: resInput = await sendInput(data);
+            handleResponse(epoch_index, input_index, ((payload: any) => {
                 if (payload && !payload.error) {
                     createNotifications(NOTI_TYPE.SUCCESS, payload.message)
                     navigate(ROUTER_PATH.HOMEPAGE, { replace: true });

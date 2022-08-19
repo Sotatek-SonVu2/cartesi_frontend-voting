@@ -3,9 +3,9 @@ import { ContractReceipt, ethers } from "ethers"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
+import { InputKeys } from "../../utils/types"
 import ModalComponent from "../../common/Modal"
 import { createNotifications } from "../../common/Notification"
-import { NoticeKeys } from "../../generated-src/graphql"
 import { cartesiTokenContract, erc20Contract, inputContract } from "../../helper/contractWithSigner"
 import { getDepositInfo } from "../../reducers/authSlice"
 import { AppDispatch, RootState } from "../../store"
@@ -52,15 +52,15 @@ const ERROR_TEXT = 'Please enter amount'
 export const findInputAddedInfo = (
     receipt: ContractReceipt,
     inputContract: IInput | any
-): NoticeKeys => {
+): InputKeys => {
     if (receipt.events) {
         for (const event of receipt.events) {
             try {
                 const parsedLog = inputContract.interface.parseLog(event);
                 if (parsedLog.name === "InputAdded") {
                     return {
-                        epoch_index: parsedLog.args.epochNumber.toString(),
-                        input_index: parsedLog.args.inputIndex.toString(),
+                        epoch_index: parsedLog.args.epochNumber.toNumber(),
+                        input_index: parsedLog.args.inputIndex.toNumber(),
                     };
                 }
             } catch (e) {

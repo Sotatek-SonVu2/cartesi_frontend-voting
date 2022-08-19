@@ -121,5 +121,10 @@ export interface ListCampaignType {
     error: string
 }
 
+export interface resInput {
+    epoch_index?: number
+    input_index?: number
+}
+
 
 

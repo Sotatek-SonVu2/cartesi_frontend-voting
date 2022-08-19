@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loading from "../common/Loading";
 import NoData from "../common/NoData";
 import { createNotifications } from "../common/Notification";
 import Pagination from "../common/Pagination";
 import { handleInspectApi } from "../helper/handleInspectApi";
-import { RootState } from "../store";
+import { getDepositInfo } from "../reducers/authSlice";
+import { AppDispatch, RootState } from "../store";
 import { Content, Title } from "../styled/common";
 import { ERROR_MESSAGE, LIST_CAMPAIGN, NOTI_TYPE } from "../utils/contants";
 import { CampaignDataType, ListCampaignType, MetadataType } from "../utils/interface";
@@ -21,6 +22,8 @@ const ListCampaign = () => {
         pageSize: 10,
         totalPage: 1
     });
+    const dispatch = useDispatch<AppDispatch>()
+
 
     const getData = async () => {
         try {
@@ -31,7 +34,8 @@ const ListCampaign = () => {
                 limit: paging.pageSize,
                 type: listStatus
             }
-            const result: ListCampaignType = await handleInspectApi(data, metadata)
+            await dispatch(getDepositInfo())
+            const result = await handleInspectApi(data, metadata)
             if (!result.error) {
                 setItems(result.data)
                 setPaging({

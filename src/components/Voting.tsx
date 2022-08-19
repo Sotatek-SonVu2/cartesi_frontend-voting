@@ -6,7 +6,7 @@ import Loading from "../common/Loading"
 import NoData from "../common/NoData"
 import { createNotifications } from "../common/Notification"
 import { handleInspectApi } from "../helper/handleInspectApi"
-import { handleNotices } from "../helper/handleNotices"
+import { handleResponse } from "../helper/handleResponse"
 import { sendInput } from "../helper/sendInput"
 import { getDepositInfo } from "../reducers/authSlice"
 import { onVisibleActionButton } from "../reducers/campaignSlice"
@@ -16,7 +16,7 @@ import { Content, DefaultButton, FlexLayoutBtn, PrimaryButton, SuccessButton, Ti
 import { LoadingAbsolute } from "../styled/loading"
 import { checkNetworks } from "../utils/checkNetworks"
 import { CAMPAIGN_DETAIL, ERROR_MESSAGE, NONCE_TOO_HIGH_ERROR_CODE, NONCE_TOO_HIGH_ERROR_MESSAGE, NOTI_TYPE, VOTING } from "../utils/contants"
-import { CampaignVotingType, CandidatesVotingType, MetadataType } from "../utils/interface"
+import { CampaignVotingType, CandidatesVotingType, MetadataType, resInput } from "../utils/interface"
 import ItemVoting from "./Item/ItemVoting"
 import VotingModal from "./Modal/VotingModal"
 
@@ -118,8 +118,8 @@ const Voting = () => {
                 candidate_id: candidateId,
                 campaign_id: campaignId && parseInt(campaignId)
             }
-            const noticeKeys = await sendInput(data);
-            handleNotices(noticeKeys?.epoch_index, noticeKeys?.input_index, ((payload: any) => {
+            const { epoch_index, input_index }: resInput = await sendInput(data);
+            handleResponse(epoch_index, input_index, ((payload: any) => {
                 if (payload && !payload.error) {
                     dispatch(getDepositInfo())
                     createNotifications(NOTI_TYPE.SUCCESS, 'Vote successfully!')

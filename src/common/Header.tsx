@@ -3,16 +3,16 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import DepositModal from "../components/Modal/DepositModal";
-import logo from '../images/Cartesi_Logo_White.svg';
 import EthIcon from "../images/cartesi_icon.png";
+import logo from '../images/Cartesi_Logo_White.svg';
 import LogoutIcon from "../images/logout-icon.svg";
-import { clearAccount, getDepositInfo } from "../reducers/authSlice";
+import { clearAccount } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
 import { AppDispatch, RootState } from "../store";
 import { Address, Content, Currency, Deposit, DepositContent, InforUser, Menu } from "../styled/header";
+import { Tooltip } from "../styled/list";
 import { Loader } from "../styled/loading";
 import { formatAddress } from "../utils/common";
-import { Tooltip } from "../styled/list";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -22,10 +22,6 @@ const Header = () => {
     const authState = useSelector((state: RootState) => state.auth)
     const { address, deposit_info, isLoading } = authState
     const { amount, used_amount } = deposit_info
-
-    useEffect(() => {
-        dispatch(getDepositInfo())
-    }, [])
 
     const handleLogout = async () => {
         dispatch(clearAccount())

@@ -22,6 +22,18 @@ export const ascii_to_hex = (str: string) => {
     return arr.join('');
 }
 
+export const convertPayload = (data: any, metadata: MetadataType) => {
+    const dataJson = JsonStringifyFormat(data)
+    const dataHex = ascii_to_hex(dataJson)
+
+    const payloadData = {
+        metadata: metadata,
+        payload: `0x${dataHex}`
+    }
+    const payloadJson = JsonStringifyFormat(payloadData)
+    return payloadJson
+}
+
 export const convertDataToHex = (data: any, metadata: MetadataType) => {
     const dataJson = JsonStringifyFormat(data)
     const dataHex = ascii_to_hex(dataJson)

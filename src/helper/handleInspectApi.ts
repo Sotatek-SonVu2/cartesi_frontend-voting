@@ -1,10 +1,9 @@
-import { getDataApi } from "../services"
-import { convertDataToHex, convertHexToData } from "../utils/common"
+import { convertPayload } from "../utils/common"
 import { MetadataType } from "../utils/interface"
+import { getInspect } from "./inspect"
 
 export const handleInspectApi = async (data: any, metadata: MetadataType) => {
-    const payloadHex = convertDataToHex(data, metadata)
-    const res: any = await getDataApi(payloadHex)
-    const obj = convertHexToData(res.reports[0].payload)
-    return obj
+    const payload = convertPayload(data, metadata)
+    const response = await getInspect({ payload })
+    return response
 }

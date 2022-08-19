@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createNotifications } from '../common/Notification';
 import { handleInspectApi } from '../helper/handleInspectApi';
-import { getDataApi } from '../services';
-import { convertDataToHex, convertHexToData } from '../utils/common';
 import { ADDRESS_WALLET, DEPOSIT_INFO, ERROR_MESSAGE, NOTI_TYPE } from '../utils/contants';
 import { AuthState } from '../utils/interface';
 
