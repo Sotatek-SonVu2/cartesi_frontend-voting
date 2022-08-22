@@ -6,37 +6,41 @@ export const handleResponse = async (epoch: number | undefined, input: number | 
     var times = 0;
 
     const myInterval = setInterval(async () => {
-        let result
-        const notices: any = await getNotice({
-            epoch,
-            input
-        })
-        // const convertNotice = JSON.parse(notices)
-        // let convertReport
-        // if (convertNotice?.length !== 0) {
-        //     const reports: any = await getReport({
-        //         epoch,
-        //         input
-        //     })
-        //     convertReport = JSON.parse(reports)
-        // }
+        try {
+            let result
+            const notices: any = await getNotice({
+                epoch,
+                input
+            })
+            // const convertNotice = JSON.parse(notices)
+            // let convertReport
+            // if (convertNotice?.length !== 0) {
+            //     const reports: any = await getReport({
+            //         epoch,
+            //         input
+            //     })
+            //     convertReport = JSON.parse(reports)
+            // }
 
-        result = notices
-        const arr = JSON.parse(result)
-        console.log(`Number to calls notices: ${times}, call result:`, arr.length > 0 ? true : false)
-        if (arr.length > 0) {
-            const payload = JSON.parse(arr[0]?.payload)
-            if (payload) {
-                clearInterval(myInterval);
-                console.log('Call successful!')
-                callback(payload)
+            result = notices
+            const arr = JSON.parse(result)
+            console.log(`Number to calls notices: ${times}, call result:`, arr.length > 0 ? true : false)
+            if (arr.length > 0) {
+                const payload = JSON.parse(arr[0]?.payload)
+                if (payload) {
+                    clearInterval(myInterval);
+                    console.log('Call successful!')
+                    callback(payload)
+                }
             }
-        }
-        if (++times === 20) {
+            if (++times === 20) {
+                clearInterval(myInterval);
+                console.log('Call fail!')
+                callback('')
+            }
+        } catch (error) {
             clearInterval(myInterval);
-            console.log('Call fail!')
-            callback('')
+            throw error
         }
-
     }, 1500)
 }
