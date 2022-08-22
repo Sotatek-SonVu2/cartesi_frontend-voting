@@ -119,9 +119,9 @@ const Voting = () => {
                 campaign_id: campaignId && parseInt(campaignId)
             }
             const { epoch_index, input_index }: resInput = await sendInput(data);
-            handleResponse(epoch_index, input_index, ((payload: any) => {
+            handleResponse(epoch_index, input_index, (async (payload: any) => {
                 if (payload && !payload.error) {
-                    dispatch(getDepositInfo())
+                    await dispatch(getDepositInfo())
                     createNotifications(NOTI_TYPE.SUCCESS, 'Vote successfully!')
                     navigate(`${ROUTER_PATH.RESULT}/${campaignId}`, { replace: true });
                 } else {
@@ -170,7 +170,13 @@ const Voting = () => {
                     )}
                     <FlexLayoutBtn>
                         <DefaultButton type="button" onClick={() => navigate(ROUTER_PATH.HOMEPAGE)}>Back</DefaultButton>
-                        <SuccessButton type="button" onClick={toggleModal} disabled={isCloseVoting || data.voted?.candidate_id}>Vote</SuccessButton>
+                        <SuccessButton
+                            type="button"
+                            onClick={toggleModal}
+                            disabled={isCloseVoting || data.voted?.candidate_id || !candidateId}
+                        >
+                            Vote
+                        </SuccessButton>
                         <PrimaryButton type="button" onClick={() => navigate(`${ROUTER_PATH.RESULT}/${campaignId}`)}>Result</PrimaryButton>
                     </FlexLayoutBtn>
                     {isVisible && (

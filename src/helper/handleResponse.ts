@@ -11,11 +11,17 @@ export const handleResponse = async (epoch: number | undefined, input: number | 
             epoch,
             input
         })
-        const reports: any = await getReport({
-            epoch,
-            input
-        })
-        result = reports || notices
+        // const convertNotice = JSON.parse(notices)
+        // let convertReport
+        // if (convertNotice?.length !== 0) {
+        //     const reports: any = await getReport({
+        //         epoch,
+        //         input
+        //     })
+        //     convertReport = JSON.parse(reports)
+        // }
+
+        result = notices
         const arr = JSON.parse(result)
         console.log(`Number to calls notices: ${times}, call result:`, arr.length > 0 ? true : false)
         if (arr.length > 0) {
