@@ -117,11 +117,11 @@ const AddEditCampaign = () => {
         try {
             setIsLoading(true)
             const { epoch_index, input_index }: resInput = await sendInput(data);
-            handleResponse(epoch_index, input_index, ((payload: any) => {
+            handleResponse(epoch_index, input_index, (async (payload: any) => {
                 if (payload && !payload.error) {
                     setDataForm(initialValue)
                     setOptions(OptionDefault)
-                    dispatch(getDepositInfo())
+                    await dispatch(getDepositInfo())
                     createNotifications(NOTI_TYPE.SUCCESS, 'Add campaign successfully!')
                     navigate(`${ROUTER_PATH.VOTING}/${payload.id}`, { replace: true });
                 } else {
