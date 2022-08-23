@@ -103,11 +103,9 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
                     const allowance: any = await cartesiTokenContract().functions.allowance(addressWallet, SPENDER_ADDRESS);
                     // increase erc20 allowance first if necessary
                     const erc20Amount = ethers.utils.parseEther(`${amount.value}`);
-                    console.log('erc20Amount', erc20Amount)
                     if (allowance[0].lt(erc20Amount)) {
                         const allowanceApproveAmount =
                             ethers.BigNumber.from(erc20Amount).sub(allowance[0]);
-                        console.log('allowanceApproveAmount', allowanceApproveAmount)
                         const tx = await cartesiTokenContract().approve(
                             SPENDER_ADDRESS,
                             allowanceApproveAmount
