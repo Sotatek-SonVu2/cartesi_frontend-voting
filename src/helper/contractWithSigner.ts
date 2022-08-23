@@ -1,9 +1,8 @@
 import { ethers } from "ethers"
-import ERC20Portal from '../abis/ERC20PortalFacet.json'
-import InputFacet from '../abis/InputFacet.json'
+import ERC20Portal from '../contracts/ERC20PortalFacet.json'
+import InputFacet from '../contracts/InputFacet.json'
 import { createNotifications } from "../common/Notification"
 import { NETWORK_ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants"
-// import cartesiToken from '../abis/CartesiToken.json'
 import { networks } from "./networks"
 
 const SPENDER_ADDRESS = process.env.REACT_APP_SPENDER_ADDRESS || ''
@@ -20,9 +19,9 @@ export const cartesiToken = () => {
     try {
         let cartesiContract
         let cartesiAddress
-        if (network.name == "localhost") {
-            cartesiContract = require(`../abis/CartesiToken.json`)
-            cartesiAddress = require(`../abis/CartesiToken.json`).address
+        if (network.name === "localhost") {
+            cartesiContract = require(`../contracts/CartesiToken.json`)
+            cartesiAddress = require(`../contracts/CartesiToken.json`).address
         } else if (network) {
             cartesiContract = require(`@cartesi/token/deployments/${network.name}/CartesiToken.json`)
             cartesiAddress = require(`@cartesi/token/deployments/${network.name}/CartesiToken.json`).address

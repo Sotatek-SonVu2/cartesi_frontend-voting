@@ -34,7 +34,7 @@ export const LIST_STATUS = {
 
 export const cadidateOptions = [
     {
-        label: 'All Campaign',
+        label: 'All Campaigns',
         value: LIST_STATUS.ALL,
     },
     {
