@@ -51,7 +51,6 @@ export const validateDate = (fieldName: string, value: string | Date, endDate: D
 }
 
 export const validateFields = (object: any) => {
-    delete object.formErrors
     let formErrors = { name: '', description: '', startDate: '', endDate: '' }
     let isError: boolean = false
     for (const property in object) {

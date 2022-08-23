@@ -21,6 +21,20 @@ export const ascii_to_hex = (str: string) => {
     }
     return arr.join('');
 }
+export const convertUtcToLocal = (date = new Date()) => {
+    // Convert UTC+0 datetime to local datetime
+    var offset = - (new Date().getTimezoneOffset() / 60);
+    const result = date.setHours(date.getHours() + offset);
+    return result;
+}
+
+export const convertLocalToUtc = (date = new Date()) => {
+    // Convert local datetime to UTC+0 datetime
+    var offset = (new Date().getTimezoneOffset() / 60);
+    const result = date.setHours(date.getHours() + offset);
+    convertUtcToLocal(date) // reverse the result
+    return result;
+}
 
 export const convertPayload = (data: any, metadata: MetadataType) => {
     const dataJson = JsonStringifyFormat(data)

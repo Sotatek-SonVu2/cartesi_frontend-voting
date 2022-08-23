@@ -6,7 +6,7 @@ import DepositModal from "../components/Modal/DepositModal";
 import EthIcon from "../images/cartesi_icon.png";
 import logo from '../images/Cartesi_Logo_White.svg';
 import LogoutIcon from "../images/logout-icon.svg";
-import { clearAccount } from "../reducers/authSlice";
+import { clearAccount, getDepositInfo } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
 import { AppDispatch, RootState } from "../store";
 import { Address, Content, Currency, Deposit, DepositContent, InforUser, Menu } from "../styled/header";
@@ -22,6 +22,13 @@ const Header = () => {
     const authState = useSelector((state: RootState) => state.auth)
     const { address, deposit_info, isLoading } = authState
     const { amount, used_amount } = deposit_info
+
+    useEffect(() => {
+        // Get deposit info. But Version 0.5 does not allow calling multiple API at the same time, delaying the call by 1.5s
+        setTimeout(() => {
+            dispatch(getDepositInfo())
+        }, 1500)
+    }, [])
 
     const handleLogout = async () => {
         dispatch(clearAccount())

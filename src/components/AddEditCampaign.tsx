@@ -1,3 +1,4 @@
+
 import moment from "moment";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
@@ -14,15 +15,21 @@ import { AppDispatch, RootState } from "../store";
 import { Content, DefaultButton, FlexLayoutBtn, SuccessButton, Title } from "../styled/common";
 import { ErrorText, Form, FormItem, Input, TextArea } from "../styled/form";
 import { Loader, LoadingAbsolute } from "../styled/loading";
-import { checkNetworks } from "../utils/checkNetworks";
-import { CAMPAIGN_DETAIL, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NONCE_TOO_HIGH_ERROR_CODE, NONCE_TOO_HIGH_ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
+import { convertLocalToUtc } from "../utils/common";
+import { CAMPAIGN_DETAIL, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE } from "../utils/contants";
 import { AddEditDataType, MetadataType, OptionType, resInput } from "../utils/interface";
 import { validateDate, validateField, validateFields, validateOptions } from "../utils/validate";
 import CandidateOptions from "./CandidateOptions";
 
 const FORMAT_DATE_PICKER = 'MM/dd/yyyy h:mm aa'
 
-
+const initialValue = {
+    name: '',
+    description: '',
+    startDate: new Date(),
+    endDate: new Date(),
+    formErrors: { name: '', description: '', startDate: '', endDate: '' },
+}
 
 const AddEditCampaign = () => {
     const OptionDefault: OptionType[] = [
@@ -34,13 +41,7 @@ const AddEditCampaign = () => {
         }
     ]
 
-    const initialValue = {
-        name: '',
-        description: '',
-        startDate: new Date(),
-        endDate: new Date(),
-        formErrors: { name: '', description: '', startDate: '', endDate: '' },
-    }
+
     const dispatch = useDispatch<AppDispatch>()
     let navigate = useNavigate();
     const { campaignId } = useParams();
@@ -130,11 +131,7 @@ const AddEditCampaign = () => {
                 setIsLoading(false)
             }))
         } catch (error: any) {
-            if (error.code === NONCE_TOO_HIGH_ERROR_CODE) {
-                createNotifications(NOTI_TYPE.DANGER, NONCE_TOO_HIGH_ERROR_MESSAGE)
-            } else {
-                createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
-            }
+            createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
             setIsLoading(false)
             throw error
         }
@@ -156,36 +153,26 @@ const AddEditCampaign = () => {
                 setIsLoading(false)
             }))
         } catch (error: any) {
-            if (error.code === NONCE_TOO_HIGH_ERROR_CODE) {
-                createNotifications(NOTI_TYPE.DANGER, NONCE_TOO_HIGH_ERROR_MESSAGE)
-            } else {
-                createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
-            }
+            createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
             setIsLoading(false)
             throw error
         }
     }
 
-
-    const onSubmit = (e: any) => {
+    const onSubmit = async (e: any) => {
         e.preventDefault()
-        if (!checkNetworks()) return
 
         const checkOptions = validateOptions(options)
         const checkFields = validateFields(dataForm)
         const checkDate = validateDate('startDate', dataForm.startDate, dataForm.endDate, dataForm.startDate)
-        setOptions(checkOptions.data)
-        setDataForm({
-            ...dataForm,
-            formErrors: { ...checkFields.formErrors, ...checkDate }
-        })
+
         if (!checkOptions.isError && !checkFields.isError && !checkDate?.startDate) {
             const data: AddEditDataType = {
                 action: !campaignId ? CREATE_CAMPAIGN : EDIT_CAMPAIGN,
                 name: dataForm.name,
                 description: dataForm.description,
-                start_time: moment(dataForm.startDate).format(FORMAT_DATETIME),
-                end_time: moment(dataForm.endDate).format(FORMAT_DATETIME),
+                start_time: moment(convertLocalToUtc(dataForm.startDate)).format(FORMAT_DATETIME),   // Convert local datetime to UTC+0 datetime and format
+                end_time: moment(convertLocalToUtc(dataForm.endDate)).format(FORMAT_DATETIME), // Convert local datetime to UTC+0 datetime and format
                 candidates: checkOptions.data.map((item) => {
                     return {
                         name: item.name,
@@ -205,6 +192,11 @@ const AddEditCampaign = () => {
             }
 
         } else {
+            setOptions(checkOptions.data)
+            setDataForm({
+                ...dataForm,
+                formErrors: { ...checkFields.formErrors, ...checkDate }
+            })
             createNotifications(NOTI_TYPE.DANGER, 'Please check the entered data!')
         }
     };

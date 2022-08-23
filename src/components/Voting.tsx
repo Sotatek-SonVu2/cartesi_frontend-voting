@@ -1,3 +1,4 @@
+import moment from "moment"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
@@ -14,8 +15,8 @@ import { ROUTER_PATH } from "../routes/contants"
 import { AppDispatch, RootState } from "../store"
 import { Content, DefaultButton, FlexLayoutBtn, PrimaryButton, SuccessButton, Title } from "../styled/common"
 import { LoadingAbsolute } from "../styled/loading"
-import { checkNetworks } from "../utils/checkNetworks"
-import { CAMPAIGN_DETAIL, ERROR_MESSAGE, NONCE_TOO_HIGH_ERROR_CODE, NONCE_TOO_HIGH_ERROR_MESSAGE, NOTI_TYPE, VOTING } from "../utils/contants"
+import { convertUtcToLocal } from "../utils/common"
+import { CAMPAIGN_DETAIL, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE, VOTING } from "../utils/contants"
 import { CampaignVotingType, CandidatesVotingType, MetadataType, resInput } from "../utils/interface"
 import ItemVoting from "./Item/ItemVoting"
 import VotingModal from "./Modal/VotingModal"
@@ -68,15 +69,23 @@ const Voting = () => {
                     }
                     const result = await handleInspectApi(data, metadata)
                     if (result?.campaign?.length > 0 && !result.error) {
-                        const isStartTime = new Date(result.campaign[0].start_time) < new Date()
-                        const isEndTime = new Date() < new Date(result.campaign[0].end_time)
+                        // Convert UTC+0 datetime to local datetime and format
+                        const start_time = moment(convertUtcToLocal(new Date(result.campaign[0].start_time))).format(FORMAT_DATETIME)
+                        const end_time = moment(convertUtcToLocal(new Date(result.campaign[0].end_time))).format(FORMAT_DATETIME)
+                        const now = moment(new Date()).format(FORMAT_DATETIME)
+                        const isStartTime = moment(start_time).isBefore(now) // Compare start time with current datetime
+                        const isEndTime = moment(now).isBefore(end_time) // Compare end time with current datetime
                         const isVisibleActionButton = {
                             creator: result.campaign[0].creator,
                             isOpenVoting: !isStartTime
                         }
                         setIsCloseVoting(!isStartTime || !isEndTime)
                         setData({
-                            campaign: result.campaign[0],
+                            campaign: {
+                                ...result.campaign[0],
+                                start_time,
+                                end_time
+                            },
                             candidates: result.candidates,
                             voted: result.voted
                         })
@@ -108,8 +117,7 @@ const Voting = () => {
 
     const handleVoting = async () => {
         toggleModal()
-        if (!checkNetworks()) return
-        else if (!candidateId) return createNotifications(NOTI_TYPE.DANGER, 'Please choose a candidate!')
+        if (!candidateId) return createNotifications(NOTI_TYPE.DANGER, 'Please choose a candidate!')
 
         try {
             setIsLoadVoting(true)
@@ -131,11 +139,7 @@ const Voting = () => {
                 }
             }))
         } catch (error: any) {
-            if (error.code === NONCE_TOO_HIGH_ERROR_CODE) {
-                createNotifications(NOTI_TYPE.DANGER, NONCE_TOO_HIGH_ERROR_MESSAGE)
-            } else {
-                createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
-            }
+            createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
             setCandidateId(0)
             setIsLoadVoting(false)
             throw error

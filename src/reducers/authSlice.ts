@@ -19,17 +19,17 @@ export const getDepositInfo = createAsyncThunk(
                 timestamp: Date.now()
             }
             const result = await handleInspectApi(data, metadata)
-            if (!result.error) {
+            if (result && !result.error) {
                 const amount = result.amount - result.used_amount
                 return {
                     amount,
                     used_amount: result.used_amount
                 }
             } else {
-                createNotifications(NOTI_TYPE.DANGER, result.error)
+                createNotifications(NOTI_TYPE.DANGER, result?.error || ERROR_MESSAGE)
             }
         } catch (error: any) {
-            createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
+            createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
             throw error
         }
     }

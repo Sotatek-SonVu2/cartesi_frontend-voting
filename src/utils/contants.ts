@@ -13,8 +13,9 @@ export const DEPOSIT_INFO = 'DEPOSIT_INFO'
 export const FORMAT_DATETIME = 'YYYY-MM-DD HH:mm:ss'
 export const ERROR_MESSAGE = 'Something went wrong! Please try again!'
 export const CHAIN_ID_ERROR_MESSAGE = 'Current Chain ID does not match'
-export const NONCE_TOO_HIGH_ERROR_MESSAGE = 'None too hight! Please reset your account on MetaMask!'
-export const NONCE_TOO_HIGH_ERROR_CODE = -32603
+export const CONNECT_METAMASK_ERROR_CODE = -32002
+export const CONNECT_METAMASK_ERROR_MESSAGE = 'Please connect to MetaMask.'
+export const NETWORK_ERROR_MESSAGE = 'Please check your network and try again!'
 
 export const NOTI_TYPE = {
     SUCCESS: 'success',

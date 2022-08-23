@@ -3,17 +3,16 @@ import { ContractReceipt, ethers } from "ethers"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
-import { InputKeys } from "../../utils/types"
 import ModalComponent from "../../common/Modal"
 import { createNotifications } from "../../common/Notification"
-import { cartesiTokenContract, erc20Contract, inputContract } from "../../helper/contractWithSigner"
+import { cartesiToken, cartesiTokenContract, erc20Contract, inputContract } from "../../helper/contractWithSigner"
 import { getDepositInfo } from "../../reducers/authSlice"
 import { AppDispatch, RootState } from "../../store"
 import { ModalTitle, SuccessButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
 import { Loader } from "../../styled/loading"
-import { checkNetworks } from "../../utils/checkNetworks"
-import { ERROR_MESSAGE, NONCE_TOO_HIGH_ERROR_CODE, NONCE_TOO_HIGH_ERROR_MESSAGE, NOTI_TYPE } from "../../utils/contants"
+import { ERROR_MESSAGE, NETWORK_ERROR_MESSAGE, NOTI_TYPE } from "../../utils/contants"
+import { InputKeys } from "../../utils/types"
 
 type Props = {
     isVisible: boolean
@@ -44,8 +43,6 @@ const FormItem = styled.div`
 `
 
 const SPENDER_ADDRESS = process.env.REACT_APP_SPENDER_ADDRESS || "";
-const CARTERSI_TOKEN_ADDRESS =
-    process.env.REACT_APP_CARTERSI_TOKEN_ADDRESS || "";
 
 const ERROR_TEXT = 'Please enter amount'
 
@@ -90,67 +87,68 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
     }
 
     const handleDeposit = async () => {
-        if (!checkNetworks()) return
-        else if (!amount.value) {
+        if (!amount.value) {
             setAmount({
                 ...amount,
                 errorText: ERROR_TEXT
             })
-            return
-        }
-        try {
-            setIsLoading(true)
-            // Check CTSI tokens in your account
-            const getBalanceOf = await cartesiTokenContract().balanceOf(addressWallet);
-            const balanceOf = parseInt(ethers.utils.formatEther(getBalanceOf))
-            if (balanceOf > 0 && balanceOf > parseInt(amount.value)) {
-                console.log("waiting for transaction...");
-                const allowance: any = await cartesiTokenContract().functions.allowance(addressWallet, SPENDER_ADDRESS);
-                // increase erc20 allowance first if necessary
-                const erc20Amount = ethers.BigNumber.from(parseInt(amount.value));
-                if (allowance[0].lt(erc20Amount)) {
-                    const allowanceApproveAmount =
-                        ethers.BigNumber.from(erc20Amount).sub(allowance[0]);
-                    const tx = await cartesiTokenContract().approve(
-                        SPENDER_ADDRESS,
-                        allowanceApproveAmount
-                    );
-                    await tx.wait();
-                    if (tx.hash) {
-                        console.log('Token approval successful!')
+        } else {
+            try {
+                setIsLoading(true)
+                // Check CTSI tokens in your account
+                const getBalanceOf = await cartesiTokenContract().balanceOf(addressWallet);
+                const balanceOf = parseInt(ethers.utils.formatEther(getBalanceOf))
+                if (balanceOf > 0 && balanceOf > parseInt(amount.value)) {
+                    console.log("waiting for transaction...");
+                    const allowance: any = await cartesiTokenContract().functions.allowance(addressWallet, SPENDER_ADDRESS);
+                    // increase erc20 allowance first if necessary
+                    const erc20Amount = ethers.utils.parseEther(`${amount.value}`);
+                    console.log('erc20Amount', erc20Amount)
+                    if (allowance[0].lt(erc20Amount)) {
+                        const allowanceApproveAmount =
+                            ethers.BigNumber.from(erc20Amount).sub(allowance[0]);
+                        console.log('allowanceApproveAmount', allowanceApproveAmount)
+                        const tx = await cartesiTokenContract().approve(
+                            SPENDER_ADDRESS,
+                            allowanceApproveAmount
+                        );
+                        await tx.wait();
+                        if (tx.hash) {
+                            console.log('Token approval successful!')
+                        }
                     }
+
+                    // send deposit transaction
+                    const tokenAddress = cartesiToken() && cartesiToken()?.cartesiAddress
+                    if (!tokenAddress) {
+                        return createNotifications(NOTI_TYPE.DANGER, NETWORK_ERROR_MESSAGE)
+                    }
+                    const tx = await erc20Contract().erc20Deposit(tokenAddress, erc20Amount, "0x");
+                    console.log(`transaction: ${tx.hash}`);
+                    console.log("waiting for confirmation...");
+                    const receipt = await tx.wait();
+
+                    // find added input information from transaction receipt
+                    const inputAddedInfo = findInputAddedInfo(receipt, inputContract());
+                    console.log(
+                        `deposit successfully executed as input ${inputAddedInfo?.input_index} of epoch ${inputAddedInfo?.epoch_index}`
+                    );
+                    setAmount({
+                        value: '',
+                        errorText: ''
+                    })
+                    dispatch(getDepositInfo())
+                    createNotifications(NOTI_TYPE.SUCCESS, 'Deposit successfully!')
+                } else {
+                    createNotifications(NOTI_TYPE.DANGER, 'Your account does not have enough CTSI tokens!')
                 }
 
-                // send deposit transaction
-                const tx = await erc20Contract().erc20Deposit(CARTERSI_TOKEN_ADDRESS, erc20Amount, "0x");
-                console.log(`transaction: ${tx.hash}`);
-                console.log("waiting for confirmation...");
-                const receipt = await tx.wait();
-
-                // find added input information from transaction receipt
-                const inputAddedInfo = findInputAddedInfo(receipt, inputContract());
-                console.log(
-                    `deposit successfully executed as input ${inputAddedInfo?.input_index} of epoch ${inputAddedInfo?.epoch_index}`
-                );
-                setAmount({
-                    value: '',
-                    errorText: ''
-                })
-                dispatch(getDepositInfo())
-                createNotifications(NOTI_TYPE.SUCCESS, 'Deposit successfully!')
-            } else {
-                createNotifications(NOTI_TYPE.DANGER, 'Your account does not have enough CTSI tokens!')
+            } catch (error: any) {
+                throw error
+            } finally {
+                toggleModal()
+                setIsLoading(false)
             }
-
-        } catch (error: any) {
-            if (error.code === NONCE_TOO_HIGH_ERROR_CODE) {
-                return createNotifications(NOTI_TYPE.DANGER, NONCE_TOO_HIGH_ERROR_MESSAGE)
-            }
-            createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
-            throw error
-        } finally {
-            toggleModal()
-            setIsLoading(false)
         }
     }
 

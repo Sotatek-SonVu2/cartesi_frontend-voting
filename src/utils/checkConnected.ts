@@ -1,8 +1,7 @@
 import { createNotifications } from "../common/Notification"
-import { NOTI_TYPE } from "./contants"
+import { CONNECT_METAMASK_ERROR_CODE, CONNECT_METAMASK_ERROR_MESSAGE, NOTI_TYPE } from "./contants"
 
-const CONNECT_METAMASK_ERROR_CODE = -32002
-const CONNECT_METAMASK_ERROR_MESSAGE = 'Please connect to MetaMask.'
+
 
 export const checkConnected = async () => {
     try {

@@ -18,7 +18,7 @@ export const handleResponse = async (epoch: number | undefined, input: number | 
             const prsNotice = JSON.parse(msgNotice)
             const prsReport = JSON.parse(msgReport)
             const result = prsNotice.length > 0 ? prsNotice : prsReport
-            console.log(`Number to calls notices: ${times}, call result:`, result.length > 0 ? true : false)
+            console.log(`Waiting...number to calls: ${times}, call result:`, result.length > 0 ? true : false)
             if (result.length > 0) {
                 const payload = JSON.parse(result[0]?.payload)
                 if (payload) {

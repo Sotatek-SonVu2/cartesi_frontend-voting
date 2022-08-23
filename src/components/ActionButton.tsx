@@ -11,7 +11,6 @@ import { ROUTER_PATH } from "../routes/contants";
 import { AppDispatch, RootState } from "../store";
 import { DangerButton, PrimaryButton, SuccessButton } from "../styled/common";
 import { FlexLayout } from "../styled/main";
-import { checkNetworks } from "../utils/checkNetworks";
 import { cadidateOptions, DELETE_CAMPAIGN, ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
 import { resInput } from "../utils/interface";
 import DeleteModal from "./Modal/DeleteModal";
@@ -65,7 +64,6 @@ const ActionButton = () => {
     }
 
     const onDelete = async () => {
-        if (!checkNetworks()) return
         try {
             setIsLoading(true)
             const data = {
