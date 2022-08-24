@@ -141,6 +141,31 @@ export const VotingRate = styled.span`
   margin: 8px;
 `
 
+export const BoxItem = styled.div`
+  background: rgb(195 195 195 / 14%);
+  width: 23%;
+  margin-top: 20px;
+  margin-right: 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: box-shadow .3s;
+
+  &:hover {
+    box-shadow: #f3f4f687 0px 0px 15px;
+  }
+`
+
+export const WithdrawContent = styled.div`
+  color: #fff;
+  text-align: center;
+
+  & img {
+    display: block;
+    margin: 0 auto;
+    margin-top: 24px;
+  }
+`
+
 export const Tooltip = styled.div`
   position: relative;
   display: inline-block;

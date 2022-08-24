@@ -43,7 +43,7 @@ export const LoadingWrapper = styled.div`
     align-items: center;
     height: 100%;
     min-height: 310px;
-    
+    color: #fff;
     & img {
       position: relative;
       display: block;

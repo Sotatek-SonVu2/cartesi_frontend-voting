@@ -10,7 +10,7 @@ import { RootState } from "../store"
 import { Content, DefaultButton, FlexLayoutBtn, Title } from "../styled/common"
 import { CAMPAIGN_DETAIL, ERROR_MESSAGE, NOTI_TYPE, RESULT } from "../utils/contants"
 import { CampaignType, MetadataType, VotedType } from "../utils/interface"
-import ItemResult from "./Item/ItemResult"
+import ResultItem from "./Item/Result"
 
 
 interface DataType {
@@ -95,7 +95,7 @@ const Result = () => {
                     )}
                     {campaign?.length > 0 ? campaign.map((item) => (
                         <div key={item.id}>
-                            <ItemResult data={item} voted_candidate={voted_candidate} />
+                            <ResultItem data={item} voted_candidate={voted_candidate} />
                         </div>
                     )) : (
                         <NoData />

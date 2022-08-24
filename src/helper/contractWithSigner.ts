@@ -1,6 +1,7 @@
 import { ethers } from "ethers"
 import ERC20Portal from '../contracts/ERC20PortalFacet.json'
 import InputFacet from '../contracts/InputFacet.json'
+import OutputFacet from '../contracts/OutputFacet.json'
 import { createNotifications } from "../common/Notification"
 import { NETWORK_ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants"
 import { networks } from "./networks"
@@ -52,6 +53,14 @@ export const erc20Contract = () => {
 export const inputContract = () => {
     try {
         return contractWithSigner(SPENDER_ADDRESS, InputFacet.abi)
+    } catch (error: any) {
+        throw error
+    }
+}
+
+export const outputContract = () => {
+    try {
+        return contractWithSigner(SPENDER_ADDRESS, OutputFacet.abi)
     } catch (error: any) {
         throw error
     }

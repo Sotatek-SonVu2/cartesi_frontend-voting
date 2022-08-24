@@ -21,7 +21,7 @@ interface PropsType {
     voted_candidate: VotedType | null
 }
 
-const ItemResult = ({ data, voted_candidate }: PropsType) => {
+const ResultItem = ({ data, voted_candidate }: PropsType) => {
     const { id, name, votes, avatar, total_vote } = data
     const percent: string | number = votes && total_vote ? (votes / total_vote * 100).toFixed(2) : 0
     const checked = voted_candidate?.candidate_id === id
@@ -43,4 +43,4 @@ const ItemResult = ({ data, voted_candidate }: PropsType) => {
     )
 }
 
-export default ItemResult
+export default ResultItem

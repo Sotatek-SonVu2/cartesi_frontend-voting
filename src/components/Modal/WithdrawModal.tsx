@@ -4,7 +4,9 @@ import { PrimaryButton, ModalTitle } from "../../styled/common"
 import { Loader } from "../../styled/loading"
 import { ErrorText, Input } from "../../styled/form"
 import { useState } from "react"
-
+import { getVoucher } from "../../graphql/vouchers"
+import { OutputValidityProofStruct } from "@cartesi/rollups/dist/src/types/contracts/interfaces/IOutput";
+import { outputContract } from "../../helper/contractWithSigner"
 
 const Button = styled(PrimaryButton)`
     display: flex;
@@ -34,9 +36,8 @@ type Props = {
     toggleModal: any
 }
 
-
-
 const ERROR_TEXT = 'Please enter amount'
+const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL || ''
 
 const WithdrawModal = ({ isVisible, toggleModal }: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -52,9 +53,39 @@ const WithdrawModal = ({ isVisible, toggleModal }: Props) => {
         })
     }
 
-    const onWithdraw = () => {
-        console.log('onWithdraw', onWithdraw)
-        return 123
+    const onWithdraw = async () => {
+        // wait for vouchers to appear in reader
+        const id = '1'
+        console.log(`retrieving voucher "${id}" along with proof`);
+        const voucher = await getVoucher(GRAPHQL_URL, id);
+        if (!voucher.proof) {
+            console.log(`voucher "${id}" has no associated proof yet`);
+            return;
+        }
+
+        // send transaction to execute voucher
+        console.log(`executing voucher "${id}"`);
+        const proof: OutputValidityProofStruct = {
+            ...voucher.proof,
+            epochIndex: voucher.input.epoch.index,
+            inputIndex: voucher.input.index,
+            outputIndex: voucher.index,
+        };
+        try {
+            // console.log(`Would check: ${JSON.stringify(proof)}`);
+            const tx = await outputContract().executeVoucher(
+                voucher.destination,
+                voucher.payload,
+                proof
+            );
+            const receipt = await tx.wait();
+            console.log(`voucher executed! (tx="${tx.hash}")`);
+            if (receipt.events) {
+                console.log(`resulting events: ${JSON.stringify(receipt.events)}`);
+            }
+        } catch (e) {
+            console.log(`COULD NOT EXECUTE VOUCHER: ${JSON.stringify(e)}`);
+        }
     }
 
     return (

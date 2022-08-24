@@ -16,8 +16,7 @@ interface PropsType {
     },
 }
 
-const ItemCampaign = ({ data }: PropsType) => {
-    console.log('data', data)
+const CampaignItem = ({ data }: PropsType) => {
     const navigate = useNavigate();
     const [isVisible, setIsVisible] = useState<boolean>(false)
     const { id, name, total_vote, winning_candidate_name } = data
@@ -60,4 +59,4 @@ const ItemCampaign = ({ data }: PropsType) => {
     )
 }
 
-export default ItemCampaign
+export default CampaignItem

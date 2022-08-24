@@ -9,7 +9,7 @@ import { RootState } from "../store";
 import { Content, Title } from "../styled/common";
 import { ERROR_MESSAGE, LIST_CAMPAIGN, NOTI_TYPE } from "../utils/contants";
 import { CampaignDataType, MetadataType } from "../utils/interface";
-import ItemCampaign from "./Item/ItemCampaign";
+import CampaignItem from "./Item/Campaign";
 
 const ListCampaign = () => {
     const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
@@ -65,7 +65,7 @@ const ListCampaign = () => {
                     </Title>
                     {items?.length > 0 ? items?.map((item: CampaignDataType) => (
                         <div key={item.id}>
-                            <ItemCampaign data={item} />
+                            <CampaignItem data={item} />
                         </div>
                     )) : (
                         <NoData />

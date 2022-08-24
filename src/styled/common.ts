@@ -18,7 +18,8 @@ export const colorTheme = {
     background: 'radial-gradient(ellipse at bottom,#1b2735 0%,#090a0f 100%)',
     darkBlue: '#1E1941',
     gray: '#f3f4f6',
-    white: '#ffff',
+    white: '#fff',
+    tranparent: 'rgb(195 195 195 / 14%)',
     borderGray: '#dadce0',
     primary: '#2e6da4',
     default: '#f3f4f6',
@@ -72,6 +73,7 @@ export const Content = styled.div`
     animation: mymove 1s;
     animation-fill-mode: forwards;
     overflow: hidden;
+    color: #fff;
     @keyframes mymove {
         from {left: 42rem;}
         to {left: 0px}
@@ -82,7 +84,7 @@ export const Title = styled.div`
     font-weight: 500;
     font-size: 1.5rem;
     line-height: 2rem;
-    color: #000;
+    color: #fff;
 `
 
 export const BoxContent = styled.div<BoxContentType>`
@@ -92,10 +94,17 @@ export const BoxContent = styled.div<BoxContentType>`
     border: 1px solid ${colorTheme.borderGray};
     border-radius: 7px;
     cursor: pointer;
+    color: #000;
+    transition: box-shadow .3s;
+
     ${props => props.active && `
         background: ${colorTheme.choose};
         color: ${colorTheme.white};
     `}
+
+    &:hover {
+        box-shadow: #fff 0px 0px 15px;
+    }
 `
 
 export const NoDataWrapper = styled.div`

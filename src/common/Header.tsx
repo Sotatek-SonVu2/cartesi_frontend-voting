@@ -95,7 +95,7 @@ const Header = () => {
                         <MenuTitle onClick={toggleModalDeposit}>
                             Deposit
                         </MenuTitle>
-                        <MenuTitle onClick={toggleModalWithdraw}>
+                        <MenuTitle onClick={() => navigate(ROUTER_PATH.WITHDRAW, { replace: true })}>
                             Withdraw
                         </MenuTitle>
                     </MenuList>

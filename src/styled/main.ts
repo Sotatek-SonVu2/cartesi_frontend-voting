@@ -27,13 +27,12 @@ export const FlexItem = styled.div`
 `
 
 export const ContentWrapper = styled.div`  
-    background: ${colorTheme.white};
+    background: ${colorTheme.tranparent};
     display: block;
     flex-shrink: 0;
     margin: 0 auto;
     min-height: 0;
     border-radius: 8px;
-    border: 1px solid ${colorTheme.borderGray};
     transition: .2s;
     overflow: hidden;
 `
@@ -50,4 +49,5 @@ export const SubTitle = styled.p`
     font-size: 20px;
     color: #fff;
     text-align: center;
+    margin-bottom: 3rem;
 `

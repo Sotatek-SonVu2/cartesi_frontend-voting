@@ -1,33 +1,17 @@
-import { useEffect } from "react";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Background from "./common/Background";
 import AddEditCampaign from "./components/AddEditCampaign";
 import ListCampaign from "./components/ListCampaign";
 import Result from "./components/Result";
 import Voting from "./components/Voting";
+import Withdraw from "./components/Withdraw";
 import Login from "./pages/Login";
 import Main from "./pages/Main";
 import { ROUTER_PATH } from "./routes/contants";
 import PrivateOutlet from "./routes/PrivateOutlet";
 import { MainWrapper } from "./styled/main";
-import { checkConnected } from "./utils/checkConnected";
-import { ADDRESS_WALLET } from "./utils/contants";
 
 function App() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkConnectToMetamask = async () => {
-      const isConnected = await checkConnected()
-      if (!isConnected) {
-        localStorage.setItem(ADDRESS_WALLET, '');
-        navigate(ROUTER_PATH.LOGIN, { replace: true })
-      }
-    }
-
-    checkConnectToMetamask()
-  }, [])
-
   return (
     <MainWrapper>
       <Background>
@@ -46,6 +30,7 @@ function App() {
             <Route element={<AddEditCampaign />} path={ROUTER_PATH.EDIT_CAMPAIGN + '/:campaignId'} />
             <Route element={<Voting />} path={ROUTER_PATH.VOTING + '/:campaignId'} />
             <Route element={<Result />} path={ROUTER_PATH.RESULT + '/:campaignId'} />
+            <Route element={<Withdraw />} path={ROUTER_PATH.WITHDRAW} />
           </Route>
           <Route
             path="*"

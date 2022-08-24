@@ -23,7 +23,7 @@ const FlexLayoutBetween = styled(FlexLayout)`
     justify-content: space-between;
 `
 
-const ItemVoting = ({ data, handleClick, active }: PropsType) => {
+const VotingItem = ({ data, handleClick, active }: PropsType) => {
     const [isVisible, setIsVisible] = useState<boolean>(false)
     const { id, name, avatar } = data
 
@@ -61,4 +61,4 @@ const ItemVoting = ({ data, handleClick, active }: PropsType) => {
     )
 }
 
-export default ItemVoting
+export default VotingItem

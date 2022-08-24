@@ -18,7 +18,7 @@ import { LoadingAbsolute } from "../styled/loading"
 import { convertUtcToLocal } from "../utils/common"
 import { CAMPAIGN_DETAIL, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE, VOTING } from "../utils/contants"
 import { CampaignVotingType, CandidatesVotingType, MetadataType, resInput } from "../utils/interface"
-import ItemVoting from "./Item/ItemVoting"
+import VotingItem from "./Item/Voting"
 import VotingModal from "./Modal/VotingModal"
 
 interface DataType {
@@ -167,7 +167,7 @@ const Voting = () => {
                     )}
                     {data?.candidates.length > 0 ? data.candidates.map(item => (
                         <div key={item.id}>
-                            <ItemVoting active={candidateId} data={item} handleClick={(id: number) => onChooseAnswer(id)} />
+                            <VotingItem active={candidateId} data={item} handleClick={(id: number) => onChooseAnswer(id)} />
                         </div>
                     )) : (
                         <NoData />
