@@ -1,9 +1,11 @@
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import DescriptionIcon from '../../images/desc-icon.svg'
 import StarIcon from '../../images/star.svg'
 import { ROUTER_PATH } from "../../routes/contants"
 import { BoxContent } from "../../styled/common"
 import { ActionItem, ActionList, CampaignName, WinnerCandidate, WinnerName, Wrapper } from "../../styled/list"
+import DescriptionModal from "../Modal/DescriptionModal"
 
 interface PropsType {
     data: {
@@ -16,7 +18,12 @@ interface PropsType {
 
 const ItemCampaign = ({ data }: PropsType) => {
     const navigate = useNavigate();
+    const [isVisible, setIsVisible] = useState<boolean>(false)
     const { id, name, total_vote, winning_candidate_name } = data
+
+    const toggleModal = () => {
+        setIsVisible(!isVisible);
+    }
 
     return (
         <Wrapper key={id}>
@@ -34,13 +41,20 @@ const ItemCampaign = ({ data }: PropsType) => {
                     <ActionItem>
                         {total_vote || 0} vote
                     </ActionItem>
-                    <ActionItem onClick={() => navigate(`${ROUTER_PATH.DESCRIPTION}/${id}`)}>
+                    <ActionItem onClick={toggleModal}>
                         <img src={DescriptionIcon} alt="description icon" width={17} />
                         <span>Description</span>
                     </ActionItem>
                 </ActionList>
-
             </BoxContent>
+            {isVisible && (
+                <DescriptionModal
+                    isVisible={isVisible}
+                    toggleModal={toggleModal}
+                    campaignId={id}
+                />
+            )}
+
         </Wrapper>
     )
 }

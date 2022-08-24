@@ -7,5 +7,4 @@ export const ROUTER_PATH = {
     LIST_CAMPAIGN: '/list-campaign',
     ADD_CAMPAIGN: '/add-campaign',
     EDIT_CAMPAIGN: '/edit-campaign',
-    DESCRIPTION: '/description',
 }

@@ -11,7 +11,7 @@ import { AppDispatch, RootState } from "../../store"
 import { ModalTitle, SuccessButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
 import { Loader } from "../../styled/loading"
-import { ERROR_MESSAGE, NETWORK_ERROR_MESSAGE, NOTI_TYPE } from "../../utils/contants"
+import { NETWORK_ERROR_MESSAGE, NOTI_TYPE } from "../../utils/contants"
 import { InputKeys } from "../../utils/types"
 
 type Props = {

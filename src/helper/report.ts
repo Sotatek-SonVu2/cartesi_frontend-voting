@@ -7,9 +7,9 @@ interface Args {
     input?: number;
 }
 
-const DEFAULT_URL = "http://localhost:4000/graphql";
+const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL || ''
 
-export const getReport = async ({ url = DEFAULT_URL, epoch, input }: Args) => {
+export const getReport = async ({ url = GRAPHQL_URL, epoch, input }: Args) => {
     // wait for reports to appear in reader
     const reports: any = await getReports(url, {
         epoch_index: epoch,

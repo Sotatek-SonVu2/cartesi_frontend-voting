@@ -46,7 +46,7 @@ const ListCampaign = () => {
             createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
             throw error
         } finally {
-            setTimeout(() => setIsLoading(false), 2000)
+            setIsLoading(false)
         }
     }
 

@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Background from "./common/Background";
 import AddEditCampaign from "./components/AddEditCampaign";
-import Description from "./components/Description";
 import ListCampaign from "./components/ListCampaign";
 import Result from "./components/Result";
 import Voting from "./components/Voting";
@@ -47,8 +46,6 @@ function App() {
             <Route element={<AddEditCampaign />} path={ROUTER_PATH.EDIT_CAMPAIGN + '/:campaignId'} />
             <Route element={<Voting />} path={ROUTER_PATH.VOTING + '/:campaignId'} />
             <Route element={<Result />} path={ROUTER_PATH.RESULT + '/:campaignId'} />
-            <Route element={<Description />} path={ROUTER_PATH.DESCRIPTION + '/:campaignId'} />
-            <Route element={<Description />} path={ROUTER_PATH.DESCRIPTION + '/:campaignId' + '/:candidateId'} />
           </Route>
           <Route
             path="*"

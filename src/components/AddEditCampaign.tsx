@@ -87,7 +87,7 @@ const AddEditCampaign = () => {
                     createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
                     throw error
                 } finally {
-                    setTimeout(() => setIsLoading(false), 1500)
+                    setIsLoading(false)
                 }
             }
         }

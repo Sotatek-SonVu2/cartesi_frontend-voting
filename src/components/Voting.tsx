@@ -98,7 +98,7 @@ const Voting = () => {
                     createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
                     throw error
                 } finally {
-                    setTimeout(() => setIsLoading(false), 1500)
+                    setIsLoading(false)
                 }
             }
         }

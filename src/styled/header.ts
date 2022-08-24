@@ -1,16 +1,19 @@
 import styled from "styled-components";
 
-export const Deposit = styled.div`
+export const MenuList = styled.div`
     display: flex;
     justify-content: center;
-    flex-direction: column;
+    align-items: center;
 `
 
-export const DepositContent = styled.div`
-    border-right: 1px solid #fff;
+export const MenuTitle = styled.div`
     border-left: 1px solid #fff;
     padding: 0px 10px;
     cursor: pointer;
+
+    &:last-child {
+        border-right: 1px solid #fff;
+    }
 `
 
 export const Content = styled.div`

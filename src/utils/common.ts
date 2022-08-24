@@ -5,32 +5,32 @@ export const JsonStringifyFormat = (data: {}) => {
 }
 
 export const hex_to_ascii = (str: string) => {
-    var hex = str.toString();
-    var str = '';
-    for (var n = 0; n < hex.length; n += 2) {
-        str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
+    const hex = str.toString();
+    let strJson = '';
+    for (let n = 0; n < hex.length; n += 2) {
+        strJson += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
     }
-    return str;
+    return strJson;
 }
 
 export const ascii_to_hex = (str: string) => {
-    var arr = [];
-    for (var n = 0; n < str.length; n++) {
-        var hex = Number(str.charCodeAt(n)).toString(16);
+    let arr = [];
+    for (let n = 0; n < str.length; n++) {
+        const hex = Number(str.charCodeAt(n)).toString(16);
         arr.push(hex);
     }
     return arr.join('');
 }
 export const convertUtcToLocal = (date = new Date()) => {
     // Convert UTC+0 datetime to local datetime
-    var offset = - (new Date().getTimezoneOffset() / 60);
+    const offset = - (new Date().getTimezoneOffset() / 60);
     const result = date.setHours(date.getHours() + offset);
     return result;
 }
 
 export const convertLocalToUtc = (date = new Date()) => {
     // Convert local datetime to UTC+0 datetime
-    var offset = (new Date().getTimezoneOffset() / 60);
+    const offset = (new Date().getTimezoneOffset() / 60);
     const result = date.setHours(date.getHours() + offset);
     convertUtcToLocal(date) // reverse the result
     return result;

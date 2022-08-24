@@ -7,9 +7,9 @@ interface Args {
     input: number;
 }
 
-const DEFAULT_URL = "http://localhost:4000/graphql";
+const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL || ''
 
-export const getVoucher = async ({ url = DEFAULT_URL, epoch, input }: Args) => {
+export const getVoucher = async ({ url = GRAPHQL_URL, epoch, input }: Args) => {
     // wait for vouchers to appear in reader
     const vouchers = await getVouchers(url, {
         epoch_index: epoch,

@@ -6,6 +6,8 @@ import DescriptionIcon from '../../images/desc-icon.svg'
 import { ROUTER_PATH } from "../../routes/contants";
 import styled from "styled-components";
 import { FlexLayout } from "../../styled/main";
+import DescriptionModal from "../Modal/DescriptionModal";
+import { useState } from "react";
 
 interface PropsType {
     data: {
@@ -24,7 +26,12 @@ const FlexLayoutBetween = styled(FlexLayout)`
 
 const ItemVoting = ({ data, handleClick, active }: PropsType) => {
     const navigate = useNavigate();
+    const [isVisible, setIsVisible] = useState<boolean>(false)
     const { id, name, campaign_id, avatar } = data
+
+    const toggleModal = () => {
+        setIsVisible(!isVisible);
+    }
 
     const onClick = () => {
         handleClick(id)
@@ -40,11 +47,19 @@ const ItemVoting = ({ data, handleClick, active }: PropsType) => {
                         </Avatar>
                         {name}
                     </VotingName>
-                    <ItemIcon>
-                        <img src={DescriptionIcon} alt="description icon" width={20} onClick={() => navigate(`${ROUTER_PATH.DESCRIPTION}/${campaign_id}/${id}`)} />
+                    <ItemIcon onClick={toggleModal}>
+                        <img src={DescriptionIcon} alt="description icon" width={18} />
                     </ItemIcon>
                 </FlexLayoutBetween>
             </BoxContent>
+            {isVisible && (
+                <DescriptionModal
+                    isVisible={isVisible}
+                    toggleModal={toggleModal}
+                    campaignId={campaign_id}
+                    candidateId={id}
+                />
+            )}
         </Wrapper>
     )
 }

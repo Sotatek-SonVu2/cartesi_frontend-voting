@@ -21,10 +21,9 @@ interface Args {
 export const command = "notices";
 export const describe = "List notices of an epoch and input";
 
-const DEFAULT_URL = "http://localhost:4000/graphql";
+const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL || ''
 
-
-export const getNotice = async ({ url = DEFAULT_URL, epoch, input }: Args) => {
+export const getNotice = async ({ url = GRAPHQL_URL, epoch, input }: Args) => {
     // wait for notices to appear in reader
     const notices = await getNotices(url, {
         epoch_index: epoch,
