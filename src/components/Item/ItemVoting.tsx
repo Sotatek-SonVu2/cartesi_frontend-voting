@@ -13,7 +13,6 @@ interface PropsType {
     data: {
         id: number
         name: string
-        campaign_id: number
         avatar: string
     },
     handleClick: Function,
@@ -25,9 +24,8 @@ const FlexLayoutBetween = styled(FlexLayout)`
 `
 
 const ItemVoting = ({ data, handleClick, active }: PropsType) => {
-    const navigate = useNavigate();
     const [isVisible, setIsVisible] = useState<boolean>(false)
-    const { id, name, campaign_id, avatar } = data
+    const { id, name, avatar } = data
 
     const toggleModal = () => {
         setIsVisible(!isVisible);
@@ -56,8 +54,7 @@ const ItemVoting = ({ data, handleClick, active }: PropsType) => {
                 <DescriptionModal
                     isVisible={isVisible}
                     toggleModal={toggleModal}
-                    campaignId={campaign_id}
-                    candidateId={id}
+                    data={data}
                 />
             )}
         </Wrapper>

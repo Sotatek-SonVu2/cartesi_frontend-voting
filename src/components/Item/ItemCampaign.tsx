@@ -17,6 +17,7 @@ interface PropsType {
 }
 
 const ItemCampaign = ({ data }: PropsType) => {
+    console.log('data', data)
     const navigate = useNavigate();
     const [isVisible, setIsVisible] = useState<boolean>(false)
     const { id, name, total_vote, winning_candidate_name } = data
@@ -51,7 +52,7 @@ const ItemCampaign = ({ data }: PropsType) => {
                 <DescriptionModal
                     isVisible={isVisible}
                     toggleModal={toggleModal}
-                    campaignId={id}
+                    data={data}
                 />
             )}
 
