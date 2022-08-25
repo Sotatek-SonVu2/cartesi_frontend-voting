@@ -145,7 +145,8 @@ export const BoxItem = styled.div`
   background: rgb(195 195 195 / 14%);
   width: 23%;
   margin-top: 20px;
-  margin-right: 10px;
+  margin-right: 5px;
+  margin-left: 5px;
   border-radius: 7px;
   cursor: pointer;
   transition: box-shadow .3s;
@@ -153,6 +154,27 @@ export const BoxItem = styled.div`
   &:hover {
     box-shadow: #f3f4f687 0px 0px 15px;
   }
+
+  &:hover img{
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    perspective: 1000px;
+  };
+
+  @keyframes shake {
+      10%, 90% {
+          transform: translate3d(-1px, 0, 0);
+      }
+      20%, 80% {
+          transform: translate3d(2px, 0, 0);
+      }
+      30%, 50%, 70% {
+          transform: translate3d(-4px, 0, 0);
+      }
+      40%, 60% {
+          transform: translate3d(4px, 0, 0);
+      }
+  };
 `
 
 export const WithdrawContent = styled.div`
@@ -163,6 +185,12 @@ export const WithdrawContent = styled.div`
     display: block;
     margin: 0 auto;
     margin-top: 24px;
+  }
+
+  & div {
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,0), #ffffff, rgba(255,0,0,0), rgba(255,0,0,0));
+    margin-top: 30px;
   }
 `
 

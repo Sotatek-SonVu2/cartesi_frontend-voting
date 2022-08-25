@@ -26,7 +26,7 @@ export const LoadingAbsolute = styled.div`
    position: absolute;
    left: 0;
    top: 0;
-   background: rgb(0 0 0 / 12%);
+   background: rgb(0 0 0 / 38%);
    z-index: 10;
    width: 100%;
    display: flex;

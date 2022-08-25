@@ -11,7 +11,7 @@ import { ERROR_MESSAGE, LIST_CAMPAIGN, NOTI_TYPE } from "../utils/contants";
 import { CampaignDataType, MetadataType } from "../utils/interface";
 import CampaignItem from "./Item/Campaign";
 
-const ListCampaign = () => {
+const ListCampaigns = () => {
     const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
     const listStatus = useSelector((state: RootState) => state.campaign.listStatus)
     const [items, setItems] = useState<CampaignDataType[]>([])
@@ -61,7 +61,7 @@ const ListCampaign = () => {
             ) : (
                 <Content>
                     <Title>
-                        List campaign
+                        List campaigns
                     </Title>
                     {items?.length > 0 ? items?.map((item: CampaignDataType) => (
                         <div key={item.id}>
@@ -86,4 +86,4 @@ const ListCampaign = () => {
     )
 }
 
-export default ListCampaign
+export default ListCampaigns

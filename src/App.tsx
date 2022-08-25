@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Background from "./common/Background";
 import AddEditCampaign from "./components/AddEditCampaign";
-import ListCampaign from "./components/ListCampaign";
+import ListCampaigns from "./components/ListCampaigns";
 import Result from "./components/Result";
 import Voting from "./components/Voting";
 import Withdraw from "./components/Withdraw";
@@ -25,7 +25,7 @@ function App() {
             }
             path={ROUTER_PATH.HOMEPAGE}
           >
-            <Route element={<ListCampaign />} index={true} />
+            <Route element={<ListCampaigns />} index={true} />
             <Route element={<AddEditCampaign />} path={ROUTER_PATH.ADD_CAMPAIGN} />
             <Route element={<AddEditCampaign />} path={ROUTER_PATH.EDIT_CAMPAIGN + '/:campaignId'} />
             <Route element={<Voting />} path={ROUTER_PATH.VOTING + '/:campaignId'} />

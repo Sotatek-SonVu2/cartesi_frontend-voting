@@ -3,14 +3,13 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import DepositModal from "../components/Modal/DepositModal";
-import WithdrawModal from "../components/Modal/WithdrawModal";
 import EthIcon from "../images/cartesi_icon.png";
 import logo from '../images/Cartesi_Logo_White.svg';
 import LogoutIcon from "../images/logout-icon.svg";
 import { clearAccount, getDepositInfo } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
 import { AppDispatch, RootState } from "../store";
-import { Address, Content, Currency, MenuList, MenuTitle, InforUser, Menu } from "../styled/header";
+import { Address, Content, Currency, InforUser, Menu, MenuList, MenuTitle } from "../styled/header";
 import { Tooltip } from "../styled/list";
 import { Loader } from "../styled/loading";
 import { formatAddress } from "../utils/common";
@@ -18,8 +17,7 @@ import { formatAddress } from "../utils/common";
 const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>()
-    const [isVisibleDeposit, setIsVisibleDeposit] = useState<boolean>(false);
-    const [isVisibleWithdraw, setIsVisibleWithdraw] = useState<boolean>(false);
+    const [isVisible, setIsVisible] = useState<boolean>(false);
     const [isCopied, setIsCopied] = useState<boolean>(false)
     const authState = useSelector((state: RootState) => state.auth)
     const { address, deposit_info, isLoading } = authState
@@ -55,13 +53,10 @@ const Header = () => {
         };
     }, [window.ethereum]);
 
-    const toggleModalDeposit = () => {
-        setIsVisibleDeposit(!isVisibleDeposit);
+    const toggleModal = () => {
+        setIsVisible(!isVisible);
     }
 
-    const toggleModalWithdraw = () => {
-        setIsVisibleWithdraw(!isVisibleWithdraw)
-    }
 
     const handleCopy = () => {
         setIsCopied(true)
@@ -82,7 +77,6 @@ const Header = () => {
                                     <span>{formatAddress(address)}</span>
                                     <div className="tooltiptext">{!isCopied ? 'Copy to Clipboard' : 'Copied!'}</div>
                                 </Tooltip>
-
                             </Address>
                         </CopyToClipboard>
                         <Currency>
@@ -92,7 +86,7 @@ const Header = () => {
                         </Currency>
                     </InforUser>
                     <MenuList>
-                        <MenuTitle onClick={toggleModalDeposit}>
+                        <MenuTitle onClick={toggleModal}>
                             Deposit
                         </MenuTitle>
                         <MenuTitle onClick={() => navigate(ROUTER_PATH.WITHDRAW, { replace: true })}>
@@ -102,16 +96,10 @@ const Header = () => {
                     <img className="logoutIcon" src={LogoutIcon} alt="logoutIcon" width={20} onClick={handleLogout} />
                 </Menu>
 
-                {isVisibleDeposit && (
+                {isVisible && (
                     <DepositModal
-                        isVisible={isVisibleDeposit}
-                        toggleModal={toggleModalDeposit}
-                    />
-                )}
-                {isVisibleWithdraw && (
-                    <WithdrawModal
-                        isVisible={isVisibleWithdraw}
-                        toggleModal={toggleModalWithdraw}
+                        isVisible={isVisible}
+                        toggleModal={toggleModal}
                     />
                 )}
             </Content>

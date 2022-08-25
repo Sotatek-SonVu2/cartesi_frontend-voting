@@ -1,12 +1,9 @@
+import { useState } from "react"
 import styled from "styled-components"
 import ModalComponent from "../../common/Modal"
-import { PrimaryButton, ModalTitle } from "../../styled/common"
-import { Loader } from "../../styled/loading"
+import { ModalTitle, PrimaryButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
-import { useState } from "react"
-import { getVoucher } from "../../graphql/vouchers"
-import { OutputValidityProofStruct } from "@cartesi/rollups/dist/src/types/contracts/interfaces/IOutput";
-import { outputContract } from "../../helper/contractWithSigner"
+import { Loader } from "../../styled/loading"
 
 const Button = styled(PrimaryButton)`
     display: flex;
@@ -34,13 +31,13 @@ const FormItem = styled.div`
 type Props = {
     isVisible: boolean
     toggleModal: any
+    isLoadingModal: boolean
+    onAddWithdraw: any
 }
 
 const ERROR_TEXT = 'Please enter amount'
-const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL || ''
 
-const WithdrawModal = ({ isVisible, toggleModal }: Props) => {
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+const WithdrawModal = ({ isVisible, toggleModal, onAddWithdraw, isLoadingModal }: Props) => {
     const [amount, setAmount] = useState({
         value: '',
         errorText: ''
@@ -53,43 +50,19 @@ const WithdrawModal = ({ isVisible, toggleModal }: Props) => {
         })
     }
 
-    const onWithdraw = async () => {
-        // wait for vouchers to appear in reader
-        const id = '1'
-        console.log(`retrieving voucher "${id}" along with proof`);
-        const voucher = await getVoucher(GRAPHQL_URL, id);
-        if (!voucher.proof) {
-            console.log(`voucher "${id}" has no associated proof yet`);
-            return;
-        }
-
-        // send transaction to execute voucher
-        console.log(`executing voucher "${id}"`);
-        const proof: OutputValidityProofStruct = {
-            ...voucher.proof,
-            epochIndex: voucher.input.epoch.index,
-            inputIndex: voucher.input.index,
-            outputIndex: voucher.index,
-        };
-        try {
-            // console.log(`Would check: ${JSON.stringify(proof)}`);
-            const tx = await outputContract().executeVoucher(
-                voucher.destination,
-                voucher.payload,
-                proof
-            );
-            const receipt = await tx.wait();
-            console.log(`voucher executed! (tx="${tx.hash}")`);
-            if (receipt.events) {
-                console.log(`resulting events: ${JSON.stringify(receipt.events)}`);
-            }
-        } catch (e) {
-            console.log(`COULD NOT EXECUTE VOUCHER: ${JSON.stringify(e)}`);
+    const handleAddWithdraw = () => {
+        if (!amount.value) {
+            setAmount({
+                ...amount,
+                errorText: ERROR_TEXT
+            })
+        } else {
+            onAddWithdraw(amount.value)
         }
     }
 
     return (
-        <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title='Withdraw Token' isLoading={isLoading}>
+        <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title='Withdraw Token' isLoading={isLoadingModal}>
             <div>
                 <ModalTitle>
                     <FormItem>
@@ -104,8 +77,8 @@ const WithdrawModal = ({ isVisible, toggleModal }: Props) => {
                     </FormItem>
                 </ModalTitle>
                 <ErrorMessage>{amount.errorText}</ErrorMessage>
-                <Button onClick={onWithdraw} disabled={isLoading}>
-                    {isLoading && (<Loader />)}
+                <Button onClick={handleAddWithdraw} disabled={isLoadingModal}>
+                    {isLoadingModal && (<Loader />)}
                     Save
                 </Button>
             </div>

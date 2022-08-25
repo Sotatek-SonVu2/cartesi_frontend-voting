@@ -3,8 +3,8 @@ import { getVouchers } from "../graphql/vouchers";
 
 interface Args {
     url?: string;
-    epoch: number;
-    input: number;
+    epoch?: number;
+    input?: number;
 }
 
 const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL || ''
@@ -24,7 +24,7 @@ export const getVoucher = async ({ url = GRAPHQL_URL, epoch, input }: Args) => {
         .sort((a, b) => {
             // sort by epoch index and then by input index
             const epochResult = a.input.epoch.index - b.input.epoch.index;
-            if (epochResult != 0) {
+            if (epochResult !== 0) {
                 return epochResult;
             } else {
                 return a.input.index - b.input.index;

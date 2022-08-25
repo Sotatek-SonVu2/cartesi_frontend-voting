@@ -11,7 +11,7 @@ interface PaginationType {
 }
 
 interface ButtonType {
-    disabled?: boolean
+    disabled?: boolean | number
 }
 
 export const colorTheme = {

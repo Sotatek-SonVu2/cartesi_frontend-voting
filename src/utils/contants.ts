@@ -9,6 +9,7 @@ export const VOTING = 'VOTE'
 export const RESULT = 'RESULT'
 export const DELETE_CAMPAIGN = 'DELETE_CAMPAIGN'
 export const DEPOSIT_INFO = 'DEPOSIT_INFO'
+export const WITHDRAW = 'WITHDRAW'
 
 export const FORMAT_DATETIME = 'YYYY-MM-DD HH:mm:ss'
 export const ERROR_MESSAGE = 'Something went wrong! Please try again!'
