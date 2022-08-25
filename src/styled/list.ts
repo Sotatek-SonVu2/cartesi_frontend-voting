@@ -187,6 +187,11 @@ export const WithdrawContent = styled.div`
     margin-top: 24px;
   }
 
+  & h5 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
+
   & div {
     height: 2px;
     background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,0), #ffffff, rgba(255,0,0,0), rgba(255,0,0,0));
