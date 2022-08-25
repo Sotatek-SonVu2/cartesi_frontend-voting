@@ -41,7 +41,6 @@ const AddEditCampaign = () => {
         }
     ]
 
-
     const dispatch = useDispatch<AppDispatch>()
     let navigate = useNavigate();
     const { campaignId } = useParams();

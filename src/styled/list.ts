@@ -144,6 +144,7 @@ export const VotingRate = styled.span`
 export const BoxItem = styled.div`
   background: rgb(195 195 195 / 14%);
   width: 23%;
+  height: 215px;
   margin-top: 20px;
   margin-right: 5px;
   margin-left: 5px;
@@ -195,7 +196,7 @@ export const WithdrawContent = styled.div`
   & div {
     height: 2px;
     background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,0), #ffffff, rgba(255,0,0,0), rgba(255,0,0,0));
-    margin-top: 30px;
+    margin-top: 25px;
   }
 `
 

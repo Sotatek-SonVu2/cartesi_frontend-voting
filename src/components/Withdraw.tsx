@@ -16,6 +16,10 @@ import { createNotifications } from "../common/Notification";
 import { handleResponse } from "../helper/handleResponse";
 import { resInput } from "../utils/interface";
 import { sendInput } from "../helper/sendInput";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store";
+import { getDepositInfo } from "../reducers/authSlice";
+import { LoadingAbsolute } from "../styled/loading";
 
 const BoxItemCustom = styled(BoxItem)`
     display: flex;
@@ -29,9 +33,10 @@ const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL || ''
 
 const Withdraw = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [isLoadingModal, setIsLoadingModal] = useState<boolean>(false)
+    const [isWithdrawLoading, setIsWithdrawLoading] = useState<boolean>(false)
     const [vouchers, setVouchers] = useState<any[]>([])
     const [isVisible, setIsVisible] = useState<boolean>(false);
+    const dispatch = useDispatch<AppDispatch>()
 
     const toggleModal = () => {
         setIsVisible(!isVisible);
@@ -47,6 +52,7 @@ const Withdraw = () => {
             createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
             throw error
         } finally {
+            dispatch(getDepositInfo())
             setIsLoading(false)
         }
     }
@@ -57,7 +63,7 @@ const Withdraw = () => {
 
     const onAddWithdraw = async (amount: string) => {
         try {
-            setIsLoadingModal(true)
+            setIsWithdrawLoading(true)
             const decimal = parseInt(amount) * Math.pow(10, 18)
             const data = {
                 action: WITHDRAW,
@@ -71,13 +77,11 @@ const Withdraw = () => {
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, payload.error || ERROR_MESSAGE)
                 }
-                setIsLoadingModal(false)
-                toggleModal()
+                setIsWithdrawLoading(false)
             }))
         } catch (error) {
             createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
-            setIsLoadingModal(false)
-            toggleModal()
+            setIsWithdrawLoading(false)
             throw error
         }
 
@@ -85,10 +89,11 @@ const Withdraw = () => {
 
     const onWithdraw = async (id: string) => {
         // wait for vouchers to appear in reader
+        setIsWithdrawLoading(true)
         console.log(`retrieving voucher "${id}" along with proof`);
         const voucher = await getVoucherExcute(GRAPHQL_URL, id);
         if (!voucher.proof) {
-            console.log(`voucher "${id}" has no associated proof yet`);
+            createNotifications(NOTI_TYPE.DANGER, `Voucher "${id}" has no associated proof yet`)
             return;
         }
 
@@ -108,12 +113,15 @@ const Withdraw = () => {
                 proof
             );
             const receipt = await tx.wait();
-            console.log(`voucher executed! (tx="${tx.hash}")`);
             if (receipt.events) {
                 console.log(`resulting events: ${JSON.stringify(receipt.events)}`);
+                getData()
+                createNotifications(NOTI_TYPE.SUCCESS, 'Withdraw token successfully!')
             }
-        } catch (e) {
-            console.log(`COULD NOT EXECUTE VOUCHER: ${JSON.stringify(e)}`);
+        } catch (error: any) {
+            createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
+        } finally {
+            setIsWithdrawLoading(false)
         }
     }
 
@@ -130,7 +138,7 @@ const Withdraw = () => {
                         <BoxItemCustom onClick={toggleModal}>
                             <WithdrawContent>
                                 <img src={PlusIcon} alt="gift" width={'20%'} />
-                                <h5>Add withdraw</h5>
+                                <h5>Withdraw token</h5>
                             </WithdrawContent>
                         </BoxItemCustom>
                         {vouchers?.map((item: any, index: number) => (
@@ -139,11 +147,15 @@ const Withdraw = () => {
                             </BoxItem>
                         ))}
                     </FlexLayoutSwap>
+                    {isWithdrawLoading && (
+                        <LoadingAbsolute>
+                            <Loading />
+                        </LoadingAbsolute>
+                    )}
                     {isVisible && (
                         <WithdrawModal
                             isVisible={isVisible}
                             toggleModal={toggleModal}
-                            isLoadingModal={isLoadingModal}
                             onAddWithdraw={onAddWithdraw}
                         />
                     )}

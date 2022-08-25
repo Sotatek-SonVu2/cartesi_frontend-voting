@@ -31,13 +31,12 @@ const FormItem = styled.div`
 type Props = {
     isVisible: boolean
     toggleModal: any
-    isLoadingModal: boolean
     onAddWithdraw: any
 }
 
 const ERROR_TEXT = 'Please enter amount'
 
-const WithdrawModal = ({ isVisible, toggleModal, onAddWithdraw, isLoadingModal }: Props) => {
+const WithdrawModal = ({ isVisible, toggleModal, onAddWithdraw }: Props) => {
     const [amount, setAmount] = useState({
         value: '',
         errorText: ''
@@ -58,11 +57,12 @@ const WithdrawModal = ({ isVisible, toggleModal, onAddWithdraw, isLoadingModal }
             })
         } else {
             onAddWithdraw(amount.value)
+            toggleModal()
         }
     }
 
     return (
-        <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title='Withdraw Token' isLoading={isLoadingModal}>
+        <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title='Withdraw Token'>
             <div>
                 <ModalTitle>
                     <FormItem>
@@ -77,8 +77,7 @@ const WithdrawModal = ({ isVisible, toggleModal, onAddWithdraw, isLoadingModal }
                     </FormItem>
                 </ModalTitle>
                 <ErrorMessage>{amount.errorText}</ErrorMessage>
-                <Button onClick={handleAddWithdraw} disabled={isLoadingModal}>
-                    {isLoadingModal && (<Loader />)}
+                <Button onClick={handleAddWithdraw}>
                     Save
                 </Button>
             </div>

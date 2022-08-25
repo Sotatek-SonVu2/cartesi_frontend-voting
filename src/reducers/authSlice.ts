@@ -20,10 +20,11 @@ export const getDepositInfo = createAsyncThunk(
             }
             const result = await handleInspectApi(data, metadata)
             if (result && !result.error) {
-                const amount = result.amount - result.used_amount
+                const { amount, used_amount, withdrawn_amount } = result
+                const depositAmount = amount - used_amount - withdrawn_amount
                 return {
-                    amount,
-                    used_amount: result.used_amount
+                    amount: depositAmount,
+                    used_amount
                 }
             } else {
                 createNotifications(NOTI_TYPE.DANGER, result?.error || ERROR_MESSAGE)
