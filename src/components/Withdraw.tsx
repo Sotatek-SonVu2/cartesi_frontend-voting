@@ -72,7 +72,6 @@ const Withdraw = () => {
             createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
             throw error
         } finally {
-            dispatch(getDepositInfo())
             setIsLoading(false)
         }
     }
@@ -103,6 +102,8 @@ const Withdraw = () => {
             createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
             setIsWithdrawLoading(false)
             throw error
+        } finally {
+            dispatch(getDepositInfo())
         }
 
     }
@@ -140,6 +141,7 @@ const Withdraw = () => {
         } catch (error: any) {
             createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
         } finally {
+            dispatch(getDepositInfo())
             setIsWithdrawLoading(false)
         }
     }
