@@ -127,9 +127,8 @@ const Voting = () => {
                 campaign_id: campaignId && parseInt(campaignId)
             }
             const { epoch_index, input_index }: resInput = await sendInput(data);
-            handleResponse(epoch_index, input_index, (async (payload: any) => {
+            handleResponse(epoch_index, input_index, ((payload: any) => {
                 if (payload && !payload.error) {
-                    await dispatch(getDepositInfo())
                     createNotifications(NOTI_TYPE.SUCCESS, 'Vote successfully!')
                     navigate(`${ROUTER_PATH.RESULT}/${campaignId}`, { replace: true });
                 } else {
@@ -143,6 +142,8 @@ const Voting = () => {
             setCandidateId(0)
             setIsLoadVoting(false)
             throw error
+        } finally {
+            dispatch(getDepositInfo())
         }
     }
 

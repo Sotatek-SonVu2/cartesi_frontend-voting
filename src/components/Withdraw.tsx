@@ -20,6 +20,8 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
 import { getDepositInfo } from "../reducers/authSlice";
 import { LoadingAbsolute } from "../styled/loading";
+import { ethers } from "ethers";
+import { getLastEpoch } from "../graphql/getLastEpoch";
 
 const BoxItemCustom = styled(BoxItem)`
     display: flex;
@@ -46,8 +48,26 @@ const Withdraw = () => {
         try {
             setIsLoading(true)
             const res = await getVoucherList({})
+            const lastEpoch = await getLastEpoch()
             const arr = JSON.parse(res)
-            setVouchers(arr)
+            const result = arr.map((item: any) => {
+                // const decode = new ethers.utils.AbiCoder().decode(["address", "uint256"], item.payload)
+                // const amount = ethers.utils.formatEther(decode[1])
+                if (item.epoch < lastEpoch.nodes[0].index) {
+                    return {
+                        ...item,
+                        isExecute: true,
+                        amount: 123
+                    }
+                } else {
+                    return {
+                        ...item,
+                        isExecute: lastEpoch.nodes[0].vouchers.nodes[0].proof ? true : false,
+                        amount: 123
+                    }
+                }
+            })
+            setVouchers(result)
         } catch (error) {
             createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
             throw error
@@ -67,7 +87,7 @@ const Withdraw = () => {
             const decimal = parseInt(amount) * Math.pow(10, 18)
             const data = {
                 action: WITHDRAW,
-                amount: decimal.toString()
+                amount: BigInt(decimal).toString()
             }
             const { epoch_index, input_index }: resInput = await sendInput(data);
             handleResponse(epoch_index, input_index, (async (payload: any) => {
@@ -114,7 +134,6 @@ const Withdraw = () => {
             );
             const receipt = await tx.wait();
             if (receipt.events) {
-                console.log(`resulting events: ${JSON.stringify(receipt.events)}`);
                 getData()
                 createNotifications(NOTI_TYPE.SUCCESS, 'Withdraw token successfully!')
             }

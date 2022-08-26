@@ -29,20 +29,23 @@ interface PropsType {
         input: number
         id: string
         payload: string
-        voucher: 0
+        voucher: 0,
+        amount: number,
+        isExecute: boolean
     }
     onClick: any
 }
 
 const WithdrawItem = ({ data, onClick }: PropsType) => {
-    const { id } = data
+    const { id, isExecute } = data
+
     return (
         <WithdrawContent>
             <img src={GiftIcon} alt="gift" width={'55%'} />
             <div></div>
             <h5>Gift {id}</h5>
             {/* <span>1000$</span> */}
-            <ClaimButton onClick={() => onClick(id)}>
+            <ClaimButton onClick={() => onClick(id)} disabled={!isExecute}>
                 Claim
             </ClaimButton>
         </WithdrawContent>

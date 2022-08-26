@@ -37,7 +37,11 @@ export const Button = styled.button<ButtonType>`
     border-radius: 7px;
     cursor: pointer;
 
-    ${props => props.disabled && `background-color: ${colorTheme.disabled} !important`}
+    ${props => props.disabled && `
+        background-color: ${colorTheme.disabled} !important;
+        border: 2px solid #b3b3b3 !important;
+        color: #fff !important;
+    `}
 `
 
 export const PrimaryButton = styled(Button)`
