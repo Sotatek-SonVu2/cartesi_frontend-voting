@@ -15,7 +15,7 @@ import { AppDispatch, RootState } from "../store";
 import { Content, DefaultButton, FlexLayoutBtn, SuccessButton, Title } from "../styled/common";
 import { ErrorText, Form, FormItem, Input, TextArea } from "../styled/form";
 import { Loader, LoadingAbsolute } from "../styled/loading";
-import { convertLocalToUtc } from "../utils/common";
+import { convertLocalToUtc, convertUtcToLocal } from "../utils/common";
 import { CAMPAIGN_DETAIL, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE } from "../utils/contants";
 import { AddEditDataType, MetadataType, OptionType, resInput } from "../utils/interface";
 import { validateDate, validateField, validateFields, validateOptions } from "../utils/validate";
@@ -23,15 +23,15 @@ import CandidateOptions from "./CandidateOptions";
 
 const FORMAT_DATE_PICKER = 'MM/dd/yyyy h:mm aa'
 
-const initialValue = {
-    name: '',
-    description: '',
-    startDate: new Date(),
-    endDate: new Date(),
-    formErrors: { name: '', description: '', startDate: '', endDate: '' },
-}
-
 const AddEditCampaign = () => {
+    const initialValue = {
+        name: '',
+        description: '',
+        startDate: new Date(),
+        endDate: new Date(),
+        formErrors: { name: '', description: '', startDate: '', endDate: '' },
+    }
+
     const OptionDefault: OptionType[] = [
         {
             name: '',
@@ -74,8 +74,8 @@ const AddEditCampaign = () => {
                         setDataForm({
                             name: dataform.name,
                             description: dataform.description,
-                            startDate: new Date(dataform.start_time),
-                            endDate: new Date(dataform.end_time),
+                            startDate: new Date(convertUtcToLocal(new Date(dataform.start_time))),
+                            endDate: new Date(convertUtcToLocal(new Date(dataform.end_time))),
                             formErrors: { name: '', description: '', startDate: '', endDate: '' },
                         })
                         setOptions(options)
@@ -181,6 +181,7 @@ const AddEditCampaign = () => {
                     }
                 })
             }
+            console.log('data', data)
             if (!campaignId) {
                 createCampaign(data)
             } else {
