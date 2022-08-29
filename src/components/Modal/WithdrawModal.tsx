@@ -3,7 +3,7 @@ import styled from "styled-components"
 import ModalComponent from "../../common/Modal"
 import { ModalTitle, PrimaryButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
-import { Loader } from "../../styled/loading"
+import { validateAmount } from "../../utils/validate"
 
 const Button = styled(PrimaryButton)`
     display: flex;
@@ -34,8 +34,6 @@ type Props = {
     onAddWithdraw: any
 }
 
-const ERROR_TEXT = 'Please enter amount'
-
 const WithdrawModal = ({ isVisible, toggleModal, onAddWithdraw }: Props) => {
     const [amount, setAmount] = useState({
         value: '',
@@ -45,15 +43,15 @@ const WithdrawModal = ({ isVisible, toggleModal, onAddWithdraw }: Props) => {
     const handleChange = (value: string) => {
         setAmount({
             value,
-            errorText: !value ? ERROR_TEXT : ''
+            errorText: validateAmount(value)
         })
     }
 
     const handleAddWithdraw = () => {
-        if (!amount.value) {
+        if (validateAmount(amount.value)) {
             setAmount({
                 ...amount,
-                errorText: ERROR_TEXT
+                errorText: validateAmount(amount.value)
             })
         } else {
             onAddWithdraw(amount.value)

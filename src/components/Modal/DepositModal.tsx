@@ -13,6 +13,7 @@ import { ErrorText, Input } from "../../styled/form"
 import { Loader } from "../../styled/loading"
 import { NETWORK_ERROR_MESSAGE, NOTI_TYPE } from "../../utils/contants"
 import { InputKeys } from "../../utils/types"
+import { validateAmount } from "../../utils/validate"
 
 type Props = {
     isVisible: boolean
@@ -43,8 +44,6 @@ const FormItem = styled.div`
 `
 
 const SPENDER_ADDRESS = process.env.REACT_APP_SPENDER_ADDRESS || "";
-
-const ERROR_TEXT = 'Please enter amount'
 
 export const findInputAddedInfo = (
     receipt: ContractReceipt,
@@ -82,15 +81,15 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
     const handleChange = (value: string) => {
         setAmount({
             value,
-            errorText: !value ? ERROR_TEXT : ''
+            errorText: validateAmount(value)
         })
     }
 
     const handleDeposit = async () => {
-        if (!amount.value) {
+        if (validateAmount(amount.value)) {
             setAmount({
                 ...amount,
-                errorText: ERROR_TEXT
+                errorText: validateAmount(amount.value)
             })
         } else {
             try {

@@ -51,19 +51,19 @@ const Withdraw = () => {
             const lastEpoch = await getLastEpoch()
             const arr = JSON.parse(res)
             const result = arr.map((item: any) => {
-                // const decode = new ethers.utils.AbiCoder().decode(["address", "uint256"], item.payload)
-                // const amount = ethers.utils.formatEther(decode[1])
+                const decode = new ethers.utils.AbiCoder().decode(["address", "uint256"], `0x${item.payload.slice(10)}`)
+                const amount = ethers.utils.formatEther(decode[1])
                 if (item.epoch < lastEpoch.nodes[0].index) {
                     return {
                         ...item,
                         isExecute: true,
-                        amount: 123
+                        amount: parseInt(amount)
                     }
                 } else {
                     return {
                         ...item,
                         isExecute: lastEpoch.nodes[0].vouchers.nodes[0].proof ? true : false,
-                        amount: 123
+                        amount: parseInt(amount)
                     }
                 }
             })

@@ -75,5 +75,5 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ## Note
 **Here are some things to keep in mind when you run the frontend application. It is some inconvenience that the application is having and it will be fixed in the next versions the future.**
-- On the first run, when making 1 transaction via Metamask, you should reset your account on MetaMask. What you need to do: `open Metamask > Settings > Advanced > Reset Account`. And then send the transaction that you made earlier.
+- On the first run, when making 1 transaction via Metamask, you should reset your account on MetaMask. What you need to do: `open Metamask > Settings > Advanced > Reset Account`. And then send the transaction that you made earlier. This makes all your transactions faster.
 

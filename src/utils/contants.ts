@@ -17,6 +17,7 @@ export const CHAIN_ID_ERROR_MESSAGE = 'Current Chain ID does not match'
 export const CONNECT_METAMASK_ERROR_CODE = -32002
 export const CONNECT_METAMASK_ERROR_MESSAGE = 'Please connect to MetaMask.'
 export const NETWORK_ERROR_MESSAGE = 'Please check your network and try again!'
+export const AMOUNT_ERROR_MESSAGE = 'Invalid amount. Please enter again!'
 
 export const NOTI_TYPE = {
     SUCCESS: 'success',

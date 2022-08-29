@@ -6,14 +6,16 @@ import { SuccessButton } from "../../styled/common"
 const ClaimButton = styled(SuccessButton)`
     display: flex;
     margin: 0 auto;
-    padding: 7px 18px;
+    padding: 5px 18px;
     margin-bottom: 20px;
+    margin-top: 10px;
     border: 2px solid #3eb991;
     color: #3eb991;
     background: rgba(0,0,0,0);
-    width: 80%;
+    width: 75%;
     border-radius: 4px;
     justify-content: center;
+   
 
     &:hover {
         transition: ease .3s;
@@ -37,14 +39,14 @@ interface PropsType {
 }
 
 const WithdrawItem = ({ data, onClick }: PropsType) => {
-    const { id, isExecute } = data
+    const { id, isExecute, amount } = data
 
     return (
         <WithdrawContent>
             <img src={GiftIcon} alt="gift" width={'55%'} />
             <div></div>
             <h5>Gift {id}</h5>
-            {/* <span>1000$</span> */}
+            <span>{amount} CTSI</span>
             <ClaimButton onClick={() => onClick(id)} disabled={!isExecute}>
                 Claim
             </ClaimButton>

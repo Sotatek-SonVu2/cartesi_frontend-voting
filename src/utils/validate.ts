@@ -1,5 +1,5 @@
 import moment from "moment"
-import { FORMAT_DATETIME } from "./contants"
+import { AMOUNT_ERROR_MESSAGE, FORMAT_DATETIME } from "./contants"
 import { OptionType } from "./interface"
 
 const DATE_TIME_ERROR_MESSAGE = 'Invalid datetime! Make sure the start time is before the end time!'
@@ -10,6 +10,14 @@ const validateText: any = {
     startDate: 'Start Date is required.',
     endDate: 'End Date is required.',
     brief_introduction: 'Brief Introduction is required.',
+}
+
+export const validateAmount = (value: string) => {
+    const decimalRegex = /^[0-9]\d*$/
+    if (!value || !decimalRegex.test(value)) {
+        return AMOUNT_ERROR_MESSAGE
+    }
+    return ''
 }
 
 export const validateField = (fieldName: string, value: string | Date) => {
