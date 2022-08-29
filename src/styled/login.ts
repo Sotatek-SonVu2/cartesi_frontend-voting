@@ -27,6 +27,16 @@ export const Container = styled.div`
         line-height: 2;
         padding: 10px;
     }
+
+    @media(max-width: 501px){
+        & h1{
+            font-size: 36px;
+        }
+    
+        & p{
+            font-size: 14px;
+        }
+    }
 `
 
 export const LoginButton = styled(Button)`

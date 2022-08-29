@@ -144,7 +144,7 @@ export const VotingRate = styled.span`
 export const BoxItem = styled.div`
   background: rgb(195 195 195 / 14%);
   width: 23%;
-  height: 230px;
+  min-height: 242px;
   margin-top: 20px;
   margin-right: 5px;
   margin-left: 5px;

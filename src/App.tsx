@@ -1,5 +1,7 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Background from "./common/Background";
+import { createNotifications } from "./common/Notification";
 import AddEditCampaign from "./components/AddEditCampaign";
 import ListCampaigns from "./components/ListCampaigns";
 import Result from "./components/Result";
@@ -10,8 +12,26 @@ import Main from "./pages/Main";
 import { ROUTER_PATH } from "./routes/contants";
 import PrivateOutlet from "./routes/PrivateOutlet";
 import { MainWrapper } from "./styled/main";
+import { checkConnected } from "./utils/checkConnected";
+import { ADDRESS_WALLET, CONNECT_METAMASK_ERROR_MESSAGE, NOTI_TYPE } from "./utils/contants";
 
 function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkConnectedToMetamask = async () => {
+      const connected = await checkConnected()
+      if (!connected) {
+        localStorage.setItem(ADDRESS_WALLET, '');
+        navigate(ROUTER_PATH.LOGIN, { replace: true })
+        createNotifications(NOTI_TYPE.DANGER, CONNECT_METAMASK_ERROR_MESSAGE)
+      }
+    }
+
+    checkConnectedToMetamask()
+  }, [])
+
+
   return (
     <MainWrapper>
       <Background>
