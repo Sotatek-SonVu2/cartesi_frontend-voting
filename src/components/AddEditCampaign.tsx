@@ -16,7 +16,7 @@ import { Content, DefaultButton, FlexLayoutBtn, SuccessButton, Title } from "../
 import { ErrorText, Form, FormItem, Input, TextArea } from "../styled/form";
 import { Loader, LoadingAbsolute } from "../styled/loading";
 import { convertLocalToUtc, convertUtcToLocal } from "../utils/common";
-import { CAMPAIGN_DETAIL, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE } from "../utils/contants";
+import { CAMPAIGN_DETAIL, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE, NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE } from "../utils/contants";
 import { AddEditDataType, MetadataType, OptionType, resInput } from "../utils/interface";
 import { validateDate, validateField, validateFields, validateOptions } from "../utils/validate";
 import CandidateOptions from "./CandidateOptions";
@@ -124,7 +124,7 @@ const AddEditCampaign = () => {
                     createNotifications(NOTI_TYPE.SUCCESS, 'Add campaign successfully!')
                     navigate(`${ROUTER_PATH.VOTING}/${payload.id}`, { replace: true });
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload.error || ERROR_MESSAGE)
+                    createNotifications(NOTI_TYPE.DANGER, payload.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                 }
                 setIsLoading(false)
             }))
@@ -148,7 +148,7 @@ const AddEditCampaign = () => {
                     createNotifications(NOTI_TYPE.SUCCESS, 'Edit campaign successfully!')
                     navigate(`${ROUTER_PATH.VOTING}/${campaignId}`, { replace: true });
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload.error || ERROR_MESSAGE)
+                    createNotifications(NOTI_TYPE.DANGER, payload.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                 }
                 setIsLoading(false)
             }))
@@ -181,7 +181,6 @@ const AddEditCampaign = () => {
                     }
                 })
             }
-            console.log('data', data)
             if (!campaignId) {
                 createCampaign(data)
             } else {

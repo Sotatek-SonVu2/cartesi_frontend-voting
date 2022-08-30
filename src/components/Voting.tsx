@@ -16,7 +16,7 @@ import { AppDispatch, RootState } from "../store"
 import { Content, DefaultButton, FlexLayoutBtn, PrimaryButton, SuccessButton, Title } from "../styled/common"
 import { LoadingAbsolute } from "../styled/loading"
 import { convertUtcToLocal } from "../utils/common"
-import { CAMPAIGN_DETAIL, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE, VOTING } from "../utils/contants"
+import { CAMPAIGN_DETAIL, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE, NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE, VOTING } from "../utils/contants"
 import { CampaignVotingType, CandidatesVotingType, MetadataType, resInput } from "../utils/interface"
 import VotingItem from "./Item/Voting"
 import VotingModal from "./Modal/VotingModal"
@@ -132,7 +132,7 @@ const Voting = () => {
                     createNotifications(NOTI_TYPE.SUCCESS, 'Vote successfully!')
                     navigate(`${ROUTER_PATH.RESULT}/${campaignId}`, { replace: true });
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload.error || ERROR_MESSAGE)
+                    createNotifications(NOTI_TYPE.DANGER, payload.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                     setCandidateId(0)
                     setIsLoadVoting(false)
                 }

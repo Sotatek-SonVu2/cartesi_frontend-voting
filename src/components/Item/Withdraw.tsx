@@ -2,6 +2,7 @@ import { WithdrawContent } from "../../styled/list"
 import GiftIcon from "../../images/gift1.png"
 import styled from "styled-components"
 import { SuccessButton } from "../../styled/common"
+import { WithDrawType } from "../../utils/interface"
 
 const ClaimButton = styled(SuccessButton)`
     display: flex;
@@ -25,21 +26,12 @@ const ClaimButton = styled(SuccessButton)`
 `
 
 interface PropsType {
-    data: {
-        destination: string
-        epoch: number
-        input: number
-        id: string
-        payload: string
-        voucher: 0,
-        amount: number,
-        isExecute: boolean
-    }
+    data: WithDrawType
     onClick: any
 }
 
 const WithdrawItem = ({ data, onClick }: PropsType) => {
-    const { id, isExecute, amount } = data
+    const { id, isAllowExecute, isExecuted, amount } = data
 
     return (
         <WithdrawContent>
@@ -47,8 +39,8 @@ const WithdrawItem = ({ data, onClick }: PropsType) => {
             <div></div>
             <h5>Gift {id}</h5>
             <span>{amount} CTSI</span>
-            <ClaimButton onClick={() => onClick(id)} disabled={!isExecute}>
-                Claim
+            <ClaimButton onClick={() => onClick(id)} disabled={!isAllowExecute || isExecuted}>
+                {isExecuted ? 'Claimed' : 'Claim'}
             </ClaimButton>
         </WithdrawContent>
     )

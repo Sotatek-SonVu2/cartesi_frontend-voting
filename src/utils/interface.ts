@@ -126,5 +126,17 @@ export interface resInput {
     input_index?: number
 }
 
+export interface WithDrawType {
+    destination: string
+    epoch: number
+    input: number
+    id: string
+    payload: string
+    voucher: 0
+    amount: number
+    isExecuted?: boolean
+    isAllowExecute?: boolean
+}
+
 
 

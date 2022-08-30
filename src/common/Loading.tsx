@@ -4,7 +4,7 @@ import LoadingIcon from '../images/rocket.png'
 const Loading = () => {
     return (
         <LoadingWrapper>
-            <img src={LoadingIcon} alt="loading icon" width={80} />
+            <img src={LoadingIcon} alt="loading icon" width={75} />
             <p>Loading...</p>
         </LoadingWrapper>
     )

@@ -11,7 +11,7 @@ import { ROUTER_PATH } from "../routes/contants";
 import { AppDispatch, RootState } from "../store";
 import { DangerButton, PrimaryButton, SuccessButton } from "../styled/common";
 import { FlexLayout } from "../styled/main";
-import { cadidateOptions, DELETE_CAMPAIGN, ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
+import { cadidateOptions, DELETE_CAMPAIGN, ERROR_MESSAGE, NOTI_TYPE, NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE } from "../utils/contants";
 import { resInput } from "../utils/interface";
 import DeleteModal from "./Modal/DeleteModal";
 
@@ -78,7 +78,7 @@ const ActionButton = () => {
                     setIsLoading(false)
                     toggleModal()
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload.error || ERROR_MESSAGE)
+                    createNotifications(NOTI_TYPE.DANGER, payload.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                     setIsLoading(false)
                     toggleModal()
                 }

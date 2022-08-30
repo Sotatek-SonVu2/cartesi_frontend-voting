@@ -1,27 +1,37 @@
-import { useEffect, useState } from "react"
+import { OutputValidityProofStruct } from "@cartesi/rollups/dist/src/types/contracts/interfaces/IOutput";
+import { ethers } from "ethers";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Loading from "../common/Loading";
+import { createNotifications } from "../common/Notification";
+import { getLastEpoch } from "../graphql/getLastEpoch";
 import { getVoucher as getVoucherExcute } from "../graphql/vouchers";
+import { outputContract } from "../helper/contractWithSigner";
+import { handleInspectApi } from "../helper/handleInspectApi";
+import { handleResponse } from "../helper/handleResponse";
+import { sendInput } from "../helper/sendInput";
 import { getVoucher as getVoucherList } from "../helper/voucher";
 import PlusIcon from "../images/white-plus.png";
+import { getDepositInfo } from "../reducers/authSlice";
+import { AppDispatch, RootState } from "../store";
 import { Content, Title } from "../styled/common";
-import { BoxItem, WithdrawContent } from "../styled/list";
+import { BoxItem, Radio, RadioGroup, WithdrawContent } from "../styled/list";
+import { LoadingAbsolute } from "../styled/loading";
 import { FlexLayout } from "../styled/main";
+import {
+    ERROR_MESSAGE,
+    LIST_EXECUTED_VOUCHER,
+    NOTI_TYPE,
+    NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE,
+    SAVE_EXECUTED_VOUCHER,
+    WITHDRAW,
+    WITHDRAW_RADIO_FILTER,
+    WITHDRAW_RADIO_FILTER_STATUS
+} from "../utils/contants";
+import { MetadataType, resInput, WithDrawType } from "../utils/interface";
 import WithdrawItem from "./Item/Withdraw";
 import WithdrawModal from "./Modal/WithdrawModal";
-import { OutputValidityProofStruct } from "@cartesi/rollups/dist/src/types/contracts/interfaces/IOutput";
-import { outputContract } from "../helper/contractWithSigner";
-import { ERROR_MESSAGE, NOTI_TYPE, WITHDRAW } from "../utils/contants";
-import { createNotifications } from "../common/Notification";
-import { handleResponse } from "../helper/handleResponse";
-import { resInput } from "../utils/interface";
-import { sendInput } from "../helper/sendInput";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store";
-import { getDepositInfo } from "../reducers/authSlice";
-import { LoadingAbsolute } from "../styled/loading";
-import { ethers } from "ethers";
-import { getLastEpoch } from "../graphql/getLastEpoch";
 
 const BoxItemCustom = styled(BoxItem)`
     display: flex;
@@ -31,43 +41,69 @@ const BoxItemCustom = styled(BoxItem)`
 const FlexLayoutSwap = styled(FlexLayout)`
     flex-wrap: wrap;
 `
+
 const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL || ''
 
 const Withdraw = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
     const [isWithdrawLoading, setIsWithdrawLoading] = useState<boolean>(false)
-    const [vouchers, setVouchers] = useState<any[]>([])
+    const [vouchers, setVouchers] = useState<WithDrawType[]>([])
     const [isVisible, setIsVisible] = useState<boolean>(false);
+    const [isChecked, setIsChecked] = useState<string>('all')
     const dispatch = useDispatch<AppDispatch>()
 
     const toggleModal = () => {
         setIsVisible(!isVisible);
     }
 
+    const onChangeRadio = (e: any) => {
+        setIsChecked(e.target.value)
+    }
+
+    const getFilterList = (vouchersList: WithDrawType[], executedId: string[]) => {
+        let list
+        switch (isChecked) {
+            case WITHDRAW_RADIO_FILTER_STATUS.CLAIMED:
+                list = vouchersList.filter(val => executedId.includes(val.id));
+                break;
+            case WITHDRAW_RADIO_FILTER_STATUS.NOT_CLAIM:
+                list = vouchersList.filter(val => !executedId.includes(val.id));
+                break;
+            default:
+                list = vouchersList
+        }
+        return list
+    }
+
     const getData = async () => {
         try {
             setIsLoading(true)
-            const res = await getVoucherList({})
+            const data = {
+                action: LIST_EXECUTED_VOUCHER
+            }
+            const { ids } = await handleInspectApi(data, metadata) //get list executed voucher
+            const res = await getVoucherList({}) //get list voucher
             const lastEpoch = await getLastEpoch()
             const arr = JSON.parse(res)
-            const result = arr.map((item: any) => {
+            let result: any[] = []
+            arr.forEach((item: WithDrawType) => {
+                let obj
                 const decode = new ethers.utils.AbiCoder().decode(["address", "uint256"], `0x${item.payload.slice(10)}`)
                 const amount = ethers.utils.formatEther(decode[1])
-                if (item.epoch < lastEpoch.nodes[0].index) {
-                    return {
+                ids.every((id: string) => {
+                    obj = {
                         ...item,
-                        isExecute: true,
+                        isExecuted: item.id === id, // The voucher has been executed
+                        isAllowExecute: item.epoch < lastEpoch.nodes[0].index || lastEpoch.nodes[0].vouchers.nodes[0].proof ? true : false,  // The voucher is allowed to be executed
                         amount: parseInt(amount)
                     }
-                } else {
-                    return {
-                        ...item,
-                        isExecute: lastEpoch.nodes[0].vouchers.nodes[0].proof ? true : false,
-                        amount: parseInt(amount)
-                    }
-                }
+                    return item.id !== id
+                })
+                result.unshift(obj)
             })
-            setVouchers(result)
+            const filterList = getFilterList(result, ids)
+            setVouchers(filterList)
         } catch (error) {
             createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
             throw error
@@ -78,7 +114,7 @@ const Withdraw = () => {
 
     useEffect(() => {
         getData()
-    }, [])
+    }, [isChecked])
 
     const onAddWithdraw = async (amount: string) => {
         try {
@@ -94,7 +130,7 @@ const Withdraw = () => {
                     createNotifications(NOTI_TYPE.SUCCESS, payload.message)
                     getData()
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload.error || ERROR_MESSAGE)
+                    createNotifications(NOTI_TYPE.DANGER, payload.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                 }
                 setIsWithdrawLoading(false)
             }))
@@ -135,7 +171,12 @@ const Withdraw = () => {
             );
             const receipt = await tx.wait();
             if (receipt.events) {
-                getData()
+                const data = {
+                    id,
+                    action: SAVE_EXECUTED_VOUCHER
+                }
+                await sendInput(data)
+                await getData()
                 createNotifications(NOTI_TYPE.SUCCESS, 'Withdraw token successfully!')
             }
         } catch (error: any) {
@@ -155,6 +196,15 @@ const Withdraw = () => {
                     <Title>
                         Withdraw
                     </Title>
+                    <RadioGroup>
+                        {WITHDRAW_RADIO_FILTER.map(({ value, label }, index: number) => (
+                            <Radio key={index}>
+                                <input type="radio" id={`radio_${index}`} checked={isChecked === value} name={label} value={value} onChange={onChangeRadio} />
+                                {label}
+                            </Radio>
+                        ))}
+                    </RadioGroup>
+
                     <FlexLayoutSwap>
                         <BoxItemCustom onClick={toggleModal}>
                             <WithdrawContent>

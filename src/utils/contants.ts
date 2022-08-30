@@ -10,6 +10,8 @@ export const RESULT = 'RESULT'
 export const DELETE_CAMPAIGN = 'DELETE_CAMPAIGN'
 export const DEPOSIT_INFO = 'DEPOSIT_INFO'
 export const WITHDRAW = 'WITHDRAW'
+export const SAVE_EXECUTED_VOUCHER = 'SAVE_EXECUTED_VOUCHER'
+export const LIST_EXECUTED_VOUCHER = 'LIST_EXECUTED_VOUCHER'
 
 export const FORMAT_DATETIME = 'YYYY-MM-DD HH:mm:ss'
 export const ERROR_MESSAGE = 'Something went wrong! Please try again!'
@@ -18,6 +20,7 @@ export const CONNECT_METAMASK_ERROR_CODE = -32002
 export const CONNECT_METAMASK_ERROR_MESSAGE = 'Please connect to MetaMask.'
 export const NETWORK_ERROR_MESSAGE = 'Please check your network and try again!'
 export const AMOUNT_ERROR_MESSAGE = 'Invalid amount. Please enter again!'
+export const NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE = 'Unable to receive a response from server side. Please try again!'
 
 export const NOTI_TYPE = {
     SUCCESS: 'success',
@@ -26,6 +29,27 @@ export const NOTI_TYPE = {
     DEFAULT: 'default',
     WARNING: 'warning'
 }
+
+export const WITHDRAW_RADIO_FILTER_STATUS = {
+    ALL: 'all',
+    CLAIMED: 'claimed',
+    NOT_CLAIM: 'not_claim'
+}
+
+export const WITHDRAW_RADIO_FILTER = [
+    {
+        label: 'All',
+        value: WITHDRAW_RADIO_FILTER_STATUS.ALL,
+    },
+    {
+        label: 'Claimed',
+        value: WITHDRAW_RADIO_FILTER_STATUS.CLAIMED,
+    },
+    {
+        label: 'Not claim',
+        value: WITHDRAW_RADIO_FILTER_STATUS.NOT_CLAIM,
+    },
+]
 
 export const LIST_STATUS = {
     ALL: 'ALL',

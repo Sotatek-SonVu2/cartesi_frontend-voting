@@ -239,3 +239,15 @@ export const Tooltip = styled.div`
     visibility: visible;
   }
 `
+
+export const RadioGroup = styled.div`
+  display: flex;
+  margin-top: 1rem;
+  align-items: center;
+`
+
+export const Radio = styled.div`
+  display: flex;
+  margin-right: 10px;
+  font-size: 13px;
+`
