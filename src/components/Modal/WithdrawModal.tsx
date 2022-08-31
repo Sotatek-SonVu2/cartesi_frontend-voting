@@ -1,11 +1,13 @@
 import { useState } from "react"
 import styled from "styled-components"
 import ModalComponent from "../../common/Modal"
-import { ModalTitle, SuccessButton } from "../../styled/common"
+import { colorTheme, ModalTitle, SuccessButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
 import { validateAmount } from "../../utils/validate"
 
 const Button = styled(SuccessButton)`
+    background-color: ${colorTheme.success};
+    color: #ffffff;
     display: block;
     margin: 0 auto;
     margin-top: 30px;

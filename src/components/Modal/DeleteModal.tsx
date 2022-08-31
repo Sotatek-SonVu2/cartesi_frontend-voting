@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import ModalComponent from "../../common/Modal"
-import { DangerButton, ModalTitle } from "../../styled/common"
+import { colorTheme, DangerButton, ModalTitle } from "../../styled/common"
 import { Loader } from "../../styled/loading"
 import confirmIcon from '../../images/exclamation_icon.svg'
 
@@ -13,6 +13,8 @@ type Props = {
 }
 
 const DeleteButton = styled(DangerButton)`
+    background-color: ${colorTheme.danger};
+    color: #ffffff;
     display: block;
     margin: 0 auto;
     margin-top: 30px;

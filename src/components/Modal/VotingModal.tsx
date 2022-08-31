@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import ModalComponent from "../../common/Modal"
-import { ModalContent, ModalTitle, SuccessButton } from "../../styled/common"
+import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "../../styled/common"
 import confirmIcon from '../../images/exclamation_icon.svg'
 
 type Props = {
@@ -10,6 +10,8 @@ type Props = {
 }
 
 const VotingButton = styled(SuccessButton)`
+    background-color: ${colorTheme.success};
+    color: #ffffff;
     display: block;
     margin: 0 auto;
     margin-top: 30px;

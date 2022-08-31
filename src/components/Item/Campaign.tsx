@@ -41,7 +41,7 @@ const CampaignItem = ({ data }: PropsType) => {
     return (
         <Wrapper key={id}>
             <DateTimeBox isStartTime={isStartTime} isEndTime={isEndTime}>
-                {isStartTime ? 'Running ' : isEndTime ? 'Finished ' : 'Not start yet '}
+                {isStartTime && !isEndTime ? 'Starting ' : isEndTime ? 'Finished ' : 'Not start yet '}
                 ({localStartTime} - {localEndTime})
             </DateTimeBox>
             <BoxContent>

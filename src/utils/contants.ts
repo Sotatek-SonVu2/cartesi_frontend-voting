@@ -47,7 +47,7 @@ export const WITHDRAW_RADIO_FILTER = [
         value: WITHDRAW_RADIO_FILTER_STATUS.CLAIMED,
     },
     {
-        label: 'Not claim',
+        label: 'Not claim yet',
         value: WITHDRAW_RADIO_FILTER_STATUS.NOT_CLAIM,
     },
 ]

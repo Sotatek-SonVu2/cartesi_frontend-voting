@@ -8,7 +8,7 @@ import { createNotifications } from "../../common/Notification"
 import { cartesiToken, cartesiTokenContract, erc20Contract, inputContract } from "../../helper/contractWithSigner"
 import { getDepositInfo } from "../../reducers/authSlice"
 import { AppDispatch, RootState } from "../../store"
-import { ModalTitle, SuccessButton } from "../../styled/common"
+import { colorTheme, ModalTitle, SuccessButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
 import { Loader } from "../../styled/loading"
 import { NETWORK_ERROR_MESSAGE, NOTI_TYPE } from "../../utils/contants"
@@ -21,6 +21,8 @@ type Props = {
 }
 
 const DepositButton = styled(SuccessButton)`
+    background-color: ${colorTheme.success};
+    color: #ffffff;
     display: block;
     margin: 0 auto;
     margin-top: 30px;

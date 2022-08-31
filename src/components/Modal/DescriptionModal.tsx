@@ -19,7 +19,6 @@ type Props = {
 const DescriptionModal = ({ isVisible, toggleModal, data }: Props) => {
     return (
         <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title={data.name || '(NO DATA)'}>
-
             <ModalTitle>
                 <FormItem>
                     <b>Description: </b>
