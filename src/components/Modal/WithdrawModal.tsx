@@ -1,14 +1,13 @@
 import { useState } from "react"
 import styled from "styled-components"
 import ModalComponent from "../../common/Modal"
-import { ModalTitle, PrimaryButton } from "../../styled/common"
+import { ModalTitle, SuccessButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
 import { validateAmount } from "../../utils/validate"
 
-const Button = styled(PrimaryButton)`
-    display: flex;
+const Button = styled(SuccessButton)`
+    display: block;
     margin: 0 auto;
-    padding: 10px 20px;
     margin-top: 30px;
 `
 
@@ -76,7 +75,7 @@ const WithdrawModal = ({ isVisible, toggleModal, onAddWithdraw }: Props) => {
                 </ModalTitle>
                 <ErrorMessage>{amount.errorText}</ErrorMessage>
                 <Button onClick={handleAddWithdraw}>
-                    Save
+                    Withdraw
                 </Button>
             </div>
         </ModalComponent>

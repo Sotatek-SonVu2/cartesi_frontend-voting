@@ -16,7 +16,7 @@ import PlusIcon from "../images/white-plus.png";
 import { getDepositInfo } from "../reducers/authSlice";
 import { AppDispatch, RootState } from "../store";
 import { Content, Title } from "../styled/common";
-import { BoxItem, Radio, RadioGroup, WithdrawContent } from "../styled/list";
+import { BoxItem, Radio, RadioGroup, WithdrawContent, WithdrawHeader } from "../styled/list";
 import { LoadingAbsolute } from "../styled/loading";
 import { FlexLayout } from "../styled/main";
 import {
@@ -91,15 +91,25 @@ const Withdraw = () => {
                 let obj
                 const decode = new ethers.utils.AbiCoder().decode(["address", "uint256"], `0x${item.payload.slice(10)}`)
                 const amount = ethers.utils.formatEther(decode[1])
-                ids.every((id: string) => {
+                const isAllowExecute = item.epoch < lastEpoch.nodes[0].index || lastEpoch.nodes[0].vouchers.nodes[0].proof ? true : false
+                if (ids.length > 0) {
+                    ids.every((id: string) => {
+                        obj = {
+                            ...item,
+                            isAllowExecute,  // The voucher is allowed to be executed
+                            isExecuted: item.id === id, // The voucher has been executed
+                            amount: parseInt(amount)
+                        }
+                        return item.id !== id
+                    })
+                } else {
                     obj = {
                         ...item,
-                        isExecuted: item.id === id, // The voucher has been executed
-                        isAllowExecute: item.epoch < lastEpoch.nodes[0].index || lastEpoch.nodes[0].vouchers.nodes[0].proof ? true : false,  // The voucher is allowed to be executed
+                        isAllowExecute,  // The voucher is allowed to be executed
+                        isExecuted: false, // The voucher has been executed
                         amount: parseInt(amount)
                     }
-                    return item.id !== id
-                })
+                }
                 result.unshift(obj)
             })
             const filterList = getFilterList(result, ids)
@@ -193,26 +203,29 @@ const Withdraw = () => {
                 <Loading />
             ) : (
                 <Content>
-                    <Title>
-                        Withdraw
-                    </Title>
-                    <RadioGroup>
-                        {WITHDRAW_RADIO_FILTER.map(({ value, label }, index: number) => (
-                            <Radio key={index}>
-                                <input type="radio" id={`radio_${index}`} checked={isChecked === value} name={label} value={value} onChange={onChangeRadio} />
-                                {label}
-                            </Radio>
-                        ))}
-                    </RadioGroup>
+                    <WithdrawHeader>
+                        <Title>
+                            Withdraw
+                        </Title>
+                        <RadioGroup>
+                            {WITHDRAW_RADIO_FILTER.map(({ value, label }, index: number) => (
+                                <Radio key={index}>
+                                    <input type="radio" id={`radio_${index}`} checked={isChecked === value} name={label} value={value} onChange={onChangeRadio} />
+                                    {label}
+                                </Radio>
+                            ))}
+                        </RadioGroup>
+                    </WithdrawHeader>
+
 
                     <FlexLayoutSwap>
                         <BoxItemCustom onClick={toggleModal}>
                             <WithdrawContent>
-                                <img src={PlusIcon} alt="gift" width={'20%'} />
+                                <img src={PlusIcon} alt="gift" width='20%' />
                                 <h5>Withdraw token</h5>
                             </WithdrawContent>
                         </BoxItemCustom>
-                        {vouchers?.map((item: any, index: number) => (
+                        {vouchers.map((item: any, index: number) => (
                             <BoxItem key={index}>
                                 <WithdrawItem data={item} onClick={onWithdraw} />
                             </BoxItem>

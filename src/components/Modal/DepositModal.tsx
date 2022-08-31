@@ -21,9 +21,8 @@ type Props = {
 }
 
 const DepositButton = styled(SuccessButton)`
-    display: flex;
+    display: block;
     margin: 0 auto;
-    padding: 10px 20px;
     margin-top: 30px;
 `
 

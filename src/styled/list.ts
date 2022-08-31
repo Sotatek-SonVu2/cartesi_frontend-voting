@@ -240,9 +240,14 @@ export const Tooltip = styled.div`
   }
 `
 
+export const WithdrawHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
 export const RadioGroup = styled.div`
   display: flex;
-  margin-top: 1rem;
   align-items: center;
 `
 

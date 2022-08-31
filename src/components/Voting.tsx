@@ -31,7 +31,7 @@ const SubTitle = styled.div`
     text-align: center;
 
     & span {
-        color: red;
+        color: #FF4B3A;
     }
 `
 
@@ -74,12 +74,12 @@ const Voting = () => {
                         const end_time = moment(convertUtcToLocal(new Date(result.campaign[0].end_time))).format(FORMAT_DATETIME)
                         const now = moment(new Date()).format(FORMAT_DATETIME)
                         const isStartTime = moment(start_time).isBefore(now) // Compare start time with current datetime
-                        const isEndTime = moment(now).isBefore(end_time) // Compare end time with current datetime
+                        const isEndTime = moment(end_time).isBefore(now) // Compare end time with current datetime
                         const isVisibleActionButton = {
                             creator: result.campaign[0].creator,
                             isOpenVoting: !isStartTime
                         }
-                        setIsCloseVoting(!isStartTime || !isEndTime)
+                        setIsCloseVoting(!isStartTime || isEndTime)
                         setData({
                             campaign: {
                                 ...result.campaign[0],

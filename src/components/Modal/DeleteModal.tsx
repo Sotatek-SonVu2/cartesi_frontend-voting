@@ -13,9 +13,8 @@ type Props = {
 }
 
 const DeleteButton = styled(DangerButton)`
-    display: flex;
+    display: block;
     margin: 0 auto;
-    padding: 10px 20px;
     margin-top: 30px;
 `
 

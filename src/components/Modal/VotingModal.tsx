@@ -12,7 +12,6 @@ type Props = {
 const VotingButton = styled(SuccessButton)`
     display: block;
     margin: 0 auto;
-    padding: 10px 20px;
     margin-top: 30px;
 `
 

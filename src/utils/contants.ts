@@ -14,6 +14,7 @@ export const SAVE_EXECUTED_VOUCHER = 'SAVE_EXECUTED_VOUCHER'
 export const LIST_EXECUTED_VOUCHER = 'LIST_EXECUTED_VOUCHER'
 
 export const FORMAT_DATETIME = 'YYYY-MM-DD HH:mm:ss'
+export const FORMAT_DATETIME_2 = 'DD/MM/YYYY HH:mm:ss'
 export const ERROR_MESSAGE = 'Something went wrong! Please try again!'
 export const CHAIN_ID_ERROR_MESSAGE = 'Current Chain ID does not match'
 export const CONNECT_METAMASK_ERROR_CODE = -32002

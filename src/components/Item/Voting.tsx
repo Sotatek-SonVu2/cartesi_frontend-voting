@@ -1,9 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import { BoxContent } from "../../styled/common"
 import { Avatar, AvatarText, ItemIcon, VotingName, Wrapper } from "../../styled/list"
 import { getAvatar } from "../../utils/common"
-import DescriptionIcon from '../../images/desc-icon.svg'
-import { ROUTER_PATH } from "../../routes/contants";
+import DescriptionIcon from '../../images/script.png'
 import styled from "styled-components";
 import { FlexLayout } from "../../styled/main";
 import DescriptionModal from "../Modal/DescriptionModal";

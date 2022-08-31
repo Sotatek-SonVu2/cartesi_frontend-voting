@@ -14,6 +14,11 @@ interface ButtonType {
     disabled?: boolean | number
 }
 
+interface DateTimeBoxType {
+    isStartTime: boolean
+    isEndTime: boolean
+}
+
 export const colorTheme = {
     background: 'radial-gradient(ellipse at bottom,#1b2735 0%,#090a0f 100%)',
     darkBlue: '#1E1941',
@@ -21,7 +26,7 @@ export const colorTheme = {
     white: '#fff',
     tranparent: 'rgb(195 195 195 / 14%)',
     borderGray: '#dadce0',
-    primary: '#2e6da4',
+    primary: '#69CEFF',
     default: '#f3f4f6',
     success: '#3eb991',
     choose: '#b4d5ffb3',
@@ -33,9 +38,10 @@ export const colorTheme = {
 export const Button = styled.button<ButtonType>`
     color: #fff;
     font-size: 15px;
-    padding: 10px 25px;
-    border-radius: 7px;
+    padding: 8px 20px;
+    border-radius: 4px;
     cursor: pointer;
+    background: rgba(0,0,0,0);
 
     ${props => props.disabled && `
         background-color: ${colorTheme.disabled} !important;
@@ -45,24 +51,47 @@ export const Button = styled.button<ButtonType>`
 `
 
 export const PrimaryButton = styled(Button)`
-    border: 1px solid #fff;
-    background-color: ${colorTheme.primary};
+    border: 2px solid ${colorTheme.primary};
+    color:  ${colorTheme.primary};
+
+    &:hover {
+        transition: ease .3s;
+        background-color: ${colorTheme.primary};
+        color: #ffffff;
+    } 
 `
 
 export const DangerButton = styled(Button)`
-    border: 1px solid #fff;
-    background-color: ${colorTheme.danger};
+    border: 2px solid ${colorTheme.danger};
+    color:  ${colorTheme.danger};
+
+    &:hover {
+        transition: ease .3s;
+        background-color: ${colorTheme.danger};
+        color: #ffffff;
+    }
 `
 
 export const SuccessButton = styled(Button)`
-    border: 1px solid #fff;
-    background-color: ${colorTheme.success};
+    border: 2px solid ${colorTheme.success};
+    color:  ${colorTheme.success};
+
+    &:hover {
+        transition: ease .3s;
+        background-color: ${colorTheme.success};
+        color: #ffffff;
+    }
 `
 
 export const DefaultButton = styled(Button)`
-    border: 1px solid ${colorTheme.borderGray};
-    background-color: ${colorTheme.default};
-    color: #000;
+    border: 2px solid ${colorTheme.default};
+    color:  ${colorTheme.default};
+
+    &:hover {
+        transition: ease .3s;
+        background-color: ${colorTheme.default};
+        color: #000;
+    }
 `
 
 export const FlexLayoutBtn = styled.div`
@@ -91,11 +120,25 @@ export const Title = styled.div`
     color: #fff;
 `
 
+export const DateTimeBox = styled.div<DateTimeBoxType>`
+    background: linear-gradient(to right, #288BDB, #38B2FF, #69CEFF);
+    width: 285px;
+    height: 25px;
+    font-size: 12px;
+    border-radius: 5px 5px 0px 0px;
+    color: #fff;
+    margin-top: 15px;
+    margin-bottom: -7px;
+    padding: 0px 15px;
+    
+    ${props => props.isStartTime && `background: linear-gradient(to right, #31AF25, #4CCC33, #80E062);`}
+    ${props => props.isEndTime && `background: linear-gradient(to right, #DB2B2A, #FF4B3A, #FF846B);`}
+`
+
 export const BoxContent = styled.div<BoxContentType>`
     position: relative;
     width: 100%;
     background: ${colorTheme.white};
-    border: 1px solid ${colorTheme.borderGray};
     border-radius: 7px;
     cursor: pointer;
     color: #000;
