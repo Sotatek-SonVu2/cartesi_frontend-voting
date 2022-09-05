@@ -50,7 +50,7 @@ const Withdraw = () => {
     const [isWithdrawLoading, setIsWithdrawLoading] = useState<boolean>(false)
     const [vouchers, setVouchers] = useState<WithDrawType[]>([])
     const [isVisible, setIsVisible] = useState<boolean>(false);
-    const [isChecked, setIsChecked] = useState<string>('all')
+    const [isChecked, setIsChecked] = useState<string>(WITHDRAW_RADIO_FILTER_STATUS.ALL)
     const dispatch = useDispatch<AppDispatch>()
 
     const toggleModal = () => {
@@ -151,7 +151,6 @@ const Withdraw = () => {
         } finally {
             dispatch(getDepositInfo())
         }
-
     }
 
     const onWithdraw = async (id: string) => {
@@ -216,7 +215,6 @@ const Withdraw = () => {
                             ))}
                         </RadioGroup>
                     </WithdrawHeader>
-
 
                     <FlexLayoutSwap>
                         <BoxItemCustom onClick={toggleModal}>

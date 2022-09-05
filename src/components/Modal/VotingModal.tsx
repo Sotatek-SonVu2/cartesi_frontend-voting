@@ -12,7 +12,7 @@ type Props = {
 const VotingButton = styled(SuccessButton)`
     background-color: ${colorTheme.success};
     color: #ffffff;
-    display: flex;
+    display: block;
     margin: 0 auto;
     margin-top: 30px;
 `

@@ -253,6 +253,7 @@ export const RadioGroup = styled.div`
 
 export const Radio = styled.div`
   display: flex;
+  align-items: center;
   margin-right: 10px;
   font-size: 13px;
 `

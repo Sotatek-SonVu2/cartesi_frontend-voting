@@ -122,7 +122,7 @@ export const Title = styled.div`
 
 export const DateTimeBox = styled.div<DateTimeBoxType>`
     background: linear-gradient(to right, #288BDB, #38B2FF, #69CEFF);
-    width: 285px;
+    width: fit-content;
     height: 25px;
     font-size: 12px;
     border-radius: 5px 5px 0px 0px;

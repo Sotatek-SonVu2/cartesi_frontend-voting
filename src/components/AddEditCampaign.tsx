@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
 import Loading from "../common/Loading";
 import { createNotifications } from "../common/Notification";
 import { handleInspectApi } from "../helper/handleInspectApi";
@@ -22,6 +23,11 @@ import { validateDate, validateField, validateFields, validateOptions } from "..
 import CandidateOptions from "./CandidateOptions";
 
 const FORMAT_DATE_PICKER = 'MM/dd/yyyy h:mm aa'
+
+const SubmitButton = styled(SuccessButton)`
+    display: flex;
+    align-items: center;
+`
 
 const AddEditCampaign = () => {
     const initialValue = {
@@ -253,10 +259,10 @@ const AddEditCampaign = () => {
                 </FormItem>
                 <FlexLayoutBtn>
                     <DefaultButton type="button" onClick={() => navigate(-1)}>Back</DefaultButton>
-                    <SuccessButton type="submit" style={{ display: 'flex' }}>
+                    <SubmitButton type="submit">
                         {isLoading && (<Loader />)}
                         {!campaignId ? 'Create' : 'Save'}
-                    </SuccessButton>
+                    </SubmitButton>
                 </FlexLayoutBtn>
             </Form>
         </Content>

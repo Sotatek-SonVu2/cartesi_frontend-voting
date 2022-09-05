@@ -12,7 +12,6 @@ import { CAMPAIGN_DETAIL, ERROR_MESSAGE, NOTI_TYPE, RESULT } from "../utils/cont
 import { CampaignType, MetadataType, VotedType } from "../utils/interface"
 import ResultItem from "./Item/Result"
 
-
 interface DataType {
     campaign: CampaignType[]
     title: string
@@ -106,7 +105,6 @@ const Result = () => {
                 </Content>
             )}
         </>
-
     )
 }
 

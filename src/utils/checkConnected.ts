@@ -10,7 +10,6 @@ export const checkConnected = async () => {
         } else {
             return false
         }
-
     } catch (error: any) {
         throw error
     }
