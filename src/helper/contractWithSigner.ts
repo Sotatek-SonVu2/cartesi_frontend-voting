@@ -7,12 +7,13 @@ import { NETWORK_ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants"
 import { networks } from "./networks"
 
 const SPENDER_ADDRESS = process.env.REACT_APP_SPENDER_ADDRESS || ''
+const CHAIN_ID = process.env.REACT_APP_CHAIN_ID || ''
 
 export const cartesiToken = () => {
     const chainId = window.ethereum.networkVersion;
     console.log(`connected to chain ${chainId}`);
     const network = networks[chainId];
-    if (!network) {
+    if (!network || CHAIN_ID !== chainId) {
         createNotifications(NOTI_TYPE.DANGER, NETWORK_ERROR_MESSAGE)
         return; // undefined
     }
