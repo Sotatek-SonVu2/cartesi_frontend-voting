@@ -86,7 +86,7 @@ const AddEditCampaign = () => {
                         })
                         setOptions(options)
                     } else {
-                        createNotifications(NOTI_TYPE.DANGER, result.error)
+                        createNotifications(NOTI_TYPE.DANGER, result?.error)
                     }
                 } catch (error) {
                     createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
@@ -130,12 +130,12 @@ const AddEditCampaign = () => {
                     createNotifications(NOTI_TYPE.SUCCESS, 'Add campaign successfully!')
                     navigate(`${ROUTER_PATH.VOTING}/${payload.id}`, { replace: true });
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
+                    createNotifications(NOTI_TYPE.DANGER, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                 }
                 setIsLoading(false)
             }))
         } catch (error: any) {
-            createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
+            createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
             setIsLoading(false)
             throw error
         } finally {
@@ -154,12 +154,12 @@ const AddEditCampaign = () => {
                     createNotifications(NOTI_TYPE.SUCCESS, 'Edit campaign successfully!')
                     navigate(`${ROUTER_PATH.VOTING}/${campaignId}`, { replace: true });
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
+                    createNotifications(NOTI_TYPE.DANGER, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                 }
                 setIsLoading(false)
             }))
         } catch (error: any) {
-            createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
+            createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
             setIsLoading(false)
             throw error
         }

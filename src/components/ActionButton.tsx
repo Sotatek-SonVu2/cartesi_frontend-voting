@@ -78,7 +78,7 @@ const ActionButton = () => {
                     setIsLoading(false)
                     toggleModal()
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
+                    createNotifications(NOTI_TYPE.DANGER, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                     setIsLoading(false)
                     toggleModal()
                 }

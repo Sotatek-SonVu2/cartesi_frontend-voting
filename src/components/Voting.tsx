@@ -92,10 +92,10 @@ const Voting = () => {
                         setCandidateId(result.voted?.candidate_id)
                         dispatch(onVisibleActionButton(isVisibleActionButton))
                     } else {
-                        createNotifications(NOTI_TYPE.DANGER, result.error || ERROR_MESSAGE)
+                        createNotifications(NOTI_TYPE.DANGER, result?.error || ERROR_MESSAGE)
                     }
                 } catch (error: any) {
-                    createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
+                    createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
                     throw error
                 } finally {
                     setIsLoading(false)
@@ -132,13 +132,13 @@ const Voting = () => {
                     createNotifications(NOTI_TYPE.SUCCESS, 'Vote successfully!')
                     navigate(`${ROUTER_PATH.RESULT}/${campaignId}`, { replace: true });
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
+                    createNotifications(NOTI_TYPE.DANGER, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                     setCandidateId(0)
                     setIsLoadVoting(false)
                 }
             }))
         } catch (error: any) {
-            createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
+            createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
             setCandidateId(0)
             setIsLoadVoting(false)
             throw error

@@ -27,7 +27,7 @@ const Login = () => {
                 createNotifications(NOTI_TYPE.DANGER, 'Please install the MetaMask App!')
             }
         } catch (error: any) {
-            createNotifications(NOTI_TYPE.DANGER, error.message || ERROR_MESSAGE)
+            createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
             throw error
         }
     };

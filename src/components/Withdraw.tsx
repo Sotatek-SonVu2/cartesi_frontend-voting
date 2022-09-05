@@ -140,7 +140,7 @@ const Withdraw = () => {
                     createNotifications(NOTI_TYPE.SUCCESS, payload.message)
                     getData()
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
+                    createNotifications(NOTI_TYPE.DANGER, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                 }
                 setIsWithdrawLoading(false)
             }))

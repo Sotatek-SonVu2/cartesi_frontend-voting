@@ -65,7 +65,7 @@ const Result = () => {
                             voted_candidate: result.voted_candidate
                         })
                     } else {
-                        createNotifications(NOTI_TYPE.DANGER, result.error)
+                        createNotifications(NOTI_TYPE.DANGER, result?.error)
                     }
                 } catch (error) {
                     createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
