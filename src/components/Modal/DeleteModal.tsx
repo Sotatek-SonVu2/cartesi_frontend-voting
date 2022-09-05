@@ -15,7 +15,7 @@ type Props = {
 const DeleteButton = styled(DangerButton)`
     background-color: ${colorTheme.danger};
     color: #ffffff;
-    display: block;
+    display: flex;
     margin: 0 auto;
     margin-top: 30px;
 `

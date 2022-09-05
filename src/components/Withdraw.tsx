@@ -90,24 +90,24 @@ const Withdraw = () => {
             arr.forEach((item: WithDrawType) => {
                 let obj
                 const decode = new ethers.utils.AbiCoder().decode(["address", "uint256"], `0x${item.payload.slice(10)}`)
-                const amount = ethers.utils.formatEther(decode[1])
+                const amount = parseInt(ethers.utils.formatEther(decode[1]))
                 const isAllowExecute = item.epoch < lastEpoch.nodes[0].index || lastEpoch.nodes[0].vouchers.nodes[0].proof ? true : false
                 if (ids.length > 0) {
                     ids.every((id: string) => {
                         obj = {
                             ...item,
+                            amount,
                             isAllowExecute,  // The voucher is allowed to be executed
                             isExecuted: item.id === id, // The voucher has been executed
-                            amount: parseInt(amount)
                         }
                         return item.id !== id
                     })
                 } else {
                     obj = {
                         ...item,
+                        amount,
                         isAllowExecute,  // The voucher is allowed to be executed
                         isExecuted: false, // The voucher has been executed
-                        amount: parseInt(amount)
                     }
                 }
                 result.unshift(obj)

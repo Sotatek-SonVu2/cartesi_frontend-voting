@@ -23,7 +23,7 @@ type Props = {
 const DepositButton = styled(SuccessButton)`
     background-color: ${colorTheme.success};
     color: #ffffff;
-    display: block;
+    display: flex;
     margin: 0 auto;
     margin-top: 30px;
 `
