@@ -8,6 +8,10 @@ const Content = styled.p`
     font-weight: 400;
     line-height: 1.5;
     font-size: 16px;
+    height: 200px;
+    text-align: justify;
+
+    
 `
 
 type Props = {

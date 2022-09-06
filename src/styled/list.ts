@@ -144,6 +144,7 @@ export const VotingRate = styled.span`
 export const BoxItem = styled.div`
   background: rgb(195 195 195 / 14%);
   width: 23%;
+  min-width: 137px;
   min-height: 242px;
   margin-top: 20px;
   margin-right: 5px;
@@ -182,7 +183,7 @@ export const WithdrawContent = styled.div`
   color: #fff;
   text-align: center;
 
-  & img {
+  & .giftIcon {
     display: block;
     margin: 0 auto;
     margin-top: 24px;
@@ -195,6 +196,7 @@ export const WithdrawContent = styled.div`
 
   & span {
     font-size: 12px;
+    display: block;
   }
 
   & div {
@@ -243,6 +245,7 @@ export const Tooltip = styled.div`
 export const WithdrawHeader = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
 `
 

@@ -3,8 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createNotifications } from "../common/Notification";
 import { web3Modal } from "../helper/provider";
-import cartesiLogo from '../images/Cartesi_Logo_White.svg';
-import sotatekLogo from '../images/Logo_Sotatek.svg';
+import sotatekLogo from '../images/Logo_Sotatek2.svg';
 import { setAccount } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
 import { AppDispatch } from "../store";
@@ -36,7 +35,6 @@ const Login = () => {
     return (
         <>
             <Logo>
-                <img src={cartesiLogo} alt="cartesi logo" width={150} />
                 <img src={sotatekLogo} alt="sotatek logo" width={150} />
             </Logo>
             <Container>

@@ -17,14 +17,15 @@ import { getDepositInfo } from "../reducers/authSlice";
 import { AppDispatch, RootState } from "../store";
 import { Content, Title } from "../styled/common";
 import { BoxItem, Radio, RadioGroup, WithdrawContent, WithdrawHeader } from "../styled/list";
-import { LoadingAbsolute } from "../styled/loading";
 import { FlexLayout } from "../styled/main";
 import {
     ERROR_MESSAGE,
     LIST_EXECUTED_VOUCHER,
     NOTI_TYPE,
+    NO_RESPONSE_ERROR,
     NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE,
     SAVE_EXECUTED_VOUCHER,
+    WAITING_FOR_CONFIRMATION,
     WITHDRAW,
     WITHDRAW_RADIO_FILTER,
     WITHDRAW_RADIO_FILTER_STATUS
@@ -47,6 +48,7 @@ const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL || ''
 const Withdraw = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
+    const [callMessage, setCallMessage] = useState<string>('')
     const [isWithdrawLoading, setIsWithdrawLoading] = useState<boolean>(false)
     const [vouchers, setVouchers] = useState<WithDrawType[]>([])
     const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -134,15 +136,18 @@ const Withdraw = () => {
                 action: WITHDRAW,
                 amount: BigInt(decimal).toString()
             }
+            setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
             handleResponse(epoch_index, input_index, (async (payload: any) => {
-                if (payload && !payload.error) {
+                if (payload && payload.message !== NO_RESPONSE_ERROR && !payload.error) {
                     createNotifications(NOTI_TYPE.SUCCESS, payload.message)
+                    setIsWithdrawLoading(false)
                     getData()
+                } else if (payload.message === NO_RESPONSE_ERROR) {
+                    setCallMessage(`Waiting: ${payload.times}s. Call result: Fail`)
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                 }
-                setIsWithdrawLoading(false)
             }))
         } catch (error) {
             createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
@@ -156,15 +161,14 @@ const Withdraw = () => {
     const onWithdraw = async (id: string) => {
         // wait for vouchers to appear in reader
         setIsWithdrawLoading(true)
+        setCallMessage(WAITING_FOR_CONFIRMATION)
         console.log(`retrieving voucher "${id}" along with proof`);
         const voucher = await getVoucherExcute(GRAPHQL_URL, id);
         if (!voucher.proof) {
             createNotifications(NOTI_TYPE.DANGER, `Voucher "${id}" has no associated proof yet`)
             return;
         }
-
         // send transaction to execute voucher
-        console.log(`executing voucher "${id}"`);
         const proof: OutputValidityProofStruct = {
             ...voucher.proof,
             epochIndex: voucher.input.epoch.index,
@@ -172,7 +176,6 @@ const Withdraw = () => {
             outputIndex: voucher.index,
         };
         try {
-            // console.log(`Would check: ${JSON.stringify(proof)}`);
             const tx = await outputContract().executeVoucher(
                 voucher.destination,
                 voucher.payload,
@@ -230,9 +233,7 @@ const Withdraw = () => {
                         ))}
                     </FlexLayoutSwap>
                     {isWithdrawLoading && (
-                        <LoadingAbsolute>
-                            <Loading />
-                        </LoadingAbsolute>
+                        <Loading isScreenLoading={isWithdrawLoading} messages={callMessage} />
                     )}
                     {isVisible && (
                         <WithdrawModal

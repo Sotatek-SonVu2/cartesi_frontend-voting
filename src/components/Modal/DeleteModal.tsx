@@ -8,6 +8,7 @@ type Props = {
     isVisible: boolean
     toggleModal: any
     onClick: () => {}
+    callMessage: string
     isLoading: boolean
 }
 
@@ -20,7 +21,15 @@ const DeleteButton = styled(DangerButton)`
     margin-top: 30px;
 `
 
-const DeleteModal = ({ isVisible, toggleModal, onClick, isLoading }: Props) => {
+const ErrorMessage = styled.span`
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    font-style: italic;
+    color: red;
+`
+
+const DeleteModal = ({ isVisible, toggleModal, onClick, isLoading, callMessage }: Props) => {
     return (
         <ModalComponent isVisible={isVisible} toggleModal={toggleModal} isLoading={isLoading}>
             <div>
@@ -28,6 +37,7 @@ const DeleteModal = ({ isVisible, toggleModal, onClick, isLoading }: Props) => {
                     <img src={confirmIcon} alt="confirm Icon" width={30} />
                     <p>Are you sure to delete this campaign?</p>
                 </ModalTitle>
+                <ErrorMessage>{callMessage}</ErrorMessage>
                 <DeleteButton onClick={onClick} disabled={isLoading}>
                     {isLoading && (<Loader />)}
                     Delete

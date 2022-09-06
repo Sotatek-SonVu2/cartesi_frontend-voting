@@ -40,6 +40,7 @@ export const TextArea = styled.textarea`
     width: 100%;
     height: 90px;
     padding: 10px;
+    margin: 8px 0;
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;

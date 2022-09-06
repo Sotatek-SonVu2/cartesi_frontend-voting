@@ -1,9 +1,11 @@
 import { WithdrawContent } from "../../styled/list"
 import GiftIcon from "../../images/Gift-box-1.png"
 import GiftDisabledIcon from "../../images/Gift-box-2.png"
+import ClaimedIcon from '../../images/claimed.png'
 import styled from "styled-components"
 import { SuccessButton } from "../../styled/common"
 import { WithDrawType } from "../../utils/interface"
+
 
 const ClaimButton = styled(SuccessButton)`
     display: block;
@@ -24,13 +26,17 @@ const WithdrawItem = ({ data, onClick }: PropsType) => {
     const { id, isAllowExecute, isExecuted, amount } = data
     return (
         <WithdrawContent>
-            <img src={isExecuted || isAllowExecute ? GiftIcon : GiftDisabledIcon} alt="gift" width={'50%'} />
+            <img src={isExecuted || isAllowExecute ? GiftIcon : GiftDisabledIcon} className="giftIcon" alt="gift" width={'50%'} />
             <div></div>
             <h5>Gift {id}</h5>
             <span>{amount} CTSI</span>
-            <ClaimButton onClick={() => onClick(id)} disabled={!isAllowExecute || isExecuted}>
-                {isExecuted ? 'Claimed' : 'Claim'}
-            </ClaimButton>
+            {isExecuted ? (
+                <img src={ClaimedIcon} alt="claimedIcon" width={100} style={{ marginTop: '10px' }} />
+            ) : (
+                <ClaimButton onClick={() => onClick(id)} disabled={!isAllowExecute}>
+                    Claim
+                </ClaimButton>
+            )}
         </WithdrawContent>
     )
 }

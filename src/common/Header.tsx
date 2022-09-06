@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import DepositModal from "../components/Modal/DepositModal";
 import EthIcon from "../images/cartesi_icon.png";
-import logo from '../images/Cartesi_Logo_White.svg';
+import Logo from '../images/Logo_Sotatek2.svg';
 import LogoutIcon from "../images/logout-icon.svg";
 import { clearAccount, getDepositInfo } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
@@ -68,7 +68,7 @@ const Header = () => {
     return (
         <>
             <Content>
-                <img src={logo} alt="logo" width={110} onClick={() => navigate(ROUTER_PATH.HOMEPAGE)} />
+                <img src={Logo} alt="logo" width={130} onClick={() => navigate(ROUTER_PATH.HOMEPAGE)} />
                 <Menu>
                     <InforUser>
                         <CopyToClipboard text={address} onCopy={handleCopy}>

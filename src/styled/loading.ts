@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+interface LoadingType {
+   isScreenLoading?: boolean
+}
+
 export const Loader = styled.div`
    border: 2px solid #fff;
    border-radius: 50%;
@@ -22,21 +26,16 @@ export const Loader = styled.div`
     }
  `
 
-export const LoadingAbsolute = styled.div`
-   position: absolute;
-   left: 0;
-   top: 0;
-   background: rgb(0 0 0 / 38%);
-   z-index: 10;
-   width: 100%;
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: center;
-   height: 100%;
-`
+export const LoadingWrapper = styled.div<LoadingType>`
+    ${props => props.isScreenLoading && `
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: rgb(0 0 0 / 38%);
+      z-index: 10;
+      width: 100%;
+    `}
 
-export const LoadingWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -68,6 +67,7 @@ export const LoadingWrapper = styled.div`
        font-size: 14px;
        font-family: "Roboto Mono", monospace;
        animation: text 4s ease infinite;
+       margin-bottom: 0;
 
        @keyframes text {
         0% {

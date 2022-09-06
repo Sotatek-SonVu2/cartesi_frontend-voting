@@ -22,6 +22,8 @@ export const CONNECT_METAMASK_ERROR_MESSAGE = 'Please connect to MetaMask.'
 export const NETWORK_ERROR_MESSAGE = 'Please check your network and try again!'
 export const AMOUNT_ERROR_MESSAGE = 'Invalid amount. Please enter again!'
 export const NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE = 'Unable to receive a response from server side. Please try again!'
+export const NO_RESPONSE_ERROR = 'NO_RESPONSE_ERROR'
+export const WAITING_FOR_CONFIRMATION = 'waiting for confirmation...'
 
 export const NOTI_TYPE = {
     SUCCESS: 'success',

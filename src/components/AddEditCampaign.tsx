@@ -15,9 +15,9 @@ import { ROUTER_PATH } from "../routes/contants";
 import { AppDispatch, RootState } from "../store";
 import { Content, DefaultButton, FlexLayoutBtn, SuccessButton, Title } from "../styled/common";
 import { ErrorText, Form, FormItem, Input, TextArea } from "../styled/form";
-import { Loader, LoadingAbsolute } from "../styled/loading";
+import { Loader } from "../styled/loading";
 import { convertLocalToUtc, convertUtcToLocal } from "../utils/common";
-import { CAMPAIGN_DETAIL, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE, NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE } from "../utils/contants";
+import { CAMPAIGN_DETAIL, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE, NO_RESPONSE_ERROR, NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE, WAITING_FOR_CONFIRMATION } from "../utils/contants";
 import { AddEditDataType, MetadataType, OptionType, resInput } from "../utils/interface";
 import { validateDate, validateField, validateFields, validateOptions } from "../utils/validate";
 import CandidateOptions from "./CandidateOptions";
@@ -50,6 +50,7 @@ const AddEditCampaign = () => {
     const dispatch = useDispatch<AppDispatch>()
     let navigate = useNavigate();
     const { campaignId } = useParams();
+    const [callMessage, setCallMessage] = useState<string>('')
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [dataForm, setDataForm] = useState(initialValue)
     const [options, setOptions] = useState<OptionType[]>(OptionDefault)
@@ -122,17 +123,20 @@ const AddEditCampaign = () => {
     const createCampaign = async (data: AddEditDataType) => {
         try {
             setIsLoading(true)
+            setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
             handleResponse(epoch_index, input_index, ((payload: any) => {
-                if (payload && !payload.error) {
+                if (payload && payload.message !== NO_RESPONSE_ERROR && !payload.error) {
                     setDataForm(initialValue)
                     setOptions(OptionDefault)
                     createNotifications(NOTI_TYPE.SUCCESS, 'Add campaign successfully!')
                     navigate(`${ROUTER_PATH.VOTING}/${payload.id}`, { replace: true });
+                } else if (payload.message === NO_RESPONSE_ERROR) {
+                    setCallMessage(`Waiting: ${payload.times}s. Call result: Fail`)
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
+                    setIsLoading(false)
                 }
-                setIsLoading(false)
             }))
         } catch (error: any) {
             createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
@@ -146,17 +150,20 @@ const AddEditCampaign = () => {
     const editCampaign = async (data: AddEditDataType) => {
         try {
             setIsLoading(true)
+            setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
             handleResponse(epoch_index, input_index, ((payload: any) => {
-                if (payload && !payload.error) {
+                if (payload && payload.message !== NO_RESPONSE_ERROR && !payload.error) {
                     setDataForm(initialValue)
                     setOptions(OptionDefault)
                     createNotifications(NOTI_TYPE.SUCCESS, 'Edit campaign successfully!')
                     navigate(`${ROUTER_PATH.VOTING}/${campaignId}`, { replace: true });
+                } else if (payload.message === NO_RESPONSE_ERROR) {
+                    setCallMessage(`Waiting: ${payload.times}s. Call result: Fail`)
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
+                    setIsLoading(false)
                 }
-                setIsLoading(false)
             }))
         } catch (error: any) {
             createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
@@ -210,9 +217,7 @@ const AddEditCampaign = () => {
     return (
         <Content>
             {isLoading && (
-                <LoadingAbsolute>
-                    <Loading />
-                </LoadingAbsolute>
+                <Loading isScreenLoading={isLoading} messages={callMessage} />
             )}
             <Title>
                 {!campaignId ? 'Create new campaign' : 'Edit campaign'}

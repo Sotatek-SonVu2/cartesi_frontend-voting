@@ -14,9 +14,8 @@ import { onVisibleActionButton } from "../reducers/campaignSlice"
 import { ROUTER_PATH } from "../routes/contants"
 import { AppDispatch, RootState } from "../store"
 import { Content, DefaultButton, FlexLayoutBtn, PrimaryButton, SuccessButton, Title } from "../styled/common"
-import { LoadingAbsolute } from "../styled/loading"
 import { convertUtcToLocal } from "../utils/common"
-import { CAMPAIGN_DETAIL, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE, NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE, VOTING } from "../utils/contants"
+import { CAMPAIGN_DETAIL, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE, NO_RESPONSE_ERROR, NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE, VOTING, WAITING_FOR_CONFIRMATION } from "../utils/contants"
 import { CampaignVotingType, CandidatesVotingType, MetadataType, resInput } from "../utils/interface"
 import VotingItem from "./Item/Voting"
 import VotingModal from "./Modal/VotingModal"
@@ -39,6 +38,7 @@ const Voting = () => {
     const [candidateId, setCandidateId] = useState<number>(0)
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [callMessage, setCallMessage] = useState<string>('')
     const [isLoadVoting, setIsLoadVoting] = useState<boolean>(false)
     const [isCloseVoting, setIsCloseVoting] = useState<boolean>(false)
     const [data, setData] = useState<DataType>({
@@ -107,7 +107,7 @@ const Voting = () => {
     }, [])
 
     const onChooseAnswer = (id: number) => {
-        if (data.voted?.candidate_id || isCloseVoting) return
+        if (data.voted?.candidate_id || isCloseVoting || isLoadVoting) return
         setCandidateId(id)
     }
 
@@ -118,7 +118,6 @@ const Voting = () => {
     const handleVoting = async () => {
         toggleModal()
         if (!candidateId) return createNotifications(NOTI_TYPE.DANGER, 'Please choose a candidate!')
-
         try {
             setIsLoadVoting(true)
             const data = {
@@ -126,11 +125,14 @@ const Voting = () => {
                 candidate_id: candidateId,
                 campaign_id: campaignId && parseInt(campaignId)
             }
+            setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
             handleResponse(epoch_index, input_index, ((payload: any) => {
-                if (payload && !payload.error) {
+                if (payload && payload.message !== NO_RESPONSE_ERROR && !payload.error) {
                     createNotifications(NOTI_TYPE.SUCCESS, 'Vote successfully!')
                     navigate(`${ROUTER_PATH.RESULT}/${campaignId}`, { replace: true });
+                } else if (payload.message === NO_RESPONSE_ERROR) {
+                    setCallMessage(`Waiting: ${payload.times}s. Call result: Fail`)
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                     setCandidateId(0)
@@ -178,7 +180,7 @@ const Voting = () => {
                         <SuccessButton
                             type="button"
                             onClick={toggleModal}
-                            disabled={isCloseVoting || data.voted?.candidate_id || !candidateId}
+                            disabled={isCloseVoting || data.voted?.candidate_id || !candidateId || isLoadVoting}
                         >
                             Vote
                         </SuccessButton>
@@ -192,9 +194,7 @@ const Voting = () => {
                         />
                     )}
                     {isLoadVoting && (
-                        <LoadingAbsolute>
-                            <Loading />
-                        </LoadingAbsolute>
+                        <Loading isScreenLoading={isLoadVoting} messages={callMessage} />
                     )}
                 </Content >
             )}

@@ -20,10 +20,12 @@ export const validateAmount = (value: string) => {
     return ''
 }
 
-export const validateField = (fieldName: string, value: string | Date) => {
+export const validateField = (fieldName: string, value: any) => {
     let errorText = ''
     if (!value) {
         errorText = validateText[fieldName]
+    } else if (fieldName === 'name' && value.length > 200) {
+        errorText = 'Không thể nhập dữ liệu quá 200 ký tự!'
     }
     return {
         [fieldName]: errorText
