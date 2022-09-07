@@ -186,10 +186,15 @@ export const ModalContainer = styled.div`
 `
 
 export const ModalHeader = styled.div`
+    top: 0;
+    position: sticky;
+    z-index: 99;
+    background: #fff;
     display: flex;
     justify-content: space-between;
     padding: 15px 20px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #bfbfbf;
+    box-shadow: #f3f4f6 0px 7px 29px 0px;
 
     & span {
         color: #000000d9;

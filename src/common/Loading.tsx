@@ -11,8 +11,7 @@ const Loading = ({ isScreenLoading, messages }: PropsType) => {
     return (
         <LoadingWrapper isScreenLoading={isScreenLoading}>
             <img src={LoadingIcon} alt="loading icon" width={75} />
-            <p>Loading...</p>
-            <p>{messages}</p>
+            <p>{messages || 'Loading...'}</p>
         </LoadingWrapper>
     )
 }

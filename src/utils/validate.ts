@@ -25,7 +25,7 @@ export const validateField = (fieldName: string, value: any) => {
     if (!value) {
         errorText = validateText[fieldName]
     } else if (fieldName === 'name' && value.length > 200) {
-        errorText = 'Không thể nhập dữ liệu quá 200 ký tự!'
+        errorText = 'Please do not enter more than 200 characters!'
     }
     return {
         [fieldName]: errorText

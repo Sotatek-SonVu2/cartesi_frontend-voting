@@ -33,7 +33,6 @@ const DescriptionModal = ({ isVisible, toggleModal, data }: Props) => {
                     )}
                 </FormItem>
             </ModalTitle>
-
         </ModalComponent>
     )
 }

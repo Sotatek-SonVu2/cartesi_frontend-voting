@@ -132,7 +132,7 @@ const AddEditCampaign = () => {
                     createNotifications(NOTI_TYPE.SUCCESS, 'Add campaign successfully!')
                     navigate(`${ROUTER_PATH.VOTING}/${payload.id}`, { replace: true });
                 } else if (payload.message === NO_RESPONSE_ERROR) {
-                    setCallMessage(`Waiting: ${payload.times}s. Call result: Fail`)
+                    setCallMessage(`Waiting: ${payload.times}s.`)
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                     setIsLoading(false)
@@ -159,7 +159,7 @@ const AddEditCampaign = () => {
                     createNotifications(NOTI_TYPE.SUCCESS, 'Edit campaign successfully!')
                     navigate(`${ROUTER_PATH.VOTING}/${campaignId}`, { replace: true });
                 } else if (payload.message === NO_RESPONSE_ERROR) {
-                    setCallMessage(`Waiting: ${payload.times}s. Call result: Fail`)
+                    setCallMessage(`Waiting: ${payload.times}s.`)
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                     setIsLoading(false)

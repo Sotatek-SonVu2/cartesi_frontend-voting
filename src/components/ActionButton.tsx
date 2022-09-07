@@ -80,7 +80,7 @@ const ActionButton = () => {
                     setIsLoading(false)
                     toggleModal()
                 } else if (payload.message === NO_RESPONSE_ERROR) {
-                    setCallMessage(`Waiting: ${payload.times}s. Call result: Fail`)
+                    setCallMessage(`Waiting: ${payload.times}s.`)
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                     setIsLoading(false)
