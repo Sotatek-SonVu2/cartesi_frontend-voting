@@ -3,6 +3,7 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Background from "./common/Background";
 import { createNotifications } from "./common/Notification";
 import AddEditCampaign from "./components/AddEditCampaign";
+import History from "./components/History";
 import ListCampaigns from "./components/ListCampaigns";
 import Result from "./components/Result";
 import Voting from "./components/Voting";
@@ -51,6 +52,7 @@ function App() {
             <Route element={<Voting />} path={ROUTER_PATH.VOTING + '/:campaignId'} />
             <Route element={<Result />} path={ROUTER_PATH.RESULT + '/:campaignId'} />
             <Route element={<Withdraw />} path={ROUTER_PATH.WITHDRAW} />
+            <Route element={<History />} path={ROUTER_PATH.HISTORY} />
           </Route>
           <Route
             path="*"

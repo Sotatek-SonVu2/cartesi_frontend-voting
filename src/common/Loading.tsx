@@ -1,4 +1,4 @@
-import { LoadingWrapper } from "../styled/loading"
+import { LoadingText, LoadingWrapper } from "../styled/loading"
 import LoadingIcon from '../images/rocket.png'
 import { useEffect, useState } from "react"
 
@@ -11,7 +11,7 @@ const Loading = ({ isScreenLoading, messages }: PropsType) => {
     return (
         <LoadingWrapper isScreenLoading={isScreenLoading}>
             <img src={LoadingIcon} alt="loading icon" width={75} />
-            <p>{messages || 'Loading...'}</p>
+            <LoadingText>{messages || 'Loading...'}</LoadingText>
         </LoadingWrapper>
     )
 }

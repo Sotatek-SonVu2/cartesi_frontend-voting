@@ -260,3 +260,69 @@ export const Radio = styled.div`
   margin-right: 10px;
   font-size: 13px;
 `
+
+export const TimeLine = styled.div`
+  margin: 2rem 0px;
+  color: #fff;
+
+  & ul {
+    box-sizing: border-box;
+    color: #000000d9;
+    font-size: 14px;
+    font-variant: tabular-nums;
+    line-height: 1.5715;
+    font-feature-settings: "tnum";
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+  }
+
+  & li {
+    position: relative;
+    margin: 0;
+    padding-bottom: 20px;
+    font-size: 14px;
+    list-style: none;
+  }
+
+  & .timeline-tail {
+    position: absolute;
+    top: 15px;
+    left: 51%;
+    height: calc(100% - 10px);
+    border-left: 2px solid #fff;
+    
+  }
+
+  & .timeline-head {
+    left: 50%;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border: 2px solid blue;
+    border-radius: 100px;
+    color: blue;
+  }
+
+  & .timeline-content {
+    position: relative;
+    left: calc(50% - 4px);
+    width: calc(50% - 25px);
+    background: rgb(12 255 120 / 50%);
+    color: #fff;
+    text-align: center;
+    word-break: break-word;
+    margin: 0 0 0 26px;
+    padding: 15px 0px;
+    border: 1px solid #fff;
+    border-radius: 4px;
+  }
+
+  & .timeline-item-right {
+    left: 0;
+    width: 48%;
+    margin: 0px;
+  }
+`

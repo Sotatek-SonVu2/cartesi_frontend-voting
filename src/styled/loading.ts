@@ -43,6 +43,7 @@ export const LoadingWrapper = styled.div<LoadingType>`
     height: 100%;
     min-height: 310px;
     color: #fff;
+
     & img {
       position: relative;
       display: block;
@@ -62,38 +63,41 @@ export const LoadingWrapper = styled.div<LoadingType>`
             bottom: 40px;
         }
       }
+`
 
-    & p {
-       font-size: 14px;
-       font-family: "Roboto Mono", monospace;
-       animation: text 4s ease infinite;
-       margin-bottom: 0;
+export const LoadingText = styled.p`
+   font-size: 14px;
+   font-family: "Roboto Mono", monospace;
+   animation: text 4s ease infinite;
+   margin-bottom: 0;
+   display: block;
+   margin: 0 auto;
+   width: fit-content;
 
-       @keyframes text {
-        0% {
-           transform: translateX(-30px);
-           letter-spacing: 0px;
-        }
+   @keyframes text {
+      0% {
+         transform: translateX(-30px);
+         letter-spacing: 0px;
+      }
 
-        25% {
-           letter-spacing: 3px;
-        }
+      25% {
+         letter-spacing: 3px;
+      }
 
-        50% {
-           transform: translateX(30px);
-           letter-spacing: 0px;
-        }
+      50% {
+         transform: translateX(30px);
+         letter-spacing: 0px;
+      }
 
-        75% {
-           letter-spacing: 3px;
-           color: $m-03;
-        }
+      75% {
+         letter-spacing: 3px;
+         color: $m-03;
+      }
 
-        100% {
-           transform: translateX(-30px);
-           letter-spacing: 0px;
-        }
-     }
-    }
+      100% {
+         transform: translateX(-30px);
+         letter-spacing: 0px;
+      }
+   }
 `
 

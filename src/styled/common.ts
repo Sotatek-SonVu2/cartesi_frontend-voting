@@ -171,6 +171,7 @@ export const NoDataWrapper = styled.div`
     & p {
         font-size: 14px;
         font-family: "Roboto Mono", monospace;
+        color: #fff;
     }
 `
 

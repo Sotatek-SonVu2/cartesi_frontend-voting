@@ -15,7 +15,16 @@ import { ROUTER_PATH } from "../routes/contants"
 import { AppDispatch, RootState } from "../store"
 import { Content, DefaultButton, FlexLayoutBtn, PrimaryButton, SuccessButton, Title } from "../styled/common"
 import { convertUtcToLocal } from "../utils/common"
-import { CAMPAIGN_DETAIL, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE, NO_RESPONSE_ERROR, NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE, VOTING, WAITING_FOR_CONFIRMATION } from "../utils/contants"
+import {
+    CAMPAIGN_DETAIL,
+    ERROR_MESSAGE,
+    FORMAT_DATETIME,
+    NOTI_TYPE,
+    NO_RESPONSE_ERROR,
+    NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE,
+    VOTE,
+    WAITING_FOR_CONFIRMATION
+} from "../utils/contants"
 import { CampaignVotingType, CandidatesVotingType, MetadataType, resInput } from "../utils/interface"
 import VotingItem from "./Item/Voting"
 import VotingModal from "./Modal/VotingModal"
@@ -121,7 +130,7 @@ const Voting = () => {
         try {
             setIsLoadVoting(true)
             const data = {
-                action: VOTING,
+                action: VOTE,
                 candidate_id: candidateId,
                 campaign_id: campaignId && parseInt(campaignId)
             }
@@ -175,17 +184,19 @@ const Voting = () => {
                     )) : (
                         <NoData />
                     )}
-                    <FlexLayoutBtn>
-                        <DefaultButton type="button" onClick={() => navigate(ROUTER_PATH.HOMEPAGE)}>Back</DefaultButton>
-                        <SuccessButton
-                            type="button"
-                            onClick={toggleModal}
-                            disabled={isCloseVoting || data.voted?.candidate_id || !candidateId || isLoadVoting}
-                        >
-                            Vote
-                        </SuccessButton>
-                        <PrimaryButton type="button" onClick={() => navigate(`${ROUTER_PATH.RESULT}/${campaignId}`)}>Result</PrimaryButton>
-                    </FlexLayoutBtn>
+                    {data?.candidates.length > 0 && (
+                        <FlexLayoutBtn>
+                            <DefaultButton type="button" onClick={() => navigate(ROUTER_PATH.HOMEPAGE)}>Back</DefaultButton>
+                            <SuccessButton
+                                type="button"
+                                onClick={toggleModal}
+                                disabled={isCloseVoting || data.voted?.candidate_id || !candidateId || isLoadVoting}
+                            >
+                                Vote
+                            </SuccessButton>
+                            <PrimaryButton type="button" onClick={() => navigate(`${ROUTER_PATH.RESULT}/${campaignId}`)}>Result</PrimaryButton>
+                        </FlexLayoutBtn>
+                    )}
                     {isVisible && (
                         <VotingModal
                             isVisible={isVisible}

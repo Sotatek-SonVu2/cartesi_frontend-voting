@@ -92,6 +92,9 @@ const Header = () => {
                         <MenuTitle onClick={() => navigate(ROUTER_PATH.WITHDRAW, { replace: true })}>
                             Withdraw
                         </MenuTitle>
+                        <MenuTitle onClick={() => navigate(ROUTER_PATH.HISTORY, { replace: true })}>
+                            History
+                        </MenuTitle>
                     </MenuList>
                     <img className="logoutIcon" src={LogoutIcon} alt="logoutIcon" width={20} onClick={handleLogout} />
                 </Menu>
