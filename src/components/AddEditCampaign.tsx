@@ -125,11 +125,12 @@ const AddEditCampaign = () => {
             setIsLoading(true)
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
-            handleResponse(epoch_index, input_index, ((payload: any) => {
+            handleResponse(epoch_index, input_index, (async (payload: any) => {
                 if (payload && payload.message !== NO_RESPONSE_ERROR && !payload.error) {
                     setDataForm(initialValue)
                     setOptions(OptionDefault)
                     createNotifications(NOTI_TYPE.SUCCESS, 'Add campaign successfully!')
+                    await dispatch(getDepositInfo())
                     navigate(`${ROUTER_PATH.VOTING}/${payload.id}`, { replace: true });
                 } else if (payload.message === NO_RESPONSE_ERROR) {
                     setCallMessage(`Waiting: ${payload.times}s.`)
@@ -142,8 +143,6 @@ const AddEditCampaign = () => {
             createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
             setIsLoading(false)
             throw error
-        } finally {
-            dispatch(getDepositInfo())
         }
     }
 

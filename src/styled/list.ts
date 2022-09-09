@@ -48,6 +48,21 @@ export const CampaignName = styled.div`
   position: relative;
 `
 
+export const HistoryTitle = styled.div`
+  display: flex;
+  align-items: center;
+  text-align: justify;
+  position: relative;
+
+  & img {
+    margin-right: 10px;
+  }
+
+  & p {
+    margin: 0px;
+  }
+`
+
 export const ActionList = styled.div`
   display: flex;
   justify-content: space-between;
@@ -309,20 +324,28 @@ export const TimeLine = styled.div`
   & .timeline-content {
     position: relative;
     left: calc(50% - 4px);
-    width: calc(50% - 25px);
-    background: rgb(12 255 120 / 50%);
+    width: calc(50% - 44px);
     color: #fff;
-    text-align: center;
     word-break: break-word;
     margin: 0 0 0 26px;
-    padding: 15px 0px;
+    padding: 10px;
     border: 1px solid #fff;
     border-radius: 4px;
+
+    & a {
+      text-decoration: unset;
+      color: #fff;
+    }
+
+    & a:hover {
+      text-decoration: underline;
+      color: #fff;
+    }
   }
 
   & .timeline-item-right {
     left: 0;
-    width: 48%;
+    width: 45%;
     margin: 0px;
   }
 `

@@ -19,7 +19,7 @@ const History = () => {
     const [paging, setPaging] = useState({
         currentPage: 0,
         pageSize: 10,
-        total: 1
+        total: 0
     });
 
     const { currentPage, pageSize, total } = paging
@@ -35,7 +35,6 @@ const History = () => {
                 type: 'all'
             }
             const result = await handleInspectApi(data, metadata)
-            console.log('result', result)
             if (result && !result.error) {
                 const list = items.concat(result.data)
                 setItems(list)
@@ -59,11 +58,8 @@ const History = () => {
         getData()
     }, [])
 
-
-
     return (
         <>
-
             <Content>
                 <Title>
                     History
@@ -76,7 +72,7 @@ const History = () => {
                 >
                     <TimeLine>
                         <ul>
-                            {!isLoading && items.length < 0 ? (
+                            {!isLoading && items.length === 0 ? (
                                 <NoData />
                             ) : (
                                 items.map((item, index) => (
@@ -87,7 +83,6 @@ const History = () => {
                             )}
                         </ul>
                     </TimeLine>
-
                 </InfiniteScroll>
                 {isLoading && (
                     <Loading />

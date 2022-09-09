@@ -16,7 +16,7 @@ export const getDepositInfo = createAsyncThunk(
                 epoch_index: 0,
                 input_index: 0,
                 block_number: 0,
-                timestamp: Date.now() / 1000
+                timestamp: Date.now() / 1000 // millisecond
             }
             const result = await handleInspectApi(data, metadata)
             if (result && !result.error) {
@@ -47,7 +47,7 @@ const initialState: AuthState = {
         epoch_index: 0,
         input_index: 0,
         block_number: 0,
-        timestamp: Date.now() / 1000
+        timestamp: Date.now() / 1000  // millisecond
     },
     isLoading: false
 };
@@ -64,7 +64,7 @@ export const authSlice = createSlice({
                 metadata: {
                     ...state.metadata,
                     msg_sender: payload.toLowerCase(),
-                    timestamp: Date.now() / 1000
+                    timestamp: Date.now() / 1000  // millisecond
                 }
             }
             state = data
