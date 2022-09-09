@@ -33,7 +33,7 @@ const WithdrawItem = ({ data, onClick }: PropsType) => {
             {isExecuted ? (
                 <img src={ClaimedIcon} alt="claimedIcon" width={100} style={{ marginTop: '10px' }} />
             ) : (
-                <ClaimButton onClick={() => onClick(id)} disabled={!isAllowExecute}>
+                <ClaimButton onClick={() => onClick(id, amount)} disabled={!isAllowExecute}>
                     Claim
                 </ClaimButton>
             )}

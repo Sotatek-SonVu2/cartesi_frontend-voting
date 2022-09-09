@@ -329,8 +329,7 @@ export const TimeLine = styled.div`
     word-break: break-word;
     margin: 0 0 0 26px;
     padding: 10px;
-    border: 1px solid #fff;
-    border-radius: 4px;
+    border-radius: 8px;
 
     & a {
       text-decoration: unset;

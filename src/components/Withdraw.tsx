@@ -158,7 +158,7 @@ const Withdraw = () => {
         }
     }
 
-    const onWithdraw = async (id: string) => {
+    const onWithdraw = async (id: string, amount: number) => {
         // wait for vouchers to appear in reader
         setIsWithdrawLoading(true)
         setCallMessage(WAITING_FOR_CONFIRMATION)
@@ -185,6 +185,7 @@ const Withdraw = () => {
             if (receipt.events) {
                 const data = {
                     id,
+                    amount,
                     action: SAVE_EXECUTED_VOUCHER
                 }
                 await sendInput(data)

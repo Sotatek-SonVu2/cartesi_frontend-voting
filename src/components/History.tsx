@@ -70,6 +70,11 @@ const History = () => {
 
     const onChangeSelect = (opt: any) => {
         setType(opt.value)
+        setItems([])
+        setPaging({
+            ...paging,
+            currentPage: 0
+        })
     }
 
     return (
