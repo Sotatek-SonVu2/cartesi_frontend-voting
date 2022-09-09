@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import Select from 'react-select';
 import styled from "styled-components";
 import { createNotifications } from "../common/Notification";
+import ReactSelect from "../common/ReactSelect";
 import { handleResponse } from "../helper/handleResponse";
 import { sendInput } from "../helper/sendInput";
 import { onChangeStatus } from "../reducers/campaignSlice";
@@ -32,11 +32,6 @@ const FlexLayoutRight = styled(FlexLayout)`
     justify-content: right;
     margin-bottom: 20px;
 `
-
-const colourStyles = {
-    control: (styles: any) => ({ ...styles, width: '200px', backgroundColor: 'transparent', }),
-    singleValue: (styles: any) => ({ ...styles, color: '#fff' }),
-};
 
 const ActionButton = () => {
     const [isVisible, setIsVisible] = useState<boolean>(false)
@@ -99,12 +94,7 @@ const ActionButton = () => {
         if (pathname === ROUTER_PATH.HOMEPAGE) {
             return (
                 <FlexLayoutBetween>
-                    <Select
-                        className="basic-single"
-                        classNamePrefix="select"
-                        name="color"
-                        styles={colourStyles}
-                        defaultValue={cadidateOptions[0]}
+                    <ReactSelect
                         options={cadidateOptions}
                         onChange={onChangeSelect}
                     />

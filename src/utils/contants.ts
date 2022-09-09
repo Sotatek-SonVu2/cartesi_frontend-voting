@@ -84,6 +84,41 @@ export const cadidateOptions = [
     },
 ]
 
+export const historyOptions = [
+    {
+        label: 'All',
+        value: 'all',
+    },
+    {
+        label: 'Create campaign',
+        value: CREATE_CAMPAIGN,
+    },
+    {
+        label: 'Edit campaign',
+        value: EDIT_CAMPAIGN,
+    },
+    {
+        label: 'Delete campaign',
+        value: DELETE_CAMPAIGN,
+    },
+    {
+        label: 'Withdraw',
+        value: WITHDRAW,
+    },
+    {
+        label: 'Execute voucher',
+        value: EXECUTE_VOUCHER,
+    },
+    {
+        label: 'Deposit',
+        value: DEPOSIT,
+    },
+    {
+        label: 'Decrese Token',
+        value: DECREASE_TOKEN,
+    },
+]
+
 export const action = [
     {
         label: 'Delete',

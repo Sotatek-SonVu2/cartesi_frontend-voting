@@ -1,16 +1,25 @@
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSelector } from "react-redux";
+import styled from "styled-components";
 import Loading from "../common/Loading";
 import NoData from "../common/NoData";
 import { createNotifications } from "../common/Notification";
+import ReactSelect from "../common/ReactSelect";
 import { handleInspectApi } from "../helper/handleInspectApi";
 import { RootState } from "../store";
 import { Content, Title } from "../styled/common";
 import { TimeLine } from "../styled/list";
-import { ACTION_HISTORY, ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants";
+import { FlexLayout } from "../styled/main";
+import { ACTION_HISTORY, ERROR_MESSAGE, historyOptions, NOTI_TYPE } from "../utils/contants";
 import { MetadataType } from "../utils/interface";
 import HistoryItem from "./Item/History";
+
+const FlexLayoutBetween = styled(FlexLayout)`
+    justify-content: space-between;
+    margin-bottom: 20px;
+    color: #000;
+`
 
 const History = () => {
     const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
@@ -21,6 +30,7 @@ const History = () => {
         pageSize: 10,
         total: 0
     });
+    const [type, setType] = useState(historyOptions[0].value)
 
     const { currentPage, pageSize, total } = paging
 
@@ -32,7 +42,7 @@ const History = () => {
                 action: ACTION_HISTORY,
                 page,
                 limit: pageSize,
-                type: 'all'
+                type
             }
             const result = await handleInspectApi(data, metadata)
             if (result && !result.error) {
@@ -56,14 +66,24 @@ const History = () => {
 
     useEffect(() => {
         getData()
-    }, [])
+    }, [type])
+
+    const onChangeSelect = (opt: any) => {
+        setType(opt.value)
+    }
 
     return (
         <>
             <Content>
-                <Title>
-                    History
-                </Title>
+                <FlexLayoutBetween>
+                    <Title>
+                        History
+                    </Title>
+                    <ReactSelect
+                        options={historyOptions}
+                        onChange={onChangeSelect}
+                    />
+                </FlexLayoutBetween>
                 <InfiniteScroll
                     dataLength={items.length}
                     next={getData}

@@ -17,7 +17,7 @@ interface PropsType {
     data: any
 }
 
-const historyHeader = (data: any) => {
+const dataRender = (data: any) => {
     const { action, payload } = data
 
     switch (action) {
@@ -118,11 +118,8 @@ const historyHeader = (data: any) => {
     }
 }
 
-
-
 const HistoryItem = ({ data, index }: PropsType) => {
-
-    const { imageUrl, title, times, content, color } = historyHeader(data)
+    const { imageUrl, title, times, content, color } = dataRender(data)
 
     return (
         <li key={index}>
