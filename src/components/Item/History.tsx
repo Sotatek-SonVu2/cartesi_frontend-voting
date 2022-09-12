@@ -42,7 +42,7 @@ const dataRender = (data: any) => {
                 content: (
                     <span>
                         You voted for candidate
-                        <Link to={`${ROUTER_PATH.RESULT}/${payload.campaign.id}`}>{payload.candidate.name}</Link>
+                        <Link to={`${ROUTER_PATH.RESULT}/${payload.campaign.id}`}> {payload.candidate.name} </Link>
                         in campaign <Link to={`${ROUTER_PATH.VOTING}/${payload.campaign.id}`}>{payload.campaign.name}</Link>
                     </span>
                 )

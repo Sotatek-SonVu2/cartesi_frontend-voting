@@ -27,7 +27,7 @@ const Header = () => {
         // Get deposit info. But Version 0.5 does not allow calling multiple API at the same time, delaying the call by 1.5s
         setTimeout(() => {
             dispatch(getDepositInfo())
-        }, 2000)
+        }, 1500)
     }, [])
 
     const handleLogout = async () => {

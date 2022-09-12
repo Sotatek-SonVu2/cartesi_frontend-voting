@@ -147,6 +147,7 @@ const Withdraw = () => {
                     setCallMessage(`Waiting: ${payload.times}s.`)
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
+                    setIsWithdrawLoading(false)
                 }
             }))
         } catch (error) {
@@ -189,13 +190,13 @@ const Withdraw = () => {
                     action: SAVE_EXECUTED_VOUCHER
                 }
                 await sendInput(data)
-                await getData()
+                await dispatch(getDepositInfo())
                 createNotifications(NOTI_TYPE.SUCCESS, 'Withdraw token successfully!')
             }
         } catch (error: any) {
             createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
         } finally {
-            dispatch(getDepositInfo())
+            getData()
             setIsWithdrawLoading(false)
         }
     }

@@ -11,7 +11,7 @@ import { AppDispatch, RootState } from "../../store"
 import { colorTheme, ModalTitle, SuccessButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
 import { Loader } from "../../styled/loading"
-import { NETWORK_ERROR_MESSAGE, NOTI_TYPE } from "../../utils/contants"
+import { NETWORK_ERROR_MESSAGE, NOTI_TYPE, WAITING_FOR_CONFIRMATION } from "../../utils/contants"
 import { InputKeys } from "../../utils/types"
 import { validateAmount } from "../../utils/validate"
 
@@ -74,6 +74,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
     const dispatch = useDispatch<AppDispatch>()
     const addressWallet = useSelector((state: RootState) => state.auth.address)
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [callMessage, setCallMessage] = useState<string>('')
     const [amount, setAmount] = useState({
         value: '',
         errorText: ''
@@ -100,6 +101,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
                 const balanceOf = parseInt(ethers.utils.formatEther(getBalanceOf))
                 if (balanceOf > 0 && balanceOf > parseInt(amount.value)) {
                     console.log("waiting for transaction...");
+                    setCallMessage(WAITING_FOR_CONFIRMATION)
                     const allowance: any = await cartesiTokenContract().functions.allowance(addressWallet, SPENDER_ADDRESS);
                     // increase erc20 allowance first if necessary
                     const erc20Amount = ethers.utils.parseEther(`${amount.value}`);
@@ -166,7 +168,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
                         />
                     </FormItem>
                 </ModalTitle>
-                <ErrorMessage>{amount.errorText}</ErrorMessage>
+                <ErrorMessage>{amount.errorText || callMessage}</ErrorMessage>
                 <DepositButton onClick={handleDeposit} disabled={isLoading}>
                     {isLoading && (<Loader />)}
                     Deposit
