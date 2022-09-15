@@ -4,15 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import DepositModal from "../components/Modal/DepositModal";
 import EthIcon from "../images/cartesi_icon.png";
+import LogoutIcon from "../images/logout.svg";
 import Logo from '../images/Logo_Sotatek2.svg';
-import LogoutIcon from "../images/logout-icon.svg";
+import NotifyIcon from "../images/notification.svg";
 import { clearAccount, getDepositInfo } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
 import { AppDispatch, RootState } from "../store";
-import { Address, Content, Currency, InforUser, Menu, MenuList, MenuTitle } from "../styled/header";
+import { Address, Content, Currency, InforUser, Menu, MenuList, MenuTitle, NotifyHeader, NotifyItem, NotifyList, NotifySection } from "../styled/header";
 import { Tooltip } from "../styled/list";
 import { Loader } from "../styled/loading";
 import { formatAddress } from "../utils/common";
+import NotificationList from "./NotificationList";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -57,7 +59,6 @@ const Header = () => {
         setIsVisible(!isVisible);
     }
 
-
     const handleCopy = () => {
         setIsCopied(true)
         setTimeout(() => {
@@ -96,7 +97,11 @@ const Header = () => {
                             History
                         </MenuTitle>
                     </MenuList>
-                    <img className="logoutIcon" src={LogoutIcon} alt="logoutIcon" width={20} onClick={handleLogout} />
+                    <NotifySection>
+                        <img src={NotifyIcon} alt="logo" width={20} height={20} className="Icon" />
+                        <NotificationList />
+                    </NotifySection>
+                    <img src={LogoutIcon} alt="logoutIcon" width={20} className="Icon" onClick={handleLogout} />
                 </Menu>
 
                 {isVisible && (

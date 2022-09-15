@@ -10,7 +10,7 @@ interface PropsType {
 const Loading = ({ isScreenLoading, messages }: PropsType) => {
     return (
         <LoadingWrapper isScreenLoading={isScreenLoading}>
-            <img src={LoadingIcon} alt="loading icon" width={75} />
+            <img src={LoadingIcon} alt="loading icon" width={60} />
             <LoadingText>{messages || 'Loading...'}</LoadingText>
         </LoadingWrapper>
     )
