@@ -95,7 +95,7 @@ export const NotifyList = styled.div`
     border-radius: 3px;
     position: absolute;
     z-index: 1;
-    top: 113%;
+    top: 110%;
     right: -16%;
     margin-left: -58px;
     box-shadow: #bfbfbf 0px 2px 8px 0px;
@@ -105,8 +105,8 @@ export const NotifyList = styled.div`
     &::after {
         content: "";
         position: absolute;
-        top: -3%;
-        left: 91%;
+        top: -10px;
+        left: 90%;    
         margin-left: -5px;
         border-width: 5px;
         border-style: solid;
@@ -132,12 +132,11 @@ export const NotifyItem = styled.div`
 
     & span {
         font-size: 11px;
-        text-align: right;
     }
 `
 
 export const NotifyContent = styled.div`
-text-align: left;
+    text-align: left;
     display: flex;
     align-items: center;
 `
@@ -145,8 +144,33 @@ text-align: left;
 export const NotifySection = styled.div`
     position: relative;
     display: flex;
-    
+    min-height: 24px;
+
     &:hover ${NotifyList} {
         visibility: visible;
     }
+`
+
+export const NotifyIcon = styled.div`
+    position: relative;
+    display: flex;
+    padding-right: 10px;
+    border-right: 1px solid #fff;
+    
+`
+
+export const Badge = styled.div`
+    position: absolute;
+    top: -7px;
+    left: 16px;
+    display: flex;
+    align-items: center;
+    height: 16px;
+    padding: 0 5px;
+    color: #fff;
+    font-weight: 400;
+    font-size: 12px;
+    text-align: center;
+    background: #ff4d4f;
+    border-radius: 10px;
 `

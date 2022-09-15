@@ -6,11 +6,10 @@ import DepositModal from "../components/Modal/DepositModal";
 import EthIcon from "../images/cartesi_icon.png";
 import LogoutIcon from "../images/logout.svg";
 import Logo from '../images/Logo_Sotatek2.svg';
-import NotifyIcon from "../images/notification.svg";
 import { clearAccount, getDepositInfo } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
 import { AppDispatch, RootState } from "../store";
-import { Address, Content, Currency, InforUser, Menu, MenuList, MenuTitle, NotifyHeader, NotifyItem, NotifyList, NotifySection } from "../styled/header";
+import { Address, Content, Currency, InforUser, Menu, MenuList, MenuTitle } from "../styled/header";
 import { Tooltip } from "../styled/list";
 import { Loader } from "../styled/loading";
 import { formatAddress } from "../utils/common";
@@ -67,51 +66,46 @@ const Header = () => {
     }
 
     return (
-        <>
-            <Content>
-                <img src={Logo} alt="logo" width={130} onClick={() => navigate(ROUTER_PATH.HOMEPAGE)} />
-                <Menu>
-                    <InforUser>
-                        <CopyToClipboard text={address} onCopy={handleCopy}>
-                            <Address>
-                                <Tooltip>
-                                    <span>{formatAddress(address)}</span>
-                                    <div className="tooltiptext">{!isCopied ? 'Copy to Clipboard' : 'Copied!'}</div>
-                                </Tooltip>
-                            </Address>
-                        </CopyToClipboard>
-                        <Currency>
-                            {isLoading && (<Loader />)}
-                            <img src={EthIcon} alt="ethIcon" width={15} />
-                            <span>{amount} CTSI [used: {used_amount}]</span>
-                        </Currency>
-                    </InforUser>
-                    <MenuList>
-                        <MenuTitle onClick={toggleModal}>
-                            Deposit
-                        </MenuTitle>
-                        <MenuTitle onClick={() => navigate(ROUTER_PATH.WITHDRAW, { replace: true })}>
-                            Withdraw
-                        </MenuTitle>
-                        <MenuTitle onClick={() => navigate(ROUTER_PATH.HISTORY, { replace: true })}>
-                            History
-                        </MenuTitle>
-                    </MenuList>
-                    <NotifySection>
-                        <img src={NotifyIcon} alt="logo" width={20} height={20} className="Icon" />
-                        <NotificationList />
-                    </NotifySection>
-                    <img src={LogoutIcon} alt="logoutIcon" width={20} className="Icon" onClick={handleLogout} />
-                </Menu>
+        <Content>
+            <img src={Logo} alt="logo" width={130} onClick={() => navigate(ROUTER_PATH.HOMEPAGE)} />
+            <Menu>
+                <InforUser>
+                    <CopyToClipboard text={address} onCopy={handleCopy}>
+                        <Address>
+                            <Tooltip>
+                                <span>{formatAddress(address)}</span>
+                                <div className="tooltiptext">{!isCopied ? 'Copy to Clipboard' : 'Copied!'}</div>
+                            </Tooltip>
+                        </Address>
+                    </CopyToClipboard>
+                    <Currency>
+                        {isLoading && (<Loader />)}
+                        <img src={EthIcon} alt="ethIcon" width={15} />
+                        <span>{amount} CTSI [used: {used_amount}]</span>
+                    </Currency>
+                </InforUser>
+                <MenuList>
+                    <MenuTitle onClick={toggleModal}>
+                        Deposit
+                    </MenuTitle>
+                    <MenuTitle onClick={() => navigate(ROUTER_PATH.WITHDRAW, { replace: true })}>
+                        Withdraw
+                    </MenuTitle>
+                    <MenuTitle onClick={() => navigate(ROUTER_PATH.HISTORY, { replace: true })}>
+                        History
+                    </MenuTitle>
+                </MenuList>
+                <NotificationList />
+                <img src={LogoutIcon} alt="logoutIcon" width={20} className="Icon" onClick={handleLogout} />
+            </Menu>
 
-                {isVisible && (
-                    <DepositModal
-                        isVisible={isVisible}
-                        toggleModal={toggleModal}
-                    />
-                )}
-            </Content>
-        </>
+            {isVisible && (
+                <DepositModal
+                    isVisible={isVisible}
+                    toggleModal={toggleModal}
+                />
+            )}
+        </Content>
     )
 }
 

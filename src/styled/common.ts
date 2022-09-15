@@ -246,8 +246,9 @@ export const Arrow = styled.div`
         display: inline-block;
         width: 0.4em;
         height: 0.4em;
-        border-right: 0.12em solid rgba(0, 0, 0, 0.87);
-        border-top: 0.12em solid rgba(0, 0, 0, 0.87);
+        border-right: 0.12em solid #fff;
+        border-top: 0.12em solid #fff;
+        
     }
 `
 
@@ -268,6 +269,7 @@ export const PaginationItem = styled.li<PaginationType>`
     display: flex;
     box-sizing: border-box;
     align-items: center;
+    color: #fff;
     letter-spacing: 0.01071em;
     border-radius: 16px;
     line-height: 1.43;
