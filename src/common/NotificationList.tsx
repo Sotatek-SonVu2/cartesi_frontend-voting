@@ -35,7 +35,7 @@ const getMessage = (item: any) => {
     const { action, payload } = item
     const parse = JSON.parse(payload)
     const { campaign, type, error, candidate, amount, reason } = parse
-    const balance = parseInt(BigInt(amount).toString()) / Math.pow(10, 18)
+    const balance = amount && parseInt(BigInt(amount).toString()) / Math.pow(10, 18)
 
     const successMessage: any = {
         CREATE_CAMPAIGN: <span>You created campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> successfully</span>,
