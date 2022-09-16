@@ -257,7 +257,7 @@ export const Tooltip = styled.div`
   }
 `
 
-export const WithdrawHeader = styled.div`
+export const HeaderList = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;

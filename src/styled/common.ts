@@ -10,6 +10,10 @@ interface PaginationType {
     disabled?: boolean
 }
 
+interface ReloadType {
+    isLoading: boolean
+}
+
 interface ButtonType {
     disabled?: boolean | number
 }
@@ -152,6 +156,23 @@ export const BoxContent = styled.div<BoxContentType>`
     &:hover {
         box-shadow: #fff 0px 0px 15px;
     }
+`
+
+export const ReloadImage = styled.img<ReloadType>`
+    ${props => props.isLoading && `
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+    
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    `}
 `
 
 export const NoDataWrapper = styled.div`

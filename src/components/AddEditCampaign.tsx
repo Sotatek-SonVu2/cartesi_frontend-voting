@@ -135,7 +135,8 @@ const AddEditCampaign = () => {
                 } else if (payload.message === NO_RESPONSE_ERROR) {
                     setCallMessage(`Waiting: ${payload.times}s.`)
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
+                    const notifyType = !payload ? NOTI_TYPE.SUCCESS : NOTI_TYPE.DANGER
+                    createNotifications(notifyType, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                     setIsLoading(false)
                 }
             }))
@@ -160,7 +161,8 @@ const AddEditCampaign = () => {
                 } else if (payload.message === NO_RESPONSE_ERROR) {
                     setCallMessage(`Waiting: ${payload.times}s.`)
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
+                    const notifyType = !payload ? NOTI_TYPE.SUCCESS : NOTI_TYPE.DANGER
+                    createNotifications(notifyType, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                     setIsLoading(false)
                 }
             }))

@@ -20,6 +20,7 @@ export const Container = styled.div`
 
 export const FlexLayout = styled.div`
     display: flex;
+    align-items: center;
 `
 
 export const FlexItem = styled.div`

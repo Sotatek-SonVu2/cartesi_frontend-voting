@@ -16,7 +16,7 @@ import PlusIcon from "../images/white-plus.png";
 import { getDepositInfo } from "../reducers/authSlice";
 import { AppDispatch, RootState } from "../store";
 import { Content, Title } from "../styled/common";
-import { BoxItem, Radio, RadioGroup, WithdrawContent, WithdrawHeader } from "../styled/list";
+import { BoxItem, Radio, RadioGroup, WithdrawContent, HeaderList } from "../styled/list";
 import { FlexLayout } from "../styled/main";
 import {
     ERROR_MESSAGE,
@@ -146,7 +146,8 @@ const Withdraw = () => {
                 } else if (payload.message === NO_RESPONSE_ERROR) {
                     setCallMessage(`Waiting: ${payload.times}s.`)
                 } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
+                    const notifyType = !payload ? NOTI_TYPE.SUCCESS : NOTI_TYPE.DANGER
+                    createNotifications(notifyType, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
                     setIsWithdrawLoading(false)
                 }
             }))
@@ -207,7 +208,7 @@ const Withdraw = () => {
                 <Loading />
             ) : (
                 <Content>
-                    <WithdrawHeader>
+                    <HeaderList>
                         <Title>
                             Withdraw
                         </Title>
@@ -219,7 +220,7 @@ const Withdraw = () => {
                                 </Radio>
                             ))}
                         </RadioGroup>
-                    </WithdrawHeader>
+                    </HeaderList>
 
                     <FlexLayoutSwap>
                         <BoxItemCustom onClick={toggleModal}>
