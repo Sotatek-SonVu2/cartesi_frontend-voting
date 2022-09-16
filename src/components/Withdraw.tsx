@@ -23,7 +23,7 @@ import {
     LIST_EXECUTED_VOUCHER,
     NOTI_TYPE,
     NO_RESPONSE_ERROR,
-    NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE,
+    WAITING_RESPONSE_FROM_SERVER_MESSAGE,
     SAVE_EXECUTED_VOUCHER,
     WAITING_FOR_CONFIRMATION,
     WITHDRAW,
@@ -139,15 +139,15 @@ const Withdraw = () => {
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
             handleResponse(epoch_index, input_index, (async (payload: any) => {
-                if (payload && payload.message !== NO_RESPONSE_ERROR && !payload.error) {
-                    createNotifications(NOTI_TYPE.SUCCESS, payload.message)
+                if (!payload && payload.message !== NO_RESPONSE_ERROR && !payload.error) {
+                    const message = payload ? payload.message : WAITING_RESPONSE_FROM_SERVER_MESSAGE
+                    createNotifications(NOTI_TYPE.SUCCESS, message)
                     setIsWithdrawLoading(false)
                     getData()
                 } else if (payload.message === NO_RESPONSE_ERROR) {
                     setCallMessage(`Waiting: ${payload.times}s.`)
                 } else {
-                    const notifyType = !payload ? NOTI_TYPE.SUCCESS : NOTI_TYPE.DANGER
-                    createNotifications(notifyType, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
+                    createNotifications(NOTI_TYPE.DANGER, payload?.error || ERROR_MESSAGE)
                     setIsWithdrawLoading(false)
                 }
             }))

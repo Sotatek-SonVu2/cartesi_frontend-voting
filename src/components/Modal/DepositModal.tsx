@@ -11,7 +11,7 @@ import { AppDispatch, RootState } from "../../store"
 import { colorTheme, ModalTitle, SuccessButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
 import { Loader } from "../../styled/loading"
-import { NETWORK_ERROR_MESSAGE, NOTI_TYPE, WAITING_FOR_CONFIRMATION } from "../../utils/contants"
+import { NETWORK_ERROR_MESSAGE, NOTI_TYPE, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "../../utils/contants"
 import { InputKeys } from "../../utils/types"
 import { validateAmount } from "../../utils/validate"
 
@@ -138,7 +138,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
                         errorText: ''
                     })
                     dispatch(getDepositInfo())
-                    createNotifications(NOTI_TYPE.SUCCESS, 'Deposit successfully!')
+                    createNotifications(NOTI_TYPE.SUCCESS, WAITING_RESPONSE_FROM_SERVER_MESSAGE)
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, 'Your account does not have enough CTSI tokens!')
                 }

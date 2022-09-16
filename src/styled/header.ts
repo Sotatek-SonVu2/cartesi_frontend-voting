@@ -139,6 +139,15 @@ export const NotifyContent = styled.div`
     text-align: left;
     display: flex;
     align-items: center;
+
+    & a {
+        color: #000;
+        text-decoration: none;
+
+        &:hover {
+            color: #5260b1
+        }
+    }
 `
 
 export const NotifySection = styled.div`

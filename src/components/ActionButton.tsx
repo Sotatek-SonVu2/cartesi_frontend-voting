@@ -11,7 +11,7 @@ import { ROUTER_PATH } from "../routes/contants";
 import { AppDispatch, RootState } from "../store";
 import { DangerButton, PrimaryButton, SuccessButton } from "../styled/common";
 import { FlexLayout } from "../styled/main";
-import { cadidateOptions, DELETE_CAMPAIGN, ERROR_MESSAGE, NOTI_TYPE, NO_RESPONSE_ERROR, NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE, WAITING_FOR_CONFIRMATION } from "../utils/contants";
+import { cadidateOptions, DELETE_CAMPAIGN, ERROR_MESSAGE, NOTI_TYPE, NO_RESPONSE_ERROR, WAITING_RESPONSE_FROM_SERVER_MESSAGE, WAITING_FOR_CONFIRMATION } from "../utils/contants";
 import { resInput } from "../utils/interface";
 import DeleteModal from "./Modal/DeleteModal";
 
@@ -69,16 +69,16 @@ const ActionButton = () => {
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
             handleResponse(epoch_index, input_index, ((payload: any) => {
-                if (payload && payload.message !== NO_RESPONSE_ERROR && !payload.error) {
-                    createNotifications(NOTI_TYPE.SUCCESS, payload.message)
+                if (!payload && payload.message !== NO_RESPONSE_ERROR && !payload.error) {
+                    const message = payload ? payload.message : WAITING_RESPONSE_FROM_SERVER_MESSAGE
+                    createNotifications(NOTI_TYPE.SUCCESS, message)
                     navigate(ROUTER_PATH.HOMEPAGE, { replace: true });
                     setIsLoading(false)
                     toggleModal()
                 } else if (payload.message === NO_RESPONSE_ERROR) {
                     setCallMessage(`Waiting: ${payload.times}s.`)
                 } else {
-                    const notifyType = !payload ? NOTI_TYPE.SUCCESS : NOTI_TYPE.DANGER
-                    createNotifications(notifyType, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
+                    createNotifications(NOTI_TYPE.DANGER, payload?.error || ERROR_MESSAGE)
                     setIsLoading(false)
                     toggleModal()
                 }

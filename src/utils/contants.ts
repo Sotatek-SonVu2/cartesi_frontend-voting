@@ -28,7 +28,7 @@ export const CONNECT_METAMASK_ERROR_CODE = -32002
 export const CONNECT_METAMASK_ERROR_MESSAGE = 'Please connect to MetaMask.'
 export const NETWORK_ERROR_MESSAGE = 'Please check your network and try again!'
 export const AMOUNT_ERROR_MESSAGE = 'Invalid amount. Please enter again!'
-export const NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE = 'The transaction is currently being processed. Please wait 3 to 5 minutes. Results will be returned as quickly as possible!'
+export const WAITING_RESPONSE_FROM_SERVER_MESSAGE = 'The transaction is currently being processed. Please wait 3 to 5 minutes. Results will be returned as quickly as possible!'
 export const NO_RESPONSE_ERROR = 'NO_RESPONSE_ERROR'
 export const WAITING_FOR_CONFIRMATION = 'Waiting for confirmation...'
 

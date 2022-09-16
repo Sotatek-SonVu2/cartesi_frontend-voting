@@ -17,7 +17,7 @@ import { Content, DefaultButton, FlexLayoutBtn, SuccessButton, Title } from "../
 import { ErrorText, Form, FormItem, Input, TextArea } from "../styled/form";
 import { Loader } from "../styled/loading";
 import { convertLocalToUtc, convertUtcToLocal } from "../utils/common";
-import { CAMPAIGN_DETAIL, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE, NO_RESPONSE_ERROR, NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE, WAITING_FOR_CONFIRMATION } from "../utils/contants";
+import { CAMPAIGN_DETAIL, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_DATETIME, NOTI_TYPE, NO_RESPONSE_ERROR, WAITING_RESPONSE_FROM_SERVER_MESSAGE, WAITING_FOR_CONFIRMATION } from "../utils/contants";
 import { AddEditDataType, MetadataType, OptionType, resInput } from "../utils/interface";
 import { validateDate, validateField, validateFields, validateOptions } from "../utils/validate";
 import CandidateOptions from "./CandidateOptions";
@@ -126,17 +126,17 @@ const AddEditCampaign = () => {
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
             handleResponse(epoch_index, input_index, (async (payload: any) => {
-                if (payload && payload.message !== NO_RESPONSE_ERROR && !payload.error) {
+                if (!payload || payload.message !== NO_RESPONSE_ERROR && !payload.error) {
+                    const message = payload ? 'Add campaign successfully!' : WAITING_RESPONSE_FROM_SERVER_MESSAGE
                     setDataForm(initialValue)
                     setOptions(OptionDefault)
-                    createNotifications(NOTI_TYPE.SUCCESS, 'Add campaign successfully!')
+                    createNotifications(NOTI_TYPE.SUCCESS, message)
                     await dispatch(getDepositInfo())
                     navigate(`${ROUTER_PATH.VOTING}/${payload.id}`, { replace: true });
                 } else if (payload.message === NO_RESPONSE_ERROR) {
                     setCallMessage(`Waiting: ${payload.times}s.`)
                 } else {
-                    const notifyType = !payload ? NOTI_TYPE.SUCCESS : NOTI_TYPE.DANGER
-                    createNotifications(notifyType, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
+                    createNotifications(NOTI_TYPE.DANGER, payload?.error || ERROR_MESSAGE)
                     setIsLoading(false)
                 }
             }))
@@ -153,16 +153,16 @@ const AddEditCampaign = () => {
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
             handleResponse(epoch_index, input_index, ((payload: any) => {
-                if (payload && payload.message !== NO_RESPONSE_ERROR && !payload.error) {
+                if (!payload || payload.message !== NO_RESPONSE_ERROR && !payload.error) {
+                    const message = payload ? 'Edit campaign successfully!' : WAITING_RESPONSE_FROM_SERVER_MESSAGE
                     setDataForm(initialValue)
                     setOptions(OptionDefault)
-                    createNotifications(NOTI_TYPE.SUCCESS, 'Edit campaign successfully!')
+                    createNotifications(NOTI_TYPE.SUCCESS, message)
                     navigate(`${ROUTER_PATH.VOTING}/${campaignId}`, { replace: true });
                 } else if (payload.message === NO_RESPONSE_ERROR) {
                     setCallMessage(`Waiting: ${payload.times}s.`)
                 } else {
-                    const notifyType = !payload ? NOTI_TYPE.SUCCESS : NOTI_TYPE.DANGER
-                    createNotifications(notifyType, payload?.error || NO_RESPONSE_FROM_SERVER_ERROR_MESSAGE)
+                    createNotifications(NOTI_TYPE.DANGER, payload?.error || ERROR_MESSAGE)
                     setIsLoading(false)
                 }
             }))

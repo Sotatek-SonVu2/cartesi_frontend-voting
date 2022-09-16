@@ -25,10 +25,10 @@ const Header = () => {
     const { amount, used_amount } = deposit_info
 
     useEffect(() => {
-        // Get deposit info. But Version 0.5 does not allow calling multiple API at the same time, delaying the call by 1.5s
+        // Get deposit info. But Version 0.5 does not allow calling multiple API at the same time, delaying the call by 2s
         setTimeout(() => {
             dispatch(getDepositInfo())
-        }, 1500)
+        }, 2000)
     }, [])
 
     const handleLogout = async () => {
