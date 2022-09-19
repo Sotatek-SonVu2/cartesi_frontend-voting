@@ -1,5 +1,5 @@
-import { ethers } from "ethers";
 import { getVouchers } from "../graphql/vouchers";
+import { hex2str } from "../utils/common";
 
 interface Args {
     url?: string;
@@ -37,12 +37,7 @@ export const getVoucher = async ({ url = GRAPHQL_URL, epoch, input }: Args) => {
             output.input = n.input.index;
             output.voucher = n.index;
             output.destination = n.destination;
-            try {
-                output.payload = ethers.utils.toUtf8String(n.payload);
-            } catch (e) {
-                // cannot decode hex payload as a UTF-8 string
-                output.payload = n.payload;
-            }
+            output.payload = hex2str(n.payload);
             return output;
         });
 

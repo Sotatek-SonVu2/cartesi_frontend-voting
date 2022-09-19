@@ -93,9 +93,11 @@ export const getReports = async (
         );
     } else {
         // list reports using top-level query
-        const { data, error } = await client.query(ReportsDocument).toPromise();
+        const { data, error } = await client
+            .query(ReportsDocument, {})
+            .toPromise();
         if (data?.reports) {
-            // return data.reports.nodes.filter<PartialReport>(isPartialReport);
+            return data.reports.nodes.filter<PartialReport>(isPartialReport);
         } else {
             return [];
         }

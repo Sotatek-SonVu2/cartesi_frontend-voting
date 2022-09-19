@@ -96,22 +96,40 @@ export const NotifyHeader = styled.div`
     }
 `
 
+export const NotifyBottom = styled.div`
+    border-top: 1px solid #eee;
+    padding: 5px;
+    position: absolute;
+    bottom: 0px;
+    width: 96%;
+    text-align: center;
+`
+
 export const NotifyList = styled.div`
     visibility: hidden;
-    max-height: 300px;
     min-width: 275px;
     background-color: #fff;
     color: #000;
     border-radius: 3px;
     position: absolute;
-    z-index: 1;
-    top: 95%;
+    z-index: 11;
+    top: 113%;
     right: -16%;
     margin-left: -58px;
     box-shadow: #bfbfbf 0px 2px 8px 0px;
     cursor: pointer;
     transition: display .6s;
-    overflow: auto;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: -3%;
+        right: 8%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent #f3f4f6 transparent;
+      }
 `
 
 export const NotifyItem = styled.div`

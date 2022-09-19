@@ -1,36 +1,22 @@
 import { useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { handleInspectApi } from "../helper/handleInspectApi";
-import BellIcon from "../images/bell.png";
-import EmptyIcon from "../images/empty_notifications.png";
+import EmptyIcon from "../images/empty_notifications.svg";
 import NotificationIcon from "../images/notification.svg";
+import BellError from "../images/notify_error.svg";
+import BellSuccess from "../images/notify_success.svg";
 import reloadIcon from "../images/reload.png";
 import { ROUTER_PATH } from "../routes/contants";
 import { RootState } from "../store";
-import { colorTheme, NoDataWrapper, ReloadImage } from "../styled/common";
-import { Badge, NotifyContent, NotifyHeader, NotifyIcon, NotifyItem, NotifyList, NotifySection } from "../styled/header";
+import { NoDataWrapper, ReloadImage } from "../styled/common";
+import { Badge, NotifyBottom, NotifyContent, NotifyHeader, NotifyIcon, NotifyItem, NotifyList, NotifySection } from "../styled/header";
 import { LoadingText } from "../styled/loading";
 import { FlexLayout } from "../styled/main";
 import { ERROR_MESSAGE, NOTIFICATION, NOTI_TYPE, REMOVE_NOTIFICATION } from "../utils/contants";
 import { MetadataType } from "../utils/interface";
 import { createNotifications } from "./Notification";
-
-const ReloadButton = styled.button`
-    background-color: ${colorTheme.primary};
-    color: #ffffff;
-    display: flex;
-    margin: 0 auto;
-    font-size: 12px;
-    padding: 4px 12px;
-    border-radius: 1px;
-    border: 0px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    cursor: pointer;
-`
 
 const EmptyNotification = styled(NoDataWrapper)`
     min-height: 200px;
@@ -38,6 +24,10 @@ const EmptyNotification = styled(NoDataWrapper)`
     & p {
         color: #000;
     }
+`
+
+const Loading = styled(LoadingText)`
+    color: #000;
 `
 
 const getMessage = (item: any) => {
@@ -74,7 +64,7 @@ const getMessage = (item: any) => {
         SYSTEM: <span>System error: {error}</span>
     }
     return {
-        icon: type === 'error' ? BellIcon : BellIcon,
+        icon: type === 'error' ? BellError : BellSuccess,
         message: type === 'error' ? errorMessage[action] : successMessage[action]
     }
 }
@@ -120,9 +110,7 @@ const NotificationList = () => {
     }
 
     useEffect(() => {
-        setTimeout(() => {
-            getData()
-        }, 1000)
+        getData()
         const myInterval = setInterval(() => {
             setItems([])
             setPaging(PAGE_DEFAULTS)
@@ -174,16 +162,17 @@ const NotificationList = () => {
                         <span className="readAll" onClick={handleReadAll}>Read all</span>
                     </FlexLayout>
                 </NotifyHeader>
-                <InfiniteScroll
-                    dataLength={items.length}
-                    next={() => getData(currentPage + 1)}
-                    hasMore={items.length === total ? false : true}
-                    loader={<LoadingText />}
+                <div
+                    id="scrollableDiv"
+                    style={{
+                        height: 300,
+                        overflow: 'auto',
+                    }}
                 >
-                    {items.length > 0 ? items.map((item: any) => {
+                    {items.length > 0 ? items.map((item: any, index: number) => {
                         const { icon, message } = getMessage(item)
                         return (
-                            <NotifyItem key={item.id}>
+                            <NotifyItem key={index}>
                                 <NotifyContent>
                                     <img src={icon} alt="bellIcon" width={20} height={20} />
                                     {message}
@@ -197,7 +186,12 @@ const NotificationList = () => {
                             <p>No Data</p>
                         </EmptyNotification>
                     )}
-                </InfiniteScroll>
+                </div>
+                {items.length !== total && (
+                    <NotifyBottom>
+                        <span onClick={() => getData(currentPage + 1)}>Load more</span>
+                    </NotifyBottom>
+                )}
             </NotifyList>
         </NotifySection>
     )

@@ -136,11 +136,11 @@ const Voting = () => {
             }
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
-            handleResponse(epoch_index, input_index, (async (payload: any) => {
-                if (!payload && payload.message !== NO_RESPONSE_ERROR && !payload.error) {
+            handleResponse(epoch_index, input_index, ((payload: any) => {
+                if (!payload || payload.message !== NO_RESPONSE_ERROR && !payload.error) {
                     const message = payload ? 'Vote successfully!' : WAITING_RESPONSE_FROM_SERVER_MESSAGE
                     createNotifications(NOTI_TYPE.SUCCESS, message)
-                    await dispatch(getDepositInfo())
+                    dispatch(getDepositInfo())
                     navigate(`${ROUTER_PATH.RESULT}/${campaignId}`, { replace: true });
                 } else if (payload.message === NO_RESPONSE_ERROR) {
                     setCallMessage(`Waiting: ${payload.times}s.`)

@@ -242,23 +242,3 @@ query reportsByEpoch($epoch_index: Int!) {
     }
   }
 }
-
-
-query getLastEpochInfo{
-  epochs(last: 1){
-    totalCount
-    nodes{
-      index
-      id
-      vouchers {
-        totalCount
-        nodes {
-          index
-          proof {
-            machineStateHash
-          }
-        }
-      }
-    }
-  }
-}

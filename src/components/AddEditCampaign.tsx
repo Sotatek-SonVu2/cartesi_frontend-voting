@@ -125,14 +125,15 @@ const AddEditCampaign = () => {
             setIsLoading(true)
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
-            handleResponse(epoch_index, input_index, (async (payload: any) => {
+            handleResponse(epoch_index, input_index, ((payload: any) => {
                 if (!payload || payload.message !== NO_RESPONSE_ERROR && !payload.error) {
                     const message = payload ? 'Add campaign successfully!' : WAITING_RESPONSE_FROM_SERVER_MESSAGE
+                    const router = payload ? `${ROUTER_PATH.VOTING}/${payload.id}` : ROUTER_PATH.HOMEPAGE
                     setDataForm(initialValue)
                     setOptions(OptionDefault)
                     createNotifications(NOTI_TYPE.SUCCESS, message)
-                    await dispatch(getDepositInfo())
-                    navigate(`${ROUTER_PATH.VOTING}/${payload.id}`, { replace: true });
+                    dispatch(getDepositInfo())
+                    navigate(`${router}`, { replace: true });
                 } else if (payload.message === NO_RESPONSE_ERROR) {
                     setCallMessage(`Waiting: ${payload.times}s.`)
                 } else {
@@ -158,6 +159,7 @@ const AddEditCampaign = () => {
                     setDataForm(initialValue)
                     setOptions(OptionDefault)
                     createNotifications(NOTI_TYPE.SUCCESS, message)
+                    dispatch(getDepositInfo())
                     navigate(`${ROUTER_PATH.VOTING}/${campaignId}`, { replace: true });
                 } else if (payload.message === NO_RESPONSE_ERROR) {
                     setCallMessage(`Waiting: ${payload.times}s.`)

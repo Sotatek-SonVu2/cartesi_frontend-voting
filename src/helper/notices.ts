@@ -10,7 +10,7 @@
 // specific language governing permissions and limitations under the License.
 
 import { getNotices } from "../graphql/notices";
-import { ethers } from "ethers";
+import { hex2str } from "../utils/common";
 
 interface Args {
     url?: string;
@@ -50,12 +50,7 @@ export const getNotice = async ({ url = GRAPHQL_URL, epoch, input }: Args) => {
             output.epoch = n.input.epoch.index;
             output.input = n.input.index;
             output.notice = n.index;
-            try {
-                output.payload = ethers.utils.toUtf8String(n.payload);
-            } catch (e) {
-                // cannot decode hex payload as a UTF-8 string
-                output.payload = n.payload;
-            }
+            output.payload = hex2str(n.payload);
             return output;
         });
     return JSON.stringify(outputs)

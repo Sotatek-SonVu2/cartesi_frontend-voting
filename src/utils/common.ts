@@ -1,8 +1,18 @@
+import { ethers } from "ethers";
 import { MetadataType } from "./interface";
 
 export const JsonStringifyFormat = (data: {}) => {
     return JSON.stringify(data);
 }
+
+export const hex2str = (hex: string) => {
+    try {
+        return ethers.utils.toUtf8String(hex);
+    } catch (e) {
+        // cannot decode hex payload as a UTF-8 string
+        return hex;
+    }
+};
 
 export const hex_to_ascii = (str: string) => {
     const hex = str.toString();

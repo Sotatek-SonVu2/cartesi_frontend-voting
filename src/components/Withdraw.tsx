@@ -138,8 +138,8 @@ const Withdraw = () => {
             }
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
-            handleResponse(epoch_index, input_index, (async (payload: any) => {
-                if (!payload && payload.message !== NO_RESPONSE_ERROR && !payload.error) {
+            handleResponse(epoch_index, input_index, ((payload: any) => {
+                if (!payload || payload.message !== NO_RESPONSE_ERROR && !payload.error) {
                     const message = payload ? payload.message : WAITING_RESPONSE_FROM_SERVER_MESSAGE
                     createNotifications(NOTI_TYPE.SUCCESS, message)
                     setIsWithdrawLoading(false)

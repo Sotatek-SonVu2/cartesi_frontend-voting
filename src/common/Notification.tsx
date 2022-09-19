@@ -17,8 +17,9 @@ export const createNotifications = (type: string, message: string) => {
         container: "top-right",
         dismiss: {
             duration: 3000,
-            onScreen: true
-        }
+            onScreen: true,
+            pauseOnHover: true,
+        },
     };
 
     return Store.addNotification({
