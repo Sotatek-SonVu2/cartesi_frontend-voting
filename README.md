@@ -3,28 +3,28 @@
 This project demonstrates how to implement a frontend application to send inputs to a Cartesi Rollups DApp, both running locally and deployed on remote testnet networks.
 It's implemented in Typescript and uses the [ethers](https://docs.ethers.io/v5/) library to communicate with the rollups smart contracts.
 
-## Functions
-
-Here are all the system functions available:
-
-```shell
-Connect/disconnect to MetaMask,
-View campaigns/candidates list
-Add, edit, and delete campaigns
-Vote
-Deposit CTSI tokens
-View vote result
-View campaign/candidate detail
-View history
-Notification
-Withdraw
-```
-
 ## Requirements
 
 - node.js
 - yarn
 - MetaMask wallet
+
+## Functions
+
+Here are all the system functions available:
+
+```shell
+- Connect/disconnect to MetaMask,
+- View campaigns/candidates list
+- Add, edit, and delete campaigns
+- Vote
+- Deposit CTSI tokens
+- View vote result
+- View campaign/candidate detail
+- View history
+- Notification
+- Withdraw
+```
 
 ## Building
 
@@ -59,7 +59,7 @@ paste in the .env file and save
 
 In the .env file, you will see the configurations for the 3 environments: `Host mode | Production mode | Testnet mode`. Please pay attention to match the mode you want to use in the application. 
 
-In addition, you must also change the network on MetaMask to match each mode. [See details here](https://github.com/Sotatek-SonVu2/cartesi_frontend_voting#environments)
+In addition, you must also change the network on MetaMask to match each mode. [See details here](https://github.com/Sotatek-SonVu2/cartesi_frontend_voting/tree/master_complex_version_0.9#environments)
 
 Then, run the application by executing the following command:
 

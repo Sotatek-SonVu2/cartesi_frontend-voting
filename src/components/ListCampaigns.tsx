@@ -73,7 +73,7 @@ const ListCampaigns = () => {
                             List campaigns
                         </Title>
                         <FlexLayout>
-                            <input type="checkbox" id='mycampaign' name='mycampaign' checked={isMyCampaign} onChange={onChangeCheckbox} />
+                            <input type="checkbox" id='mycampaign' name='mycampaign' checked={isMyCampaign} onChange={onChangeCheckbox} style={{ margin: '3px 3px 0px' }} />
                             <small>My campaign</small>
                         </FlexLayout>
                     </HeaderList>
