@@ -74,7 +74,7 @@ const ListCampaigns = () => {
                         </Title>
                         <FlexLayout>
                             <input type="checkbox" id='mycampaign' name='mycampaign' checked={isMyCampaign} onChange={onChangeCheckbox} />
-                            <label>My campaign</label>
+                            <small>My campaign</small>
                         </FlexLayout>
                     </HeaderList>
 

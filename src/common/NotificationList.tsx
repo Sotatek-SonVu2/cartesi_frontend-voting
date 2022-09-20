@@ -26,10 +26,6 @@ const EmptyNotification = styled(NoDataWrapper)`
     }
 `
 
-const Loading = styled(LoadingText)`
-    color: #000;
-`
-
 const getMessage = (item: any) => {
     const { action, payload } = item
     const parse = JSON.parse(payload)
@@ -189,7 +185,7 @@ const NotificationList = () => {
                 </div>
                 {items.length !== total && (
                     <NotifyBottom>
-                        <span onClick={() => getData(currentPage + 1)}>Load more</span>
+                        {!isLoading ? <span onClick={() => getData(currentPage + 1)}>Load more</span> : <span>Loading</span>}
                     </NotifyBottom>
                 )}
             </NotifyList>
