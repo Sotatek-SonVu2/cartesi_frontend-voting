@@ -7,14 +7,17 @@ import { NETWORK_ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants"
 import { networks } from "./networks"
 
 const SPENDER_ADDRESS = process.env.REACT_APP_SPENDER_ADDRESS || ''
-const CHAIN_ID = process.env.REACT_APP_CHAIN_ID || ''
+const CHAIN_ID: any = process.env.REACT_APP_CHAIN_ID || 0
 
 export const cartesiToken = () => {
     const chainId = window.ethereum.networkVersion;
     console.log(`connected to chain ${chainId}`);
     const network = networks[chainId];
     if (!network || CHAIN_ID !== chainId) {
-        createNotifications(NOTI_TYPE.DANGER, NETWORK_ERROR_MESSAGE)
+        createNotifications(
+            NOTI_TYPE.DANGER,
+            `Your app network (${networks[CHAIN_ID]?.name.toUpperCase()}) does not match the ${networks[chainId]?.name.toUpperCase()} network on Metamask. ${NETWORK_ERROR_MESSAGE}`
+        )
         return; // undefined
     }
 

@@ -12,9 +12,8 @@ import { ROUTER_PATH } from "../routes/contants";
 import { RootState } from "../store";
 import { NoDataWrapper, ReloadImage } from "../styled/common";
 import { Badge, NotifyBottom, NotifyContent, NotifyHeader, NotifyIcon, NotifyItem, NotifyList, NotifySection } from "../styled/header";
-import { LoadingText } from "../styled/loading";
 import { FlexLayout } from "../styled/main";
-import { ERROR_MESSAGE, NOTIFICATION, NOTI_TYPE, REMOVE_NOTIFICATION } from "../utils/contants";
+import { ERROR_MESSAGE, NOTIFICATION, NOTI_TYPE } from "../utils/contants";
 import { MetadataType } from "../utils/interface";
 import { createNotifications } from "./Notification";
 
@@ -118,26 +117,6 @@ const NotificationList = () => {
         })
     }, [])
 
-    const handleReadAll = async () => {
-        try {
-            setIsLoading(true)
-            const data = {
-                action: REMOVE_NOTIFICATION,
-            }
-            const result = await handleInspectApi(data, metadata)
-            if (result && !result.error) {
-                setItems([])
-                setPaging(PAGE_DEFAULTS)
-            } else {
-                createNotifications(NOTI_TYPE.DANGER, result?.error || ERROR_MESSAGE)
-            }
-        } catch (error) {
-            throw error
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
     const reloadData = (isReload: boolean) => {
         setPaging(PAGE_DEFAULTS)
         getData(PAGE_DEFAULTS.currentPage, isReload)
@@ -154,8 +133,6 @@ const NotificationList = () => {
                     <span className="title">Notification</span>
                     <FlexLayout>
                         <ReloadImage src={reloadIcon} alt="reloadIcon" width={12} onClick={() => reloadData(true)} isLoading={isLoading} />
-                        <div className="line"></div>
-                        <span className="readAll" onClick={handleReadAll}>Read all</span>
                     </FlexLayout>
                 </NotifyHeader>
                 <div
@@ -173,7 +150,7 @@ const NotificationList = () => {
                                     <img src={icon} alt="bellIcon" width={20} height={20} />
                                     {message}
                                 </NotifyContent>
-                                <span>{item.payload.time}</span>
+                                <span>{item.time}</span>
                             </NotifyItem>
                         )
                     }) : (

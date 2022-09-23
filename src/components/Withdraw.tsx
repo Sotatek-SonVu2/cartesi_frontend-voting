@@ -229,7 +229,7 @@ const Withdraw = () => {
                                 <h5>Withdraw token</h5>
                             </WithdrawContent>
                         </BoxItemCustom>
-                        {vouchers.map((item: any, index: number) => (
+                        {vouchers.map((item: WithDrawType, index: number) => (
                             <BoxItem key={index}>
                                 <WithdrawItem data={item} onClick={onWithdraw} />
                             </BoxItem>

@@ -32,10 +32,10 @@ const ModalComponent = ({ isVisible, toggleModal, children, title, isLoading }: 
                 {title ? (
                     <ModalHeader>
                         <span>{title}</span>
-                        <img src={CloseIcon} alt="close icon" width={15} onClick={() => onToggleModal()} />
+                        <img src={CloseIcon} alt="close icon" width={13} onClick={() => onToggleModal()} />
                     </ModalHeader>
                 ) : (
-                    <img className="closeIcon" src={CloseIcon} alt="close icon" width={15} onClick={toggleModal} />
+                    <img className="closeIcon" src={CloseIcon} alt="close icon" width={13} onClick={toggleModal} />
                 )}
                 <ModalBody>
                     {children}

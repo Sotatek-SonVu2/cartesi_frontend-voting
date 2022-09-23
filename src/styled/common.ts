@@ -221,7 +221,7 @@ export const ModalHeader = styled.div`
     & span {
         color: #000000d9;
         font-weight: 500;
-        font-size: 19px;
+        font-size: 17px;
         line-height: 22px;
         word-wrap: break-word;
     }

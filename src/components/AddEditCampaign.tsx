@@ -1,6 +1,6 @@
 
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -101,7 +101,7 @@ const AddEditCampaign = () => {
         getData()
     }, [campaignId])
 
-    const handleChange = (key: string) => (e: any) => {
+    const handleChange = (key: string) => (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
         const value = e.target.value
         const validate = validateField(key, value)
         setDataForm({

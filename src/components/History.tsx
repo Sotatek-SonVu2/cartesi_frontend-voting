@@ -68,7 +68,7 @@ const History = () => {
         getData()
     }, [type])
 
-    const onChangeSelect = (opt: any) => {
+    const onChangeSelect = (opt: { value: string, label: string }) => {
         setType(opt.value)
         setItems([])
         setPaging({
