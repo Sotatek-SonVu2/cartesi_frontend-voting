@@ -192,12 +192,12 @@ const Withdraw = () => {
                 }
                 await sendInput(data)
                 await dispatch(getDepositInfo())
+                await getData()
                 createNotifications(NOTI_TYPE.SUCCESS, 'Withdraw token successfully!')
             }
         } catch (error: any) {
             createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
         } finally {
-            getData()
             setIsWithdrawLoading(false)
         }
     }

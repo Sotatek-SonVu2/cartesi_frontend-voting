@@ -23,6 +23,10 @@ interface DateTimeBoxType {
     isEndTime: boolean
 }
 
+interface ModalStyled {
+    width: string
+}
+
 export const colorTheme = {
     background: 'radial-gradient(ellipse at bottom,#1b2735 0%,#090a0f 100%)',
     darkBlue: '#1E1941',
@@ -33,7 +37,7 @@ export const colorTheme = {
     primary: '#69CEFF',
     default: '#f3f4f6',
     success: '#3eb991',
-    choose: '#b4d5ffb3',
+    active: '#b4d5ffb3',
     error: '#d93025',
     danger: '#d9534f',
     disabled: '#b3b3b3'
@@ -149,7 +153,7 @@ export const BoxContent = styled.div<BoxContentType>`
     transition: box-shadow .3s;
 
     ${props => props.active && `
-        background: ${colorTheme.choose};
+        background: ${colorTheme.active};
         color: ${colorTheme.white};
     `}
 
@@ -196,9 +200,9 @@ export const NoDataWrapper = styled.div`
     }
 `
 
-export const ModalContainer = styled.div`
-    width: 450px;
-    
+export const ModalContainer = styled.div<ModalStyled>`
+    width: ${props => props.width};
+
     & .closeIcon {
         position: absolute;
         top: 8px;
@@ -245,13 +249,13 @@ export const ModalTitle = styled.div`
     line-height: 22px;
     word-wrap: break-word;
 
-    & img {
+    & .title-icon {
         margin-right: 10px;
     }
 `
 
 export const ModalContent = styled.div`
-    margin-left: 40px;
+    text-align: center;
 `
 
 export const PaginationWrapper = styled.ul`

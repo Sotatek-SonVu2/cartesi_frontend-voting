@@ -127,7 +127,7 @@ const HistoryItem = ({ data, index }: PropsType) => {
             <div className="timeline-head"></div>
             <div className={`timeline-content ${index % 2 === 0 && 'timeline-item-right'}`} style={{ background: `${color}` }}>
                 <HistoryTitle>
-                    <img src={imageUrl} alt="add icon" width={30} />
+                    <img src={imageUrl} alt="history-image" width={30} />
                     <div>
                         <p>{title}</p>
                         <p>{times}</p>

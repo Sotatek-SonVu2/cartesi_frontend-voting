@@ -4,7 +4,7 @@ import Background from "./common/Background";
 import { createNotifications } from "./common/Notification";
 import AddEditCampaign from "./components/AddEditCampaign";
 import History from "./components/History";
-import ListCampaigns from "./components/ListCampaigns";
+import CampaignsList from "./components/CampaignsList";
 import Result from "./components/Result";
 import Voting from "./components/Voting";
 import Withdraw from "./components/Withdraw";
@@ -46,7 +46,7 @@ function App() {
             }
             path={ROUTER_PATH.HOMEPAGE}
           >
-            <Route element={<ListCampaigns />} index={true} />
+            <Route element={<CampaignsList />} index={true} />
             <Route element={<AddEditCampaign />} path={ROUTER_PATH.ADD_CAMPAIGN} />
             <Route element={<AddEditCampaign />} path={ROUTER_PATH.EDIT_CAMPAIGN + '/:campaignId'} />
             <Route element={<Voting />} path={ROUTER_PATH.VOTING + '/:campaignId'} />

@@ -10,9 +10,10 @@ type Props = {
     toggleModal: () => {}
     title?: string
     children: JSX.Element
+    width?: string
 }
 
-const ModalComponent = ({ isVisible, toggleModal, children, title, isLoading }: Props) => {
+const ModalComponent = ({ isVisible, toggleModal, children, title, isLoading, width = '450px' }: Props) => {
     const onToggleModal = () => {
         if (isLoading) return
         toggleModal()
@@ -28,7 +29,7 @@ const ModalComponent = ({ isVisible, toggleModal, children, title, isLoading }: 
             closeTimeoutMS={500}
             shouldCloseOnOverlayClick={false}
         >
-            <ModalContainer>
+            <ModalContainer width={width}>
                 {title ? (
                     <ModalHeader>
                         <span>{title}</span>

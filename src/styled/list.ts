@@ -11,6 +11,10 @@ interface ProcessType {
   itemId: number
 }
 
+interface CoinBoxStyled {
+  active: boolean
+}
+
 export const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -347,4 +351,20 @@ export const TimeLine = styled.div`
     width: 45%;
     margin: 0px;
   }
+`
+
+export const CoinBox = styled.div<CoinBoxStyled>`
+  border: 1px solid ${colorTheme.borderGray};
+  width: 24%;
+  padding: 15px;
+  text-align: center;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-bottom: 10px;
+
+  ${props => props.active && `
+    border: 1px solid ${colorTheme.active};
+    background: ${colorTheme.active};
+    color: #fff
+  `}
 `

@@ -22,7 +22,7 @@ const VotingModal = ({ isVisible, toggleModal, onClick }: Props) => {
         <ModalComponent isVisible={isVisible} toggleModal={toggleModal}>
             <div>
                 <ModalTitle>
-                    <img src={confirmIcon} alt="confirm Icon" width={30} />
+                    <img src={confirmIcon} className="title-icon" alt="confirm-Icon" width={30} />
                     <p>Are you sure to choose this candidate?</p>
                 </ModalTitle>
                 <ModalContent>
