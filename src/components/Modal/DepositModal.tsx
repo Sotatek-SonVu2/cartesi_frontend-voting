@@ -73,7 +73,7 @@ export const findInputAddedInfo = (
 const DepositModal = ({ isVisible, toggleModal }: Props) => {
     const dispatch = useDispatch<AppDispatch>()
     const addressWallet = useSelector((state: RootState) => state.auth.address)
-    const [coinToken, setCoinToken] = useState<string>('')
+    // const [coinToken, setCoinToken] = useState<string>('')
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [callMessage, setCallMessage] = useState<string>('')
     const [amount, setAmount] = useState({

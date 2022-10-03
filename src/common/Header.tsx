@@ -31,7 +31,6 @@ const Header = () => {
     const handleLogout = async () => {
         dispatch(clearAccount())
         navigate(ROUTER_PATH.LOGIN, { replace: true })
-        window.location.reload();
     }
 
     useEffect(() => {
