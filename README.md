@@ -123,6 +123,9 @@ Launches the test runner in the interactive watch mode.
 yarn deploy
 ```
 
+The project is being supported to deploy on `Surge`. To run this command, you need to install [surge](https://surge.sh/).
+Open [https://cartesi-voting.surge.sh/](https://cartesi-voting.surge.sh/) to view it in the browser.
+
 ## Ejecting
 
 ```shell
