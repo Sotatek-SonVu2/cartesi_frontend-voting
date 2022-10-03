@@ -1,4 +1,3 @@
-import { ethers } from "ethers";
 import { hex2str } from "../utils/common";
 
 interface Args {

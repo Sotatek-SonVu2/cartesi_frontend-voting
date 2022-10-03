@@ -117,6 +117,12 @@ yarn test
 
 Launches the test runner in the interactive watch mode.
 
+## Testing
+
+```shell
+yarn deploy
+```
+
 ## Ejecting
 
 ```shell
