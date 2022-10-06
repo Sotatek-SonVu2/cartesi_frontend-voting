@@ -97,6 +97,7 @@ export const NotifyHeader = styled.div`
 `
 
 export const NotifyBottom = styled.div`
+    background: rgb(238 238 238);
     border-top: 1px solid #eee;
     padding: 5px;
     position: absolute;
