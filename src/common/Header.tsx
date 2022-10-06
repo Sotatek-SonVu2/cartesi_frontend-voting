@@ -26,6 +26,13 @@ const Header = () => {
 
     useEffect(() => {
         dispatch(getDepositInfo())
+        const myInterval = setInterval(() => {
+            dispatch(getDepositInfo())
+        }, 60000)
+
+        return (() => {
+            clearInterval(myInterval);
+        })
     }, [])
 
     const handleLogout = async () => {
