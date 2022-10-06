@@ -143,7 +143,6 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, 'Your account does not have enough CTSI tokens!')
                 }
-
             } catch (error: any) {
                 throw error
             } finally {

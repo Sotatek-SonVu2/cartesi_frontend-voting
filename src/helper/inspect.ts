@@ -5,7 +5,7 @@ interface Args {
     url?: string;
 }
 
-const BASE_URL_API = process.env.REACT_APP_BASE_URL_API || ''
+const BASE_URL_API = process.env.REACT_APP_INSPECT_URL_API || ''
 
 export const getInspect = async ({ payload, url = BASE_URL_API }: Args) => {
     const response = await fetch(`${url}/${payload}`);
