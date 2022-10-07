@@ -22,10 +22,15 @@ export const Container = styled.div`
     }
 
     & p{
-        font-size: 25px;
+        font-size: 20px;
         letter-spacing: 1px;
         line-height: 2;
         padding: 10px;
+        margin: 0px;
+    }
+
+    & span{
+        margin-bottom: 2rem;
     }
 
     @media(max-width: 501px){

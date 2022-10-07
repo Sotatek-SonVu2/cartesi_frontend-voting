@@ -40,10 +40,14 @@ const Login = () => {
             <Container>
                 <h1>Welcome to <br />Voting Dapp</h1>
                 <span>Powered by Cartesi</span>
-                <p>This is the voting system that is used to use the blockchain OS of Cartesi. Users can vote for candidates listed in the system.
-                    This system provides everyone the ability to create their own voting campaign.
-                    (Only people deposited into the system can vote) They can create a campaign with a list of candidates within it.</p>
+                <p>
+                    This voting DApp was developed on top of Cartesi Rollups and showcases voting functionality.
+                    It enables users to vote on candidates in listed campaigns.
+                    Furthermore, users can create their own campaigns and add candidate options to vote on.
+                    This showcase/module can be used to build more complex DApps and can be utilised for voting in DAOs.
 
+                </p>
+                <p>(Please note: Only users that have deposited tokens in the system can vote.)</p>
                 <LoginButton onClick={connectWallet}>Let's start</LoginButton>
             </Container>
         </>
