@@ -48,6 +48,7 @@ const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL || ''
 const Withdraw = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
+    const userAddress = useSelector((state: RootState) => state.auth.address)
     const [callMessage, setCallMessage] = useState<string>('')
     const [isWithdrawLoading, setIsWithdrawLoading] = useState<boolean>(false)
     const [vouchers, setVouchers] = useState<WithDrawType[]>([])
@@ -94,25 +95,27 @@ const Withdraw = () => {
                 const decode = new ethers.utils.AbiCoder().decode(["address", "uint256"], `0x${item.payload.slice(10)}`)
                 const amount = parseInt(ethers.utils.formatEther(decode[1]))
                 const isAllowExecute = item.epoch < lastEpoch.nodes[0].index || lastEpoch.nodes[0].vouchers.nodes[0].proof ? true : false
-                if (ids.length > 0) {
-                    ids.every((id: string) => {
+                if (decode[0] === userAddress) {
+                    if (ids.length > 0) {
+                        ids.every((id: string) => {
+                            obj = {
+                                ...item,
+                                amount,
+                                isAllowExecute,  // The voucher is allowed to be executed
+                                isExecuted: item.id === id, // The voucher has been executed
+                            }
+                            return item.id !== id
+                        })
+                    } else {
                         obj = {
                             ...item,
                             amount,
                             isAllowExecute,  // The voucher is allowed to be executed
-                            isExecuted: item.id === id, // The voucher has been executed
+                            isExecuted: false, // The voucher has been executed
                         }
-                        return item.id !== id
-                    })
-                } else {
-                    obj = {
-                        ...item,
-                        amount,
-                        isAllowExecute,  // The voucher is allowed to be executed
-                        isExecuted: false, // The voucher has been executed
                     }
+                    result.unshift(obj)
                 }
-                result.unshift(obj)
             })
             const filterList = getFilterList(result, ids)
             setVouchers(filterList)
