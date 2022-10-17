@@ -7,12 +7,12 @@ import { Currency } from "../styled/header"
 import { DepositInfoWrapper } from "../styled/list"
 import { FlexLayout } from "../styled/main"
 import { coinList } from "../utils/coinList"
+import { coinListType, DepositInfoType } from "../utils/interface"
 
 const CHAIN_ID: any = process.env.REACT_APP_CHAIN_ID || 0
 
 const FlexWrapper = styled(FlexLayout)`
     flex-wrap: wrap;
-    justify-content: space-between;
 `
 
 const DepositInfo = () => {
@@ -34,23 +34,24 @@ const DepositInfo = () => {
         let data: any[] = []
         const coinListing = coinList[CHAIN_ID]
         if (deposit_info.length > 0) {
-            coinListing.forEach((coin: any) => {
+            coinListing.forEach((coin: coinListType) => {
                 let obj
-                deposit_info?.forEach((item: any) => {
-                    if (coin.address.toLowerCase() === item.contract_address) {
-                        obj = {
-                            ...item,
-                            ...coin,
-                        }
-                        data.push(obj)
+                let temp = deposit_info.find((element: DepositInfoType) => element.contract_address === coin.address.toLowerCase())
+                if (temp) {
+                    obj = {
+                        ...temp,
+                        ...coin,
                     }
-
-                })
+                } else {
+                    obj = {
+                        ...coin,
+                    }
+                }
+                data.push(obj)
             })
         } else {
             data = [...coinListing]
         }
-
         return (
             <FlexWrapper>
                 {data.map((item: any) => (

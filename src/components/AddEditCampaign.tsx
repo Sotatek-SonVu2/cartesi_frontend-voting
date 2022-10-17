@@ -128,6 +128,7 @@ const AddEditCampaign = () => {
     const createCampaign = async (tokenType: string) => {
         try {
             setIsLoading(true)
+            setIsVisible(false);
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput({
                 ...dataCreate,

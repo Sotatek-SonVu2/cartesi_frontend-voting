@@ -145,5 +145,13 @@ export interface DepositInfoType {
     withdrawn_amount: number
 }
 
+export interface coinListType {
+    key: number
+    token_icon: string
+    symbol: string
+    token_name: string
+    address: string
+}
+
 
 
