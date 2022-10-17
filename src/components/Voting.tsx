@@ -6,6 +6,7 @@ import styled from "styled-components"
 import Loading from "../common/Loading"
 import NoData from "../common/NoData"
 import { createNotifications } from "../common/Notification"
+import { configToken } from "../helper/contractWithSigner"
 import { handleInspectApi } from "../helper/handleInspectApi"
 import { handleResponse } from "../helper/handleResponse"
 import { sendInput } from "../helper/sendInput"
@@ -124,15 +125,18 @@ const Voting = () => {
         setIsVisible(!isVisible);
     }
 
-    const handleVoting = async () => {
+    const handleVoting = async (tokenType: string) => {
         toggleModal()
         if (!candidateId) return createNotifications(NOTI_TYPE.DANGER, 'Please choose a candidate!')
         try {
             setIsLoadVoting(true)
+            const { tokenAddress }: any = configToken(tokenType)
+            console.log('tokenAddress', tokenAddress)
             const data = {
                 action: VOTE,
                 candidate_id: candidateId,
-                campaign_id: campaignId && parseInt(campaignId)
+                campaign_id: campaignId && parseInt(campaignId),
+                token_address: tokenAddress
             }
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);

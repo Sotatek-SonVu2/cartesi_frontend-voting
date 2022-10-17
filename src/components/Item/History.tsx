@@ -11,25 +11,29 @@ import MinusIcon from '../../images/minus-button.png';
 import { ROUTER_PATH } from "../../routes/contants";
 import { HistoryTitle } from "../../styled/list";
 import { CREATE_CAMPAIGN, DECREASE_TOKEN, DELETE_CAMPAIGN, DEPOSIT, EDIT_CAMPAIGN, EXECUTE_VOUCHER, VOTE, WITHDRAW } from "../../utils/contants";
+import { coinList } from "../../utils/coinList";
 
 interface PropsType {
     index: number
     data: any
 }
 
+const CHAIN_ID: any = process.env.REACT_APP_CHAIN_ID || 0
+
 const dataRender = (data: any) => {
     const { action, payload } = data
-
+    const { time, campaign, candidate, amount, voucher_id, reason, token } = payload
+    const { token_icon, token_name } = coinList[CHAIN_ID].find((item: any) => item.address.toLowerCase() === token)
     switch (action) {
         case CREATE_CAMPAIGN:
             return {
                 imageUrl: AddIcon,
                 title: 'Create campaign',
-                times: `${payload.time}`,
+                times: `${time}`,
                 color: 'rgb(12 255 120 / 50%)',
                 content: (
                     <span>
-                        You created campaign <Link to={`${ROUTER_PATH.VOTING}/${payload.campaign.id}`}>{payload.campaign.name}</Link>
+                        You created campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign.id}`}>{campaign.name}</Link>
                     </span>
                 )
             }
@@ -37,13 +41,13 @@ const dataRender = (data: any) => {
             return {
                 imageUrl: VoteIcon,
                 title: 'Vote',
-                times: `${payload.time}`,
+                times: `${time}`,
                 color: 'rgb(255 12 252 / 50%)',
                 content: (
                     <span>
                         You voted for candidate
-                        <Link to={`${ROUTER_PATH.RESULT}/${payload.campaign.id}`}> {payload.candidate.name} </Link>
-                        in campaign <Link to={`${ROUTER_PATH.VOTING}/${payload.campaign.id}`}>{payload.campaign.name}</Link>
+                        <Link to={`${ROUTER_PATH.RESULT}/${campaign.id}`}> {candidate.name} </Link>
+                        in campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign.id}`}>{campaign.name}</Link>
                     </span>
                 )
             }
@@ -51,19 +55,19 @@ const dataRender = (data: any) => {
             return {
                 imageUrl: DepositIcon,
                 title: 'Deposit',
-                times: `${payload.time}`,
+                times: `${time}`,
                 color: 'rgb(255 83 155 / 50%)',
-                content: (<span>You deposited to the DApp {payload.amount} tokens</span>)
+                content: (<span>You deposited to the DApp {amount} <img src={token_icon} alt='token_icon' width={15} /> {token_name} tokens</span>)
             }
         case EDIT_CAMPAIGN:
             return {
                 imageUrl: EditIcon,
                 title: 'Edit campaign',
-                times: `${payload.time}`,
+                times: `${time}`,
                 color: 'rgb(12 228 255 / 50%)',
                 content: (
                     <span>
-                        You edited info of campaign <Link to={`${ROUTER_PATH.VOTING}/${payload.campaign.id}`}>{payload.campaign.name}</Link>
+                        You edited info of campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign.id}`}>{campaign.name}</Link>
                     </span>
                 )
             }
@@ -71,40 +75,40 @@ const dataRender = (data: any) => {
             return {
                 imageUrl: DecreseTokenIcon,
                 title: 'Decrease token',
-                times: `${payload.time}`,
+                times: `${time}`,
                 color: 'rgb(255 243 83 / 50%)',
                 content: (
-                    <span>You had been charged {payload.amount} tokens because {payload.reason}</span>
+                    <span>You had been charged {amount} <img src={token_icon} alt='token_icon' width={15} /> {token_name} tokens because {reason}</span>
                 )
             }
         case DELETE_CAMPAIGN:
             return {
                 imageUrl: DeleteIcon,
                 title: 'Delete campaign',
-                times: `${payload.time}`,
+                times: `${time}`,
                 color: 'rgb(228 17 66 / 65%)',
                 content: (
-                    <span>You deleted campaing {payload.campaign.name}</span>
+                    <span>You deleted campaing {campaign.name}</span>
                 )
             }
         case WITHDRAW:
             return {
                 imageUrl: WithdrawIcon,
                 title: 'Withdraw',
-                times: `${payload.time}`,
+                times: `${time}`,
                 color: 'rgb(255 99 12 / 50%)',
                 content: (
-                    <Link to={ROUTER_PATH.WITHDRAW}>You requested to withdraw {payload.amount} tokens.</Link>
+                    <Link to={ROUTER_PATH.WITHDRAW}>You requested to withdraw {amount} <img src={token_icon} alt='token_icon' width={15} /> {token_name} tokens.</Link>
                 )
             }
         case EXECUTE_VOUCHER:
             return {
                 imageUrl: VoucherIcon,
                 title: 'Execute Voucher',
-                times: `${payload.time}`,
+                times: `${time}`,
                 color: 'rgb(255 192 83 / 50%)',
                 content: (
-                    <span>You executed successfully voucher {payload.voucher_id} with amount {payload.amount} tokens.</span>
+                    <span>You executed successfully voucher {voucher_id} with amount {amount} <img src={token_icon} alt='token_icon' width={15} /> {token_name} tokens.</span>
                 )
             }
         default:

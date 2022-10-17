@@ -13,7 +13,8 @@ import { RootState } from "../store";
 import { NoDataWrapper, ReloadImage } from "../styled/common";
 import { Badge, NotifyBottom, NotifyContent, NotifyHeader, NotifyIcon, NotifyItem, NotifyList, NotifySection } from "../styled/header";
 import { FlexLayout } from "../styled/main";
-import { ERROR_MESSAGE, NOTIFICATION, NOTI_TYPE } from "../utils/contants";
+import { coinList } from "../utils/coinList";
+import { CARTESI_TOKEN, ERROR_MESSAGE, NOTIFICATION, NOTI_TYPE } from "../utils/contants";
 import { MetadataType } from "../utils/interface";
 import { createNotifications } from "./Notification";
 
@@ -25,10 +26,13 @@ const EmptyNotification = styled(NoDataWrapper)`
     }
 `
 
+const CHAIN_ID: any = process.env.REACT_APP_CHAIN_ID || 0
+
 const getMessage = (item: any) => {
     const { action, payload } = item
     const parse = JSON.parse(payload)
-    const { campaign, type, error, candidate, amount, reason } = parse
+    const { campaign, type, error, candidate, amount, reason, token } = parse
+    const { token_icon, symbol } = coinList[CHAIN_ID].find((item: any) => item.address.toLowerCase() === token)
 
     const successMessage: any = {
         CREATE_CAMPAIGN: <span>You created campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> successfully</span>,
@@ -39,11 +43,13 @@ const getMessage = (item: any) => {
                 in campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> successfully
             </span>
         ),
-        DEPOSIT: <span>You deposited to the DApp {amount} tokens successfully.</span>,
+        DEPOSIT: <span>You deposited to the DApp {amount} <img src={token_icon} alt='token_icon' width={10} /> {symbol} tokens successfully.</span>,
         EDIT_CAMPAIGN: <span>You edited info of campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> successfully</span>,
-        DECREASE_TOKEN: <span>You had been charged {amount} tokens because {reason}</span>,
+        DECREASE_TOKEN: <span>You had been charged {amount} <img src={token_icon} alt='token_icon' width={10} /> {symbol} tokens because {reason}</span>,
         DELETE_CAMPAIGN: <span>You deleted campaing {campaign?.name} successfully</span>,
-        WITHDRAW: <Link to={ROUTER_PATH.WITHDRAW}>You requested to withdraw {amount} tokens successfully.</Link>,
+        WITHDRAW: <Link to={ROUTER_PATH.WITHDRAW}>
+            You requested to withdraw {amount} <img src={token_icon} alt='token_icon' width={10} /> {symbol} tokens successfully.
+        </Link>,
     }
 
     const errorMessage: any = {
@@ -52,10 +58,10 @@ const getMessage = (item: any) => {
             Vote for candidate <Link to={`${ROUTER_PATH.RESULT}/${campaign?.id}`}> {candidate?.name} </Link>
             in campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> failed because {error}
         </span>,
-        DEPOSIT: <span>Deposit {amount} token to DApp failed because {error}</span>,
+        DEPOSIT: <span>Deposit {amount} <img src={token_icon} alt='token_icon' width={10} /> {symbol} token to DApp failed because {error}</span>,
         EDIT_CAMPAIGN: <span>Edit campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> failed because {error}</span>,
         DELETE_CAMPAIGN: <span>Delete campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> failed because {error}</span>,
-        WITHDRAW: <span>Withdraw {amount} token failed because {error}</span>,
+        WITHDRAW: <span>Withdraw {amount} <img src={token_icon} alt='token_icon' width={10} /> {symbol} token failed because {error}</span>,
         SYSTEM: <span>System error: {error}</span>
     }
     return {
@@ -147,7 +153,7 @@ const NotificationList = () => {
                         return (
                             <NotifyItem key={index}>
                                 <NotifyContent>
-                                    <img src={icon} alt="bellIcon" width={20} height={20} />
+                                    <img src={icon} alt="bellIcon" width={20} height={20} className="bellIcon" />
                                     {message}
                                 </NotifyContent>
                                 <span>{item.time}</span>

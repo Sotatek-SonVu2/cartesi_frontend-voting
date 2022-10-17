@@ -7,7 +7,7 @@ import Loading from "../common/Loading";
 import { createNotifications } from "../common/Notification";
 import { getLastEpoch } from "../graphql/getLastEpoch";
 import { getVoucher as getVoucherExcute } from "../graphql/vouchers";
-import { outputContract } from "../helper/contractWithSigner";
+import { configToken, outputContract } from "../helper/contractWithSigner";
 import { handleInspectApi } from "../helper/handleInspectApi";
 import { handleResponse } from "../helper/handleResponse";
 import { sendInput } from "../helper/sendInput";
@@ -16,17 +16,14 @@ import PlusIcon from "../images/white-plus.png";
 import { getDepositInfo } from "../reducers/authSlice";
 import { AppDispatch, RootState } from "../store";
 import { Content, Title } from "../styled/common";
-import { BoxItem, Radio, RadioGroup, WithdrawContent, HeaderList } from "../styled/list";
+import { BoxItem, HeaderList, Radio, RadioGroup, WithdrawContent } from "../styled/list";
 import { FlexLayout } from "../styled/main";
 import {
     ERROR_MESSAGE,
     LIST_EXECUTED_VOUCHER,
     NOTI_TYPE,
-    NO_RESPONSE_ERROR,
-    WAITING_RESPONSE_FROM_SERVER_MESSAGE,
-    SAVE_EXECUTED_VOUCHER,
-    WAITING_FOR_CONFIRMATION,
-    WITHDRAW,
+    NO_RESPONSE_ERROR, SAVE_EXECUTED_VOUCHER,
+    WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE, WITHDRAW,
     WITHDRAW_RADIO_FILTER,
     WITHDRAW_RADIO_FILTER_STATUS
 } from "../utils/contants";
@@ -92,7 +89,7 @@ const Withdraw = () => {
             let result: any[] = []
             arr.forEach((item: WithDrawType) => {
                 let obj
-                const decode = new ethers.utils.AbiCoder().decode(["address", "uint256"], `0x${item.payload.slice(10)}`)
+                const decode = new ethers.utils.AbiCoder().decode(["address", "uint256", "address"], `0x${item.payload.slice(10)}`)
                 const amount = parseInt(ethers.utils.formatEther(decode[1]))
                 const isAllowExecute = item.epoch < lastEpoch.nodes[0].index || lastEpoch.nodes[0].vouchers.nodes[0].proof ? true : false
                 if (decode[0] === userAddress) {
@@ -103,6 +100,7 @@ const Withdraw = () => {
                                 amount,
                                 isAllowExecute,  // The voucher is allowed to be executed
                                 isExecuted: item.id === id, // The voucher has been executed
+                                token: decode[2]
                             }
                             return item.id !== id
                         })
@@ -112,6 +110,7 @@ const Withdraw = () => {
                             amount,
                             isAllowExecute,  // The voucher is allowed to be executed
                             isExecuted: false, // The voucher has been executed
+                            token: decode[2]
                         }
                     }
                     result.unshift(obj)
@@ -131,13 +130,14 @@ const Withdraw = () => {
         getData()
     }, [isChecked])
 
-    const onAddWithdraw = async (amount: string) => {
+    const onAddVoucher = async (amount: string, tokenType: string) => {
         try {
             setIsWithdrawLoading(true)
             const decimal = parseInt(amount) * Math.pow(10, 18)
             const data = {
                 action: WITHDRAW,
-                amount: BigInt(decimal).toString()
+                amount: BigInt(decimal).toString(),
+                token: configToken(tokenType)?.tokenAddress || ''
             }
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
@@ -163,7 +163,7 @@ const Withdraw = () => {
         }
     }
 
-    const onWithdraw = async (id: string, amount: number) => {
+    const onWithdraw = async (id: string, amount: number, token: string) => {
         // wait for vouchers to appear in reader
         setIsWithdrawLoading(true)
         setCallMessage(WAITING_FOR_CONFIRMATION)
@@ -191,7 +191,8 @@ const Withdraw = () => {
                 const data = {
                     id,
                     amount,
-                    action: SAVE_EXECUTED_VOUCHER
+                    action: SAVE_EXECUTED_VOUCHER,
+                    token: token || ''
                 }
                 await sendInput(data)
                 await dispatch(getDepositInfo())
@@ -245,7 +246,7 @@ const Withdraw = () => {
                         <WithdrawModal
                             isVisible={isVisible}
                             toggleModal={toggleModal}
-                            onAddWithdraw={onAddWithdraw}
+                            onAddVoucher={onAddVoucher}
                         />
                     )}
                 </Content>

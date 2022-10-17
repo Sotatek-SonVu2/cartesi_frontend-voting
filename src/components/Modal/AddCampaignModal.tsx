@@ -1,10 +1,10 @@
-import styled from "styled-components"
+import { useState } from "react"
 import ModalComponent from "../../common/Modal"
-import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "../../styled/common"
+import { CARTESI_TOKEN } from "../../utils/contants"
 import confirmIcon from '../../images/exclamation_icon.svg'
 import CoinsList from "../../common/CoinsList"
-import { useState } from "react"
-import { CARTESI_TOKEN } from "../../utils/contants"
+import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "../../styled/common"
+import styled from "styled-components"
 
 type Props = {
     isVisible: boolean
@@ -12,7 +12,7 @@ type Props = {
     onClick: (tokenType: string) => void
 }
 
-const VotingButton = styled(SuccessButton)`
+const SubmitButton = styled(SuccessButton)`
     background-color: ${colorTheme.success};
     color: #ffffff;
     display: block;
@@ -20,7 +20,7 @@ const VotingButton = styled(SuccessButton)`
     margin-top: 30px;
 `
 
-const VotingModal = ({ isVisible, toggleModal, onClick }: Props) => {
+const AddCampaignModal = ({ isVisible, toggleModal, onClick }: Props) => {
     const [tokenType, setTokenType] = useState<string>(CARTESI_TOKEN)
 
     return (
@@ -28,16 +28,16 @@ const VotingModal = ({ isVisible, toggleModal, onClick }: Props) => {
             <div>
                 <ModalTitle>
                     <img src={confirmIcon} className="title-icon" alt="confirm-Icon" width={30} />
-                    <p>Are you sure to choose this candidate?</p>
+                    <p>Are you sure to create this candidate?</p>
                 </ModalTitle>
                 <ModalContent>
                     <p style={{ marginTop: '0px' }}>Remember, you are only vote for one candidate!</p>
                     <CoinsList onChooseCoin={(token: string) => setTokenType(token)} tokenType={tokenType} />
                 </ModalContent>
-                <VotingButton onClick={() => onClick(tokenType)}>Vote</VotingButton>
+                <SubmitButton onClick={() => onClick(tokenType)}>Create</SubmitButton>
             </div>
         </ModalComponent>
     )
 }
 
-export default VotingModal
+export default AddCampaignModal

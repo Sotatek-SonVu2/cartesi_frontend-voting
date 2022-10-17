@@ -227,7 +227,8 @@ export const WithdrawContent = styled.div`
 
 export const Tooltip = styled.div`
   position: relative;
-  display: inline-block;
+  display: flex;
+  align-items: center;
 
   & .tooltiptext {
     visibility: hidden;
@@ -367,4 +368,38 @@ export const CoinBox = styled.div<CoinBoxStyled>`
     background: ${colorTheme.active};
     color: #fff
   `}
+`
+
+export const DepositInfoWrapper = styled.div`
+position: relative;
+padding: 10px;
+color: #fff;
+text-align: center;
+margin-bottom: 10px;
+background: rgb(195 195 195 / 14%);
+width: 180px;
+
+& .tooltip-box {
+    width: 180px;
+    visibility: hidden;
+    background-color: #fff;
+    color: #000;
+    text-align: center;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 0;
+    box-shadow: #bfbfbf 0px 2px 8px 0px;
+
+    & p {
+        font-size: 13px;
+        margin: 0px;
+        line-height: 1.5;
+    }
+  }
+
+  &:hover .tooltip-box {
+    visibility: visible;
+  }
 `

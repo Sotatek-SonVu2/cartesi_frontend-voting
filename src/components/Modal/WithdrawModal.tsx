@@ -1,8 +1,10 @@
 import { useState } from "react"
 import styled from "styled-components"
+import CoinsList from "../../common/CoinsList"
 import ModalComponent from "../../common/Modal"
-import { colorTheme, ModalTitle, SuccessButton } from "../../styled/common"
+import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
+import { CARTESI_TOKEN } from "../../utils/contants"
 import { validateAmount } from "../../utils/validate"
 
 const Button = styled(SuccessButton)`
@@ -32,14 +34,15 @@ const FormItem = styled.div`
 type Props = {
     isVisible: boolean
     toggleModal: any
-    onAddWithdraw: any
+    onAddVoucher: (value: string, tokenType: string) => void
 }
 
-const WithdrawModal = ({ isVisible, toggleModal, onAddWithdraw }: Props) => {
+const WithdrawModal = ({ isVisible, toggleModal, onAddVoucher }: Props) => {
     const [amount, setAmount] = useState({
         value: '',
         errorText: ''
     });
+    const [tokenType, setTokenType] = useState<string>(CARTESI_TOKEN)
 
     const handleChange = (value: string) => {
         setAmount({
@@ -48,14 +51,14 @@ const WithdrawModal = ({ isVisible, toggleModal, onAddWithdraw }: Props) => {
         })
     }
 
-    const handleAddWithdraw = () => {
+    const handleAddVoucher = () => {
         if (validateAmount(amount.value)) {
             setAmount({
                 ...amount,
                 errorText: validateAmount(amount.value)
             })
         } else {
-            onAddWithdraw(amount.value)
+            onAddVoucher(amount.value, tokenType)
             toggleModal()
         }
     }
@@ -64,6 +67,9 @@ const WithdrawModal = ({ isVisible, toggleModal, onAddWithdraw }: Props) => {
         <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title='Withdraw Token'>
             <div>
                 <ModalTitle>
+                    <CoinsList onChooseCoin={(token: string) => setTokenType(token)} tokenType={tokenType} />
+                </ModalTitle>
+                <ModalContent>
                     <FormItem>
                         <label>Amount</label>
                         <Input
@@ -74,9 +80,9 @@ const WithdrawModal = ({ isVisible, toggleModal, onAddWithdraw }: Props) => {
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e.target.value)}
                         />
                     </FormItem>
-                </ModalTitle>
+                </ModalContent>
                 <ErrorMessage>{amount.errorText}</ErrorMessage>
-                <Button onClick={handleAddWithdraw}>
+                <Button onClick={handleAddVoucher}>
                     Withdraw
                 </Button>
             </div>

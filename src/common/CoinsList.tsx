@@ -1,31 +1,23 @@
-import { FlexLayout } from "../styled/main"
-import DepositIcon from '../images/deposit.png';
-import { CoinBox } from "../styled/list";
 import styled from "styled-components";
-import { useState } from "react";
 
-const data = [
-    {
-        image: DepositIcon,
-        name: 'ETH',
-    },
-    {
-        image: DepositIcon,
-        name: 'BTC',
-    },
-    {
-        image: DepositIcon,
-        name: 'CTSI',
-    },
-    {
-        image: DepositIcon,
-        name: 'DOGE',
-    }
-]
+import { CoinBox } from "../styled/list";
+import { FlexLayout } from "../styled/main";
+import { coinList } from "../utils/coinList";
 
 interface PropsType {
     onChooseCoin: (coinToken: string) => void
+    tokenType: string
 }
+
+interface CoinListType {
+    key: number
+    token_icon: string
+    symbol: string
+    token_name: string
+    address: string
+}
+
+const CHAIN_ID: any = process.env.REACT_APP_CHAIN_ID || 0
 
 const CoinWrapper = styled(FlexLayout)`
     justify-content: space-around;
@@ -34,24 +26,13 @@ const CoinWrapper = styled(FlexLayout)`
     margin-bottom: 15px;
 `
 
-const CoinsList = ({ onChooseCoin }: PropsType) => {
-    const [chooseCoin, setChooseCoin] = useState('')
-
-    const onChoose = (name: string) => {
-        if (name === chooseCoin) {
-            setChooseCoin('')
-            return false
-        }
-        setChooseCoin(name)
-        onChooseCoin(name)
-    }
-
+const CoinsList = ({ onChooseCoin, tokenType }: PropsType) => {
     return (
         <CoinWrapper>
-            {data.map(({ image, name }) => (
-                <CoinBox onClick={() => onChoose(name)} active={name === chooseCoin}>
-                    <img src={image} alt="coin-image" width={30} />
-                    <div>{name}</div>
+            {coinList[CHAIN_ID]?.map(({ key, token_icon, symbol, token_name, address }: CoinListType) => (
+                <CoinBox key={key} onClick={() => onChooseCoin(token_name)} active={token_name === tokenType}>
+                    <img src={token_icon} alt="token_icon" width={30} />
+                    <div>{symbol}</div>
                 </CoinBox>
             ))}
         </CoinWrapper>

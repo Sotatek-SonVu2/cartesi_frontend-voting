@@ -32,6 +32,10 @@ export const WAITING_RESPONSE_FROM_SERVER_MESSAGE = 'The transaction is currentl
 export const NO_RESPONSE_ERROR = 'NO_RESPONSE_ERROR'
 export const WAITING_FOR_CONFIRMATION = 'Waiting for confirmation...'
 
+export const CARTESI_TOKEN = 'CartesiToken'
+export const ETHEREUM_TOKEN = 'EthereumToken'
+export const BINANCE_TOKEN = 'BinanceToken'
+
 export const NOTI_TYPE = {
     SUCCESS: 'success',
     DANGER: 'danger',

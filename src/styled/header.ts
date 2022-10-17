@@ -65,7 +65,7 @@ export const Address = styled.div`
 export const Currency = styled.div`
     display: flex;
     align-items: center;
-
+    justify-content: center;
     & span {
         margin-left: 5px;
     }
@@ -145,7 +145,7 @@ export const NotifyItem = styled.div`
         background: #eee;
     }
 
-    & img {
+    & .bellIcon {
         margin-right: 10px;
     }
 

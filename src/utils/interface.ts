@@ -10,10 +10,7 @@ export interface AuthState {
     address: string
     metadata: MetadataType
     isLoading: boolean
-    deposit_info: {
-        amount: number
-        used_amount: number
-    }
+    deposit_info: DepositInfoType[]
 }
 
 export interface isVisibleActionButton {
@@ -136,6 +133,16 @@ export interface WithDrawType {
     amount: number
     isExecuted?: boolean
     isAllowExecute?: boolean
+    token: string
+}
+
+export interface DepositInfoType {
+    amount: number
+    contract_address: string
+    id: number
+    used_amount: number
+    user: string
+    withdrawn_amount: number
 }
 
 

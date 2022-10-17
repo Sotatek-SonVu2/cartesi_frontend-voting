@@ -1,4 +1,5 @@
 
+import { isVisible } from "@testing-library/user-event/dist/utils";
 import moment from "moment";
 import { ChangeEvent, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
@@ -7,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Loading from "../common/Loading";
 import { createNotifications } from "../common/Notification";
+import { configToken } from "../helper/contractWithSigner";
 import { handleInspectApi } from "../helper/handleInspectApi";
 import { handleResponse } from "../helper/handleResponse";
 import { sendInput } from "../helper/sendInput";
@@ -21,6 +23,7 @@ import { CAMPAIGN_DETAIL, CREATE_CAMPAIGN, EDIT_CAMPAIGN, ERROR_MESSAGE, FORMAT_
 import { AddEditDataType, MetadataType, OptionType, resInput } from "../utils/interface";
 import { validateDate, validateField, validateFields, validateOptions } from "../utils/validate";
 import CandidateOptions from "./CandidateOptions";
+import AddCampaignModal from "./Modal/AddCampaignModal";
 
 const FORMAT_DATE_PICKER = 'MM/dd/yyyy h:mm aa'
 
@@ -49,12 +52,14 @@ const AddEditCampaign = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     let navigate = useNavigate();
+    const [isVisible, setIsVisible] = useState<boolean>(false);
     const { campaignId } = useParams();
     const [callMessage, setCallMessage] = useState<string>('')
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [dataForm, setDataForm] = useState(initialValue)
     const [options, setOptions] = useState<OptionType[]>(OptionDefault)
     const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
+    const [dataCreate, setDataCreate] = useState<AddEditDataType>()
     const { name, description, startDate, endDate, formErrors } = dataForm
 
     useEffect(() => {
@@ -120,11 +125,14 @@ const AddEditCampaign = () => {
         })
     }
 
-    const createCampaign = async (data: AddEditDataType) => {
+    const createCampaign = async (tokenType: string) => {
         try {
             setIsLoading(true)
             setCallMessage(WAITING_FOR_CONFIRMATION)
-            const { epoch_index, input_index }: resInput = await sendInput(data);
+            const { epoch_index, input_index }: resInput = await sendInput({
+                ...dataCreate,
+                token_address: configToken(tokenType)?.tokenAddress
+            });
             handleResponse(epoch_index, input_index, ((payload: any) => {
                 if (!payload || payload.message !== NO_RESPONSE_ERROR && !payload.error) {
                     const message = payload ? 'Add campaign successfully!' : WAITING_RESPONSE_FROM_SERVER_MESSAGE
@@ -198,7 +206,8 @@ const AddEditCampaign = () => {
                 })
             }
             if (!campaignId) {
-                createCampaign(data)
+                setIsVisible(true);
+                setDataCreate(data)
             } else {
                 const newData: AddEditDataType = {
                     id: parseInt(campaignId),
@@ -216,6 +225,10 @@ const AddEditCampaign = () => {
             createNotifications(NOTI_TYPE.DANGER, 'Please check the entered data!')
         }
     };
+
+    const toggleModal = () => {
+        setIsVisible(!isVisible);
+    }
 
     return (
         <Content>
@@ -273,6 +286,14 @@ const AddEditCampaign = () => {
                     </SubmitButton>
                 </FlexLayoutBtn>
             </Form>
+
+            {isVisible && (
+                <AddCampaignModal
+                    isVisible={isVisible}
+                    toggleModal={toggleModal}
+                    onClick={createCampaign}
+                />
+            )}
         </Content>
     )
 }

@@ -23,7 +23,7 @@ interface PropsType {
 }
 
 const WithdrawItem = ({ data, onClick }: PropsType) => {
-    const { id, isAllowExecute, isExecuted, amount } = data
+    const { id, isAllowExecute, isExecuted, amount, token } = data
     return (
         <WithdrawContent>
             <img src={isExecuted || isAllowExecute ? GiftIcon : GiftDisabledIcon} className="giftIcon" alt="gift" width={'50%'} />
@@ -33,7 +33,7 @@ const WithdrawItem = ({ data, onClick }: PropsType) => {
             {isExecuted ? (
                 <img src={ClaimedIcon} alt="claimedIcon" width={100} style={{ marginTop: '10px' }} />
             ) : (
-                <ClaimButton onClick={() => onClick(id, amount)} disabled={!isAllowExecute}>
+                <ClaimButton onClick={() => onClick(id, amount, token)} disabled={!isAllowExecute}>
                     Claim
                 </ClaimButton>
             )}

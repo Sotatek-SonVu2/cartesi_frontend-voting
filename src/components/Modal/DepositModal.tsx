@@ -3,15 +3,16 @@ import { ContractReceipt, ethers } from "ethers"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
+import CoinsList from "../../common/CoinsList"
 import ModalComponent from "../../common/Modal"
 import { createNotifications } from "../../common/Notification"
-import { cartesiToken, cartesiTokenContract, erc20Contract, inputContract } from "../../helper/contractWithSigner"
+import { tokenContract, erc20Contract, inputContract, configToken } from "../../helper/contractWithSigner"
 import { getDepositInfo } from "../../reducers/authSlice"
 import { AppDispatch, RootState } from "../../store"
-import { colorTheme, ModalTitle, SuccessButton } from "../../styled/common"
+import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "../../styled/common"
 import { ErrorText, Input } from "../../styled/form"
 import { Loader } from "../../styled/loading"
-import { NETWORK_ERROR_MESSAGE, NOTI_TYPE, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "../../utils/contants"
+import { CARTESI_TOKEN, NETWORK_ERROR_MESSAGE, NOTI_TYPE, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "../../utils/contants"
 import { InputKeys } from "../../utils/types"
 import { validateAmount } from "../../utils/validate"
 
@@ -73,7 +74,7 @@ export const findInputAddedInfo = (
 const DepositModal = ({ isVisible, toggleModal }: Props) => {
     const dispatch = useDispatch<AppDispatch>()
     const addressWallet = useSelector((state: RootState) => state.auth.address)
-    // const [coinToken, setCoinToken] = useState<string>('')
+    const [tokenType, setTokenType] = useState<string>(CARTESI_TOKEN)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [callMessage, setCallMessage] = useState<string>('')
     const [amount, setAmount] = useState({
@@ -98,18 +99,18 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
             try {
                 setIsLoading(true)
                 // Check CTSI tokens in your account
-                const getBalanceOf = await cartesiTokenContract().balanceOf(addressWallet);
+                const getBalanceOf = await tokenContract(tokenType).balanceOf(addressWallet);
                 const balanceOf = parseInt(ethers.utils.formatEther(getBalanceOf))
                 if (balanceOf > 0 && balanceOf > parseInt(amount.value)) {
                     console.log("waiting for transaction...");
                     setCallMessage(WAITING_FOR_CONFIRMATION)
-                    const allowance: any = await cartesiTokenContract().functions.allowance(addressWallet, SPENDER_ADDRESS);
+                    const allowance: any = await tokenContract(tokenType).functions.allowance(addressWallet, SPENDER_ADDRESS);
                     // increase erc20 allowance first if necessary
                     const erc20Amount = ethers.utils.parseEther(`${amount.value}`);
                     if (allowance[0].lt(erc20Amount)) {
                         const allowanceApproveAmount =
                             ethers.BigNumber.from(erc20Amount).sub(allowance[0]);
-                        const tx = await cartesiTokenContract().approve(
+                        const tx = await tokenContract(tokenType).approve(
                             SPENDER_ADDRESS,
                             allowanceApproveAmount
                         );
@@ -120,7 +121,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
                     }
 
                     // send deposit transaction
-                    const tokenAddress = cartesiToken() && cartesiToken()?.cartesiAddress
+                    const tokenAddress = configToken(tokenType) && configToken(tokenType)?.tokenAddress
                     if (!tokenAddress) {
                         return createNotifications(NOTI_TYPE.DANGER, NETWORK_ERROR_MESSAGE)
                     }
@@ -163,7 +164,9 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
         >
             <div>
                 <ModalTitle>
-                    {/* <CoinsList onChooseCoin={(token: string) => setCoinToken(token)} /> */}
+                    <CoinsList onChooseCoin={(token: string) => setTokenType(token)} tokenType={tokenType} />
+                </ModalTitle>
+                <ModalContent>
                     <FormItem>
                         <label>Amount</label>
                         <Input
@@ -174,7 +177,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e.target.value)}
                         />
                     </FormItem>
-                </ModalTitle>
+                </ModalContent>
                 <ErrorMessage>{amount.errorText || callMessage}</ErrorMessage>
                 <DepositButton onClick={handleDeposit} disabled={isLoading}>
                     {isLoading && (<Loader />)}

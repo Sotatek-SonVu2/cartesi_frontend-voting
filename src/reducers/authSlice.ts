@@ -20,12 +20,7 @@ export const getDepositInfo = createAsyncThunk(
             }
             const result = await handleInspectApi(data, metadata)
             if (result && !result.error) {
-                const { amount, used_amount, withdrawn_amount } = result
-                const depositAmount = amount - used_amount - withdrawn_amount
-                return {
-                    amount: depositAmount,
-                    used_amount
-                }
+                return result.data
             } else {
                 createNotifications(NOTI_TYPE.DANGER, result?.error || ERROR_MESSAGE)
             }
@@ -36,12 +31,20 @@ export const getDepositInfo = createAsyncThunk(
     }
 )
 
+
+
 const initialState: AuthState = {
     address: localStorage.getItem(ADDRESS_WALLET) || '',
-    deposit_info: {
-        amount: 0,
-        used_amount: 0
-    },
+    deposit_info: [
+        {
+            amount: 0,
+            contract_address: '',
+            id: 0,
+            used_amount: 0,
+            user: '',
+            withdrawn_amount: 0
+        }
+    ],
     metadata: {
         msg_sender: localStorage.getItem(ADDRESS_WALLET)?.toLowerCase() || '',
         epoch_index: 0,
@@ -83,19 +86,13 @@ export const authSlice = createSlice({
             return state
         })
         builder.addCase(getDepositInfo.fulfilled, (state, action) => {
-            state.deposit_info = {
-                amount: action.payload?.amount || 0,
-                used_amount: action.payload?.used_amount || 0
-            }
+            state.deposit_info = action.payload
             state.isLoading = false
             return state
         })
         builder.addCase(getDepositInfo.rejected, (state) => {
             state.isLoading = false
-            state.deposit_info = {
-                amount: 0,
-                used_amount: 0
-            }
+            state.deposit_info = initialState.deposit_info
             return state
         })
     },
