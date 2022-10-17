@@ -35,6 +35,7 @@ export const WAITING_FOR_CONFIRMATION = 'Waiting for confirmation...'
 export const CARTESI_TOKEN = 'CartesiToken'
 export const ETHEREUM_TOKEN = 'EthereumToken'
 export const BINANCE_TOKEN = 'BinanceToken'
+export const SOTATEK_TOKEN = 'SotatekToken'
 
 export const NOTI_TYPE = {
     SUCCESS: 'success',

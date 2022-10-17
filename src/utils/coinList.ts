@@ -2,7 +2,7 @@
 import BinanceIcon from "../images/bnb-icon.png";
 import CartesiIcon from "../images/cartesi_icon.png";
 import EtherIcon from "../images/ethereum-icon.svg";
-import { BINANCE_TOKEN, CARTESI_TOKEN, ETHEREUM_TOKEN } from "./contants";
+import { BINANCE_TOKEN, CARTESI_TOKEN, ETHEREUM_TOKEN, SOTATEK_TOKEN } from "./contants";
 import { getToken } from "./getToken";
 
 export const coinList: any = {
@@ -17,16 +17,9 @@ export const coinList: any = {
         {
             key: 2,
             token_icon: EtherIcon,
-            symbol: 'ETH',
-            token_name: ETHEREUM_TOKEN,
-            address: getToken(ETHEREUM_TOKEN)?.tokenAddress || ''
-        },
-        {
-            key: 3,
-            token_icon: BinanceIcon,
-            symbol: 'BNB',
-            token_name: BINANCE_TOKEN,
-            address: getToken(BINANCE_TOKEN)?.tokenAddress || ''
+            symbol: 'SOTA',
+            token_name: SOTATEK_TOKEN,
+            address: getToken(SOTATEK_TOKEN)?.tokenAddress || ''
         },
     ],
     5: [
