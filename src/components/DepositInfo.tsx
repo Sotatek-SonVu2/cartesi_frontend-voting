@@ -5,7 +5,6 @@ import { getDepositInfo } from "../reducers/authSlice"
 import { AppDispatch, RootState } from "../store"
 import { Currency } from "../styled/header"
 import { DepositInfoWrapper } from "../styled/list"
-import { Loader } from "../styled/loading"
 import { FlexLayout } from "../styled/main"
 import { coinList } from "../utils/coinList"
 
@@ -16,11 +15,9 @@ const FlexWrapper = styled(FlexLayout)`
     justify-content: space-between;
 `
 
-
 const DepositInfo = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const authState = useSelector((state: RootState) => state.auth)
-    const { deposit_info, isLoading } = authState
+    const deposit_info = useSelector((state: RootState) => state.auth.deposit_info)
 
     useEffect(() => {
         dispatch(getDepositInfo())
@@ -61,7 +58,6 @@ const DepositInfo = () => {
                         <Currency>
                             <img src={item.token_icon} alt="token_icon" width={20} />
                             <span>{item.symbol}: {item.amount || 0}</span>
-                            {isLoading && (<Loader />)}
                         </Currency>
                         <div className="tooltip-box">
                             <p>Used: {item.used_amount || 0} {item.symbol}</p>
