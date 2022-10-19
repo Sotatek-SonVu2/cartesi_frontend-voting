@@ -26,7 +26,7 @@ interface PropsType {
 
 const WithdrawItem = ({ data, onClick }: PropsType) => {
     const { id, isAllowExecute, isExecuted, amount, token } = data
-    const dataToken = coinList[NETWORK].find((item: any) => item.address.toLowerCase() === token)
+    const dataToken = coinList[NETWORK].find((item: any) => item.address === token)
     const tokenSymbol = dataToken?.symbol || ''
     return (
         <WithdrawContent>

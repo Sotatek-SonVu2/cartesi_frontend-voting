@@ -389,7 +389,7 @@ export const DepositInfoBox = styled.div`
       text-align: center;
       padding: 5px 10px;
       position: absolute;
-      z-index: 1;
+      z-index: 11;
       top: 100%;
       left: 0;
       box-shadow: #bfbfbf 0px 2px 8px 0px;
