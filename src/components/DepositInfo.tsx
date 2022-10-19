@@ -62,7 +62,7 @@ const DepositInfo = () => {
                             <span>{item.symbol}: {item.amount - item.used_amount || 0}</span>
                         </Currency>
                         <div className="tooltip-box">
-                            <p>Amount: {item.amount || 0} {item.symbol}</p>
+                            <p>Deposits: {item.amount || 0} {item.symbol}</p>
                             <p>Used: {item.used_amount || 0} {item.symbol}</p>
                             <p>Withdraw: {item.withdrawn_amount || 0} {item.symbol}</p>
                         </div>

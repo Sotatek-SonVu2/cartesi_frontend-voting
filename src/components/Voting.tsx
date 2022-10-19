@@ -114,7 +114,7 @@ const Voting = () => {
         }
 
         getData()
-    }, [])
+    }, [campaignId])
 
     const onChooseAnswer = (id: number) => {
         if (data.voted?.candidate_id || isCloseVoting || isLoadVoting) return

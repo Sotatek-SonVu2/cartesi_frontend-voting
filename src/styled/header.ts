@@ -68,6 +68,7 @@ export const Currency = styled.div`
     justify-content: center;
     & span {
         margin-left: 5px;
+        font-size: 15px;
     }
 `
 
