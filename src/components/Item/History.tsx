@@ -18,12 +18,12 @@ interface PropsType {
     data: any
 }
 
-const CHAIN_ID: any = process.env.REACT_APP_CHAIN_ID || 0
+const NETWORK: any = process.env.REACT_APP_NETWORK || ''
 
 const dataRender = (data: any) => {
     const { action, payload } = data
     const { time, campaign, candidate, amount, voucher_id, reason, token } = payload
-    const dataToken = coinList[CHAIN_ID].find((item: any) => item.address.toLowerCase() === token)
+    const dataToken = coinList[NETWORK].find((item: any) => item.address.toLowerCase() === token)
     const tokenIcon = dataToken?.token_icon || ''
     const tokenName = dataToken?.token_name || ''
     switch (action) {

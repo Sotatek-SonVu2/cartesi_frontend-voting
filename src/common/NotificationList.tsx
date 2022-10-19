@@ -26,13 +26,13 @@ const EmptyNotification = styled(NoDataWrapper)`
     }
 `
 
-const CHAIN_ID: any = process.env.REACT_APP_CHAIN_ID || 0
+const NETWORK: any = process.env.REACT_APP_NETWORK || ''
 
 const getMessage = (item: any) => {
     const { action, payload } = item
     const parse = JSON.parse(payload)
     const { campaign, type, error, candidate, amount, reason, token } = parse
-    const dataToken = coinList[CHAIN_ID].find((item: any) => item.address.toLowerCase() === token)
+    const dataToken = coinList[NETWORK].find((item: any) => item.address.toLowerCase() === token)
     const tokenIcon = dataToken?.token_icon || ''
     const tokenSymbol = dataToken?.symbol || ''
     const successMessage: any = {

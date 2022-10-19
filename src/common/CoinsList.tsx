@@ -17,7 +17,7 @@ interface CoinListType {
     address: string
 }
 
-const CHAIN_ID: any = process.env.REACT_APP_CHAIN_ID || 0
+const NETWORK: any = process.env.REACT_APP_NETWORK || ''
 
 const CoinWrapper = styled(FlexLayout)`
     justify-content: space-around;
@@ -29,7 +29,7 @@ const CoinWrapper = styled(FlexLayout)`
 const CoinsList = ({ onChooseCoin, tokenType }: PropsType) => {
     return (
         <CoinWrapper>
-            {coinList[CHAIN_ID]?.map(({ key, token_icon, symbol, token_name, address }: CoinListType) => (
+            {coinList[NETWORK]?.map(({ key, token_icon, symbol, token_name, address }: CoinListType) => (
                 <CoinBox key={key} onClick={() => onChooseCoin(token_name)} active={token_name === tokenType}>
                     <img src={token_icon} alt="token_icon" width={30} />
                     <div>{symbol}</div>

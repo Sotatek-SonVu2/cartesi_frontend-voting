@@ -9,7 +9,7 @@ import { FlexLayout } from "../styled/main"
 import { coinList } from "../utils/coinList"
 import { coinListType, DepositInfoType } from "../utils/interface"
 
-const CHAIN_ID: any = process.env.REACT_APP_CHAIN_ID || 0
+const NETWORK: any = process.env.REACT_APP_NETWORK || ''
 
 const FlexWrapper = styled(FlexLayout)`
     flex-wrap: wrap;
@@ -32,7 +32,8 @@ const DepositInfo = () => {
 
     const render = () => {
         let data: any[] = []
-        const coinListing = coinList[CHAIN_ID]
+        const coinListing = coinList[NETWORK]
+        console.log('deposit_info', deposit_info)
         if (deposit_info.length > 0) {
             coinListing.forEach((coin: coinListType) => {
                 let obj
