@@ -153,6 +153,11 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
         }
     }
 
+    const onChooseToken = (token: string) => {
+        if (isLoading) return
+        setTokenType(token)
+    }
+
 
     return (
         <ModalComponent
@@ -164,7 +169,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
         >
             <div>
                 <ModalTitle>
-                    <CoinsList onChooseCoin={(token: string) => setTokenType(token)} tokenType={tokenType} />
+                    <CoinsList onChooseCoin={onChooseToken} tokenType={tokenType} />
                 </ModalTitle>
                 <ModalContent>
                     <FormItem>

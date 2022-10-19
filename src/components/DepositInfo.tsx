@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { getDepositInfo } from "../reducers/authSlice"
 import { AppDispatch, RootState } from "../store"
 import { Currency } from "../styled/header"
-import { DepositInfoWrapper } from "../styled/list"
+import { DepositInfoBox } from "../styled/list"
 import { FlexLayout } from "../styled/main"
 import { coinList } from "../utils/coinList"
 import { coinListType, DepositInfoType } from "../utils/interface"
@@ -55,16 +55,17 @@ const DepositInfo = () => {
         return (
             <FlexWrapper>
                 {data.map((item: any) => (
-                    <DepositInfoWrapper key={item.key}>
+                    <DepositInfoBox key={item.key}>
                         <Currency>
                             <img src={item.token_icon} alt="token_icon" width={20} />
-                            <span>{item.symbol}: {item.amount || 0}</span>
+                            <span>{item.symbol}: {item.amount - item.used_amount || 0}</span>
                         </Currency>
                         <div className="tooltip-box">
+                            <p>Amount: {item.amount || 0} {item.symbol}</p>
                             <p>Used: {item.used_amount || 0} {item.symbol}</p>
                             <p>Withdraw: {item.withdrawn_amount || 0} {item.symbol}</p>
                         </div>
-                    </DepositInfoWrapper>
+                    </DepositInfoBox>
                 ))}
             </FlexWrapper>
         )

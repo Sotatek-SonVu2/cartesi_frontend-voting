@@ -9,8 +9,8 @@ export const getToken = (tokenType: string) => {
         let tokenContract
         let tokenAddress
         if (networkName === "localhost") {
-            tokenContract = require(`../contracts/${tokenType}.json`)
-            tokenAddress = require(`../contracts/${tokenType}.json`).address
+            tokenContract = require(`../contracts/localhost/${tokenType}.json`)
+            tokenAddress = require(`../contracts/localhost/${tokenType}.json`).address
         } else if (networkName && tokenType === CARTESI_TOKEN) {
             tokenContract = require(`@cartesi/token/deployments/${networkName}/CartesiToken.json`)
             tokenAddress = require(`@cartesi/token/deployments/${networkName}/CartesiToken.json`).address

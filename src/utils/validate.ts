@@ -13,7 +13,7 @@ const validateText: any = {
 }
 
 export const validateAmount = (value: string) => {
-    const integerRegex = /^[0-9]\d*$/
+    const integerRegex = /^(?=[1-9]+)(?:[1-9]\d*|0)?(?:\.\d+)?$/
     if (!value || !integerRegex.test(value)) {
         return AMOUNT_ERROR_MESSAGE
     }

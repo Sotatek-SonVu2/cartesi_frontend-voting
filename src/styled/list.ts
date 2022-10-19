@@ -370,7 +370,7 @@ export const CoinBox = styled.div<CoinBoxStyled>`
   `}
 `
 
-export const DepositInfoWrapper = styled.div`
+export const DepositInfoBox = styled.div`
   position: relative;
   padding: 10px;
   color: #fff;
@@ -379,6 +379,7 @@ export const DepositInfoWrapper = styled.div`
   background: rgb(195 195 195 / 14%);
   width: 180px;
   margin: 0px 12px 10px;
+  border-radius: 4px;
 
   & .tooltip-box {
       width: 180px;

@@ -132,7 +132,7 @@ const AddEditCampaign = () => {
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput({
                 ...dataCreate,
-                token_address: configToken(tokenType)?.tokenAddress
+                token_address: configToken(tokenType)?.tokenAddress.toLowerCase()
             });
             handleResponse(epoch_index, input_index, ((payload: any) => {
                 if (!payload || payload.message !== NO_RESPONSE_ERROR && !payload.error) {

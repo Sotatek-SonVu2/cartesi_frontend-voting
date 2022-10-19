@@ -23,7 +23,9 @@ const CHAIN_ID: any = process.env.REACT_APP_CHAIN_ID || 0
 const dataRender = (data: any) => {
     const { action, payload } = data
     const { time, campaign, candidate, amount, voucher_id, reason, token } = payload
-    const { token_icon, token_name } = coinList[CHAIN_ID].find((item: any) => item.address.toLowerCase() === token)
+    const dataToken = coinList[CHAIN_ID].find((item: any) => item.address.toLowerCase() === token)
+    const tokenIcon = dataToken?.token_icon || ''
+    const tokenName = dataToken?.token_name || ''
     switch (action) {
         case CREATE_CAMPAIGN:
             return {
@@ -57,7 +59,7 @@ const dataRender = (data: any) => {
                 title: 'Deposit',
                 times: `${time}`,
                 color: 'rgb(255 83 155 / 50%)',
-                content: (<span>You deposited to the DApp {amount} <img src={token_icon} alt='token_icon' width={15} /> {token_name} tokens</span>)
+                content: (<span>You deposited to the DApp {amount} <img src={tokenIcon} alt='token_icon' width={15} /> {tokenName} tokens</span>)
             }
         case EDIT_CAMPAIGN:
             return {
@@ -78,7 +80,7 @@ const dataRender = (data: any) => {
                 times: `${time}`,
                 color: 'rgb(255 243 83 / 50%)',
                 content: (
-                    <span>You had been charged {amount} <img src={token_icon} alt='token_icon' width={15} /> {token_name} tokens because {reason}</span>
+                    <span>You had been charged {amount} <img src={tokenIcon} alt='token_icon' width={15} /> {tokenName} tokens because {reason}</span>
                 )
             }
         case DELETE_CAMPAIGN:
@@ -98,7 +100,7 @@ const dataRender = (data: any) => {
                 times: `${time}`,
                 color: 'rgb(255 99 12 / 50%)',
                 content: (
-                    <Link to={ROUTER_PATH.WITHDRAW}>You requested to withdraw {amount} <img src={token_icon} alt='token_icon' width={15} /> {token_name} tokens.</Link>
+                    <Link to={ROUTER_PATH.WITHDRAW}>You requested to withdraw {amount} <img src={tokenIcon} alt='token_icon' width={15} /> {tokenName} tokens.</Link>
                 )
             }
         case EXECUTE_VOUCHER:
@@ -108,7 +110,7 @@ const dataRender = (data: any) => {
                 times: `${time}`,
                 color: 'rgb(255 192 83 / 50%)',
                 content: (
-                    <span>You executed successfully voucher {voucher_id} with amount {amount} <img src={token_icon} alt='token_icon' width={15} /> {token_name} tokens.</span>
+                    <span>You executed successfully voucher {voucher_id} with amount {amount} <img src={tokenIcon} alt='token_icon' width={15} /> {tokenName} tokens.</span>
                 )
             }
         default:

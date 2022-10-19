@@ -12,7 +12,6 @@ import { handleInspectApi } from "../helper/handleInspectApi";
 import { handleResponse } from "../helper/handleResponse";
 import { sendInput } from "../helper/sendInput";
 import { getVoucher as getVoucherList } from "../helper/voucher";
-import PlusIcon from "../images/white-plus.png";
 import { getDepositInfo } from "../reducers/authSlice";
 import { AppDispatch, RootState } from "../store";
 import { Content, Title } from "../styled/common";
@@ -32,8 +31,15 @@ import WithdrawItem from "./Item/Withdraw";
 import WithdrawModal from "./Modal/WithdrawModal";
 
 const BoxItemCustom = styled(BoxItem)`
-    display: flex;
-    align-items: center;
+    position: relative;
+`
+
+const WithdrawDefaut = styled(WithdrawContent)`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
 `
 
 const FlexLayoutSwap = styled(FlexLayout)`
@@ -133,11 +139,11 @@ const Withdraw = () => {
     const onAddVoucher = async (amount: string, tokenType: string) => {
         try {
             setIsWithdrawLoading(true)
-            const decimal = parseInt(amount) * Math.pow(10, 18)
+            const decimal = parseFloat(amount) * Math.pow(10, 18)
             const data = {
                 action: WITHDRAW,
                 amount: BigInt(decimal).toString(),
-                token: configToken(tokenType)?.tokenAddress || ''
+                token_address: configToken(tokenType)?.tokenAddress.toLowerCase() || ''
             }
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
@@ -192,7 +198,7 @@ const Withdraw = () => {
                     id,
                     amount,
                     action: SAVE_EXECUTED_VOUCHER,
-                    token: token || ''
+                    token_address: token || ''
                 }
                 await sendInput(data)
                 await dispatch(getDepositInfo())
@@ -228,10 +234,10 @@ const Withdraw = () => {
 
                     <FlexLayoutSwap>
                         <BoxItemCustom onClick={toggleModal}>
-                            <WithdrawContent>
-                                <img src={PlusIcon} alt="gift" width='20%' />
+                            <WithdrawDefaut>
+                                <h1 style={{ marginTop: '0px' }}>+</h1>
                                 <h5>Withdraw token</h5>
-                            </WithdrawContent>
+                            </WithdrawDefaut>
                         </BoxItemCustom>
                         {vouchers.map((item: WithDrawType, index: number) => (
                             <BoxItem key={index}>

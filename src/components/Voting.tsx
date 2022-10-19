@@ -130,13 +130,11 @@ const Voting = () => {
         if (!candidateId) return createNotifications(NOTI_TYPE.DANGER, 'Please choose a candidate!')
         try {
             setIsLoadVoting(true)
-            const { tokenAddress }: any = configToken(tokenType)
-            console.log('tokenAddress', tokenAddress)
             const data = {
                 action: VOTE,
                 candidate_id: candidateId,
                 campaign_id: campaignId && parseInt(campaignId),
-                token_address: tokenAddress
+                token_address: configToken(tokenType)?.tokenAddress.toLowerCase()
             }
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
