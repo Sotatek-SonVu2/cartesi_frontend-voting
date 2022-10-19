@@ -59,7 +59,7 @@ const DepositInfo = () => {
                     <DepositInfoBox key={item.key}>
                         <Currency>
                             <img src={item.token_icon} alt="token_icon" width={20} />
-                            <span>{item.symbol}: {item.amount - item.used_amount || 0}</span>
+                            <span>{item.symbol}: {item.amount - item.used_amount - item.withdrawn_amount || 0}</span>
                         </Currency>
                         <div className="tooltip-box">
                             <p>Deposits: {item.amount || 0} {item.symbol}</p>

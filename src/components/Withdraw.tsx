@@ -96,7 +96,7 @@ const Withdraw = () => {
             arr.forEach((item: WithDrawType) => {
                 let obj
                 const decode = new ethers.utils.AbiCoder().decode(["address", "uint256", "address"], `0x${item.payload.slice(10)}`)
-                const amount = parseInt(ethers.utils.formatEther(decode[1]))
+                const amount = parseFloat(ethers.utils.formatEther(decode[1]))
                 const isAllowExecute = item.epoch < lastEpoch.nodes[0].index || lastEpoch.nodes[0].vouchers.nodes[0].proof ? true : false
                 if (decode[0] === userAddress) {
                     if (ids.length > 0) {

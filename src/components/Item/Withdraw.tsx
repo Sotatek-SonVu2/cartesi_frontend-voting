@@ -5,7 +5,9 @@ import ClaimedIcon from '../../images/claimed.png'
 import styled from "styled-components"
 import { SuccessButton } from "../../styled/common"
 import { WithDrawType } from "../../utils/interface"
+import { coinList } from "../../utils/coinList"
 
+const NETWORK: any = process.env.REACT_APP_NETWORK || ''
 
 const ClaimButton = styled(SuccessButton)`
     display: block;
@@ -24,12 +26,14 @@ interface PropsType {
 
 const WithdrawItem = ({ data, onClick }: PropsType) => {
     const { id, isAllowExecute, isExecuted, amount, token } = data
+    const dataToken = coinList[NETWORK].find((item: any) => item.address.toLowerCase() === token)
+    const tokenSymbol = dataToken?.symbol || ''
     return (
         <WithdrawContent>
             <img src={isExecuted || isAllowExecute ? GiftIcon : GiftDisabledIcon} className="giftIcon" alt="gift" width={'50%'} />
             <div></div>
             <h5>Gift {id}</h5>
-            <span>{amount} CTSI</span>
+            <span>{amount} {tokenSymbol}</span>
             {isExecuted ? (
                 <img src={ClaimedIcon} alt="claimedIcon" width={100} style={{ marginTop: '10px' }} />
             ) : (
