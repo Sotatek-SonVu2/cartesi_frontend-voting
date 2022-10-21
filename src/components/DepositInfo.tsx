@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import { getDepositInfo } from "../reducers/authSlice"
 import { AppDispatch, RootState } from "../store"
-import { Currency } from "../styled/header"
+import { TokenItem } from "../styled/common"
 import { DepositInfoBox } from "../styled/list"
 import { FlexLayout } from "../styled/main"
 import { coinList } from "../utils/coinList"
@@ -13,6 +13,7 @@ const NETWORK: any = process.env.REACT_APP_NETWORK || ''
 
 const FlexWrapper = styled(FlexLayout)`
     flex-wrap: wrap;
+    justify-content: center;
 `
 
 const DepositInfo = () => {
@@ -56,10 +57,10 @@ const DepositInfo = () => {
             <FlexWrapper>
                 {data.map((item: any) => (
                     <DepositInfoBox key={item.key}>
-                        <Currency>
+                        <TokenItem>
                             <img src={item.token_icon} alt="token_icon" width={20} />
                             <span>{item.symbol}: {item.amount - item.used_amount - item.withdrawn_amount || 0}</span>
-                        </Currency>
+                        </TokenItem>
                         <div className="tooltip-box">
                             <p>Deposits: {item.amount || 0} {item.symbol}</p>
                             <p>Used: {item.used_amount || 0} {item.symbol}</p>

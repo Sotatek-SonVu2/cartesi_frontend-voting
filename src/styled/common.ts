@@ -285,6 +285,17 @@ export const ArrowRight = styled(Arrow)`
     transform: rotate(45deg);
 `
 
+
+export const TokenItem = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & span {
+        margin-left: 5px;
+        font-size: 15px;
+    }
+`
+
 export const PaginationItem = styled.li<PaginationType>`
     padding: 0 12px;
     height: 32px;

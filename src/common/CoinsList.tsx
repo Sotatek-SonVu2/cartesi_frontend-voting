@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { CoinBox } from "../styled/list";
+import { CoinItem } from "../styled/list";
 import { FlexLayout } from "../styled/main";
 import { coinList } from "../utils/coinList";
 
@@ -30,10 +30,10 @@ const CoinsList = ({ onChooseCoin, tokenType }: PropsType) => {
     return (
         <CoinWrapper>
             {coinList[NETWORK]?.map(({ key, token_icon, symbol, token_name, address }: CoinListType) => (
-                <CoinBox key={key} onClick={() => onChooseCoin(token_name)} active={token_name === tokenType}>
-                    <img src={token_icon} alt="token_icon" width={30} />
-                    <div>{symbol}</div>
-                </CoinBox>
+                <CoinItem key={key} onClick={() => onChooseCoin(token_name)} active={token_name === tokenType}>
+                    <img src={token_icon} alt="token_icon" width={20} />
+                    <span>{symbol}</span>
+                </CoinItem>
             ))}
         </CoinWrapper>
     )

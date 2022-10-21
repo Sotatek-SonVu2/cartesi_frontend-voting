@@ -354,14 +354,22 @@ export const TimeLine = styled.div`
   }
 `
 
-export const CoinBox = styled.div<CoinBoxStyled>`
+export const CoinItem = styled.div<CoinBoxStyled>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid ${colorTheme.borderGray};
   width: 24%;
-  padding: 15px;
+  padding: 10px 15px;
   text-align: center;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
   margin-bottom: 10px;
+
+  & span {
+    margin-left: 5px;
+    font-size: 15px;
+  }
 
   ${props => props.active && `
     border: 1px solid ${colorTheme.active};
