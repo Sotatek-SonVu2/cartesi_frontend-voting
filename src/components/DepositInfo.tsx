@@ -33,8 +33,7 @@ const DepositInfo = () => {
     const render = () => {
         let data: any[] = []
         const coinListing = coinList[NETWORK]
-        console.log('deposit_info', deposit_info)
-        if (deposit_info.length > 0) {
+        if (deposit_info?.length > 0) {
             coinListing.forEach((coin: coinListType) => {
                 let obj
                 let temp = deposit_info.find((element: DepositInfoType) => element.contract_address === coin.address.toLowerCase())

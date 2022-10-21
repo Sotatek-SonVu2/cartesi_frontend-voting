@@ -32,9 +32,16 @@ export const coinList: any = {
         {
             key: 2,
             token_icon: EtherIcon,
-            symbol: 'ETH',
+            symbol: 'GoerliETH',
             token_name: ETHEREUM_TOKEN,
             address: getToken(ETHEREUM_TOKEN)?.tokenAddress || ''
+        },
+        {
+            key: 3,
+            token_icon: EtherIcon,
+            symbol: 'MTK',
+            token_name: SOTATEK_TOKEN,
+            address: getToken(SOTATEK_TOKEN)?.tokenAddress || ''
         }
     ]
 }
