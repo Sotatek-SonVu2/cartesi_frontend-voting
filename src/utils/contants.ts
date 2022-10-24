@@ -1,6 +1,5 @@
 export const ADDRESS_WALLET = 'ADDRESS_WALLET'
 export const USER_GUIDE = 'USER_GUIDE'
-
 export const LIST_CAMPAIGN = 'LIST_CAMPAIGN'
 export const CREATE_CAMPAIGN = 'CREATE_CAMPAIGN'
 export const EDIT_CAMPAIGN = 'EDIT_CAMPAIGN'
@@ -20,22 +19,19 @@ export const ACTION_HISTORY = 'ACTION_HISTORY'
 export const SYSTEM = 'SYSTEM'
 export const REMOVE_NOTIFICATION = 'REMOVE_NOTIFICATION'
 export const NOTIFICATION = 'NOTIFICATION'
-
 export const FORMAT_DATETIME = 'YYYY-MM-DD HH:mm:ss'
 export const FORMAT_DATETIME_2 = 'DD/MM/YYYY HH:mm:ss'
 export const ERROR_MESSAGE = 'Something went wrong! Please try again!'
 export const CHAIN_ID_ERROR_MESSAGE = 'Current Chain ID does not match'
 export const CONNECT_METAMASK_ERROR_CODE = -32002
-export const CONNECT_METAMASK_ERROR_MESSAGE = 'Please connect to MetaMask.'
+export const CONNECT_METAMASK_ERROR_MESSAGE = 'Please connect the DApp with Metamask!'
 export const NETWORK_ERROR_MESSAGE = 'Please check your network and try again!'
 export const AMOUNT_ERROR_MESSAGE = 'Invalid amount. Please enter again!'
 export const WAITING_RESPONSE_FROM_SERVER_MESSAGE = 'The transaction is currently being processed. Please wait 3 to 5 minutes. Results will be returned as quickly as possible!'
 export const NO_RESPONSE_ERROR = 'NO_RESPONSE_ERROR'
 export const WAITING_FOR_CONFIRMATION = 'Waiting for confirmation...'
-
 export const CARTESI_TOKEN = 'CartesiToken'
 export const ETHEREUM_TOKEN = 'EthereumToken'
-export const BINANCE_TOKEN = 'BinanceToken'
 export const SOTATEK_TOKEN = 'SotatekToken'
 
 export const NOTI_TYPE = {

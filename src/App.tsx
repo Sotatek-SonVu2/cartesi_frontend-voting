@@ -1,49 +1,26 @@
-import { useEffect } from "react";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Background from "./common/Background";
-import { createNotifications } from "./common/Notification";
 import AddEditCampaign from "./components/AddEditCampaign";
-import History from "./components/History";
 import CampaignsList from "./components/CampaignsList";
+import History from "./components/History";
 import Result from "./components/Result";
 import Voting from "./components/Voting";
 import Withdraw from "./components/Withdraw";
+import useAuth from "./hook/useAuth";
 import Login from "./pages/Login";
 import Main from "./pages/Main";
 import { ROUTER_PATH } from "./routes/contants";
-import PrivateOutlet from "./routes/PrivateOutlet";
 import { MainWrapper } from "./styled/main";
-import { checkConnected } from "./utils/checkConnected";
-import { ADDRESS_WALLET, CONNECT_METAMASK_ERROR_MESSAGE, NOTI_TYPE } from "./utils/contants";
 
 function App() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkConnectedToMetamask = async () => {
-      const connected = await checkConnected()
-      if (!connected) {
-        localStorage.setItem(ADDRESS_WALLET, '');
-        navigate(ROUTER_PATH.LOGIN, { replace: true })
-        createNotifications(NOTI_TYPE.DANGER, CONNECT_METAMASK_ERROR_MESSAGE)
-      }
-    }
-
-    checkConnectedToMetamask()
-  }, [])
-
-
+  useAuth() //check connected with metamask
   return (
     <MainWrapper>
       <Background>
         <Routes>
           <Route element={<Login />} path={ROUTER_PATH.LOGIN} />
           <Route
-            element={
-              <PrivateOutlet>
-                <Main />
-              </PrivateOutlet>
-            }
+            element={<Main />}
             path={ROUTER_PATH.HOMEPAGE}
           >
             <Route element={<CampaignsList />} index={true} />
@@ -61,7 +38,6 @@ function App() {
         </Routes>
       </Background>
     </MainWrapper>
-
   );
 }
 

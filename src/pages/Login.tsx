@@ -38,7 +38,7 @@ const Login = () => {
                 <img src={sotatekLogo} alt="sotatek logo" width={150} />
             </Logo>
             <Container>
-                <h1>Welcome to <br />Voting Dapp</h1>
+                <h1>Welcome to <br />Voting DApp</h1>
                 <span>Powered by Cartesi</span>
                 <p>
                     This voting DApp was developed on top of Cartesi Rollups and showcases voting functionality.
