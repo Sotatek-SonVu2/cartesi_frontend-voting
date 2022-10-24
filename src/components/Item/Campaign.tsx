@@ -39,8 +39,8 @@ const CampaignItem = ({ data }: PropsType) => {
     const isEndTime = moment(localEndTime).isBefore(now) // Compare end time with current datetime
 
     return (
-        <Wrapper key={id}>
-            <DateTimeBox isStartTime={isStartTime} isEndTime={isEndTime}>
+        <Wrapper key={id} className="campaign-item-step">
+            <DateTimeBox isStartTime={isStartTime} isEndTime={isEndTime} className="datetime-step">
                 {isStartTime && !isEndTime ? 'Starting ' : isEndTime ? 'Finished ' : 'Not start yet '}
                 ({localStartTime} - {localEndTime})
             </DateTimeBox>
@@ -49,17 +49,17 @@ const CampaignItem = ({ data }: PropsType) => {
                     {name}
                 </CampaignName>
                 <ActionList>
-                    <ActionItem>
+                    <ActionItem className="highest-vote-step">
                         <WinnerCandidate>
                             <img src={StarIcon} alt="star icon" width={17} />
                             <WinnerName>{winning_candidate_name || '(No data)'}</WinnerName>
                         </WinnerCandidate>
                     </ActionItem>
-                    <ActionItem>
+                    <ActionItem className="vote-number-step">
                         <img src={BadgeIcon} alt="badge icon" width={17} />
                         {total_vote || 0} vote
                     </ActionItem>
-                    <ActionItem onClick={toggleModal}>
+                    <ActionItem onClick={toggleModal} className="description-step">
                         <img src={DescriptionIcon} alt="description icon" width={17} />
                         <span>Description</span>
                     </ActionItem>

@@ -34,7 +34,6 @@ export const Menu = styled.div`
     color: #fff;
     text-align: right;
     font-size: 13px;
-    font-family: Euclid, Roboto, Helvetica, Arial, sans-serif;
     line-height: 1.5rem;
 
     & .Icon {

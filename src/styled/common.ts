@@ -50,6 +50,7 @@ export const Button = styled.button<ButtonType>`
     border-radius: 4px;
     cursor: pointer;
     background: rgba(0,0,0,0);
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 
     ${props => props.disabled && `
         background-color: ${colorTheme.disabled} !important;

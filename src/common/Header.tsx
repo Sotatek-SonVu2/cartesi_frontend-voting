@@ -1,3 +1,4 @@
+import { useTour } from "@reactour/tour";
 import { useEffect, useState } from "react";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useDispatch, useSelector } from "react-redux";
@@ -59,7 +60,7 @@ const Header = () => {
         <Content>
             <img src={Logo} alt="logo" width={130} onClick={() => navigate(ROUTER_PATH.HOMEPAGE)} />
             <Menu>
-                <InforUser>
+                <InforUser className="user-info-step">
                     <CopyToClipboard text={address} onCopy={handleCopy}>
                         <Address>
                             <Tooltip>
@@ -69,21 +70,20 @@ const Header = () => {
                             </Tooltip>
                         </Address>
                     </CopyToClipboard>
-
                 </InforUser>
                 <MenuList>
-                    <MenuTitle onClick={toggleModal}>
+                    <MenuTitle onClick={toggleModal} className="deposit-step">
                         Deposit
                     </MenuTitle>
-                    <MenuTitle onClick={() => navigate(ROUTER_PATH.WITHDRAW, { replace: true })}>
+                    <MenuTitle onClick={() => navigate(ROUTER_PATH.WITHDRAW, { replace: true })} className="withdraw-step">
                         Withdraw
                     </MenuTitle>
-                    <MenuTitle onClick={() => navigate(ROUTER_PATH.HISTORY, { replace: true })}>
+                    <MenuTitle onClick={() => navigate(ROUTER_PATH.HISTORY, { replace: true })} className="history-step">
                         History
                     </MenuTitle>
                 </MenuList>
                 <NotificationList />
-                <img src={LogoutIcon} alt="logoutIcon" width={20} className="Icon" onClick={handleLogout} />
+                <img src={LogoutIcon} alt="logoutIcon" width={20} className="Icon logout-step" onClick={handleLogout} />
             </Menu>
 
             {isVisible && (

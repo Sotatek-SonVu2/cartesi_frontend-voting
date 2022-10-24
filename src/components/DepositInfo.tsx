@@ -54,7 +54,7 @@ const DepositInfo = () => {
             data = [...coinListing]
         }
         return (
-            <FlexWrapper>
+            <FlexWrapper className="deposit-info-step">
                 {data.map((item: any) => (
                     <DepositInfoBox key={item.key}>
                         <TokenItem>

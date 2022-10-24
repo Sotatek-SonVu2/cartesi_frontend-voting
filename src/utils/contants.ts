@@ -1,4 +1,5 @@
 export const ADDRESS_WALLET = 'ADDRESS_WALLET'
+export const USER_GUIDE = 'USER_GUIDE'
 
 export const LIST_CAMPAIGN = 'LIST_CAMPAIGN'
 export const CREATE_CAMPAIGN = 'CREATE_CAMPAIGN'

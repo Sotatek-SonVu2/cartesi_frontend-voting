@@ -1,3 +1,4 @@
+import { TourProvider } from '@reactour/tour';
 import React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import ReactDOM from 'react-dom/client';
@@ -9,6 +10,7 @@ import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { store } from './store';
+import { tourSteps } from './utils/tourSteps';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,10 +18,12 @@ const root = ReactDOM.createRoot(
 root.render(
   // <React.StrictMode>
   <Provider store={store}>
-    <BrowserRouter>
-      <ReactNotifications />
-      <App />
-    </BrowserRouter>
+    <TourProvider steps={tourSteps} scrollSmooth>
+      <BrowserRouter>
+        <ReactNotifications />
+        <App />
+      </BrowserRouter>
+    </TourProvider>
   </Provider>
   // </React.StrictMode>
 );
