@@ -5,27 +5,19 @@ export const tourSteps = [
     },
     {
         selector: '.deposit-step',
-        content: (
-            <p>Let's press <code>this button</code> to deposit tokens into the system.</p>
-        ),
+        content: "Let's press this button to deposit tokens into the system.",
     },
     {
         selector: '.withdraw-step',
-        content: (
-            <p>Let's press <code>this button</code> to withdraw token to your wallet.</p>
-        ),
+        content: "Let's press this button to withdraw token to your wallet.",
     },
     {
         selector: '.history-step',
-        content: (
-            <p>Let's press <code>this button</code> to view your activity history.</p>
-        ),
+        content: "Let's press this button to view your activity history.",
     },
     {
         selector: '.logout-step',
-        content: (
-            <p>Let's press <code>this button</code> to logout of the system.</p>
-        ),
+        content: "Let's press this button to logout of the system.",
     },
     {
         selector: '.campaign-item-step',
@@ -45,8 +37,6 @@ export const tourSteps = [
     },
     {
         selector: '.description-step',
-        content: (
-            <p>Let's press <code>this button</code> to view the description of the campaign.</p>
-        ),
+        content: "Let's press this button to view the description of the campaign.",
     },
 ]

@@ -1,4 +1,3 @@
-import { useTour } from "@reactour/tour";
 import { useEffect, useState } from "react";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import DepositModal from "../components/Modal/DepositModal";
 import LogoutIcon from "../images/logout.svg";
 import Logo from '../images/Logo_Sotatek2.svg';
-import WalletIcon from "../images/wallet-icon.png"
+import WalletIcon from "../images/wallet-icon.png";
 import { clearAccount } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
 import { AppDispatch, RootState } from "../store";

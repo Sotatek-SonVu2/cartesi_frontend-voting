@@ -1,11 +1,11 @@
 import { ethers } from "ethers"
+import { createNotifications } from "../common/Notification"
 import ERC20Portal from '../contracts/ERC20PortalFacet.json'
 import InputFacet from '../contracts/InputFacet.json'
 import OutputFacet from '../contracts/OutputFacet.json'
-import { createNotifications } from "../common/Notification"
-import { CARTESI_TOKEN, NETWORK_ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants"
-import { networks } from "./networks"
+import { NETWORK_ERROR_MESSAGE, NOTI_TYPE } from "../utils/contants"
 import { getToken } from "../utils/getToken"
+import { networks } from "./networks"
 
 const SPENDER_ADDRESS = process.env.REACT_APP_SPENDER_ADDRESS || ''
 const CHAIN_ID: any = process.env.REACT_APP_CHAIN_ID || 0
