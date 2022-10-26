@@ -15,6 +15,26 @@ code {
         monospace;
 }
 
+/* react-tooltip */
+.tooltip-sz-sm {
+    width: 140px !important;
+    text-align: center !important;
+}
+
+.tooltip-sz-md {
+    width: 350px !important;
+}
+
+.tooltip-modal {
+    width: 350px !important;
+    left: 15px !important;
+}
+
+.tooltip-modal::after {
+    left: 39% !important;
+}
+
+/* scrollbar */
 /* width */
 ::-webkit-scrollbar {
     width: 10px;
@@ -34,7 +54,6 @@ code {
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
-
 
 /* React-modal styling */
 .mymodal {
@@ -73,7 +92,6 @@ code {
 }
 
 /* React-modal styling */
-
 
 /* Animation background */
 #stars {

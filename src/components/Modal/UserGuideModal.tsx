@@ -1,9 +1,7 @@
-import { useTour } from "@reactour/tour"
 import styled from "styled-components"
-import { colorTheme, ModalTitle, SuccessButton } from "../styled/common"
-import { FormItem } from "../styled/form"
-import { USER_GUIDE } from "../utils/contants"
-import ModalComponent from "./Modal"
+import { colorTheme, ModalTitle, SuccessButton } from "../../styled/common"
+import { FormItem } from "../../styled/form"
+import ModalComponent from "../../common/Modal"
 
 const Button = styled(SuccessButton)`
     background-color: ${colorTheme.success};
@@ -17,17 +15,10 @@ const Button = styled(SuccessButton)`
 type Props = {
     isVisible: boolean
     toggleModal: any
+    startTour: any
 }
 
-const UserGuideModal = ({ isVisible, toggleModal }: Props) => {
-    const { setIsOpen } = useTour()
-
-    const startTour = () => {
-        setIsOpen(true)
-        toggleModal()
-        localStorage.setItem(USER_GUIDE, 'false')
-    }
-
+const UserGuideModal = ({ isVisible, toggleModal, startTour }: Props) => {
     return (
         <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title='User guide'>
             <>

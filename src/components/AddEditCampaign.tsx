@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Loading from "../common/Loading";
 import { createNotifications } from "../common/Notification";
+import Title from "../common/Title";
 import { configToken } from "../helper/contractWithSigner";
 import { handleInspectApi } from "../helper/handleInspectApi";
 import { handleResponse } from "../helper/handleResponse";
@@ -15,7 +16,7 @@ import { sendInput } from "../helper/sendInput";
 import { getDepositInfo } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
 import { AppDispatch, RootState } from "../store";
-import { Content, DefaultButton, FlexLayoutBtn, SuccessButton, Title } from "../styled/common";
+import { Content, DefaultButton, FlexLayoutBtn, SuccessButton } from "../styled/common";
 import { ErrorText, Form, FormItem, Input, TextArea } from "../styled/form";
 import { Loader } from "../styled/loading";
 import { convertLocalToUtc, convertUtcToLocal } from "../utils/common";
@@ -236,9 +237,10 @@ const AddEditCampaign = () => {
             {isLoading && (
                 <Loading isScreenLoading={isLoading} messages={callMessage} />
             )}
-            <Title>
-                {!campaignId ? 'Create new campaign' : 'Edit campaign'}
-            </Title>
+            <Title
+                text={!campaignId ? 'Create new campaign' : 'Edit campaign'}
+                userGuideType={!campaignId ? 'create' : 'edit'}
+            />
             <Form onSubmit={onSubmit}>
                 <FormItem>
                     <label>Name</label>

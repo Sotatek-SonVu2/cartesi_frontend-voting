@@ -6,6 +6,7 @@ import styled from "styled-components"
 import Loading from "../common/Loading"
 import NoData from "../common/NoData"
 import { createNotifications } from "../common/Notification"
+import Title from "../common/Title"
 import { configToken } from "../helper/contractWithSigner"
 import { handleInspectApi } from "../helper/handleInspectApi"
 import { handleResponse } from "../helper/handleResponse"
@@ -14,7 +15,7 @@ import { getDepositInfo } from "../reducers/authSlice"
 import { onVisibleActionButton } from "../reducers/campaignSlice"
 import { ROUTER_PATH } from "../routes/contants"
 import { AppDispatch, RootState } from "../store"
-import { Content, DefaultButton, FlexLayoutBtn, PrimaryButton, SuccessButton, Title } from "../styled/common"
+import { Content, DefaultButton, FlexLayoutBtn, PrimaryButton, SuccessButton } from "../styled/common"
 import { convertUtcToLocal } from "../utils/common"
 import {
     CAMPAIGN_DETAIL,
@@ -166,9 +167,7 @@ const Voting = () => {
                 <Loading />
             ) : (
                 <Content>
-                    <Title>
-                        {data.campaign.name || '(NO DATA)'}
-                    </Title>
+                    <Title text={data.campaign.name || '(NO DATA)'} userGuideType='vote' />
                     <SubTitle>
                         <p>{data.campaign.start_time} - {data.campaign.end_time}</p>
                         {isCloseVoting && (

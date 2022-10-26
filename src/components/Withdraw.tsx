@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Loading from "../common/Loading";
 import { createNotifications } from "../common/Notification";
+import Title from "../common/Title";
 import { getLastEpoch } from "../graphql/getLastEpoch";
 import { getVoucher as getVoucherExcute } from "../graphql/vouchers";
 import { configToken, outputContract } from "../helper/contractWithSigner";
@@ -14,7 +15,7 @@ import { sendInput } from "../helper/sendInput";
 import { getVoucher as getVoucherList } from "../helper/voucher";
 import { getDepositInfo } from "../reducers/authSlice";
 import { AppDispatch, RootState } from "../store";
-import { Content, Title } from "../styled/common";
+import { Content } from "../styled/common";
 import { BoxItem, HeaderList, Radio, RadioGroup, WithdrawContent } from "../styled/list";
 import { FlexLayout } from "../styled/main";
 import {
@@ -219,9 +220,10 @@ const Withdraw = () => {
             ) : (
                 <Content>
                     <HeaderList>
-                        <Title>
-                            Withdraw
-                        </Title>
+                        <Title
+                            text='Withdraw'
+                            userGuideType='withdraw'
+                        />
                         <RadioGroup>
                             {WITHDRAW_RADIO_FILTER.map(({ value, label }, index: number) => (
                                 <Radio key={index}>

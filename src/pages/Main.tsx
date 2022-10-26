@@ -1,28 +1,49 @@
-import { TourProvider } from "@reactour/tour";
 import { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
+import Tour from 'reactour';
+import styled from "styled-components";
 import Header from "../common/Header";
-import UserGuideModal from "../common/UserGuideModal";
+import UserGuideModal from "../components/Modal/UserGuideModal";
 import ActionButton from "../components/ActionButton";
 import DepositInfo from "../components/DepositInfo";
 import { ROUTER_PATH } from "../routes/contants";
+import { colorTheme, SuccessButton } from "../styled/common";
 import { Container, ContentWrapper, SubTitle, Title } from "../styled/main";
 import { USER_GUIDE } from "../utils/contants";
-import { tourSteps } from "../utils/tourSteps";
+import { tourConfig } from "../utils/tourConfig";
+
+const IS_USER_GUIDE_OPEN = 'false'
+
+const Button = styled(SuccessButton)`
+    background-color: ${colorTheme.success};
+    padding: 4px 10px;
+    color: #ffffff;
+`
 
 const Main = () => {
     const location = useLocation()
     const pathname = `/${location.pathname.split("/")[1]}`
-    const user_guide = localStorage.getItem(USER_GUIDE) === 'false' || pathname !== ROUTER_PATH.HOMEPAGE ? false : true
+    const user_guide = localStorage.getItem(USER_GUIDE) === IS_USER_GUIDE_OPEN || pathname !== ROUTER_PATH.HOMEPAGE ? false : true
     const [isVisible, setIsVisible] = useState<boolean>(user_guide)
+    const [isTourOpen, setIsTourOpen] = useState<boolean>(false)
 
     const onToggle = () => {
         setIsVisible(!isVisible)
-        localStorage.setItem(USER_GUIDE, 'false')
+        localStorage.setItem(USER_GUIDE, IS_USER_GUIDE_OPEN)
+    }
+
+    const closeTour = () => {
+        setIsTourOpen(false)
+        localStorage.setItem(USER_GUIDE, IS_USER_GUIDE_OPEN)
+    }
+
+    const startTour = () => {
+        setIsTourOpen(true)
+        onToggle()
     }
 
     return (
-        <TourProvider steps={tourSteps} scrollSmooth>
+        <>
             <Header />
             <Container>
                 <Title>DApp Voting</Title>
@@ -37,9 +58,17 @@ const Main = () => {
                 <UserGuideModal
                     toggleModal={onToggle}
                     isVisible={isVisible}
+                    startTour={startTour}
                 />
             )}
-        </TourProvider>
+            <Tour
+                onRequestClose={closeTour}
+                steps={tourConfig()}
+                isOpen={isTourOpen}
+                disableInteraction
+                lastStepNextButton={<Button>Done!</Button>}
+            />
+        </>
     );
 }
 

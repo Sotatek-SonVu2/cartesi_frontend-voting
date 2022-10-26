@@ -31,7 +31,7 @@ const AddCampaignModal = ({ isVisible, toggleModal, onClick }: Props) => {
                     <p>Are you sure to create this candidate?</p>
                 </ModalTitle>
                 <ModalContent>
-                    <p style={{ marginTop: '0px' }}>The system will take 10 tokens from your wallet to perform this operation!</p>
+                    <p className="modal-text-sm">The system will take 10 tokens from your wallet to perform this operation!</p>
                     <CoinsList onChooseCoin={(token: string) => setTokenType(token)} tokenType={tokenType} />
                 </ModalContent>
                 <SubmitButton onClick={() => onClick(tokenType)}>Create</SubmitButton>

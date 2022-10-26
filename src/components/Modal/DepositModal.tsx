@@ -6,7 +6,7 @@ import styled from "styled-components"
 import CoinsList from "../../common/CoinsList"
 import ModalComponent from "../../common/Modal"
 import { createNotifications } from "../../common/Notification"
-import { tokenContract, erc20Contract, inputContract, configToken } from "../../helper/contractWithSigner"
+import { configToken, erc20Contract, inputContract, tokenContract } from "../../helper/contractWithSigner"
 import { getDepositInfo } from "../../reducers/authSlice"
 import { AppDispatch, RootState } from "../../store"
 import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "../../styled/common"
@@ -166,6 +166,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
             title='Deposit Token'
             isLoading={isLoading}
             width="500px"
+            userGuideType='depositModal'
         >
             <div>
                 <ModalTitle>

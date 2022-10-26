@@ -225,42 +225,7 @@ export const WithdrawContent = styled.div`
   }
 `
 
-export const Tooltip = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
 
-  & .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: #fff;
-    color: #000;
-    text-align: center;
-    border-radius: 3px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    top: 100%;
-    left: 50%;
-    margin-left: -58px;
-    box-shadow: #bfbfbf 0px 2px 8px 0px;
-  }
-
-  & .tooltiptext::after {
-    content: "";
-    position: absolute;
-    top: -30%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent #f3f4f6 transparent;
-  }
-
-  &:hover .tooltiptext {
-    visibility: visible;
-  }
-`
 
 export const HeaderList = styled.div`
   display: flex;

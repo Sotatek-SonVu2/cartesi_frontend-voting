@@ -14,8 +14,6 @@
   },
   "dependencies": {
     "@cartesi/rollups": "^0.4.0",
-    "@emotion/react": "^11.10.4",
-    "@reactour/tour": "^3.1.6",
     "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
@@ -41,6 +39,8 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-select": "^5.4.0",
+    "react-tooltip": "^4.4.3",
+    "reactour": "^1.18.7",
     "styled-components": "^5.3.5",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0",
@@ -74,6 +74,7 @@
     "@types/react-datepicker": "^4.4.2",
     "@types/react-modal": "^3.13.1",
     "@types/react-router-dom": "^5.3.3",
+    "@types/reactour": "^1.18.2",
     "@types/styled-components": "^5.1.25",
     "npm-run-all": "^4.1.5"
   }

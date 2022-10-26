@@ -10,9 +10,9 @@ import { clearAccount } from "../reducers/authSlice";
 import { ROUTER_PATH } from "../routes/contants";
 import { AppDispatch, RootState } from "../store";
 import { Address, Content, InforUser, Menu, MenuList, MenuTitle } from "../styled/header";
-import { Tooltip } from "../styled/list";
 import { formatAddress } from "../utils/common";
 import NotificationList from "./NotificationList";
+import Tooltip from "./Tooltip";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -62,10 +62,11 @@ const Header = () => {
                 <InforUser className="user-info-step">
                     <CopyToClipboard text={address} onCopy={handleCopy}>
                         <Address>
-                            <Tooltip>
-                                <img src={WalletIcon} alt="wallet-icon" width={18} style={{ marginRight: '3px', marginBottom: '3px' }} />
-                                <span>{formatAddress(address)}</span>
-                                <div className="tooltiptext">{!isCopied ? 'Copy to Clipboard' : 'Copied!'}</div>
+                            <Tooltip text={!isCopied ? 'Copy to Clipboard' : 'Copied!'} id="user-info" className="tooltip-sz-sm">
+                                <>
+                                    <img src={WalletIcon} alt="wallet-icon" width={18} style={{ marginRight: '3px', marginBottom: '3px' }} />
+                                    <span>{formatAddress(address)}</span>
+                                </>
                             </Tooltip>
                         </Address>
                     </CopyToClipboard>

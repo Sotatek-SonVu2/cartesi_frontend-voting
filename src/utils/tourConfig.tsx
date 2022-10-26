@@ -1,4 +1,4 @@
-export const tourSteps = [
+const defaultSteps = [
     {
         selector: '.user-info-step', // className
         content: 'This is your address wallet.', // content
@@ -10,15 +10,23 @@ export const tourSteps = [
     {
         selector: '.withdraw-step',
         content: "Let's press this button to withdraw token to your wallet.",
+
     },
     {
         selector: '.history-step',
         content: "Let's press this button to view your activity history.",
     },
     {
-        selector: '.logout-step',
-        content: "Let's press this button to logout of the system.",
+        selector: '.notification-step',
+        content: "Let's press this icon to view system notifications and your actions.",
     },
+    {
+        selector: '.logout-step',
+        content: "Let's press this icon to logout of the system.",
+    },
+]
+
+const campaignSteps = [
     {
         selector: '.campaign-item-step',
         content: 'This is the campaign for you to vote.',
@@ -40,3 +48,13 @@ export const tourSteps = [
         content: "Let's press this button to view the description of the campaign.",
     },
 ]
+
+
+export const tourConfig = () => {
+    let result = [...defaultSteps]
+    const campaignItem = document.getElementsByClassName('campaign-item-step')
+    if (campaignItem.length > 0) {
+        result = result.concat(campaignSteps)
+    }
+    return result
+}

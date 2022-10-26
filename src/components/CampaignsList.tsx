@@ -4,9 +4,10 @@ import Loading from "../common/Loading";
 import NoData from "../common/NoData";
 import { createNotifications } from "../common/Notification";
 import Pagination from "../common/Pagination";
+import Title from "../common/Title";
 import { handleInspectApi } from "../helper/handleInspectApi";
 import { RootState } from "../store";
-import { Content, Title } from "../styled/common";
+import { Content } from "../styled/common";
 import { HeaderList } from "../styled/list";
 import { FlexLayout } from "../styled/main";
 import { ERROR_MESSAGE, LIST_CAMPAIGN, NOTI_TYPE } from "../utils/contants";
@@ -69,9 +70,7 @@ const CampaignsList = () => {
             ) : (
                 <Content>
                     <HeaderList>
-                        <Title>
-                            List campaigns
-                        </Title>
+                        <Title text='List campaigns' />
                         <FlexLayout>
                             <input type="checkbox" id='mycampaign' name='mycampaign' checked={isMyCampaign} onChange={onChangeCheckbox} style={{ margin: '3px 3px 0px' }} />
                             <small>My campaign</small>

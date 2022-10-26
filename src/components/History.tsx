@@ -6,9 +6,10 @@ import Loading from "../common/Loading";
 import NoData from "../common/NoData";
 import { createNotifications } from "../common/Notification";
 import ReactSelect from "../common/ReactSelect";
+import Title from "../common/Title";
 import { handleInspectApi } from "../helper/handleInspectApi";
 import { RootState } from "../store";
-import { Content, Title } from "../styled/common";
+import { Content } from "../styled/common";
 import { TimeLine } from "../styled/list";
 import { FlexLayout } from "../styled/main";
 import { ACTION_HISTORY, ERROR_MESSAGE, historyOptions, NOTI_TYPE } from "../utils/contants";
@@ -81,9 +82,7 @@ const History = () => {
         <>
             <Content>
                 <FlexLayoutBetween>
-                    <Title>
-                        History
-                    </Title>
+                    <Title text='History' userGuideType='history' />
                     <ReactSelect
                         options={historyOptions}
                         onChange={onChangeSelect}

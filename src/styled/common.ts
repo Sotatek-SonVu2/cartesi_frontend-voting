@@ -27,6 +27,10 @@ interface ModalStyled {
     width: string
 }
 
+interface TitleTextStyled {
+    titleStyle?: string
+}
+
 export const colorTheme = {
     background: 'radial-gradient(ellipse at bottom,#1b2735 0%,#090a0f 100%)',
     darkBlue: '#1E1941',
@@ -122,11 +126,24 @@ export const Content = styled.div`
     }
 `
 
-export const Title = styled.div`
+export const TitleWrapper = styled.div`
+    display: flex;
+    align-items: center;
+`
+
+export const TitleText = styled.div<TitleTextStyled>`
     font-weight: 500;
     font-size: 1.5rem;
     line-height: 2rem;
     color: #fff;
+    margin-right: 5px;
+
+    ${props => props.titleStyle}
+`
+
+export const TooltipWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 export const DateTimeBox = styled.div<DateTimeBoxType>`
@@ -257,6 +274,11 @@ export const ModalTitle = styled.div`
 
 export const ModalContent = styled.div`
     text-align: center;
+
+    .modal-text-sm {
+        margin-top: 0px;
+        font-size: 13px;
+    }
 `
 
 export const PaginationWrapper = styled.ul`

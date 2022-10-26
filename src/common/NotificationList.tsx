@@ -130,7 +130,7 @@ const NotificationList = () => {
     }
 
     return (
-        <NotifySection>
+        <NotifySection className="notification-step">
             <NotifyIcon>
                 {items.length > 0 && <Badge>{items.length}</Badge>}
                 <img src={NotificationIcon} alt="logo" width={20} height={20} className="Icon" />

@@ -64,7 +64,7 @@ const WithdrawModal = ({ isVisible, toggleModal, onAddVoucher }: Props) => {
     }
 
     return (
-        <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title='Withdraw Token'>
+        <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title='Withdraw Token' userGuideType='withdrawModal'>
             <div>
                 <ModalTitle>
                     <CoinsList onChooseCoin={(token: string) => setTokenType(token)} tokenType={tokenType} />

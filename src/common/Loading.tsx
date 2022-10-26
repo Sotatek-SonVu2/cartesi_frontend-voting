@@ -1,6 +1,5 @@
-import { LoadingText, LoadingWrapper } from "../styled/loading"
 import LoadingIcon from '../images/rocket.png'
-import { useEffect, useState } from "react"
+import { LoadingText, LoadingWrapper } from "../styled/loading"
 
 interface PropsType {
     isScreenLoading?: boolean

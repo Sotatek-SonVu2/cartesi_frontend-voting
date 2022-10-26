@@ -4,10 +4,11 @@ import { useNavigate, useParams } from "react-router-dom"
 import Loading from "../common/Loading"
 import NoData from "../common/NoData"
 import { createNotifications } from "../common/Notification"
+import Title from "../common/Title"
 import { handleInspectApi } from "../helper/handleInspectApi"
 import { ROUTER_PATH } from "../routes/contants"
 import { RootState } from "../store"
-import { Content, DefaultButton, FlexLayoutBtn, Title } from "../styled/common"
+import { Content, DefaultButton, FlexLayoutBtn } from "../styled/common"
 import { CAMPAIGN_DETAIL, ERROR_MESSAGE, NOTI_TYPE, RESULT } from "../utils/contants"
 import { CampaignType, MetadataType, VotedType } from "../utils/interface"
 import ResultItem from "./Item/Result"
@@ -85,9 +86,10 @@ const Result = () => {
                 <Loading />
             ) : (
                 <Content>
-                    <Title>
-                        {title || '(NO DATA)'}
-                    </Title>
+                    <Title
+                        text={title || '(NO DATA)'}
+                        userGuideType='result'
+                    />
                     <p>Here is the reason, here is what you voted. The results by {campaign?.length > 0 ? campaign[0].total : 0} votes:</p>
                     {voted_candidate?.name && (
                         <span>Your voted is: {voted_candidate?.name}.</span>
