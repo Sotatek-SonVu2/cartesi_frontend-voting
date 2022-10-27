@@ -8,11 +8,14 @@ const title: any = {
     default: ''
 }
 
-export const createNotifications = (type: string, message: string) => {
+export const createNotifications = (
+    type: 'success' | 'danger' | 'info' | 'default' | 'warning',
+    message: string
+) => {
     const notification: any = {
         title: title[type],
         message: message,
-        type: type, // success || danger || info || default || warning
+        type: type,
         insert: "top",
         container: "top-right",
         dismiss: {

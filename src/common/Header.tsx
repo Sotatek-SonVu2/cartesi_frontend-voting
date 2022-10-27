@@ -38,7 +38,6 @@ const Header = () => {
         return () => {
             if (window.ethereum.removeListener) {
                 window.ethereum.removeListener("accountsChanged", handleLogout);
-                // window.ethereum.removeListener("chainChanged", handleLogout);
                 window.ethereum.removeListener("disconnect", handleLogout);
             }
         };
@@ -64,7 +63,7 @@ const Header = () => {
                         <Address>
                             <Tooltip text={!isCopied ? 'Copy to Clipboard' : 'Copied!'} id="user-info" className="tooltip-sz-sm">
                                 <>
-                                    <img src={WalletIcon} alt="wallet-icon" width={18} style={{ marginRight: '3px', marginBottom: '3px' }} />
+                                    <img src={WalletIcon} alt="wallet-icon" width={20} style={{ marginRight: '3px', marginBottom: '3px' }} />
                                     <span>{formatAddress(address)}</span>
                                 </>
                             </Tooltip>

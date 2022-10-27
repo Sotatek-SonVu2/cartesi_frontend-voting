@@ -11,7 +11,6 @@ const Button = styled(SuccessButton)`
     margin-top: 30px;
 `
 
-
 type Props = {
     isVisible: boolean
     toggleModal: any

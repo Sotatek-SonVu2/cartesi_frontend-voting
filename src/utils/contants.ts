@@ -34,7 +34,7 @@ export const CARTESI_TOKEN = 'CartesiToken'
 export const ETHEREUM_TOKEN = 'EthereumToken'
 export const SOTATEK_TOKEN = 'SotatekToken'
 
-export const NOTI_TYPE = {
+export const NOTI_TYPE: any = {
     SUCCESS: 'success',
     DANGER: 'danger',
     INFO: 'info',
