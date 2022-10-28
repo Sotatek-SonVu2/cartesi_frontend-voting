@@ -1,6 +1,6 @@
-import QuestionIcon from '../images/question-icon.png'
-import { TitleText, TitleWrapper } from '../styled/common'
-import { userGuide } from '../utils/userGuide'
+import QuestionIcon from 'images/question-icon.png'
+import { TitleText, TitleWrapper } from 'styled/common'
+import { userGuide } from 'utils/userGuide'
 import Tooltip from './Tooltip'
 
 interface PropsType {
@@ -9,7 +9,7 @@ interface PropsType {
     placement?: 'top' | 'right' | 'bottom' | 'left',
     type?: 'dark' | 'success' | 'warning' | 'error' | 'info' | 'light';
     titleStyle?: string
-    className?: 'tooltip-sz-md' | 'tooltip-sz-sm' | 'tooltip-modal' //index.css
+    className?: 'tooltip-sz-md' | 'tooltip-sz-sm' | 'tooltip-sz-max' | 'tooltip-modal' //index.css
 }
 
 const Title = ({ text, userGuideType, placement = 'top', type = "light", titleStyle, className }: PropsType) => {

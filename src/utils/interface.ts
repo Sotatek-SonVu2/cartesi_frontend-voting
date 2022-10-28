@@ -145,12 +145,18 @@ export interface DepositInfoType {
     withdrawn_amount: number
 }
 
-export interface coinListType {
+export interface tokenListType {
     key: number
     token_icon: string
     symbol: string
     token_name: string
     address: string
+}
+
+export interface tabItemType {
+    key: number
+    label: string
+    content: JSX.Element
 }
 
 

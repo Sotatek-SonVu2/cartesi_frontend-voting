@@ -1,10 +1,11 @@
-import { PrimaryButton } from "../styled/common"
-import { ErrorText, Input, OptionLabel, TextArea, Wrapper } from "../styled/form"
-import TrashIcon from '../images/trash.svg'
-import { validateField } from "../utils/validate"
-import { randomColor } from "../utils/common"
-import { OptionType } from "../utils/interface"
+
 import { ChangeEvent } from "react"
+import { ErrorText, Input, OptionLabel, TextArea, Wrapper } from "styled/form"
+import { PrimaryButton } from "styled/common"
+import TrashIcon from 'images/trash.svg'
+import { randomColor } from "utils/common"
+import { OptionType } from "utils/interface"
+import { validateField } from "utils/validate"
 
 interface PropsType {
     options: OptionType[],

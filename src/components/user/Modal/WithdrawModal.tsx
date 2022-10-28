@@ -1,11 +1,11 @@
 import { useState } from "react"
 import styled from "styled-components"
-import CoinsList from "../../common/CoinsList"
-import ModalComponent from "../../common/Modal"
-import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "../../styled/common"
-import { ErrorText, Input } from "../../styled/form"
-import { CARTESI_TOKEN } from "../../utils/contants"
-import { validateAmount } from "../../utils/validate"
+import TokensList from "common/TokensList"
+import ModalComponent from "common/Modal"
+import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "styled/common"
+import { ErrorText, Input } from "styled/form"
+import { CARTESI_TOKEN } from "utils/contants"
+import { validateAmount } from "utils/validate"
 
 const Button = styled(SuccessButton)`
     background-color: ${colorTheme.success};
@@ -67,7 +67,7 @@ const WithdrawModal = ({ isVisible, toggleModal, onAddVoucher }: Props) => {
         <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title='Withdraw Token' userGuideType='withdrawModal'>
             <div>
                 <ModalTitle>
-                    <CoinsList onChooseCoin={(token: string) => setTokenType(token)} tokenType={tokenType} />
+                    <TokensList onChooseCoin={(token: string) => setTokenType(token)} tokenType={tokenType} />
                 </ModalTitle>
                 <ModalContent>
                     <FormItem>

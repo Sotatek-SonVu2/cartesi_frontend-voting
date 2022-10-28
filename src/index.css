@@ -25,6 +25,10 @@ code {
     width: 350px !important;
 }
 
+.tooltip-sz-max {
+    width: max-content !important;
+}
+
 .tooltip-modal {
     width: 350px !important;
     left: 15px !important;

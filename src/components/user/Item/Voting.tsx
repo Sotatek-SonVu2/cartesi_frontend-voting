@@ -1,9 +1,9 @@
-import { BoxContent } from "../../styled/common"
-import { Avatar, AvatarText, ItemIcon, VotingName, Wrapper } from "../../styled/list"
-import { getAvatar } from "../../utils/common"
-import DescriptionIcon from '../../images/script.png'
+import { BoxContent } from "styled/common"
+import { Avatar, AvatarText, ItemIcon, VotingName, Wrapper } from "styled/list"
+import { getAvatar } from "utils/common"
+import DescriptionIcon from 'images/script.png'
 import styled from "styled-components";
-import { FlexLayout } from "../../styled/main";
+import { FlexLayout } from "styled/main";
 import DescriptionModal from "../Modal/DescriptionModal";
 import { useState } from "react";
 

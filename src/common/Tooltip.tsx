@@ -1,13 +1,13 @@
 
 import ReactTooltip from "react-tooltip";
-import { TooltipWrapper } from "../styled/common";
+import { TooltipWrapper } from "styled/common";
 
 interface PropsType {
     children: JSX.Element,
     text: string,
     id: string,
     placement?: 'top' | 'right' | 'bottom' | 'left',
-    className?: 'tooltip-sz-md' | 'tooltip-sz-sm' | 'tooltip-modal' //index.css
+    className?: 'tooltip-sz-md' | 'tooltip-sz-sm' | 'tooltip-sz-max' | 'tooltip-modal' //index.css
     type?: 'dark' | 'success' | 'warning' | 'error' | 'info' | 'light';
 }
 

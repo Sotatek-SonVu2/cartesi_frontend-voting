@@ -1,16 +1,18 @@
 import { useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Tour from 'reactour';
 import styled from "styled-components";
 import Header from "../common/Header";
-import UserGuideModal from "../components/Modal/UserGuideModal";
-import ActionButton from "../components/ActionButton";
-import DepositInfo from "../components/DepositInfo";
+import UserGuideModal from "../components/user/Modal/UserGuideModal";
+import ActionButton from "../components/user/ActionButton";
+import DepositInfo from "../components/user/DepositInfo";
 import { ROUTER_PATH } from "../routes/contants";
 import { colorTheme, SuccessButton } from "../styled/common";
-import { Container, ContentWrapper, SubTitle, Title } from "../styled/main";
+import { Container, ContentWrapper, Setting, SubTitle, Title } from "../styled/main";
 import { USER_GUIDE } from "../utils/contants";
 import { tourConfig } from "../utils/tourConfig";
+import SettingIcon from '../images/gear.png'
+
 
 const IS_USER_GUIDE_OPEN = 'false'
 
@@ -22,6 +24,7 @@ const Button = styled(SuccessButton)`
 
 const Main = () => {
     const location = useLocation()
+    const navigate = useNavigate();
     const pathname = `/${location.pathname.split("/")[1]}`
     const user_guide = localStorage.getItem(USER_GUIDE) === IS_USER_GUIDE_OPEN || pathname !== ROUTER_PATH.HOMEPAGE ? false : true
     const [isVisible, setIsVisible] = useState<boolean>(user_guide)
@@ -44,7 +47,7 @@ const Main = () => {
 
     return (
         <>
-            <Header />
+            <Header startTour={() => setIsTourOpen(true)} />
             <Container>
                 <Title>DApp Voting</Title>
                 <SubTitle>Where your opinion matters!</SubTitle>
@@ -53,6 +56,12 @@ const Main = () => {
                 <ContentWrapper>
                     <Outlet />
                 </ContentWrapper>
+                <Setting
+                    src={SettingIcon}
+                    alt="settingIcon"
+                    width={40}
+                    onClick={() => navigate(ROUTER_PATH.ADMIN, { replace: true })}
+                />
             </Container>
             {isVisible && (
                 <UserGuideModal

@@ -5,7 +5,7 @@ const defaultSteps = [
     },
     {
         selector: '.deposit-step',
-        content: "Let's press this button to deposit tokens into the system.",
+        content: "Let's press this button to deposit tokens into the DApp.",
     },
     {
         selector: '.withdraw-step',
@@ -22,7 +22,7 @@ const defaultSteps = [
     },
     {
         selector: '.logout-step',
-        content: "Let's press this icon to logout of the system.",
+        content: "Let's press this icon to logout of the DApp.",
     },
 ]
 
@@ -37,7 +37,7 @@ const campaignSteps = [
     },
     {
         selector: '.highest-vote-step',
-        content: 'This is your deposit information in the system.',
+        content: 'This is your deposit information in the DApp.',
     },
     {
         selector: '.vote-number-step',

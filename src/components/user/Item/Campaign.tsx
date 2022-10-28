@@ -1,15 +1,15 @@
 import moment from "moment"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import DescriptionIcon from '../../images/script.png'
-import StarIcon from '../../images/favourites.png'
-import BadgeIcon from '../../images/badge.png'
-import { ROUTER_PATH } from "../../routes/contants"
-import { BoxContent, DateTimeBox } from "../../styled/common"
-import { Wrapper } from "../../styled/form"
-import { ActionItem, ActionList, CampaignName, WinnerCandidate, WinnerName } from "../../styled/list"
-import { convertUtcToLocal } from "../../utils/common"
-import { FORMAT_DATETIME } from "../../utils/contants"
+import DescriptionIcon from 'images/script.png'
+import StarIcon from 'images/favourites.png'
+import BadgeIcon from 'images/badge.png'
+import { BoxContent, DateTimeBox } from "styled/common"
+import { Wrapper } from "styled/form"
+import { ActionItem, ActionList, CampaignName, WinnerCandidate, WinnerName } from "styled/list"
+import { convertUtcToLocal } from "utils/common"
+import { FORMAT_DATETIME } from "utils/contants"
+import { ROUTER_PATH } from "routes/contants"
 import DescriptionModal from "../Modal/DescriptionModal"
 
 interface PropsType {

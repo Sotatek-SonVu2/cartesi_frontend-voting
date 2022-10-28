@@ -1,5 +1,5 @@
-import LoadingIcon from '../images/rocket.png'
-import { LoadingText, LoadingWrapper } from "../styled/loading"
+import LoadingIcon from 'images/rocket.png'
+import { LoadingText, LoadingWrapper } from "styled/loading"
 
 interface PropsType {
     isScreenLoading?: boolean

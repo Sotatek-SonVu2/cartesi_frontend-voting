@@ -1,15 +1,15 @@
 import styled from "styled-components";
 
-import { CoinItem } from "../styled/list";
-import { FlexLayout } from "../styled/main";
-import { coinList } from "../utils/coinList";
+import { CoinItem } from "styled/list";
+import { FlexLayout } from "styled/main";
+import { tokenConfig } from "utils/tokenConfig";
 
 interface PropsType {
     onChooseCoin: (coinToken: string) => void
     tokenType: string
 }
 
-interface CoinListType {
+interface tokenConfigType {
     key: number
     token_icon: string
     symbol: string
@@ -26,10 +26,10 @@ const CoinWrapper = styled(FlexLayout)`
     margin-bottom: 15px;
 `
 
-const CoinsList = ({ onChooseCoin, tokenType }: PropsType) => {
+const TokensList = ({ onChooseCoin, tokenType }: PropsType) => {
     return (
         <CoinWrapper>
-            {coinList[NETWORK]?.map(({ key, token_icon, symbol, token_name, address }: CoinListType) => (
+            {tokenConfig[NETWORK]?.map(({ key, token_icon, symbol, token_name, address }: tokenConfigType) => (
                 <CoinItem key={key} onClick={() => onChooseCoin(token_name)} active={token_name === tokenType}>
                     <img src={token_icon} alt="token_icon" width={20} />
                     <span>{symbol}</span>
@@ -39,4 +39,4 @@ const CoinsList = ({ onChooseCoin, tokenType }: PropsType) => {
     )
 }
 
-export default CoinsList
+export default TokensList

@@ -1,9 +1,9 @@
 import styled from "styled-components"
-import { BoxContent } from "../../styled/common"
-import { Avatar, AvatarText, ProcessBar, ResultName, VotingRate, Wrapper } from "../../styled/list"
-import { FlexLayout } from "../../styled/main"
-import { getAvatar, randomColor } from "../../utils/common"
-import { VotedType } from "../../utils/interface"
+import { BoxContent } from "styled/common"
+import { Avatar, AvatarText, ProcessBar, ResultName, VotingRate, Wrapper } from "styled/list"
+import { FlexLayout } from "styled/main"
+import { getAvatar, randomColor } from "utils/common"
+import { VotedType } from "utils/interface"
 
 const FlexLayoutBetween = styled(FlexLayout)`
     justify-content: space-between;

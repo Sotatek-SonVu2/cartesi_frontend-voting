@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Loading from "../common/Loading";
-import NoData from "../common/NoData";
-import { createNotifications } from "../common/Notification";
-import Pagination from "../common/Pagination";
-import Title from "../common/Title";
-import { handleInspectApi } from "../helper/handleInspectApi";
-import { RootState } from "../store";
-import { Content } from "../styled/common";
-import { HeaderList } from "../styled/list";
-import { FlexLayout } from "../styled/main";
-import { ERROR_MESSAGE, LIST_CAMPAIGN, NOTI_TYPE } from "../utils/contants";
-import { CampaignDataType, MetadataType } from "../utils/interface";
+import Loading from "common/Loading";
+import NoData from "common/NoData";
+import { createNotifications } from "common/Notification";
+import Pagination from "common/Pagination";
+import Title from "common/Title";
+import { handleInspectApi } from "helper/handleInspectApi";
+import { RootState } from "store";
+import { Content } from "styled/common";
+import { HeaderList } from "styled/list";
+import { FlexLayout } from "styled/main";
+import { ERROR_MESSAGE, LIST_CAMPAIGN, NOTI_TYPE } from "utils/contants";
+import { CampaignDataType, MetadataType } from "utils/interface";
 import CampaignItem from "./Item/Campaign";
 
 const CampaignsList = () => {

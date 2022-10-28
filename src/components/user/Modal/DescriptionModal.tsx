@@ -1,8 +1,8 @@
 import styled from "styled-components"
-import ModalComponent from "../../common/Modal"
-import NoData from "../../common/NoData"
-import { ModalTitle } from "../../styled/common"
-import { FormItem } from "../../styled/form"
+import ModalComponent from "common/Modal"
+import NoData from "common/NoData"
+import { ModalTitle } from "styled/common"
+import { FormItem } from "styled/form"
 
 const Content = styled.p`
     font-weight: 400;

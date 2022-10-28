@@ -1,13 +1,13 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
-import { getDepositInfo } from "../reducers/authSlice"
-import { AppDispatch, RootState } from "../store"
-import { TokenItem } from "../styled/common"
-import { DepositInfoBox } from "../styled/list"
-import { FlexLayout } from "../styled/main"
-import { coinList } from "../utils/coinList"
-import { coinListType, DepositInfoType } from "../utils/interface"
+import { TokenItem } from "styled/common"
+import { DepositInfoBox } from "styled/list"
+import { FlexLayout } from "styled/main"
+import { tokenConfig } from "utils/tokenConfig"
+import { tokenListType, DepositInfoType } from "utils/interface"
+import { AppDispatch, RootState } from "store"
+import { getDepositInfo } from "reducers/authSlice"
 
 const NETWORK: any = process.env.REACT_APP_NETWORK || ''
 
@@ -33,9 +33,9 @@ const DepositInfo = () => {
 
     const render = () => {
         let data: any[] = []
-        const coinListing = coinList[NETWORK]
+        const tokenListing = tokenConfig[NETWORK]
         if (deposit_info?.length > 0) {
-            coinListing.forEach((coin: coinListType) => {
+            tokenListing.forEach((coin: tokenListType) => {
                 let obj
                 let temp = deposit_info.find((element: DepositInfoType) => element.contract_address === coin.address.toLowerCase())
                 if (temp) {
@@ -51,7 +51,7 @@ const DepositInfo = () => {
                 data.push(obj)
             })
         } else {
-            data = [...coinListing]
+            data = [...tokenListing]
         }
         return (
             <FlexWrapper className="deposit-info-step">

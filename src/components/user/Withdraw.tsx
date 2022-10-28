@@ -3,21 +3,21 @@ import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import Loading from "../common/Loading";
-import { createNotifications } from "../common/Notification";
-import Title from "../common/Title";
-import { getLastEpoch } from "../graphql/getLastEpoch";
-import { getVoucher as getVoucherExcute } from "../graphql/vouchers";
-import { configToken, outputContract } from "../helper/contractWithSigner";
-import { handleInspectApi } from "../helper/handleInspectApi";
-import { handleResponse } from "../helper/handleResponse";
-import { sendInput } from "../helper/sendInput";
-import { getVoucher as getVoucherList } from "../helper/voucher";
-import { getDepositInfo } from "../reducers/authSlice";
-import { AppDispatch, RootState } from "../store";
-import { Content } from "../styled/common";
-import { BoxItem, HeaderList, Radio, RadioGroup, WithdrawContent } from "../styled/list";
-import { FlexLayout } from "../styled/main";
+import Loading from "common/Loading";
+import { createNotifications } from "common/Notification";
+import Title from "common/Title";
+import { getLastEpoch } from "graphql/getLastEpoch";
+import { getVoucher as getVoucherExcute } from "graphql/vouchers";
+import { configToken, outputContract } from "helper/contractWithSigner";
+import { handleInspectApi } from "helper/handleInspectApi";
+import { handleResponse } from "helper/handleResponse";
+import { sendInput } from "helper/sendInput";
+import { getVoucher as getVoucherList } from "helper/voucher";
+import { getDepositInfo } from "reducers/authSlice";
+import { AppDispatch, RootState } from "store";
+import { Content } from "styled/common";
+import { BoxItem, HeaderList, Radio, RadioGroup, WithdrawContent } from "styled/list";
+import { FlexLayout } from "styled/main";
 import {
     ERROR_MESSAGE,
     LIST_EXECUTED_VOUCHER,
@@ -26,8 +26,8 @@ import {
     WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE, WITHDRAW,
     WITHDRAW_RADIO_FILTER,
     WITHDRAW_RADIO_FILTER_STATUS
-} from "../utils/contants";
-import { MetadataType, resInput, WithDrawType } from "../utils/interface";
+} from "utils/contants";
+import { MetadataType, resInput, WithDrawType } from "utils/interface";
 import WithdrawItem from "./Item/Withdraw";
 import WithdrawModal from "./Modal/WithdrawModal";
 

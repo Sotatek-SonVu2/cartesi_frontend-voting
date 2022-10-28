@@ -1,16 +1,18 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Background from "./common/Background";
-import AddEditCampaign from "./components/AddEditCampaign";
-import CampaignsList from "./components/CampaignsList";
-import History from "./components/History";
-import Result from "./components/Result";
-import Voting from "./components/Voting";
-import Withdraw from "./components/Withdraw";
+import AddEditCampaign from "./components/user/AddEditCampaign";
+import CampaignsList from "./components/user/CampaignsList";
+import History from "./components//user/History";
+import Result from "./components//user/Result";
+import Voting from "./components/user/Voting";
+import Withdraw from "./components/user/Withdraw";
 import useAuth from "./hook/useAuth";
+import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import Main from "./pages/Main";
 import { ROUTER_PATH } from "./routes/contants";
 import { MainWrapper } from "./styled/main";
+
 
 function App() {
   useAuth() //check connected with metamask
@@ -19,6 +21,7 @@ function App() {
       <Background>
         <Routes>
           <Route element={<Login />} path={ROUTER_PATH.LOGIN} />
+          <Route element={<Admin />} path={ROUTER_PATH.ADMIN} />
           <Route
             element={<Main />}
             path={ROUTER_PATH.HOMEPAGE}

@@ -1,6 +1,6 @@
 import Modal from "react-modal";
-import CloseIcon from '../images/close-icon.svg';
-import { ModalBody, ModalContainer, ModalHeader } from "../styled/common";
+import CloseIcon from 'images/close-icon.svg';
+import { ModalBody, ModalContainer, ModalHeader } from "styled/common";
 import Title from "./Title";
 
 Modal.setAppElement("#root");

@@ -1,5 +1,5 @@
-import EmptyIcon from '../images/no-data.png'
-import { NoDataWrapper } from '../styled/common'
+import EmptyIcon from 'images/no-data.png'
+import { NoDataWrapper } from 'styled/common'
 
 const NoData = () => {
     return (

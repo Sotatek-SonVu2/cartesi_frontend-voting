@@ -2,20 +2,20 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { handleInspectApi } from "../helper/handleInspectApi";
-import EmptyIcon from "../images/empty_notifications.svg";
-import NotificationIcon from "../images/notification.svg";
-import BellError from "../images/notify_error.svg";
-import BellSuccess from "../images/notify_success.svg";
-import reloadIcon from "../images/reload.png";
-import { ROUTER_PATH } from "../routes/contants";
-import { RootState } from "../store";
-import { NoDataWrapper, ReloadImage } from "../styled/common";
-import { Badge, NotifyBottom, NotifyContent, NotifyHeader, NotifyIcon, NotifyItem, NotifyList, NotifySection } from "../styled/header";
-import { FlexLayout } from "../styled/main";
-import { coinList } from "../utils/coinList";
-import { ERROR_MESSAGE, NOTIFICATION, NOTI_TYPE } from "../utils/contants";
-import { MetadataType } from "../utils/interface";
+import { handleInspectApi } from "helper/handleInspectApi";
+import EmptyIcon from "images/empty_notifications.svg";
+import NotificationIcon from "images/notification.svg";
+import BellError from "images/notify_error.svg";
+import BellSuccess from "images/notify_success.svg";
+import reloadIcon from "images/reload.png";
+import { ROUTER_PATH } from "routes/contants";
+import { RootState } from "store";
+import { NoDataWrapper, ReloadImage } from "styled/common";
+import { Badge, NotifyBottom, NotifyContent, NotifyHeader, NotifyIcon, NotifyItem, NotifyList, NotifySection } from "styled/header";
+import { FlexLayout } from "styled/main";
+import { tokenConfig } from "utils/tokenConfig";
+import { ERROR_MESSAGE, NOTIFICATION, NOTI_TYPE } from "utils/contants";
+import { MetadataType } from "utils/interface";
 import { createNotifications } from "./Notification";
 
 const EmptyNotification = styled(NoDataWrapper)`
@@ -32,7 +32,7 @@ const getMessage = (item: any) => {
     const { action, payload } = item
     const parse = JSON.parse(payload)
     const { campaign, type, error, candidate, amount, reason, token } = parse
-    const dataToken = coinList[NETWORK].find((item: any) => item.address.toLowerCase() === token)
+    const dataToken = tokenConfig[NETWORK].find((item: any) => item.address.toLowerCase() === token)
     const tokenIcon = dataToken?.token_icon || ''
     const tokenSymbol = dataToken?.symbol || ''
     const successMessage: any = {

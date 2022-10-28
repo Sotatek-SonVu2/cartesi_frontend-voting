@@ -1,10 +1,10 @@
 import { useState } from "react"
 import styled from "styled-components"
-import CoinsList from "../../common/CoinsList"
-import ModalComponent from "../../common/Modal"
-import confirmIcon from '../../images/exclamation_icon.svg'
-import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "../../styled/common"
-import { CARTESI_TOKEN } from "../../utils/contants"
+import TokensList from "common/TokensList"
+import ModalComponent from "common/Modal"
+import confirmIcon from 'images/exclamation_icon.svg'
+import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "styled/common"
+import { CARTESI_TOKEN } from "utils/contants"
 
 type Props = {
     isVisible: boolean
@@ -31,8 +31,8 @@ const VotingModal = ({ isVisible, toggleModal, onClick }: Props) => {
                     <p>Are you sure to choose this candidate?</p>
                 </ModalTitle>
                 <ModalContent>
-                    <p className="modal-text-sm">The system will take 10 tokens from your wallet to perform this operation!</p>
-                    <CoinsList onChooseCoin={(token: string) => setTokenType(token)} tokenType={tokenType} />
+                    <p className="modal-text-sm">The DApp will take 10 tokens from your wallet to perform this operation!</p>
+                    <TokensList onChooseCoin={(token: string) => setTokenType(token)} tokenType={tokenType} />
                 </ModalContent>
                 <VotingButton onClick={() => onClick(tokenType)}>Vote</VotingButton>
             </div>

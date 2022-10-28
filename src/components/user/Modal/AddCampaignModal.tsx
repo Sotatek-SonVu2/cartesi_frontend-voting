@@ -1,9 +1,9 @@
 import { useState } from "react"
-import ModalComponent from "../../common/Modal"
-import { CARTESI_TOKEN } from "../../utils/contants"
-import confirmIcon from '../../images/exclamation_icon.svg'
-import CoinsList from "../../common/CoinsList"
-import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "../../styled/common"
+import ModalComponent from "common/Modal"
+import { CARTESI_TOKEN } from "utils/contants"
+import confirmIcon from 'images/exclamation_icon.svg'
+import TokensList from "common/TokensList"
+import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "styled/common"
 import styled from "styled-components"
 
 type Props = {
@@ -31,8 +31,8 @@ const AddCampaignModal = ({ isVisible, toggleModal, onClick }: Props) => {
                     <p>Are you sure to create this candidate?</p>
                 </ModalTitle>
                 <ModalContent>
-                    <p className="modal-text-sm">The system will take 10 tokens from your wallet to perform this operation!</p>
-                    <CoinsList onChooseCoin={(token: string) => setTokenType(token)} tokenType={tokenType} />
+                    <p className="modal-text-sm">The DApp will take 10 tokens from your wallet to perform this operation!</p>
+                    <TokensList onChooseCoin={(token: string) => setTokenType(token)} tokenType={tokenType} />
                 </ModalContent>
                 <SubmitButton onClick={() => onClick(tokenType)}>Create</SubmitButton>
             </div>

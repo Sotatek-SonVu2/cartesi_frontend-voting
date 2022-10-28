@@ -3,18 +3,18 @@ import { ContractReceipt, ethers } from "ethers"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
-import CoinsList from "../../common/CoinsList"
-import ModalComponent from "../../common/Modal"
-import { createNotifications } from "../../common/Notification"
-import { configToken, erc20Contract, inputContract, tokenContract } from "../../helper/contractWithSigner"
-import { getDepositInfo } from "../../reducers/authSlice"
-import { AppDispatch, RootState } from "../../store"
-import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "../../styled/common"
-import { ErrorText, Input } from "../../styled/form"
-import { Loader } from "../../styled/loading"
-import { CARTESI_TOKEN, NETWORK_ERROR_MESSAGE, NOTI_TYPE, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "../../utils/contants"
-import { InputKeys } from "../../utils/types"
-import { validateAmount } from "../../utils/validate"
+import TokensList from "common/TokensList"
+import ModalComponent from "common/Modal"
+import { createNotifications } from "common/Notification"
+import { configToken, erc20Contract, inputContract, tokenContract } from "helper/contractWithSigner"
+import { getDepositInfo } from "reducers/authSlice"
+import { AppDispatch, RootState } from "store"
+import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "styled/common"
+import { ErrorText, Input } from "styled/form"
+import { Loader } from "styled/loading"
+import { CARTESI_TOKEN, NETWORK_ERROR_MESSAGE, NOTI_TYPE, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "utils/contants"
+import { InputKeys } from "utils/types"
+import { validateAmount } from "utils/validate"
 
 type Props = {
     isVisible: boolean
@@ -170,7 +170,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
         >
             <div>
                 <ModalTitle>
-                    <CoinsList onChooseCoin={onChooseToken} tokenType={tokenType} />
+                    <TokensList onChooseCoin={onChooseToken} tokenType={tokenType} />
                 </ModalTitle>
                 <ModalContent>
                     <FormItem>

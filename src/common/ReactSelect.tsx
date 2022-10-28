@@ -1,5 +1,5 @@
 import Select from 'react-select';
-import { colorTheme } from '../styled/common';
+import { colorTheme } from 'styled/common';
 
 interface PropsType {
     options: any

@@ -1,13 +1,15 @@
-import 'react-datepicker/dist/react-datepicker.css';
 import ReactDOM from 'react-dom/client';
 import { ReactNotifications } from 'react-notifications-component';
-import "react-notifications-component/dist/theme.css";
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { store } from './store';
+// CSS
+import './index.css';
+import 'css/table.css';
+import "react-notifications-component/dist/theme.css";
+import 'react-datepicker/dist/react-datepicker.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

@@ -52,3 +52,10 @@ export const SubTitle = styled.p`
     text-align: center;
     margin-bottom: 3rem;
 `
+
+export const Setting = styled.img`
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    cursor: pointer;
+`

@@ -1,6 +1,6 @@
 import React from 'react';
-import { usePagination, DOTS } from '../hook/usePagination';
-import { ArrowLeft, ArrowRight, PaginationItem, PaginationWrapper } from '../styled/common';
+import { usePagination, DOTS } from 'hook/usePagination';
+import { ArrowLeft, ArrowRight, PaginationItem, PaginationWrapper } from 'styled/common';
 
 interface PropsType {
   onPageChange: Function,

@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
-import AddIcon from '../../images/add.png';
-import EditIcon from '../../images/edit.png';
-import VoteIcon from '../../images/voting-box.png';
-import VoucherIcon from '../../images/voucher.png';
-import DepositIcon from '../../images/deposit.png';
-import DeleteIcon from '../../images/trash-bin.png';
-import WithdrawIcon from '../../images/withdraw.png';
-import DecreseTokenIcon from '../../images/decreseToken.png';
-import MinusIcon from '../../images/minus-button.png';
-import { ROUTER_PATH } from "../../routes/contants";
-import { HistoryTitle } from "../../styled/list";
-import { CREATE_CAMPAIGN, DECREASE_TOKEN, DELETE_CAMPAIGN, DEPOSIT, EDIT_CAMPAIGN, EXECUTE_VOUCHER, VOTE, WITHDRAW } from "../../utils/contants";
-import { coinList } from "../../utils/coinList";
+import AddIcon from 'images/add.png';
+import EditIcon from 'images/edit.png';
+import VoteIcon from 'images/voting-box.png';
+import VoucherIcon from 'images/voucher.png';
+import DepositIcon from 'images/deposit.png';
+import DeleteIcon from 'images/trash-bin.png';
+import WithdrawIcon from 'images/withdraw.png';
+import DecreseTokenIcon from 'images/decreseToken.png';
+import MinusIcon from 'images/minus-button.png';
+import { ROUTER_PATH } from "routes/contants";
+import { HistoryTitle } from "styled/list";
+import { CREATE_CAMPAIGN, DECREASE_TOKEN, DELETE_CAMPAIGN, DEPOSIT, EDIT_CAMPAIGN, EXECUTE_VOUCHER, VOTE, WITHDRAW } from "utils/contants";
+import { tokenConfig } from "utils/tokenConfig";
 
 interface PropsType {
     index: number
@@ -23,7 +23,7 @@ const NETWORK: any = process.env.REACT_APP_NETWORK || ''
 const dataRender = (data: any) => {
     const { action, payload } = data
     const { time, campaign, candidate, amount, voucher_id, reason, token } = payload
-    const dataToken = coinList[NETWORK].find((item: any) => item.address.toLowerCase() === token)
+    const dataToken = tokenConfig[NETWORK].find((item: any) => item.address.toLowerCase() === token)
     const tokenIcon = dataToken?.token_icon || ''
     const tokenName = dataToken?.token_name || ''
     switch (action) {

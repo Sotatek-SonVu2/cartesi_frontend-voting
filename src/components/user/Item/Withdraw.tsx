@@ -1,11 +1,11 @@
-import { WithdrawContent } from "../../styled/list"
-import GiftIcon from "../../images/Gift-box-1.png"
-import GiftDisabledIcon from "../../images/Gift-box-2.png"
-import ClaimedIcon from '../../images/claimed.png'
+import { WithdrawContent } from "styled/list"
+import GiftIcon from "images/Gift-box-1.png"
+import GiftDisabledIcon from "images/Gift-box-2.png"
+import ClaimedIcon from 'images/claimed.png'
 import styled from "styled-components"
-import { SuccessButton } from "../../styled/common"
-import { WithDrawType } from "../../utils/interface"
-import { coinList } from "../../utils/coinList"
+import { SuccessButton } from "styled/common"
+import { WithDrawType } from "utils/interface"
+import { tokenConfig } from "utils/tokenConfig"
 
 const NETWORK: any = process.env.REACT_APP_NETWORK || ''
 
@@ -26,7 +26,7 @@ interface PropsType {
 
 const WithdrawItem = ({ data, onClick }: PropsType) => {
     const { id, isAllowExecute, isExecuted, amount, token } = data
-    const dataToken = coinList[NETWORK].find((item: any) => item.address === token)
+    const dataToken = tokenConfig[NETWORK].find((item: any) => item.address === token)
     const tokenSymbol = dataToken?.symbol || ''
     return (
         <WithdrawContent>

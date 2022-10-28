@@ -11,7 +11,7 @@ It's implemented in Typescript and uses the [ethers](https://docs.ethers.io/v5/)
 
 ## Functions
 
-Here are all the system functions available:
+Here are all the DApp functions available:
 
 ```shell
 - Connect/disconnect to MetaMask,

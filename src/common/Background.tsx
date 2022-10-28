@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components";
-import cartesiLogo from '../images/Cartesi_Logo_White.svg';
+import cartesiLogo from 'images/Cartesi_Logo_White.svg';
 
 const LogoImage = styled.img`
     position: fixed;

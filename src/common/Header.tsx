@@ -1,20 +1,24 @@
+import DepositModal from "components/user/Modal/DepositModal";
+import LogoutIcon from "images/logout.svg";
+import Logo from 'images/Logo_Sotatek2.svg';
+import WalletIcon from "images/wallet-icon.png";
 import { useEffect, useState } from "react";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import DepositModal from "../components/Modal/DepositModal";
-import LogoutIcon from "../images/logout.svg";
-import Logo from '../images/Logo_Sotatek2.svg';
-import WalletIcon from "../images/wallet-icon.png";
-import { clearAccount } from "../reducers/authSlice";
-import { ROUTER_PATH } from "../routes/contants";
-import { AppDispatch, RootState } from "../store";
-import { Address, Content, InforUser, Menu, MenuList, MenuTitle } from "../styled/header";
-import { formatAddress } from "../utils/common";
+import { clearAccount } from "reducers/authSlice";
+import { ROUTER_PATH } from "routes/contants";
+import { AppDispatch, RootState } from "store";
+import { Address, Content, InforUser, Menu, MenuList, MenuTitle } from "styled/header";
+import { formatAddress } from "utils/common";
 import NotificationList from "./NotificationList";
 import Tooltip from "./Tooltip";
 
-const Header = () => {
+interface Props {
+    startTour: () => void
+}
+
+const Header = ({ startTour }: Props) => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>()
     const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -79,6 +83,9 @@ const Header = () => {
                     </MenuTitle>
                     <MenuTitle onClick={() => navigate(ROUTER_PATH.HISTORY, { replace: true })} className="history-step">
                         History
+                    </MenuTitle>
+                    <MenuTitle onClick={startTour} className="history-step">
+                        Help
                     </MenuTitle>
                 </MenuList>
                 <NotificationList />

@@ -5,7 +5,7 @@ import SotatekIcon from "../images/sotatek-icon.png";
 import { CARTESI_TOKEN, ETHEREUM_TOKEN, SOTATEK_TOKEN } from "./contants";
 import { getToken } from "./getToken";
 
-export const coinList: any = {
+export const tokenConfig: any = {
     'localhost': [
         {
             key: 1,

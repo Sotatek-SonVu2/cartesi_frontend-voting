@@ -1,6 +1,7 @@
 
 export const ROUTER_PATH = {
     HOMEPAGE: '/',
+    ADMIN: '/admin',
     LOGIN: '/login',
     VOTING: '/voting',
     RESULT: '/result',

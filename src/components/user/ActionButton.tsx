@@ -2,17 +2,17 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { createNotifications } from "../common/Notification";
-import ReactSelect from "../common/ReactSelect";
-import { handleResponse } from "../helper/handleResponse";
-import { sendInput } from "../helper/sendInput";
-import { onChangeStatus } from "../reducers/campaignSlice";
-import { ROUTER_PATH } from "../routes/contants";
-import { AppDispatch, RootState } from "../store";
-import { DangerButton, PrimaryButton, SuccessButton } from "../styled/common";
-import { FlexLayout } from "../styled/main";
-import { cadidateOptions, DELETE_CAMPAIGN, ERROR_MESSAGE, NOTI_TYPE, NO_RESPONSE_ERROR, WAITING_RESPONSE_FROM_SERVER_MESSAGE, WAITING_FOR_CONFIRMATION } from "../utils/contants";
-import { resInput } from "../utils/interface";
+import { createNotifications } from "common/Notification";
+import ReactSelect from "common/ReactSelect";
+import { handleResponse } from "helper/handleResponse";
+import { sendInput } from "helper/sendInput";
+import { onChangeStatus } from "reducers/campaignSlice";
+import { ROUTER_PATH } from "routes/contants";
+import { AppDispatch, RootState } from "store";
+import { DangerButton, PrimaryButton, SuccessButton } from "styled/common";
+import { FlexLayout } from "styled/main";
+import { cadidateOptions, DELETE_CAMPAIGN, ERROR_MESSAGE, NOTI_TYPE, NO_RESPONSE_ERROR, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "utils/contants";
+import { resInput } from "utils/interface";
 import DeleteModal from "./Modal/DeleteModal";
 
 const EditButton = styled(PrimaryButton)`

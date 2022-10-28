@@ -1,7 +1,7 @@
 import styled from "styled-components"
-import { colorTheme, ModalTitle, SuccessButton } from "../../styled/common"
-import { FormItem } from "../../styled/form"
-import ModalComponent from "../../common/Modal"
+import { colorTheme, ModalTitle, SuccessButton } from "styled/common"
+import { FormItem } from "styled/form"
+import ModalComponent from "common/Modal"
 
 const Button = styled(SuccessButton)`
     background-color: ${colorTheme.success};
@@ -14,7 +14,7 @@ const Button = styled(SuccessButton)`
 type Props = {
     isVisible: boolean
     toggleModal: any
-    startTour: any
+    startTour: () => void
 }
 
 const UserGuideModal = ({ isVisible, toggleModal, startTour }: Props) => {
@@ -23,7 +23,7 @@ const UserGuideModal = ({ isVisible, toggleModal, startTour }: Props) => {
             <>
                 <ModalTitle>
                     <FormItem>
-                        Welcome! Are you beginer? Take a walk around the system to better understand it before using it!
+                        Welcome! Are you beginer? Take a walk around the DApp to better understand it before using it!
                     </FormItem>
                 </ModalTitle>
                 <Button onClick={startTour}>

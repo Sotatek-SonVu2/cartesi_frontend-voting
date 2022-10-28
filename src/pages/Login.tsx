@@ -46,7 +46,7 @@ const Login = () => {
                     Furthermore, users can create their own campaigns and add candidate options to vote on.
                     This showcase/module can be used to build more complex DApps and can be utilised for voting in DAOs.
                 </p>
-                <p>(Please note: Only users that have deposited tokens in the system can vote.)</p>
+                <p>(Please note: Only users that have deposited tokens in the DApp can vote.)</p>
                 <LoginButton onClick={connectWallet}>Let's start</LoginButton>
             </Container>
         </>
