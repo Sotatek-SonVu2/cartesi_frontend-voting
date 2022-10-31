@@ -18,6 +18,12 @@ interface ButtonType {
     disabled?: boolean | number
 }
 
+interface ButtonModalType {
+    success?: boolean
+    danger?: boolean
+    primary?: boolean
+}
+
 interface DateTimeBoxType {
     isStartTime: boolean
     isEndTime: boolean
@@ -60,6 +66,28 @@ export const Button = styled.button<ButtonType>`
         background-color: ${colorTheme.disabled} !important;
         border: 2px solid #b3b3b3 !important;
         color: #fff !important;
+    `}
+`
+
+export const ButtonModal = styled(Button) <ButtonModalType>`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: unset;
+    color: #ffffff;
+    padding: 8px 0px;
+    margin-top: 2rem;
+    background-color: ${colorTheme.darkBlue};
+
+    ${props => props.success && `
+          background-color: ${colorTheme.success};
+    `}
+    ${props => props.danger && `
+          background-color: ${colorTheme.danger};
+    `}
+    ${props => props.primary && `
+        background-color: ${colorTheme.primary};
     `}
 `
 
@@ -203,6 +231,7 @@ export const NoDataWrapper = styled.div`
     justify-content: center;
     align-items: center;
     height: 100%;
+    width: 100%;
     min-height: 310px;
 
     & img {

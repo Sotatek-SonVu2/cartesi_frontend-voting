@@ -8,7 +8,7 @@ Modal.setAppElement("#root");
 type Props = {
     isVisible: boolean
     isLoading?: boolean
-    toggleModal: () => {}
+    toggleModal: () => void
     title?: string
     children: JSX.Element
     width?: string

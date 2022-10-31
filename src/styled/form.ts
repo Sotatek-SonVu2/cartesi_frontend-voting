@@ -13,6 +13,15 @@ export const FormItem = styled.div`
     margin-bottom: 10px;
 `
 
+export const ActionColumn = styled.div`
+  display: flex;
+
+  & img {
+    margin: 0px 3px;
+    cursor: pointer;
+  }
+`
+
 export const OptionLabel = styled.div`
     display: flex;
     justify-content: space-between;
@@ -55,4 +64,19 @@ export const ErrorText = styled.div`
     line-height: normal;
     font-family: monospace;
     margin-bottom: 5px;
+`
+
+export const CheckboxGroup = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 10px;
+`
+
+export const WaitingMessage = styled.span`
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    font-style: italic;
+    color: red;
 `

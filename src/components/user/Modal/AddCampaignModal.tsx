@@ -1,24 +1,15 @@
-import { useState } from "react"
 import ModalComponent from "common/Modal"
-import { CARTESI_TOKEN } from "utils/contants"
-import confirmIcon from 'images/exclamation_icon.svg'
 import TokensList from "common/TokensList"
-import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "styled/common"
-import styled from "styled-components"
+import confirmIcon from 'images/exclamation_icon.svg'
+import { useState } from "react"
+import { ButtonModal, ModalContent, ModalTitle } from "styled/common"
+import { CARTESI_TOKEN } from "utils/contants"
 
 type Props = {
     isVisible: boolean
     toggleModal: any
     onClick: (tokenType: string) => void
 }
-
-const SubmitButton = styled(SuccessButton)`
-    background-color: ${colorTheme.success};
-    color: #ffffff;
-    display: block;
-    margin: 0 auto;
-    margin-top: 30px;
-`
 
 const AddCampaignModal = ({ isVisible, toggleModal, onClick }: Props) => {
     const [tokenType, setTokenType] = useState<string>(CARTESI_TOKEN)
@@ -34,7 +25,7 @@ const AddCampaignModal = ({ isVisible, toggleModal, onClick }: Props) => {
                     <p className="modal-text-sm">The DApp will take 10 tokens from your wallet to perform this operation!</p>
                     <TokensList onChooseCoin={(token: string) => setTokenType(token)} tokenType={tokenType} />
                 </ModalContent>
-                <SubmitButton onClick={() => onClick(tokenType)}>Create</SubmitButton>
+                <ButtonModal onClick={() => onClick(tokenType)} success>Create</ButtonModal>
             </div>
         </ModalComponent>
     )

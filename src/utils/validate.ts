@@ -9,6 +9,7 @@ const validateText: any = {
     description: 'Description is required',
     startDate: 'Start Date is required.',
     endDate: 'End Date is required.',
+    user: 'User is required.',
     brief_introduction: 'Brief Introduction is required.',
 }
 
@@ -23,7 +24,7 @@ export const validateAmount = (value: string) => {
 export const validateField = (fieldName: string, value: any) => {
     let errorText = ''
     if (!value) {
-        errorText = validateText[fieldName]
+        errorText = validateText[fieldName] || `${fieldName} is required.`
     } else if (fieldName === 'name' && value.length > 200) {
         errorText = 'Please do not enter more than 200 characters!'
     }
@@ -60,11 +61,15 @@ export const validateDate = (fieldName: string, value: string | Date, endDate: D
     return error
 }
 
-export const validateFields = (object: any) => {
-    let formErrors = { name: '', description: '', startDate: '', endDate: '' }
+/**
+ * fieldsNeedToCheck: object type, the fields you want to check 
+ * formErrors: object type, used to get the text error of the form.
+ */
+export const validateFields = (fieldsNeedToCheck: any, formErrors: any) => {
+    // let formErrors = { name: '', description: '', startDate: '', endDate: '' } 
     let isError: boolean = false
-    for (const property in object) {
-        const validate = validateField(property, object[property])
+    for (const property in fieldsNeedToCheck) {
+        const validate = validateField(property, fieldsNeedToCheck[property])
         if (validate[property]) isError = true
         formErrors = { ...formErrors, ...validate }
     }

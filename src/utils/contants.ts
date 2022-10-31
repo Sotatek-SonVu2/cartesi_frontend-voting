@@ -7,6 +7,11 @@ export const CAMPAIGN_DETAIL = 'CAMPAIGN_DETAIL'
 export const CANDIDATE_DETAIL = 'CANDIDATE_DETAIL'
 export const VOTE = 'VOTE'
 export const DEPOSIT = 'DEPOSIT'
+export const LIST_ROLE = 'LIST_ROLE'
+export const ADD_ROLE = 'ADD_ROLE'
+export const UPDATE_ROLE = 'UPDATE_ROLE'
+export const DELETE_ROLE = 'DELETE_ROLE'
+export const LIST_TOKEN = 'LIST_TOKEN'
 export const DECREASE_TOKEN = 'DECREASE_TOKEN'
 export const RESULT = 'RESULT'
 export const DELETE_CAMPAIGN = 'DELETE_CAMPAIGN'
@@ -18,6 +23,7 @@ export const LIST_EXECUTED_VOUCHER = 'LIST_EXECUTED_VOUCHER'
 export const ACTION_HISTORY = 'ACTION_HISTORY'
 export const SYSTEM = 'SYSTEM'
 export const REMOVE_NOTIFICATION = 'REMOVE_NOTIFICATION'
+
 export const NOTIFICATION = 'NOTIFICATION'
 export const FORMAT_DATETIME = 'YYYY-MM-DD HH:mm:ss'
 export const FORMAT_DATETIME_2 = 'DD/MM/YYYY HH:mm:ss'
@@ -140,3 +146,28 @@ export const ITEM_TYPE = {
     RESULT: 'RESULT',
     ANSWER: 'ANSWER'
 }
+
+export const USER_AUTH = {
+    YES: 1,
+    NO: 0
+}
+
+export const USER_AUTH_ARRAY = [
+    {
+        label: 'Post',
+        key: 'manage_post',
+    },
+    {
+        label: 'System',
+        key: 'manage_system',
+    },
+    {
+        label: 'Token',
+        key: 'manage_token',
+    },
+    {
+        label: 'User',
+        key: 'manage_user',
+    },
+
+]

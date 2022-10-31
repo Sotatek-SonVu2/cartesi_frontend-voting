@@ -1,15 +1,15 @@
 import { IInput } from "@cartesi/rollups"
-import { ContractReceipt, ethers } from "ethers"
-import { useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import styled from "styled-components"
-import TokensList from "common/TokensList"
 import ModalComponent from "common/Modal"
 import { createNotifications } from "common/Notification"
+import TokensList from "common/TokensList"
+import { ContractReceipt, ethers } from "ethers"
 import { configToken, erc20Contract, inputContract, tokenContract } from "helper/contractWithSigner"
+import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { getDepositInfo } from "reducers/authSlice"
 import { AppDispatch, RootState } from "store"
-import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "styled/common"
+import styled from "styled-components"
+import { ButtonModal, ModalContent, ModalTitle } from "styled/common"
 import { ErrorText, Input } from "styled/form"
 import { Loader } from "styled/loading"
 import { CARTESI_TOKEN, NETWORK_ERROR_MESSAGE, NOTI_TYPE, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "utils/contants"
@@ -20,14 +20,6 @@ type Props = {
     isVisible: boolean
     toggleModal: any
 }
-
-const DepositButton = styled(SuccessButton)`
-    background-color: ${colorTheme.success};
-    color: #ffffff;
-    display: flex;
-    margin: 0 auto;
-    margin-top: 30px;
-`
 
 const ErrorMessage = styled(ErrorText)`
     text-align: center;
@@ -185,10 +177,10 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
                     </FormItem>
                 </ModalContent>
                 <ErrorMessage>{amount.errorText || callMessage}</ErrorMessage>
-                <DepositButton onClick={handleDeposit} disabled={isLoading}>
+                <ButtonModal onClick={handleDeposit} disabled={isLoading} success>
                     {isLoading && (<Loader />)}
                     Deposit
-                </DepositButton>
+                </ButtonModal>
             </div>
         </ModalComponent>
     )

@@ -1,3 +1,4 @@
+import Header from 'common/Header'
 import { tabItemType } from 'utils/interface'
 import Tabs from '../common/Tabs'
 import System from '../components/admin/System'
@@ -27,15 +28,18 @@ const items: tabItemType[] = [
 
 const Admin = () => {
     return (
-        <Container>
-            <Title>Welcome to Admin page!</Title>
-            <SubTitle>Where your opinion matters!</SubTitle>
-            <ContentWrapper>
-                <Content>
-                    <Tabs items={items} />
-                </Content>
-            </ContentWrapper>
-        </Container>
+        <>
+            <Header />
+            <Container>
+                <Title>Welcome to Admin page!</Title>
+                <SubTitle>Where your opinion matters!</SubTitle>
+                <ContentWrapper>
+                    <Content>
+                        <Tabs items={items} />
+                    </Content>
+                </ContentWrapper>
+            </Container>
+        </>
     )
 }
 export default Admin

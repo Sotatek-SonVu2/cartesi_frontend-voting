@@ -12,6 +12,7 @@ import { Container, ContentWrapper, Setting, SubTitle, Title } from "../styled/m
 import { USER_GUIDE } from "../utils/contants";
 import { tourConfig } from "../utils/tourConfig";
 import SettingIcon from '../images/gear.png'
+import Tooltip from "common/Tooltip";
 
 
 const IS_USER_GUIDE_OPEN = 'false'
@@ -56,12 +57,19 @@ const Main = () => {
                 <ContentWrapper>
                     <Outlet />
                 </ContentWrapper>
-                <Setting
-                    src={SettingIcon}
-                    alt="settingIcon"
-                    width={40}
-                    onClick={() => navigate(ROUTER_PATH.ADMIN, { replace: true })}
-                />
+                <Tooltip
+                    text='Go to Admin page.'
+                    id='admin'
+                    className="tooltip-sz-sm"
+                    placement="right"
+                >
+                    <Setting
+                        src={SettingIcon}
+                        alt="settingIcon"
+                        width={40}
+                        onClick={() => navigate(ROUTER_PATH.ADMIN, { replace: true })}
+                    />
+                </Tooltip>
             </Container>
             {isVisible && (
                 <UserGuideModal

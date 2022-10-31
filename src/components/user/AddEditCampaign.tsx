@@ -198,7 +198,7 @@ const AddEditCampaign = () => {
         e.preventDefault()
 
         const checkOptions = validateOptions(options)
-        const checkFields = validateFields(dataForm)
+        const checkFields = validateFields(dataForm, initialValue.formErrors)
         const checkDate = validateDate('startDate', dataForm.startDate, dataForm.endDate, dataForm.startDate)
 
         if (!checkOptions.isError && !checkFields.isError && !checkDate?.startDate) {
@@ -292,7 +292,7 @@ const AddEditCampaign = () => {
                 </FormItem>
                 <FlexLayoutBtn>
                     <DefaultButton type="button" onClick={() => navigate(-1)}>Back</DefaultButton>
-                    <SubmitButton type="submit">
+                    <SubmitButton type="submit" disabled={isLoading}>
                         {isLoading && (<Loader />)}
                         {!campaignId ? 'Create' : 'Save'}
                     </SubmitButton>

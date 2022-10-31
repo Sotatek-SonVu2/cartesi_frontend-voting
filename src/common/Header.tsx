@@ -5,7 +5,7 @@ import WalletIcon from "images/wallet-icon.png";
 import { useEffect, useState } from "react";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { clearAccount } from "reducers/authSlice";
 import { ROUTER_PATH } from "routes/contants";
 import { AppDispatch, RootState } from "store";
@@ -15,7 +15,7 @@ import NotificationList from "./NotificationList";
 import Tooltip from "./Tooltip";
 
 interface Props {
-    startTour: () => void
+    startTour?: () => void
 }
 
 const Header = ({ startTour }: Props) => {
@@ -25,6 +25,8 @@ const Header = ({ startTour }: Props) => {
     const [isCopied, setIsCopied] = useState<boolean>(false)
     const authState = useSelector((state: RootState) => state.auth)
     const { address } = authState
+    const location = useLocation()
+    const pathname = `/${location.pathname.split("/")[1]}`
 
     const handleLogout = async () => {
         dispatch(clearAccount())
@@ -84,9 +86,11 @@ const Header = ({ startTour }: Props) => {
                     <MenuTitle onClick={() => navigate(ROUTER_PATH.HISTORY, { replace: true })} className="history-step">
                         History
                     </MenuTitle>
-                    <MenuTitle onClick={startTour} className="history-step">
-                        Help
-                    </MenuTitle>
+                    {pathname !== ROUTER_PATH.ADMIN && (
+                        <MenuTitle onClick={startTour} className="history-step">
+                            Help
+                        </MenuTitle>
+                    )}
                 </MenuList>
                 <NotificationList />
                 <img src={LogoutIcon} alt="logoutIcon" width={20} className="Icon logout-step" onClick={handleLogout} />

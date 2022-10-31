@@ -11,6 +11,7 @@ import { convertUtcToLocal } from "utils/common"
 import { FORMAT_DATETIME } from "utils/contants"
 import { ROUTER_PATH } from "routes/contants"
 import DescriptionModal from "../Modal/DescriptionModal"
+import Tooltip from "common/Tooltip"
 
 interface PropsType {
     data: {
@@ -50,18 +51,41 @@ const CampaignItem = ({ data }: PropsType) => {
                 </CampaignName>
                 <ActionList>
                     <ActionItem className="highest-vote-step">
-                        <WinnerCandidate>
-                            <img src={StarIcon} alt="star icon" width={17} />
-                            <WinnerName>{winning_candidate_name || '(No data)'}</WinnerName>
-                        </WinnerCandidate>
+                        <Tooltip
+                            text='The candidate with the highest number of votes.'
+                            id='highest-vote'
+                            className="tooltip-sz-sm"
+                        >
+                            <WinnerCandidate>
+                                <img src={StarIcon} alt="star icon" width={17} />
+                                <WinnerName>{winning_candidate_name || '(No data)'}</WinnerName>
+                            </WinnerCandidate>
+                        </Tooltip>
                     </ActionItem>
+
                     <ActionItem className="vote-number-step">
-                        <img src={BadgeIcon} alt="badge icon" width={17} />
-                        {total_vote || 0} vote
+                        <Tooltip
+                            text='Total votes of the campaign.'
+                            id='vote-number'
+                            className="tooltip-sz-sm"
+                        >
+                            <>
+                                <img src={BadgeIcon} alt="badge icon" width={17} />
+                                {total_vote || 0} vote
+                            </>
+                        </Tooltip>
                     </ActionItem>
                     <ActionItem onClick={toggleModal} className="description-step">
-                        <img src={DescriptionIcon} alt="description icon" width={17} />
-                        <span>Description</span>
+                        <Tooltip
+                            text='Description of the campaign.'
+                            id='description'
+                            className="tooltip-sz-sm"
+                        >
+                            <>
+                                <img src={DescriptionIcon} alt="description icon" width={17} />
+                                <span>Description</span>
+                            </>
+                        </Tooltip>
                     </ActionItem>
                 </ActionList>
             </BoxContent>
@@ -72,7 +96,6 @@ const CampaignItem = ({ data }: PropsType) => {
                     data={data}
                 />
             )}
-
         </Wrapper>
     )
 }

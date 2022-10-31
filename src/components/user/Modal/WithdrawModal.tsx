@@ -1,19 +1,11 @@
+import ModalComponent from "common/Modal"
+import TokensList from "common/TokensList"
 import { useState } from "react"
 import styled from "styled-components"
-import TokensList from "common/TokensList"
-import ModalComponent from "common/Modal"
-import { colorTheme, ModalContent, ModalTitle, SuccessButton } from "styled/common"
+import { ButtonModal, ModalContent, ModalTitle } from "styled/common"
 import { ErrorText, Input } from "styled/form"
 import { CARTESI_TOKEN } from "utils/contants"
 import { validateAmount } from "utils/validate"
-
-const Button = styled(SuccessButton)`
-    background-color: ${colorTheme.success};
-    color: #ffffff;
-    display: block;
-    margin: 0 auto;
-    margin-top: 30px;
-`
 
 const ErrorMessage = styled(ErrorText)`
     text-align: center;
@@ -82,9 +74,9 @@ const WithdrawModal = ({ isVisible, toggleModal, onAddVoucher }: Props) => {
                     </FormItem>
                 </ModalContent>
                 <ErrorMessage>{amount.errorText}</ErrorMessage>
-                <Button onClick={handleAddVoucher}>
+                <ButtonModal onClick={handleAddVoucher} success>
                     Withdraw
-                </Button>
+                </ButtonModal>
             </div>
         </ModalComponent>
     )

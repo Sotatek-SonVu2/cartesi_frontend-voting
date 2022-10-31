@@ -159,5 +159,27 @@ export interface tabItemType {
     content: JSX.Element
 }
 
+export interface usersType {
+    id?: number
+    manage_post: number
+    manage_system: number
+    manage_token: number
+    manage_user: number
+    user: string
+    formErrors?: {
+        user?: string | undefined
+    }
+}
+
+export interface usersTypePayload {
+    id: number | undefined
+    action: string
+    manage_post: number
+    manage_system: number
+    manage_token: number
+    manage_user: number
+    user: string
+}
+
 
 
