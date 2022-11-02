@@ -7,7 +7,7 @@ interface PropsType {
     text: string,
     id: string,
     placement?: 'top' | 'right' | 'bottom' | 'left',
-    className?: 'tooltip-sz-md' | 'tooltip-sz-sm' | 'tooltip-sz-max' | 'tooltip-modal' //index.css
+    className?: string //'tooltip-sz-md' | 'tooltip-sz-sm' | 'tooltip-sz-max' | 'tooltip-modal ' | 'tooltip-admin-icon' (index.css)
     type?: 'dark' | 'success' | 'warning' | 'error' | 'info' | 'light';
 }
 

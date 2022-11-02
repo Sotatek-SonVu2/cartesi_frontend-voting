@@ -163,6 +163,7 @@ const AddEditCampaign = () => {
         } catch (error: any) {
             createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
             setIsLoading(false)
+            setCallMessage('')
             throw error
         }
     }

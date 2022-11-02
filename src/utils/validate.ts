@@ -1,5 +1,5 @@
 import moment from "moment"
-import { AMOUNT_ERROR_MESSAGE, FORMAT_DATETIME } from "./contants"
+import { NUMBER_ERROR_MESSAGE, FORMAT_DATETIME } from "./contants"
 import { OptionType } from "./interface"
 
 const DATE_TIME_ERROR_MESSAGE = 'Invalid datetime! Make sure the start time is before the end time!'
@@ -7,16 +7,19 @@ const DATE_TIME_ERROR_MESSAGE = 'Invalid datetime! Make sure the start time is b
 const validateText: any = {
     name: 'Name is required.',
     description: 'Description is required',
+    address: 'Address is required',
     startDate: 'Start Date is required.',
     endDate: 'End Date is required.',
     user: 'User is required.',
+    fee: 'Fee is required.',
     brief_introduction: 'Brief Introduction is required.',
 }
 
-export const validateAmount = (value: string) => {
-    const integerRegex = /^(?=[1-9]+)(?:[1-9]\d*|0)?(?:\.\d+)?$/
-    if (!value || !integerRegex.test(value)) {
-        return AMOUNT_ERROR_MESSAGE
+export const validateNumber = (value: string) => {
+    // regex number
+    const regex = /(\d*\.\d+|\d+),?/
+    if (!value || !regex.test(value)) {
+        return NUMBER_ERROR_MESSAGE
     }
     return ''
 }
@@ -27,6 +30,8 @@ export const validateField = (fieldName: string, value: any) => {
         errorText = validateText[fieldName] || `${fieldName} is required.`
     } else if (fieldName === 'name' && value.length > 200) {
         errorText = 'Please do not enter more than 200 characters!'
+    } else if (fieldName === 'fee' || fieldName === 'amount') {
+        errorText = validateNumber(value)
     }
     return {
         [fieldName]: errorText

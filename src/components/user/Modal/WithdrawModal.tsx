@@ -5,7 +5,7 @@ import styled from "styled-components"
 import { ButtonModal, ModalContent, ModalTitle } from "styled/common"
 import { ErrorText, Input } from "styled/form"
 import { CARTESI_TOKEN } from "utils/contants"
-import { validateAmount } from "utils/validate"
+import { validateNumber } from "utils/validate"
 
 const ErrorMessage = styled(ErrorText)`
     text-align: center;
@@ -39,15 +39,15 @@ const WithdrawModal = ({ isVisible, toggleModal, onAddVoucher }: Props) => {
     const handleChange = (value: string) => {
         setAmount({
             value,
-            errorText: validateAmount(value)
+            errorText: validateNumber(value)
         })
     }
 
     const handleAddVoucher = () => {
-        if (validateAmount(amount.value)) {
+        if (validateNumber(amount.value)) {
             setAmount({
                 ...amount,
-                errorText: validateAmount(amount.value)
+                errorText: validateNumber(amount.value)
             })
         } else {
             onAddVoucher(amount.value, tokenType)

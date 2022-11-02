@@ -1,4 +1,3 @@
-import DeleteModal from 'common/DeleteModal';
 import NoData from 'common/NoData';
 import { createNotifications } from 'common/Notification';
 import Tooltip from 'common/Tooltip';
@@ -17,6 +16,10 @@ import AddEditUser from './Modal/AddEditUser';
 import EditButton from 'images/edit-button.png'
 import DeleteButton from 'images/delete-button.png'
 import { ActionColumn } from 'styled/form';
+import ConfimModal from 'common/ConfimModal';
+import { formatAddress } from 'utils/common';
+import Loading from 'common/Loading';
+import CopyToClipboard from 'react-copy-to-clipboard';
 
 export const CreateButton = styled(SuccessButton)`
     background-color: ${colorTheme.success};
@@ -44,6 +47,7 @@ const Users = () => {
             setIsLoading(true)
             const data = {
                 action: LIST_ROLE,
+                roles: []
             }
             const result = await handleInspectApi(data, metadata)
             if (result && !result.error) {
@@ -91,8 +95,12 @@ const Users = () => {
                     setIsLoading(false)
                 }
             }))
-        } catch (error) {
+        } catch (error: any) {
+            createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
+            setIsLoading(false)
             throw error
+        } finally {
+            setCallMessage('')
         }
     }
 
@@ -106,35 +114,39 @@ const Users = () => {
         setRowData(row)
     }
 
+    const handleCopy = () => {
+        createNotifications(NOTI_TYPE.SUCCESS, 'Copied!')
+    }
+
     const columns = [
         {
             text: 'User',
             dataField: 'user',
             formatter: (cell: string, row: usersType) => (
-                // <CopyToClipboard text={cell} onCopy={handleCopy}>
                 <Tooltip text={cell} placement="top" id={row.user} className="tooltip-sz-max">
-                    <div className='text-long'>{cell}</div>
+                    <CopyToClipboard text={cell} onCopy={handleCopy}>
+                        <div style={{ width: '170px' }}>{formatAddress(cell)}</div>
+                    </CopyToClipboard>
                 </Tooltip>
-                // </CopyToClipboard>
             )
         },
         {
-            text: 'User manage',
+            text: 'User management',
             dataField: 'manage_user',
             formatter: (cell: number) => checkBox(cell)
         },
         {
-            text: 'Token manage',
+            text: 'Token management',
             dataField: 'manage_token',
             formatter: (cell: number) => checkBox(cell)
         },
         {
-            text: 'Post manage',
+            text: 'Post management',
             dataField: 'manage_post',
             formatter: (cell: number) => checkBox(cell)
         },
         {
-            text: 'System manage',
+            text: 'System management',
             dataField: 'manage_system',
             formatter: (cell: number) => checkBox(cell)
         },
@@ -153,11 +165,18 @@ const Users = () => {
     return (
         <>
             <CreateButton onClick={toggleModal}>Create new user</CreateButton>
-            {items?.length > 0 ? (
-                <BootstrapTable columns={columns} data={items} keyField='id' />
+            {isLoading ? (
+                <Loading />
             ) : (
-                <NoData />
+                <>
+                    {items?.length > 0 ? (
+                        <BootstrapTable columns={columns} data={items} keyField='id' />
+                    ) : (
+                        <NoData />
+                    )}
+                </>
             )}
+
             {isVisible && (
                 <AddEditUser
                     isVisible={isVisible}
@@ -167,12 +186,14 @@ const Users = () => {
                 />
             )}
             {isDelete && (
-                <DeleteModal
+                <ConfimModal
                     isVisible={isDelete}
                     toggleModal={() => setIsDelete(false)}
                     onClick={onDelete}
                     isLoading={isLoading}
                     callMessage={callMessage}
+                    buttonText='Delete'
+                    title='Are you sure to delete this user?'
                 />
             )}
         </>

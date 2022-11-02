@@ -58,24 +58,25 @@ const AddEditUser = ({ isVisible, toggleModal, data, getData }: PropsType) => {
 
     const onSubmit = async (e: any) => {
         e.preventDefault()
-        setIsLoading(true)
-        const fieldNeedToCheck = {
-            user: form.user
-        }
-        const checkFields = validateFields(fieldNeedToCheck, initialValue.formErrors)
-
-        if (!checkFields.isError) {
-            const payload: usersTypePayload = {
-                action: !data ? ADD_ROLE : UPDATE_ROLE,
-                id: data ? data.id : 0,
-                manage_post,
-                manage_system,
-                manage_token,
-                manage_user,
-                user
+        try {
+            const fieldNeedToCheck = {
+                user: form.user
             }
+            const checkFields = validateFields(fieldNeedToCheck, initialValue.formErrors)
 
-            try {
+            if (!checkFields.isError) {
+                const payload: usersTypePayload = {
+                    action: !data ? ADD_ROLE : UPDATE_ROLE,
+                    id: data ? data.id : 0,
+                    manage_post,
+                    manage_system,
+                    manage_token,
+                    manage_user,
+                    user
+                }
+
+
+                setIsLoading(true)
                 setCallMessage(WAITING_FOR_CONFIRMATION)
                 const { epoch_index, input_index }: resInput = await sendInput(payload);
                 handleResponse(epoch_index, input_index, ((payload: any) => {
@@ -93,14 +94,18 @@ const AddEditUser = ({ isVisible, toggleModal, data, getData }: PropsType) => {
                         onCancel()
                     }
                 }))
-            } catch (error) {
-                throw error
+
+            } else {
+                setForm({
+                    ...form,
+                    formErrors: { ...checkFields.formErrors }
+                })
             }
-        } else {
-            setForm({
-                ...form,
-                formErrors: { ...checkFields.formErrors }
-            })
+        } catch (error: any) {
+            createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
+            setIsLoading(false)
+            setCallMessage('')
+            throw error
         }
     }
 

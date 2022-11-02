@@ -13,7 +13,7 @@ import { DangerButton, PrimaryButton, SuccessButton } from "styled/common";
 import { FlexLayout } from "styled/main";
 import { cadidateOptions, DELETE_CAMPAIGN, ERROR_MESSAGE, NOTI_TYPE, NO_RESPONSE_ERROR, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "utils/contants";
 import { resInput } from "utils/interface";
-import DeleteModal from "common/DeleteModal";
+import ConfimModal from "common/ConfimModal";
 
 const EditButton = styled(PrimaryButton)`
     margin-right: 10px;
@@ -86,6 +86,7 @@ const ActionButton = () => {
         } catch (error) {
             createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
             setIsLoading(false)
+            setCallMessage('')
             toggleModal()
             throw error
         }
@@ -110,12 +111,14 @@ const ActionButton = () => {
                         <DangerButton onClick={toggleModal}>Delete</DangerButton>
                     </FlexLayoutRight>
                     {isVisible && (
-                        <DeleteModal
+                        <ConfimModal
                             isVisible={isVisible}
                             toggleModal={toggleModal}
                             onClick={onDelete}
                             isLoading={isLoading}
                             callMessage={callMessage}
+                            buttonText='Delete'
+                            title='Are you sure to delete this campaign?'
                         />
                     )}
                 </>

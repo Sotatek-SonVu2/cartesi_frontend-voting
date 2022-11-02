@@ -33,7 +33,6 @@ export const LoadingWrapper = styled.div<LoadingType>`
       top: 0;
       background: rgb(0 0 0 / 38%);
       z-index: 10;
-      width: 100%;
     `}
 
     display: flex;
@@ -41,6 +40,7 @@ export const LoadingWrapper = styled.div<LoadingType>`
     justify-content: center;
     align-items: center;
     height: 100%;
+    width: 100%;
     min-height: 310px;
     color: #fff;
 

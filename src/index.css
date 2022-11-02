@@ -38,6 +38,13 @@ code {
     left: 39% !important;
 }
 
+.tooltip-admin-icon {
+    position: fixed;
+    left: 60px !important;
+    bottom: 25px !important;
+    top: unset !important;
+}
+
 /* scrollbar */
 /* width */
 ::-webkit-scrollbar {

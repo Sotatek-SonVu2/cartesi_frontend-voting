@@ -210,6 +210,7 @@ const Withdraw = () => {
             createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
         } finally {
             setIsWithdrawLoading(false)
+            setCallMessage('')
         }
     }
 

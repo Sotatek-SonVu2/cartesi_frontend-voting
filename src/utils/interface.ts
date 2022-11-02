@@ -181,5 +181,25 @@ export interface usersTypePayload {
     user: string
 }
 
+export interface tokenType {
+    id?: number
+    fee: number
+    name: string
+    other_fee?: number
+    address: string
+    formErrors?: {
+        address?: string | undefined
+        name?: string | undefined
+        fee?: string | undefined
+    }
+}
+
+export interface tokenTypePayload {
+    action: string
+    id?: number
+    fee: number
+    name: string
+    address: string
+}
 
 

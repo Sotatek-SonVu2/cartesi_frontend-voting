@@ -15,6 +15,7 @@ export const FormItem = styled.div`
 
 export const ActionColumn = styled.div`
   display: flex;
+  justify-content: center;
 
   & img {
     margin: 0px 3px;
@@ -44,6 +45,7 @@ export const Input = styled.input`
     outline: none;
     font-family: monospace;
 `
+
 
 export const TextArea = styled.textarea`
     width: 100%;

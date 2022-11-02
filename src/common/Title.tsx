@@ -9,7 +9,7 @@ interface PropsType {
     placement?: 'top' | 'right' | 'bottom' | 'left',
     type?: 'dark' | 'success' | 'warning' | 'error' | 'info' | 'light';
     titleStyle?: string
-    className?: 'tooltip-sz-md' | 'tooltip-sz-sm' | 'tooltip-sz-max' | 'tooltip-modal' //index.css
+    className?: string //'tooltip-sz-md' | 'tooltip-sz-sm' | 'tooltip-sz-max' | 'tooltip-modal ' | 'tooltip-admin-icon' (index.css)
 }
 
 const Title = ({ text, userGuideType, placement = 'top', type = "light", titleStyle, className }: PropsType) => {

@@ -60,7 +60,7 @@ const Main = () => {
                 <Tooltip
                     text='Go to Admin page.'
                     id='admin'
-                    className="tooltip-sz-sm"
+                    className="tooltip-sz-sm tooltip-admin-icon"
                     placement="right"
                 >
                     <Setting

@@ -9,7 +9,7 @@ export const Ttable = styled.table`
 export const Theader = styled.tr`
     & th {
         border-bottom: 1px solid #6c6b6b; 
-        padding-bottom: 10px;
+        padding: 0 5px 10px
     }
 `
 

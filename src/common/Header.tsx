@@ -5,7 +5,7 @@ import WalletIcon from "images/wallet-icon.png";
 import { useEffect, useState } from "react";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { clearAccount } from "reducers/authSlice";
 import { ROUTER_PATH } from "routes/contants";
 import { AppDispatch, RootState } from "store";

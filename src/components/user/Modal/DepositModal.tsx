@@ -12,9 +12,9 @@ import styled from "styled-components"
 import { ButtonModal, ModalContent, ModalTitle } from "styled/common"
 import { ErrorText, Input } from "styled/form"
 import { Loader } from "styled/loading"
-import { CARTESI_TOKEN, NETWORK_ERROR_MESSAGE, NOTI_TYPE, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "utils/contants"
+import { CARTESI_TOKEN, ERROR_MESSAGE, NETWORK_ERROR_MESSAGE, NOTI_TYPE, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "utils/contants"
 import { InputKeys } from "utils/types"
-import { validateAmount } from "utils/validate"
+import { validateNumber } from "utils/validate"
 
 type Props = {
     isVisible: boolean
@@ -77,15 +77,15 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
     const handleChange = (value: string) => {
         setAmount({
             value,
-            errorText: validateAmount(value)
+            errorText: validateNumber(value)
         })
     }
 
     const handleDeposit = async () => {
-        if (validateAmount(amount.value)) {
+        if (validateNumber(amount.value)) {
             setAmount({
                 ...amount,
-                errorText: validateAmount(amount.value)
+                errorText: validateNumber(amount.value)
             })
         } else {
             try {
@@ -133,13 +133,15 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
                     })
                     dispatch(getDepositInfo())
                     createNotifications(NOTI_TYPE.SUCCESS, WAITING_RESPONSE_FROM_SERVER_MESSAGE)
+                    toggleModal()
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, 'Your account does not have enough CTSI tokens!')
                 }
             } catch (error: any) {
+                createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
                 throw error
             } finally {
-                toggleModal()
+                setCallMessage('')
                 setIsLoading(false)
             }
         }

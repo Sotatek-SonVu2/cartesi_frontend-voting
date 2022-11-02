@@ -157,6 +157,7 @@ const Voting = () => {
             createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
             setCandidateId(0)
             setIsLoadVoting(false)
+            setCallMessage('')
             throw error
         }
     }
