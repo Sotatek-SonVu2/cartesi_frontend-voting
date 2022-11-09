@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Main from "./pages/Main";
 import { ROUTER_PATH } from "./routes/contants";
 import { MainWrapper } from "./styled/main";
+import Tokens from "components/user/Tokens";
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
             <Route element={<Result />} path={ROUTER_PATH.RESULT + '/:campaignId'} />
             <Route element={<Withdraw />} path={ROUTER_PATH.WITHDRAW} />
             <Route element={<History />} path={ROUTER_PATH.HISTORY} />
+            <Route element={<Tokens />} path={ROUTER_PATH.TOKENS} />
           </Route>
           <Route
             path="*"

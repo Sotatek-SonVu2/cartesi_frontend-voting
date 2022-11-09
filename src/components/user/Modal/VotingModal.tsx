@@ -2,6 +2,8 @@ import ModalComponent from "common/Modal"
 import TokensList from "common/TokensList"
 import confirmIcon from 'images/exclamation_icon.svg'
 import { useState } from "react"
+import { useSelector } from "react-redux"
+import { RootState } from "store"
 import { ButtonModal, ModalContent, ModalTitle } from "styled/common"
 import { CARTESI_TOKEN } from "utils/contants"
 
@@ -12,7 +14,8 @@ type Props = {
 }
 
 const VotingModal = ({ isVisible, toggleModal, onClick }: Props) => {
-    const [tokenType, setTokenType] = useState<string>(CARTESI_TOKEN)
+    const { tokenListing, isLoading } = useSelector((state: RootState) => state.token)
+    const [token, setToken] = useState<string>(tokenListing[0]?.name)
 
     return (
         <ModalComponent isVisible={isVisible} toggleModal={toggleModal}>
@@ -23,9 +26,14 @@ const VotingModal = ({ isVisible, toggleModal, onClick }: Props) => {
                 </ModalTitle>
                 <ModalContent>
                     <p className="modal-text-sm">The DApp will take 10 tokens from your wallet to perform this operation!</p>
-                    <TokensList onChooseCoin={(token: string) => setTokenType(token)} tokenType={tokenType} />
+                    <TokensList
+                        tokenListing={tokenListing}
+                        isLoading={isLoading}
+                        onChooseCoin={(value: string) => setToken(value)}
+                        tokenType={token}
+                    />
                 </ModalContent>
-                <ButtonModal onClick={() => onClick(tokenType)} success>Vote</ButtonModal>
+                <ButtonModal onClick={() => onClick(token)} disabled={isLoading} success>Vote</ButtonModal>
             </div>
         </ModalComponent>
     )

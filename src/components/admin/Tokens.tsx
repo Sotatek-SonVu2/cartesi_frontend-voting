@@ -1,25 +1,25 @@
+import ConfimModal from 'common/ConfimModal';
+import Loading from 'common/Loading';
 import NoData from 'common/NoData';
 import { createNotifications } from 'common/Notification';
 import Tooltip from 'common/Tooltip';
-import { handleInspectApi } from 'helper/handleInspectApi';
+import { handleResponse } from 'helper/handleResponse';
+import { sendInput } from 'helper/sendInput';
+import DeleteButton from 'images/delete-button.png';
+import EditButton from 'images/edit-button.png';
 import { useEffect, useState } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTokens } from 'reducers/tokenSlice';
+import { AppDispatch, RootState } from 'store';
 import styled from 'styled-components';
 import { colorTheme, SuccessButton } from 'styled/common';
-import { DELETE_TOKEN, ERROR_MESSAGE, LIST_TOKEN, NOTI_TYPE, NO_RESPONSE_ERROR, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from 'utils/contants';
-import { MetadataType, resInput, tokenType } from 'utils/interface';
-import AddEditToken from './Modal/AddEditToken';
-import EditButton from 'images/edit-button.png'
-import DeleteButton from 'images/delete-button.png'
 import { ActionColumn } from 'styled/form';
-import ConfimModal from 'common/ConfimModal';
 import { formatAddress } from 'utils/common';
-import { sendInput } from 'helper/sendInput';
-import { handleResponse } from 'helper/handleResponse';
-import Loading from 'common/Loading';
-import CopyToClipboard from 'react-copy-to-clipboard';
+import { DELETE_TOKEN, ERROR_MESSAGE, NOTI_TYPE, NO_RESPONSE_ERROR, TOKEN_STATUS, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from 'utils/contants';
+import { resInput, tokenType } from 'utils/interface';
+import AddEditToken from './Modal/AddEditToken';
 
 export const CreateButton = styled(SuccessButton)`
     background-color: ${colorTheme.success};
@@ -30,32 +30,16 @@ export const CreateButton = styled(SuccessButton)`
 `
 
 const Tokens = () => {
-    const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
-    const [items, setItems] = useState<tokenType[]>([])
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const dispatch = useDispatch<AppDispatch>()
+    const { tokenListing, isLoading } = useSelector((state: RootState) => state.token)
+    const [loading, setLoading] = useState<boolean>(false)
     const [isVisible, setIsVisible] = useState<boolean>(false)
     const [isDelete, setIsDelete] = useState<boolean>(false)
     const [rowData, setRowData] = useState<tokenType | null>(null)
     const [callMessage, setCallMessage] = useState<string>('')
 
     const getData = async () => {
-        try {
-            setIsLoading(true)
-            const data = {
-                action: LIST_TOKEN,
-            }
-            const result = await handleInspectApi(data, metadata)
-            if (result && !result.error) {
-                setItems(result.data)
-            } else {
-                createNotifications(NOTI_TYPE.DANGER, result?.error || ERROR_MESSAGE)
-            }
-        } catch (error) {
-            createNotifications(NOTI_TYPE.DANGER, ERROR_MESSAGE)
-            throw error
-        } finally {
-            setIsLoading(false)
-        }
+        dispatch(getTokens())
     }
 
     const toggleModal = () => {
@@ -69,7 +53,7 @@ const Tokens = () => {
 
     const onDelete = async () => {
         try {
-            setIsLoading(true)
+            setLoading(true)
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const payload = {
                 action: DELETE_TOKEN,
@@ -80,19 +64,19 @@ const Tokens = () => {
                 if (!payload || payload.message !== NO_RESPONSE_ERROR && !payload.error) {
                     const message = payload ? payload.message : WAITING_RESPONSE_FROM_SERVER_MESSAGE
                     createNotifications(NOTI_TYPE.SUCCESS, message)
-                    setIsLoading(false)
+                    setLoading(false)
                     setIsDelete(false)
                     getData()
                 } else if (payload.message === NO_RESPONSE_ERROR) {
                     setCallMessage(`Waiting: ${payload.times}s.`)
                 } else {
                     createNotifications(NOTI_TYPE.DANGER, payload?.error || ERROR_MESSAGE)
-                    setIsLoading(false)
+                    setLoading(false)
                 }
             }))
         } catch (error: any) {
             createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
-            setIsLoading(false)
+            setLoading(false)
             setCallMessage('')
             throw error
         }
@@ -112,11 +96,22 @@ const Tokens = () => {
         createNotifications(NOTI_TYPE.SUCCESS, 'Copied!')
     }
 
+    const dataTable = () => {
+        const data = tokenListing.filter((token: tokenType) => token.is_disabled === TOKEN_STATUS.ACTIVE)
+        return <BootstrapTable columns={columns} data={data} keyField='address' />
+    }
+
     const columns = [
+        {
+            text: 'Icon',
+            dataField: 'icon',
+            formatter: (cell: string) => (
+                <img src={cell} alt="token-icon" width={20} />
+            )
+        },
         {
             text: 'Token',
             dataField: 'name',
-
         },
         {
             text: 'Address',
@@ -152,8 +147,8 @@ const Tokens = () => {
                 <Loading />
             ) : (
                 <>
-                    {items?.length > 0 ? (
-                        <BootstrapTable columns={columns} data={items} keyField='address' />
+                    {tokenListing?.length > 0 ? (
+                        dataTable()
                     ) : (
                         <NoData />
                     )}
@@ -172,7 +167,7 @@ const Tokens = () => {
                     isVisible={isDelete}
                     toggleModal={() => setIsDelete(false)}
                     onClick={onDelete}
-                    isLoading={isLoading}
+                    isLoading={loading}
                     callMessage={callMessage}
                     buttonText='Delete'
                     title='Are you sure to delete this token?'

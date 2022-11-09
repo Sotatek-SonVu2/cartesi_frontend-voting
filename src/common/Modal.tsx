@@ -43,10 +43,10 @@ const ModalComponent = ({ isVisible, toggleModal, children, title, isLoading, wi
                             titleStyle='color: #000; font-size: 17px;'
                             className="tooltip-modal"
                         />
-                        <img src={CloseIcon} alt="close icon" width={13} onClick={() => onToggleModal()} />
+                        <img src={CloseIcon} alt="close icon" width={13} onClick={onToggleModal} />
                     </ModalHeader>
                 ) : (
-                    <img className="closeIcon" src={CloseIcon} alt="close icon" width={13} onClick={toggleModal} />
+                    <img className="closeIcon" src={CloseIcon} alt="close icon" width={13} onClick={onToggleModal} />
                 )}
                 <ModalBody>
                     {children}

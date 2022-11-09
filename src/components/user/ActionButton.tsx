@@ -1,19 +1,18 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import ConfimModal from "common/ConfimModal";
 import { createNotifications } from "common/Notification";
 import ReactSelect from "common/ReactSelect";
 import { handleResponse } from "helper/handleResponse";
 import { sendInput } from "helper/sendInput";
-import { onChangeStatus } from "reducers/campaignSlice";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTER_PATH } from "routes/contants";
-import { AppDispatch, RootState } from "store";
+import { RootState } from "store";
+import styled from "styled-components";
 import { DangerButton, PrimaryButton, SuccessButton } from "styled/common";
 import { FlexLayout } from "styled/main";
 import { cadidateOptions, DELETE_CAMPAIGN, ERROR_MESSAGE, NOTI_TYPE, NO_RESPONSE_ERROR, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "utils/contants";
 import { resInput } from "utils/interface";
-import ConfimModal from "common/ConfimModal";
 
 const EditButton = styled(PrimaryButton)`
     margin-right: 10px;
@@ -33,30 +32,31 @@ const FlexLayoutRight = styled(FlexLayout)`
     margin-bottom: 20px;
 `
 
-const ActionButton = () => {
-    const [isVisible, setIsVisible] = useState<boolean>(false)
+interface PropsType {
+    onChangeType: (value: string) => void
+    isActionButton: {
+        creator: string
+        isVisible: boolean
+    }
+}
+
+const ActionButton = ({ onChangeType, isActionButton }: PropsType) => {
+    const [isOpen, setIsOpen] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [callMessage, setCallMessage] = useState<string>('')
-    const { creator, isOpenVoting } = useSelector((state: RootState) => state.campaign.isVisibleActionButton)
+    const { creator, isVisible } = isActionButton
     const addressWallet = useSelector((state: RootState) => state.auth.address).toLowerCase()
     const navigate = useNavigate();
-    const dispatch = useDispatch<AppDispatch>()
     const location = useLocation()
     const pathname = `/${location.pathname.split("/")[1]}`
     const paramId = location.pathname.split("/")[2]
 
     const onChangeSelect = (opt: any) => {
-        dispatch(onChangeStatus(opt.value))
+        onChangeType(opt.value)
     }
 
-    useEffect(() => {
-        return (() => {
-            dispatch(onChangeStatus(cadidateOptions[0].value))
-        })
-    })
-
     const toggleModal = () => {
-        setIsVisible(!isVisible);
+        setIsOpen(!isOpen);
     }
 
     const onDelete = async () => {
@@ -99,20 +99,21 @@ const ActionButton = () => {
                     <ReactSelect
                         options={cadidateOptions}
                         onChange={onChangeSelect}
+                        className="basic-single"
                     />
                     <CreateButton onClick={() => navigate(ROUTER_PATH.ADD_CAMPAIGN)}>Create new campaign</CreateButton>
                 </FlexLayoutBetween>
             )
-        } else if (pathname === ROUTER_PATH.VOTING && creator === addressWallet && isOpenVoting) {
+        } else if (pathname === ROUTER_PATH.VOTING && creator === addressWallet && isVisible) {
             return (
                 <>
                     <FlexLayoutRight>
                         <EditButton onClick={() => navigate(`${ROUTER_PATH.EDIT_CAMPAIGN}/${paramId}`)}>Edit</EditButton>
                         <DangerButton onClick={toggleModal}>Delete</DangerButton>
                     </FlexLayoutRight>
-                    {isVisible && (
+                    {isOpen && (
                         <ConfimModal
-                            isVisible={isVisible}
+                            isVisible={isOpen}
                             toggleModal={toggleModal}
                             onClick={onDelete}
                             isLoading={isLoading}

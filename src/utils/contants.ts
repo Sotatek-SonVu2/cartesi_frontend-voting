@@ -18,7 +18,7 @@ export const DELETE_TOKEN = 'DELETE_TOKEN'
 export const DECREASE_TOKEN = 'DECREASE_TOKEN'
 export const RESULT = 'RESULT'
 export const DELETE_CAMPAIGN = 'DELETE_CAMPAIGN'
-export const DEPOSIT_INFO = 'DEPOSIT_INFO'
+export const USER_INFO = 'USER_INFO'
 export const WITHDRAW = 'WITHDRAW'
 export const EXECUTE_VOUCHER = 'EXECUTE_VOUCHER'
 export const SAVE_EXECUTED_VOUCHER = 'SAVE_EXECUTED_VOUCHER'
@@ -26,8 +26,12 @@ export const LIST_EXECUTED_VOUCHER = 'LIST_EXECUTED_VOUCHER'
 export const ACTION_HISTORY = 'ACTION_HISTORY'
 export const SYSTEM = 'SYSTEM'
 export const REMOVE_NOTIFICATION = 'REMOVE_NOTIFICATION'
-
 export const NOTIFICATION = 'NOTIFICATION'
+
+export const GET_ALL_ACTIVE = 'GET_ALL_ACTIVE'
+export const GET_ALL_HAS_COIN = 'GET_ALL_HAS_COIN'
+export const GET_ACTIVE_HAS_COIN = 'GET_ACTIVE_HAS_COIN'
+
 export const FORMAT_DATETIME = 'YYYY-MM-DD HH:mm:ss'
 export const FORMAT_DATETIME_2 = 'DD/MM/YYYY HH:mm:ss'
 export const ERROR_MESSAGE = 'Something went wrong! Please try again!'
@@ -39,9 +43,7 @@ export const NUMBER_ERROR_MESSAGE = 'Please enter the number'
 export const WAITING_RESPONSE_FROM_SERVER_MESSAGE = 'The transaction is currently being processed. Please wait 3 to 5 minutes. Results will be returned as quickly as possible!'
 export const NO_RESPONSE_ERROR = 'NO_RESPONSE_ERROR'
 export const WAITING_FOR_CONFIRMATION = 'Waiting for confirmation...'
-export const CARTESI_TOKEN = 'CartesiToken'
-export const ETHEREUM_TOKEN = 'EthereumToken'
-export const SOTATEK_TOKEN = 'SotatekToken'
+export const CARTESI_TOKEN = 'CTSI'
 
 export const NOTI_TYPE: any = {
     SUCCESS: 'success',
@@ -49,6 +51,11 @@ export const NOTI_TYPE: any = {
     INFO: 'info',
     DEFAULT: 'default',
     WARNING: 'warning'
+}
+
+export const TOKEN_STATUS = {
+    ACTIVE: 0,
+    DISABLED: 1
 }
 
 export const WITHDRAW_RADIO_FILTER_STATUS = {
@@ -157,6 +164,14 @@ export const USER_AUTH = {
 
 export const USER_AUTH_ARRAY = [
     {
+        label: 'User',
+        key: 'manage_user',
+    },
+    {
+        label: 'Token',
+        key: 'manage_token',
+    },
+    {
         label: 'Post',
         key: 'manage_post',
     },
@@ -164,13 +179,4 @@ export const USER_AUTH_ARRAY = [
         label: 'System',
         key: 'manage_system',
     },
-    {
-        label: 'Token',
-        key: 'manage_token',
-    },
-    {
-        label: 'User',
-        key: 'manage_user',
-    },
-
 ]

@@ -1,19 +1,18 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
 import { handleInspectApi } from "helper/handleInspectApi";
 import EmptyIcon from "images/empty_notifications.svg";
 import NotificationIcon from "images/notification.svg";
 import BellError from "images/notify_error.svg";
 import BellSuccess from "images/notify_success.svg";
 import reloadIcon from "images/reload.png";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { ROUTER_PATH } from "routes/contants";
 import { RootState } from "store";
+import styled from "styled-components";
 import { NoDataWrapper, ReloadImage } from "styled/common";
 import { Badge, NotifyBottom, NotifyContent, NotifyHeader, NotifyIcon, NotifyItem, NotifyList, NotifySection } from "styled/header";
 import { FlexLayout } from "styled/main";
-import { tokenConfig } from "utils/tokenConfig";
 import { ERROR_MESSAGE, NOTIFICATION, NOTI_TYPE } from "utils/contants";
 import { MetadataType } from "utils/interface";
 import { createNotifications } from "./Notification";
@@ -26,15 +25,18 @@ const EmptyNotification = styled(NoDataWrapper)`
     }
 `
 
-const NETWORK: any = process.env.REACT_APP_NETWORK || ''
+const PAGE_DEFAULTS = {
+    currentPage: 1,
+    pageSize: 10,
+    total: 0
+}
 
 const getMessage = (item: any) => {
     const { action, payload } = item
     const parse = JSON.parse(payload)
     const { campaign, type, error, candidate, amount, reason, token } = parse
-    const dataToken = tokenConfig[NETWORK].find((item: any) => item.address.toLowerCase() === token)
-    const tokenIcon = dataToken?.token_icon || ''
-    const tokenSymbol = dataToken?.symbol || ''
+    const tokenIcon = token?.icon || ''
+    const tokenName = token?.name || ''
     const successMessage: any = {
         CREATE_CAMPAIGN: <span>You created campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> successfully</span>,
         VOTE: (
@@ -44,12 +46,12 @@ const getMessage = (item: any) => {
                 in campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> successfully
             </span>
         ),
-        DEPOSIT: <span>You deposited to the DApp {amount} <img src={tokenIcon} alt='token_icon' width={10} /> {tokenSymbol} tokens successfully.</span>,
+        DEPOSIT: <span>You deposited to the DApp {amount} <img src={tokenIcon} alt='token_icon' width={10} /> {tokenName} tokens successfully.</span>,
         EDIT_CAMPAIGN: <span>You edited info of campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> successfully</span>,
-        DECREASE_TOKEN: <span>You had been charged {amount} <img src={tokenIcon} alt='token_icon' width={10} /> {tokenSymbol} tokens because {reason}</span>,
+        DECREASE_TOKEN: <span>You had been charged {amount} <img src={tokenIcon} alt='token_icon' width={10} /> {tokenName} tokens because {reason}</span>,
         DELETE_CAMPAIGN: <span>You deleted campaing {campaign?.name} successfully</span>,
         WITHDRAW: <Link to={ROUTER_PATH.WITHDRAW}>
-            You requested to withdraw {amount} <img src={tokenIcon} alt='token_icon' width={10} /> {tokenSymbol} tokens successfully.
+            You requested to withdraw {amount} <img src={tokenIcon} alt='token_icon' width={10} /> {tokenName} tokens successfully.
         </Link>,
     }
 
@@ -59,22 +61,16 @@ const getMessage = (item: any) => {
             Vote for candidate <Link to={`${ROUTER_PATH.RESULT}/${campaign?.id}`}> {candidate?.name} </Link>
             in campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> failed because {error}
         </span>,
-        DEPOSIT: <span>Deposit {amount} <img src={tokenIcon} alt='token_icon' width={10} /> {tokenSymbol} token to DApp failed because {error}</span>,
+        DEPOSIT: <span>Deposit {amount} <img src={tokenIcon} alt='token_icon' width={10} /> {tokenName} token to DApp failed because {error}</span>,
         EDIT_CAMPAIGN: <span>Edit campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> failed because {error}</span>,
         DELETE_CAMPAIGN: <span>Delete campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> failed because {error}</span>,
-        WITHDRAW: <span>Withdraw {amount} <img src={tokenIcon} alt='token_icon' width={10} /> {tokenSymbol} token failed because {error}</span>,
+        WITHDRAW: <span>Withdraw {amount} <img src={tokenIcon} alt='token_icon' width={10} /> {tokenName} token failed because {error}</span>,
         SYSTEM: <span>System error: {error}</span>
     }
     return {
         icon: type === 'error' ? BellError : BellSuccess,
         message: type === 'error' ? errorMessage[action] : successMessage[action]
     }
-}
-
-const PAGE_DEFAULTS = {
-    currentPage: 1,
-    pageSize: 10,
-    total: 0
 }
 
 const NotificationList = () => {

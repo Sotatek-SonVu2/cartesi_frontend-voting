@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../reducers/authSlice';
-import campaignReducer from '../reducers/campaignSlice'
+import tokenReducer from '../reducers/tokenSlice'
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
-        campaign: campaignReducer
+        token: tokenReducer
     },
 });
 // Infer the `RootState` and `AppDispatch` types from the store itself

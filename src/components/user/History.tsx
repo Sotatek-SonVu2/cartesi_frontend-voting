@@ -86,6 +86,7 @@ const History = () => {
                     <ReactSelect
                         options={historyOptions}
                         onChange={onChangeSelect}
+                        className="basic-single"
                     />
                 </FlexLayoutBetween>
                 <InfiniteScroll

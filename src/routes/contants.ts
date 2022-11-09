@@ -10,4 +10,5 @@ export const ROUTER_PATH = {
     EDIT_CAMPAIGN: '/edit-campaign',
     WITHDRAW: '/withdraw',
     HISTORY: '/history',
+    TOKENS: '/tokens'
 }

@@ -9,11 +9,12 @@ import DepositInfo from "../components/user/DepositInfo";
 import { ROUTER_PATH } from "../routes/contants";
 import { colorTheme, SuccessButton } from "../styled/common";
 import { Container, ContentWrapper, Setting, SubTitle, Title } from "../styled/main";
-import { USER_GUIDE } from "../utils/contants";
+import { LIST_STATUS, USER_GUIDE } from "../utils/contants";
 import { tourConfig } from "../utils/tourConfig";
 import SettingIcon from '../images/gear.png'
 import Tooltip from "common/Tooltip";
-
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 
 const IS_USER_GUIDE_OPEN = 'false'
 
@@ -26,10 +27,16 @@ const Button = styled(SuccessButton)`
 const Main = () => {
     const location = useLocation()
     const navigate = useNavigate();
+    const is_admin = useSelector((state: RootState) => state.auth.is_admin)
     const pathname = `/${location.pathname.split("/")[1]}`
     const user_guide = localStorage.getItem(USER_GUIDE) === IS_USER_GUIDE_OPEN || pathname !== ROUTER_PATH.HOMEPAGE ? false : true
     const [isVisible, setIsVisible] = useState<boolean>(user_guide)
     const [isTourOpen, setIsTourOpen] = useState<boolean>(false)
+    const [campaignType, setCampaignType] = useState<string>(LIST_STATUS.ALL);
+    const [isActionButton, setIsActionButton] = useState({
+        creator: '',
+        isVisible: false
+    });
 
     const onToggle = () => {
         setIsVisible(!isVisible)
@@ -53,23 +60,30 @@ const Main = () => {
                 <Title>DApp Voting</Title>
                 <SubTitle>Where your opinion matters!</SubTitle>
                 <DepositInfo />
-                <ActionButton />
+                <ActionButton
+                    isActionButton={isActionButton}
+                    onChangeType={(value: string) => setCampaignType(value)}
+                />
                 <ContentWrapper>
-                    <Outlet />
-                </ContentWrapper>
-                <Tooltip
-                    text='Go to Admin page.'
-                    id='admin'
-                    className="tooltip-sz-sm tooltip-admin-icon"
-                    placement="right"
-                >
-                    <Setting
-                        src={SettingIcon}
-                        alt="settingIcon"
-                        width={40}
-                        onClick={() => navigate(ROUTER_PATH.ADMIN, { replace: true })}
+                    <Outlet context={
+                        [campaignType, setCampaignType, isActionButton, setIsActionButton]}
                     />
-                </Tooltip>
+                </ContentWrapper>
+                {is_admin && (
+                    <Tooltip
+                        text='Go to Admin page'
+                        id='admin'
+                        className="tooltip-sz-sm tooltip-admin-icon"
+                        placement="right"
+                    >
+                        <Setting
+                            src={SettingIcon}
+                            alt="settingIcon"
+                            width={40}
+                            onClick={() => navigate(ROUTER_PATH.ADMIN, { replace: true })}
+                        />
+                    </Tooltip>
+                )}
             </Container>
             {isVisible && (
                 <UserGuideModal

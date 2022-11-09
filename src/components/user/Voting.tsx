@@ -1,20 +1,18 @@
-import moment from "moment"
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { useNavigate, useParams } from "react-router-dom"
-import styled from "styled-components"
 import Loading from "common/Loading"
 import NoData from "common/NoData"
 import { createNotifications } from "common/Notification"
 import Title from "common/Title"
-import { configToken } from "helper/contractWithSigner"
 import { handleInspectApi } from "helper/handleInspectApi"
 import { handleResponse } from "helper/handleResponse"
 import { sendInput } from "helper/sendInput"
+import moment from "moment"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate, useOutletContext, useParams } from "react-router-dom"
 import { getDepositInfo } from "reducers/authSlice"
-import { onVisibleActionButton } from "reducers/campaignSlice"
 import { ROUTER_PATH } from "routes/contants"
 import { AppDispatch, RootState } from "store"
+import styled from "styled-components"
 import { Content, DefaultButton, FlexLayoutBtn, PrimaryButton, SuccessButton } from "styled/common"
 import { convertUtcToLocal } from "utils/common"
 import {
@@ -22,11 +20,10 @@ import {
     ERROR_MESSAGE,
     FORMAT_DATETIME,
     NOTI_TYPE,
-    NO_RESPONSE_ERROR,
-    WAITING_RESPONSE_FROM_SERVER_MESSAGE,
-    VOTE,
-    WAITING_FOR_CONFIRMATION
+    NO_RESPONSE_ERROR, VOTE,
+    WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE
 } from "utils/contants"
+import getTokenAddress from "utils/getTokenAddress"
 import { CampaignVotingType, CandidatesVotingType, MetadataType, resInput } from "utils/interface"
 import VotingItem from "./Item/Voting"
 import VotingModal from "./Modal/VotingModal"
@@ -64,8 +61,10 @@ const Voting = () => {
         candidates: [],
         voted: {}
     })
+    const [campaignType, setCampaignType, isActionButton, setIsActionButton] = useOutletContext<any>();
     const dispatch = useDispatch<AppDispatch>()
     const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
+    const { tokenListing } = useSelector((state: RootState) => state.token)
     const { campaignId } = useParams();
     const navigate = useNavigate();
 
@@ -86,10 +85,6 @@ const Voting = () => {
                         const now = moment(new Date()).format(FORMAT_DATETIME)
                         const isStartTime = moment(start_time).isBefore(now) // Compare start time with current datetime
                         const isEndTime = moment(end_time).isBefore(now) // Compare end time with current datetime
-                        const isVisibleActionButton = {
-                            creator: result.campaign[0].creator,
-                            isOpenVoting: !isStartTime
-                        }
                         setIsCloseVoting(!isStartTime || isEndTime)
                         setData({
                             campaign: {
@@ -101,7 +96,10 @@ const Voting = () => {
                             voted: result.voted
                         })
                         setCandidateId(result.voted?.candidate_id)
-                        dispatch(onVisibleActionButton(isVisibleActionButton))
+                        setIsActionButton({
+                            creator: result.campaign[0].creator,
+                            isVisible: !isStartTime
+                        })
                     } else {
                         createNotifications(NOTI_TYPE.DANGER, result?.error || ERROR_MESSAGE)
                     }
@@ -126,7 +124,7 @@ const Voting = () => {
         setIsVisible(!isVisible);
     }
 
-    const handleVoting = async (tokenType: string) => {
+    const handleVoting = async (token: string) => {
         toggleModal()
         if (!candidateId) return createNotifications(NOTI_TYPE.DANGER, 'Please choose a candidate!')
         try {
@@ -135,7 +133,7 @@ const Voting = () => {
                 action: VOTE,
                 candidate_id: candidateId,
                 campaign_id: campaignId && parseInt(campaignId),
-                token_address: configToken(tokenType)?.tokenAddress.toLowerCase()
+                token_address: getTokenAddress(tokenListing, token)
             }
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);

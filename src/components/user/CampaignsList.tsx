@@ -13,10 +13,11 @@ import { FlexLayout } from "styled/main";
 import { ERROR_MESSAGE, LIST_CAMPAIGN, NOTI_TYPE } from "utils/contants";
 import { CampaignDataType, MetadataType } from "utils/interface";
 import CampaignItem from "./Item/Campaign";
+import { useOutletContext } from "react-router-dom";
 
 const CampaignsList = () => {
     const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
-    const listStatus = useSelector((state: RootState) => state.campaign.listStatus)
+    const [campaignType] = useOutletContext<any>();
     const [items, setItems] = useState<CampaignDataType[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [isMyCampaign, setIsMyCampaign] = useState<boolean>(false)
@@ -33,7 +34,7 @@ const CampaignsList = () => {
                 action: LIST_CAMPAIGN,
                 page: paging.currentPage,
                 limit: paging.pageSize,
-                type: listStatus,
+                type: campaignType,
                 my_campaign: isMyCampaign
             }
             const result = await handleInspectApi(data, metadata)
@@ -61,7 +62,7 @@ const CampaignsList = () => {
 
     useEffect(() => {
         getData()
-    }, [paging.currentPage, listStatus, isMyCampaign])
+    }, [paging.currentPage, campaignType, isMyCampaign])
 
     return (
         <>

@@ -17,6 +17,10 @@ const defaultSteps = [
         content: "Let's press this button to view your activity history.",
     },
     {
+        selector: '.tokens-step',
+        content: "Let's press this button to view the list of tokens that the system supports.",
+    },
+    {
         selector: '.notification-step',
         content: "Let's press this icon to view system notifications and your actions.",
     },

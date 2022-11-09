@@ -1,17 +1,17 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createNotifications } from '../common/Notification';
 import { handleInspectApi } from '../helper/handleInspectApi';
-import { ADDRESS_WALLET, DEPOSIT_INFO, ERROR_MESSAGE, NOTI_TYPE } from '../utils/contants';
-import { AuthState } from '../utils/interface';
+import { ADDRESS_WALLET, USER_INFO, ERROR_MESSAGE, NOTI_TYPE } from '../utils/contants';
+import { AuthState, MetadataType } from '../utils/interface';
 
 export const getDepositInfo = createAsyncThunk(
     'auth/depositInfo',
     async () => {
         try {
             const data = {
-                action: DEPOSIT_INFO,
+                action: USER_INFO,
             }
-            const metadata = {
+            const metadata: MetadataType = {
                 msg_sender: localStorage.getItem(ADDRESS_WALLET)?.toLowerCase() || '',
                 epoch_index: 0,
                 input_index: 0,
@@ -20,7 +20,7 @@ export const getDepositInfo = createAsyncThunk(
             }
             const result = await handleInspectApi(data, metadata)
             if (result && !result.error) {
-                return result.data
+                return result
             } else {
                 createNotifications(NOTI_TYPE.DANGER, result?.error || ERROR_MESSAGE)
             }
@@ -30,8 +30,6 @@ export const getDepositInfo = createAsyncThunk(
         }
     }
 )
-
-
 
 const initialState: AuthState = {
     address: localStorage.getItem(ADDRESS_WALLET) || '',
@@ -45,6 +43,15 @@ const initialState: AuthState = {
             withdrawn_amount: 0
         }
     ],
+    role: {
+        id: 0,
+        user: '',
+        manage_user: 0,
+        manage_token: 0,
+        manage_post: 0,
+        manage_system: 0,
+    },
+    is_admin: false,
     metadata: {
         msg_sender: localStorage.getItem(ADDRESS_WALLET)?.toLowerCase() || '',
         epoch_index: 0,
@@ -86,7 +93,9 @@ export const authSlice = createSlice({
             return state
         })
         builder.addCase(getDepositInfo.fulfilled, (state, action) => {
-            state.deposit_info = action.payload
+            state.deposit_info = action.payload.deposit_info
+            state.is_admin = action.payload.is_admin
+            state.role = action.payload.role
             state.isLoading = false
             return state
         })

@@ -1,11 +1,15 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import ModalComponent from "common/Modal"
 import TokensList from "common/TokensList"
 import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { useSelector } from "react-redux"
+import { RootState } from "store"
 import styled from "styled-components"
 import { ButtonModal, ModalContent, ModalTitle } from "styled/common"
 import { ErrorText, Input } from "styled/form"
-import { CARTESI_TOKEN } from "utils/contants"
-import { validateNumber } from "utils/validate"
+import { GET_ALL_HAS_COIN } from "utils/contants"
+import * as yup from "yup"
 
 const ErrorMessage = styled(ErrorText)`
     text-align: center;
@@ -29,55 +33,52 @@ type Props = {
     onAddVoucher: (value: string, tokenType: string) => void
 }
 
+const schema = yup.object({
+    amount: yup.number().typeError('Amount must be a number!').positive('Amount must be a positive number!').required('Amount is a required field!'),
+}).required();
+
 const WithdrawModal = ({ isVisible, toggleModal, onAddVoucher }: Props) => {
-    const [amount, setAmount] = useState({
-        value: '',
-        errorText: ''
-    });
-    const [tokenType, setTokenType] = useState<string>(CARTESI_TOKEN)
-
-    const handleChange = (value: string) => {
-        setAmount({
-            value,
-            errorText: validateNumber(value)
-        })
-    }
-
-    const handleAddVoucher = () => {
-        if (validateNumber(amount.value)) {
-            setAmount({
-                ...amount,
-                errorText: validateNumber(amount.value)
-            })
-        } else {
-            onAddVoucher(amount.value, tokenType)
-            toggleModal()
+    const { tokenListing, isLoading } = useSelector((state: RootState) => state.token)
+    const [token, setToken] = useState<string>(tokenListing[0]?.name)
+    const { register, handleSubmit, formState: { errors } }: any = useForm<{ amount: number }>({
+        resolver: yupResolver(schema),
+        defaultValues: {
+            amount: 0
         }
+    });
+
+    const onSubmit = async (dataForm: { amount: number }) => {
+        onAddVoucher(dataForm.amount.toString(), token)
+        toggleModal()
     }
 
     return (
         <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title='Withdraw Token' userGuideType='withdrawModal'>
-            <div>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalTitle>
-                    <TokensList onChooseCoin={(token: string) => setTokenType(token)} tokenType={tokenType} />
+                    <TokensList
+                        tokenListing={tokenListing}
+                        isLoading={isLoading}
+                        onChooseCoin={(value: string) => setToken(value)}
+                        tokenType={token}
+                        listType={GET_ALL_HAS_COIN}
+                    />
                 </ModalTitle>
                 <ModalContent>
                     <FormItem>
                         <label>Amount</label>
                         <Input
-                            type="number"
-                            name="amount"
-                            value={amount.value}
+                            type="string"
+                            {...register("amount")}
                             placeholder="Enter amount.."
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e.target.value)}
                         />
                     </FormItem>
                 </ModalContent>
-                <ErrorMessage>{amount.errorText}</ErrorMessage>
-                <ButtonModal onClick={handleAddVoucher} success>
+                <ErrorMessage>{errors?.amount?.message}</ErrorMessage>
+                <ButtonModal type="submit" disabled={isLoading} success>
                     Withdraw
                 </ButtonModal>
-            </div>
+            </form>
         </ModalComponent>
     )
 }

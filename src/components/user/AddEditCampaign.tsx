@@ -1,24 +1,26 @@
 
-import moment from "moment";
-import { ChangeEvent, useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Loading from "common/Loading";
 import { createNotifications } from "common/Notification";
 import Title from "common/Title";
-import { configToken } from "helper/contractWithSigner";
 import { handleInspectApi } from "helper/handleInspectApi";
 import { handleResponse } from "helper/handleResponse";
 import { sendInput } from "helper/sendInput";
+import TrashIcon from 'images/trash.svg';
+import moment from "moment";
+import { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import { useFieldArray, useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { getDepositInfo } from "reducers/authSlice";
 import { ROUTER_PATH } from "routes/contants";
 import { AppDispatch, RootState } from "store";
-import { Content, DefaultButton, FlexLayoutBtn, SuccessButton } from "styled/common";
-import { ErrorText, Form, FormItem, Input, TextArea } from "styled/form";
+import styled from "styled-components";
+import { Content, DefaultButton, FlexLayoutBtn, PrimaryButton, SuccessButton } from "styled/common";
+import { ErrorText, Form, FormItem, Input, OptionLabel, TextArea, Wrapper } from "styled/form";
 import { Loader } from "styled/loading";
-import { convertLocalToUtc, convertUtcToLocal } from "utils/common";
+import { convertLocalToUtc, convertUtcToLocal, randomColor } from "utils/common";
 import {
     CAMPAIGN_DETAIL,
     CREATE_CAMPAIGN,
@@ -26,13 +28,12 @@ import {
     ERROR_MESSAGE,
     FORMAT_DATETIME,
     NOTI_TYPE,
-    NO_RESPONSE_ERROR,
-    WAITING_RESPONSE_FROM_SERVER_MESSAGE,
-    WAITING_FOR_CONFIRMATION
+    NO_RESPONSE_ERROR, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE
 } from "utils/contants";
+import getTokenAddress from "utils/getTokenAddress";
 import { AddEditDataType, MetadataType, OptionType, resInput } from "utils/interface";
-import { validateDate, validateField, validateFields, validateOptions } from "utils/validate";
-import CandidateOptions from "./CandidateOptions";
+import { validateDate } from "utils/validate";
+import * as yup from "yup";
 import AddCampaignModal from "./Modal/AddCampaignModal";
 
 const FORMAT_DATE_PICKER = 'MM/dd/yyyy h:mm aa'
@@ -42,35 +43,56 @@ const SubmitButton = styled(SuccessButton)`
     align-items: center;
 `
 
-const AddEditCampaign = () => {
-    const initialValue = {
+const OptionDefault: OptionType[] = [
+    {
         name: '',
-        description: '',
-        startDate: new Date(),
-        endDate: new Date(),
-        formErrors: { name: '', description: '', startDate: '', endDate: '' },
+        brief_introduction: '',
+        avatar: '',
     }
+]
 
-    const OptionDefault: OptionType[] = [
-        {
-            name: '',
-            brief_introduction: '',
-            avatar: '',
-            formErrors: { name: '', brief_introduction: '' },
-        }
-    ]
+const optionSchema = {
+    name: yup.string().required('Name is a required field!').max(200),
+    brief_introduction: yup.string().required('Brief introduction is a required field!').max(400),
+}
 
+const schema = yup.object({
+    name: yup.string().required('Name is a required field!').max(200),
+    description: yup.string().required('Desciption is a required field!').max(400),
+    options: yup.array().of(yup.object().shape(optionSchema))
+}).required();
+
+const AddEditCampaign = () => {
     const dispatch = useDispatch<AppDispatch>()
     let navigate = useNavigate();
-    const [isVisible, setIsVisible] = useState<boolean>(false);
     const { campaignId } = useParams();
+    const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
+    const { tokenListing } = useSelector((state: RootState) => state.token)
+    const [isVisible, setIsVisible] = useState<boolean>(false);
     const [callMessage, setCallMessage] = useState<string>('')
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [dataForm, setDataForm] = useState(initialValue)
-    const [options, setOptions] = useState<OptionType[]>(OptionDefault)
-    const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
+    const [dateTime, setDateTime] = useState({
+        startDate: new Date(),
+        endDate: new Date(),
+        formErrors: {
+            startDate: '',
+            endDate: ''
+        }
+    })
+    const { register, handleSubmit, setValue, control, formState: { errors } }: any = useForm({
+        resolver: yupResolver(schema),
+        defaultValues: {
+            name: '',
+            description: '',
+            options: campaignId ? [] : OptionDefault
+        }
+    });
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "options"
+    });
     const [dataCreate, setDataCreate] = useState<AddEditDataType>()
-    const { name, description, startDate, endDate, formErrors } = dataForm
+    const { startDate, endDate, formErrors } = dateTime
 
     useEffect(() => {
         const getData = async () => {
@@ -84,23 +106,22 @@ const AddEditCampaign = () => {
                     }
                     const result = await handleInspectApi(data, metadata)
                     if (!result.error) {
-                        const dataform = result.campaign[0]
+                        const { start_time, end_time, name, description } = result.campaign[0]
                         const options = result.candidates.map((item: OptionType) => {
                             return {
                                 name: item.name,
                                 brief_introduction: item.brief_introduction,
                                 avatar: item.avatar || '',
-                                formErrors: { name: '', brief_introduction: '' },
                             }
                         })
-                        setDataForm({
-                            name: dataform.name,
-                            description: dataform.description,
-                            startDate: new Date(convertUtcToLocal(new Date(dataform.start_time))),
-                            endDate: new Date(convertUtcToLocal(new Date(dataform.end_time))),
-                            formErrors: { name: '', description: '', startDate: '', endDate: '' },
+                        setValue('name', name)
+                        setValue('description', description)
+                        setValue('options', [...options])
+                        setDateTime({
+                            startDate: new Date(convertUtcToLocal(new Date(start_time))),
+                            endDate: new Date(convertUtcToLocal(new Date(end_time))),
+                            formErrors: { startDate: '', endDate: '' },
                         })
-                        setOptions(options)
                     } else {
                         createNotifications(NOTI_TYPE.DANGER, result?.error)
                     }
@@ -116,40 +137,28 @@ const AddEditCampaign = () => {
         getData()
     }, [campaignId])
 
-    const handleChange = (key: string) => (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
-        const value = e.target.value
-        const validate = validateField(key, value)
-        setDataForm({
-            ...dataForm,
-            formErrors: { ...formErrors, ...validate },
-            [key]: value
-        })
-    }
-
     const handleChangeDate = (key: string) => (value: Date) => {
-        const validate = validateDate(key, value, dataForm.endDate, dataForm.startDate)
-        setDataForm({
-            ...dataForm,
+        const validate = validateDate(key, value, endDate, startDate)
+        setDateTime({
+            ...dateTime,
             formErrors: { ...formErrors, ...validate },
             [key]: value
         })
     }
 
-    const createCampaign = async (tokenType: string) => {
+    const createCampaign = async (token: string) => {
         try {
             setIsLoading(true)
             setIsVisible(false);
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput({
                 ...dataCreate,
-                token_address: configToken(tokenType)?.tokenAddress.toLowerCase()
+                token_address: getTokenAddress(tokenListing, token)
             });
             handleResponse(epoch_index, input_index, ((payload: any) => {
                 if (!payload || payload.message !== NO_RESPONSE_ERROR && !payload.error) {
                     const message = payload ? 'Add campaign successfully!' : WAITING_RESPONSE_FROM_SERVER_MESSAGE
                     const router = payload ? `${ROUTER_PATH.VOTING}/${payload.id}` : ROUTER_PATH.HOMEPAGE
-                    setDataForm(initialValue)
-                    setOptions(OptionDefault)
                     createNotifications(NOTI_TYPE.SUCCESS, message)
                     dispatch(getDepositInfo())
                     navigate(`${router}`, { replace: true });
@@ -176,8 +185,6 @@ const AddEditCampaign = () => {
             handleResponse(epoch_index, input_index, ((payload: any) => {
                 if (!payload || payload.message !== NO_RESPONSE_ERROR && !payload.error) {
                     const message = payload ? 'Edit campaign successfully!' : WAITING_RESPONSE_FROM_SERVER_MESSAGE
-                    setDataForm(initialValue)
-                    setOptions(OptionDefault)
                     createNotifications(NOTI_TYPE.SUCCESS, message)
                     dispatch(getDepositInfo())
                     navigate(`${ROUTER_PATH.VOTING}/${campaignId}`, { replace: true });
@@ -195,25 +202,20 @@ const AddEditCampaign = () => {
         }
     }
 
-    const onSubmit = async (e: any) => {
-        e.preventDefault()
-
-        const checkOptions = validateOptions(options)
-        const checkFields = validateFields(dataForm, initialValue.formErrors)
-        const checkDate = validateDate('startDate', dataForm.startDate, dataForm.endDate, dataForm.startDate)
-
-        if (!checkOptions.isError && !checkFields.isError && !checkDate?.startDate) {
+    const onSubmit = async (dataForm: any) => {
+        const checkDate = validateDate('startDate', startDate, endDate, startDate)
+        if (!checkDate?.startDate) {
             const data: AddEditDataType = {
                 action: !campaignId ? CREATE_CAMPAIGN : EDIT_CAMPAIGN,
                 name: dataForm.name,
                 description: dataForm.description,
-                start_time: moment(convertLocalToUtc(dataForm.startDate)).format(FORMAT_DATETIME),   // Convert local datetime to UTC+0 datetime and format
-                end_time: moment(convertLocalToUtc(dataForm.endDate)).format(FORMAT_DATETIME), // Convert local datetime to UTC+0 datetime and format
-                candidates: checkOptions.data.map((item) => {
+                start_time: moment(convertLocalToUtc(startDate)).format(FORMAT_DATETIME),   // Convert local datetime to UTC+0 datetime and format
+                end_time: moment(convertLocalToUtc(endDate)).format(FORMAT_DATETIME), // Convert local datetime to UTC+0 datetime and format
+                candidates: dataForm.options.map((item: OptionType) => {
                     return {
                         name: item.name,
-                        avatar: item.avatar,
                         brief_introduction: item.brief_introduction,
+                        avatar: randomColor(),
                     }
                 })
             }
@@ -227,12 +229,10 @@ const AddEditCampaign = () => {
                 }
                 editCampaign(newData)
             }
-
         } else {
-            setOptions(checkOptions.data)
-            setDataForm({
-                ...dataForm,
-                formErrors: { ...checkFields.formErrors, ...checkDate }
+            setDateTime({
+                ...dateTime,
+                formErrors: { ...formErrors, ...checkDate }
             })
             createNotifications(NOTI_TYPE.DANGER, 'Please check the entered data!')
         }
@@ -251,11 +251,11 @@ const AddEditCampaign = () => {
                 text={!campaignId ? 'Create new campaign' : 'Edit campaign'}
                 userGuideType={!campaignId ? 'create' : 'edit'}
             />
-            <Form onSubmit={onSubmit}>
+            <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormItem>
                     <label>Name</label>
-                    <Input type="text" name="name" value={name} placeholder="Campaign's name.." onChange={handleChange('name')} />
-                    <ErrorText>{formErrors.name}</ErrorText>
+                    <Input type="text"  {...register("name")} placeholder="Campaign's name.." />
+                    <ErrorText>{errors?.name?.message}</ErrorText>
                 </FormItem>
                 <FormItem>
                     <label>Start time</label>
@@ -284,12 +284,35 @@ const AddEditCampaign = () => {
                 </FormItem>
                 <FormItem>
                     <label>Description</label>
-                    <TextArea name="description" value={description} placeholder="Description..." onChange={handleChange('description')} />
-                    <ErrorText>{formErrors.description}</ErrorText>
+                    <TextArea name="description" {...register("description")} placeholder="Description..." />
+                    <ErrorText>{errors?.description?.message}</ErrorText>
                 </FormItem>
                 <FormItem>
-                    <label>Candidate options:</label>
-                    <CandidateOptions options={options} setOptions={(data: OptionType[]) => setOptions(data)} />
+                    <Wrapper>
+                        <label>Candidate options:</label>
+                        {fields.map((_: any, index: number) => (
+                            <div key={index}>
+                                <OptionLabel>
+                                    <label>Option {index + 1}</label>
+                                    {fields.length > 1 && (
+                                        <img src={TrashIcon} alt="trash icon" width={25} onClick={() => remove(index)} />
+                                    )}
+                                </OptionLabel>
+                                <Input
+                                    type="text"
+                                    {...register(`options.${index}.name`)}
+                                    placeholder="Option's name.."
+                                />
+                                <ErrorText>{errors?.options?.[index]?.name?.message}</ErrorText>
+                                <TextArea
+                                    {...register(`options.${index}.brief_introduction`)}
+                                    placeholder="Brief Introduction..."
+                                />
+                                <ErrorText>{errors?.options?.[index]?.brief_introduction?.message}</ErrorText>
+                            </div>
+                        ))}
+                    </Wrapper>
+                    <PrimaryButton type="button" onClick={() => append(OptionDefault)}>Add Option</PrimaryButton>
                 </FormItem>
                 <FlexLayoutBtn>
                     <DefaultButton type="button" onClick={() => navigate(-1)}>Back</DefaultButton>

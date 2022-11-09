@@ -4,10 +4,9 @@ import GiftDisabledIcon from "images/Gift-box-2.png"
 import ClaimedIcon from 'images/claimed.png'
 import styled from "styled-components"
 import { SuccessButton } from "styled/common"
-import { WithDrawType } from "utils/interface"
-import { tokenConfig } from "utils/tokenConfig"
-
-const NETWORK: any = process.env.REACT_APP_NETWORK || ''
+import { tokenType, WithDrawType } from "utils/interface"
+import { useSelector } from "react-redux"
+import { RootState } from "store"
 
 const ClaimButton = styled(SuccessButton)`
     display: block;
@@ -26,14 +25,15 @@ interface PropsType {
 
 const WithdrawItem = ({ data, onClick }: PropsType) => {
     const { id, isAllowExecute, isExecuted, amount, token } = data
-    const dataToken = tokenConfig[NETWORK].find((item: any) => item.address === token)
-    const tokenSymbol = dataToken?.symbol || ''
+    const { tokenListing } = useSelector((state: RootState) => state.token)
+    const name = tokenListing.find((item: tokenType) => item.address === token.toLowerCase())?.name
+
     return (
         <WithdrawContent>
             <img src={isExecuted || isAllowExecute ? GiftIcon : GiftDisabledIcon} className="giftIcon" alt="gift" width={'50%'} />
             <div></div>
             <h5>Gift {id}</h5>
-            <span>{amount} {tokenSymbol}</span>
+            <span>{amount} {name}</span>
             {isExecuted ? (
                 <img src={ClaimedIcon} alt="claimedIcon" width={100} style={{ marginTop: '10px' }} />
             ) : (

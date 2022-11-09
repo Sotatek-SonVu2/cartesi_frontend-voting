@@ -11,21 +11,17 @@ import MinusIcon from 'images/minus-button.png';
 import { ROUTER_PATH } from "routes/contants";
 import { HistoryTitle } from "styled/list";
 import { CREATE_CAMPAIGN, DECREASE_TOKEN, DELETE_CAMPAIGN, DEPOSIT, EDIT_CAMPAIGN, EXECUTE_VOUCHER, VOTE, WITHDRAW } from "utils/contants";
-import { tokenConfig } from "utils/tokenConfig";
 
 interface PropsType {
     index: number
     data: any
 }
 
-const NETWORK: any = process.env.REACT_APP_NETWORK || ''
-
 const dataRender = (data: any) => {
     const { action, payload } = data
     const { time, campaign, candidate, amount, voucher_id, reason, token } = payload
-    const dataToken = tokenConfig[NETWORK].find((item: any) => item.address.toLowerCase() === token)
-    const tokenIcon = dataToken?.token_icon || ''
-    const tokenName = dataToken?.token_name || ''
+    const tokenIcon = token?.icon || ''
+    const tokenName = token?.name || ''
     switch (action) {
         case CREATE_CAMPAIGN:
             return {

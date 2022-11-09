@@ -11,27 +11,19 @@ export interface AuthState {
     metadata: MetadataType
     isLoading: boolean
     deposit_info: DepositInfoType[]
+    is_admin: boolean
+    role: usersType
 }
 
-export interface isVisibleActionButton {
-    creator: string
-    isOpenVoting: boolean
+export interface TokenState {
+    tokenListing: tokenType[]
+    isLoading: boolean
 }
-
-export interface CampaignState {
-    listStatus: string
-    isVisibleActionButton: isVisibleActionButton
-}
-
 
 export interface OptionType {
     name: string
     brief_introduction: string
     avatar: string
-    formErrors: {
-        name: string,
-        brief_introduction: string
-    }
 }
 
 export interface CadidatesType {
@@ -166,9 +158,6 @@ export interface usersType {
     manage_token: number
     manage_user: number
     user: string
-    formErrors?: {
-        user?: string | undefined
-    }
 }
 
 export interface usersTypePayload {
@@ -185,13 +174,10 @@ export interface tokenType {
     id?: number
     fee: number
     name: string
+    icon?: string
     other_fee?: number
     address: string
-    formErrors?: {
-        address?: string | undefined
-        name?: string | undefined
-        fee?: string | undefined
-    }
+    is_disabled: number
 }
 
 export interface tokenTypePayload {
@@ -200,6 +186,7 @@ export interface tokenTypePayload {
     fee: number
     name: string
     address: string
+    icon?: string
 }
 
 

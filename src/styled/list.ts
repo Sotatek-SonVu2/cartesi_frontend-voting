@@ -12,8 +12,17 @@ interface ProcessType {
 }
 
 interface CoinBoxStyled {
-  active: boolean
+  active?: boolean
 }
+
+interface DepositInfoBoxType {
+  is_disabled?: boolean
+}
+
+interface StatusTextType {
+  is_disabled?: boolean
+}
+
 
 export const Wrapper = styled.div`
   display: flex;
@@ -343,13 +352,13 @@ export const CoinItem = styled.div<CoinBoxStyled>`
   `}
 `
 
-export const DepositInfoBox = styled.div`
+export const DepositInfoBox = styled.div<DepositInfoBoxType>`
   position: relative;
   padding: 10px;
   color: #fff;
   text-align: center;
   margin-bottom: 10px;
-  background: rgb(195 195 195 / 14%);
+  background: ${props => props.is_disabled ? '#aeaeae8f' : '#216ba5ab'};
   width: 180px;
   margin: 0px 12px 10px;
   border-radius: 4px;
@@ -372,9 +381,21 @@ export const DepositInfoBox = styled.div`
           margin: 0px;
           line-height: 1.5;
       }
+
+      & small {
+        font-size: 11px;
+        color: ${props => props.is_disabled ? `${colorTheme.error}` : `${colorTheme.success}`}; 
+      }
   }
 
   &:hover .tooltip-box {
     visibility: visible;
   }
+`
+
+
+export const StatusText = styled.small<StatusTextType>`
+    background: ${props => props.is_disabled ? `${colorTheme.error}` : `${colorTheme.success}`}; 
+    padding: 4px 10px;
+    border-radius: 3px;
 `

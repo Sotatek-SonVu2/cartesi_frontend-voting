@@ -1,20 +1,20 @@
 import { OutputValidityProofStruct } from "@cartesi/rollups/dist/src/types/contracts/interfaces/IOutput";
-import { ethers } from "ethers";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
 import Loading from "common/Loading";
 import { createNotifications } from "common/Notification";
 import Title from "common/Title";
+import { ethers } from "ethers";
 import { getLastEpoch } from "graphql/getLastEpoch";
 import { getVoucher as getVoucherExcute } from "graphql/vouchers";
-import { configToken, outputContract } from "helper/contractWithSigner";
+import { outputContract } from "helper/contractWithSigner";
 import { handleInspectApi } from "helper/handleInspectApi";
 import { handleResponse } from "helper/handleResponse";
 import { sendInput } from "helper/sendInput";
 import { getVoucher as getVoucherList } from "helper/voucher";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { getDepositInfo } from "reducers/authSlice";
 import { AppDispatch, RootState } from "store";
+import styled from "styled-components";
 import { Content } from "styled/common";
 import { BoxItem, HeaderList, Radio, RadioGroup, WithdrawContent } from "styled/list";
 import { FlexLayout } from "styled/main";
@@ -27,6 +27,7 @@ import {
     WITHDRAW_RADIO_FILTER,
     WITHDRAW_RADIO_FILTER_STATUS
 } from "utils/contants";
+import getTokenAddress from "utils/getTokenAddress";
 import { MetadataType, resInput, WithDrawType } from "utils/interface";
 import WithdrawItem from "./Item/Withdraw";
 import WithdrawModal from "./Modal/WithdrawModal";
@@ -50,9 +51,10 @@ const FlexLayoutSwap = styled(FlexLayout)`
 const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL || ''
 
 const Withdraw = () => {
-    const [isLoading, setIsLoading] = useState<boolean>(false)
     const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
     const userAddress = useSelector((state: RootState) => state.auth.address)
+    const { tokenListing } = useSelector((state: RootState) => state.token)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const [callMessage, setCallMessage] = useState<string>('')
     const [isWithdrawLoading, setIsWithdrawLoading] = useState<boolean>(false)
     const [vouchers, setVouchers] = useState<WithDrawType[]>([])
@@ -137,14 +139,14 @@ const Withdraw = () => {
         getData()
     }, [isChecked])
 
-    const onAddVoucher = async (amount: string, tokenType: string) => {
+    const onAddVoucher = async (amount: string, token: string) => {
         try {
             setIsWithdrawLoading(true)
             const decimal = parseFloat(amount) * Math.pow(10, 18)
             const data = {
                 action: WITHDRAW,
                 amount: BigInt(decimal).toString(),
-                token_address: configToken(tokenType)?.tokenAddress.toLowerCase() || ''
+                token_address: getTokenAddress(tokenListing, token)
             }
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
