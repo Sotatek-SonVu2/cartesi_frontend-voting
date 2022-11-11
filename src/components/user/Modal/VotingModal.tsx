@@ -19,7 +19,7 @@ const VotingModal = ({ isVisible, toggleModal, onClick }: Props) => {
 
     return (
         <ModalComponent isVisible={isVisible} toggleModal={toggleModal}>
-            {tokenList?.length === 0 ? (
+            {tokenList?.length > 0 ? (
                 <div>
                     <ModalTitle>
                         <img src={confirmIcon} className="title-icon" alt="confirm-Icon" width={30} />
