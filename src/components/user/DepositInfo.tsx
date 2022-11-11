@@ -30,15 +30,13 @@ const DepositInfo = () => {
             tokenListing.forEach((token: tokenType) => {
                 let obj
                 deposit_info.forEach((deposit: DepositInfoType) => {
-                    if (deposit.contract_address === token.address) {
-                        const amount = deposit.amount - deposit.used_amount - deposit.withdrawn_amount
-                        if (token.is_disabled === TOKEN_STATUS.ACTIVE || (amount > 0 && token.is_disabled === TOKEN_STATUS.DISABLED)) {
-                            obj = {
-                                ...deposit,
-                                ...token,
-                            }
-                            data.push(obj)
+                    const amount = deposit.amount - deposit.used_amount - deposit.withdrawn_amount
+                    if (deposit.contract_address === token.address && amount > 0) {
+                        obj = {
+                            ...deposit,
+                            ...token,
                         }
+                        data.push(obj)
                     }
                 })
             })
@@ -65,7 +63,7 @@ const DepositInfo = () => {
                             </DepositInfoBox>
                         )) : (
                             <DepositInfoBox style={{ width: 'unset' }}>
-                                The current system does not support any tokens!
+                                The DApp does not support any tokens yet!
                             </DepositInfoBox>
                         )}
                     </>

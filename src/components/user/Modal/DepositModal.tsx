@@ -2,9 +2,11 @@ import { IInput } from "@cartesi/rollups"
 import { yupResolver } from "@hookform/resolvers/yup"
 import ModalComponent from "common/Modal"
 import { createNotifications } from "common/Notification"
+import NoToken from "common/NoToken"
 import TokensList from "common/TokensList"
 import { ContractReceipt, ethers } from "ethers"
 import { erc20Contract, inputContract, tokenContract } from "helper/contractWithSigner"
+import useTokensList from "hook/useTokensList"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
@@ -74,8 +76,8 @@ const schema = yup.object({
 const DepositModal = ({ isVisible, toggleModal }: Props) => {
     const dispatch = useDispatch<AppDispatch>()
     const addressWallet = useSelector((state: RootState) => state.auth.address)
-    const { tokenListing, isLoading } = useSelector((state: RootState) => state.token)
-    const [token, setToken] = useState<string>(tokenListing[0]?.name)
+    const { tokenList, isLoading } = useTokensList(GET_ALL_ACTIVE)
+    const [token, setToken] = useState<string>(tokenList[0]?.name)
     const [depositLoading, setDepositLoading] = useState<boolean>(false)
     const [callMessage, setCallMessage] = useState<string>('')
     const { register, handleSubmit, formState: { errors } }: any = useForm<{ amount: number }>({
@@ -111,16 +113,20 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
                 }
 
                 // send deposit transaction
-                const tokenAddress = getTokenAddress(tokenListing, token)
+                const tokenAddress = getTokenAddress(tokenList, token)
                 if (!tokenAddress) {
                     return createNotifications(NOTI_TYPE.DANGER, NETWORK_ERROR_MESSAGE)
                 }
                 const tx = await erc20Contract().erc20Deposit(tokenAddress, erc20Amount, "0x");
-                setCallMessage(`Transaction: ${tx.hash}. Waiting for confirmation...`)
+                console.log(`Transaction: ${tx.hash}.`)
+                setCallMessage(WAITING_FOR_CONFIRMATION)
                 const receipt = await tx.wait();
 
                 // find added input information from transaction receipt
-                findInputAddedInfo(receipt, inputContract());
+                const inputAddedInfo = findInputAddedInfo(receipt, inputContract());
+                console.log(
+                    `deposit successfully executed as input ${inputAddedInfo.input_index} of epoch ${inputAddedInfo.epoch_index}`
+                );
                 dispatch(getDepositInfo())
                 createNotifications(NOTI_TYPE.SUCCESS, WAITING_RESPONSE_FROM_SERVER_MESSAGE)
                 toggleModal()
@@ -152,32 +158,40 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
             width="500px"
             userGuideType='depositModal'
         >
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <ModalTitle>
-                    <TokensList
-                        tokenListing={tokenListing}
-                        isLoading={isLoading}
-                        onChooseCoin={onChooseToken}
-                        tokenType={token}
-                        listType={GET_ALL_ACTIVE}
-                    />
-                </ModalTitle>
-                <ModalContent>
-                    <FormItem>
-                        <label>Amount</label>
-                        <Input
-                            type="string"
-                            {...register("amount")}
-                            placeholder="Enter amount.."
+            {tokenList?.length > 0 ? (
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <ModalTitle>
+                        <TokensList
+                            tokenList={tokenList}
+                            isLoading={isLoading}
+                            onChooseCoin={onChooseToken}
+                            tokenType={token}
                         />
-                    </FormItem>
-                </ModalContent>
-                <ErrorMessage>{errors?.amount?.message || callMessage}</ErrorMessage>
-                <ButtonModal type="submit" disabled={isLoading || depositLoading} success>
-                    {isLoading || depositLoading && (<Loader />)}
-                    Deposit
-                </ButtonModal>
-            </form>
+                    </ModalTitle>
+                    <ModalContent>
+                        <FormItem>
+                            <label>Amount</label>
+                            <Input
+                                type="string"
+                                {...register("amount")}
+                                placeholder="Enter amount.."
+                            />
+                        </FormItem>
+                    </ModalContent>
+                    <ErrorMessage>{errors?.amount?.message || callMessage}</ErrorMessage>
+                    <ButtonModal
+                        type="submit"
+                        disabled={isLoading || depositLoading}
+                        success
+                    >
+                        {isLoading || depositLoading && (<Loader />)}
+                        Deposit
+                    </ButtonModal>
+                </form>
+            ) : (
+                <NoToken />
+            )}
+
         </ModalComponent>
     )
 }

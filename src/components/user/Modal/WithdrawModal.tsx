@@ -1,10 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import ModalComponent from "common/Modal"
+import NoToken from "common/NoToken"
 import TokensList from "common/TokensList"
+import useTokensList from "hook/useTokensList"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { useSelector } from "react-redux"
-import { RootState } from "store"
 import styled from "styled-components"
 import { ButtonModal, ModalContent, ModalTitle } from "styled/common"
 import { ErrorText, Input } from "styled/form"
@@ -38,8 +38,8 @@ const schema = yup.object({
 }).required();
 
 const WithdrawModal = ({ isVisible, toggleModal, onAddVoucher }: Props) => {
-    const { tokenListing, isLoading } = useSelector((state: RootState) => state.token)
-    const [token, setToken] = useState<string>(tokenListing[0]?.name)
+    const { tokenList, isLoading } = useTokensList(GET_ALL_HAS_COIN)
+    const [token, setToken] = useState<string>(tokenList[0]?.name)
     const { register, handleSubmit, formState: { errors } }: any = useForm<{ amount: number }>({
         resolver: yupResolver(schema),
         defaultValues: {
@@ -54,31 +54,34 @@ const WithdrawModal = ({ isVisible, toggleModal, onAddVoucher }: Props) => {
 
     return (
         <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title='Withdraw Token' userGuideType='withdrawModal'>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <ModalTitle>
-                    <TokensList
-                        tokenListing={tokenListing}
-                        isLoading={isLoading}
-                        onChooseCoin={(value: string) => setToken(value)}
-                        tokenType={token}
-                        listType={GET_ALL_HAS_COIN}
-                    />
-                </ModalTitle>
-                <ModalContent>
-                    <FormItem>
-                        <label>Amount</label>
-                        <Input
-                            type="string"
-                            {...register("amount")}
-                            placeholder="Enter amount.."
+            {tokenList?.length > 0 ? (
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <ModalTitle>
+                        <TokensList
+                            tokenList={tokenList}
+                            isLoading={isLoading}
+                            onChooseCoin={(value: string) => setToken(value)}
+                            tokenType={token}
                         />
-                    </FormItem>
-                </ModalContent>
-                <ErrorMessage>{errors?.amount?.message}</ErrorMessage>
-                <ButtonModal type="submit" disabled={isLoading} success>
-                    Withdraw
-                </ButtonModal>
-            </form>
+                    </ModalTitle>
+                    <ModalContent>
+                        <FormItem>
+                            <label>Amount</label>
+                            <Input
+                                type="string"
+                                {...register("amount")}
+                                placeholder="Enter amount.."
+                            />
+                        </FormItem>
+                    </ModalContent>
+                    <ErrorMessage>{errors?.amount?.message}</ErrorMessage>
+                    <ButtonModal type="submit" disabled={isLoading} success>
+                        Withdraw
+                    </ButtonModal>
+                </form>
+            ) : (
+                <NoToken />
+            )}
         </ModalComponent>
     )
 }

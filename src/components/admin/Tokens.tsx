@@ -5,19 +5,20 @@ import { createNotifications } from 'common/Notification';
 import Tooltip from 'common/Tooltip';
 import { handleResponse } from 'helper/handleResponse';
 import { sendInput } from 'helper/sendInput';
+import useTokensList from 'hook/useTokensList';
 import DeleteButton from 'images/delete-button.png';
 import EditButton from 'images/edit-button.png';
 import { useEffect, useState } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getTokens } from 'reducers/tokenSlice';
-import { AppDispatch, RootState } from 'store';
+import { AppDispatch } from 'store';
 import styled from 'styled-components';
 import { colorTheme, SuccessButton } from 'styled/common';
 import { ActionColumn } from 'styled/form';
 import { formatAddress } from 'utils/common';
-import { DELETE_TOKEN, ERROR_MESSAGE, NOTI_TYPE, NO_RESPONSE_ERROR, TOKEN_STATUS, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from 'utils/contants';
+import { DELETE_TOKEN, ERROR_MESSAGE, GET_ALL_ACTIVE, NOTI_TYPE, NO_RESPONSE_ERROR, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from 'utils/contants';
 import { resInput, tokenType } from 'utils/interface';
 import AddEditToken from './Modal/AddEditToken';
 
@@ -31,7 +32,7 @@ export const CreateButton = styled(SuccessButton)`
 
 const Tokens = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const { tokenListing, isLoading } = useSelector((state: RootState) => state.token)
+    const { tokenList, isLoading } = useTokensList(GET_ALL_ACTIVE)
     const [loading, setLoading] = useState<boolean>(false)
     const [isVisible, setIsVisible] = useState<boolean>(false)
     const [isDelete, setIsDelete] = useState<boolean>(false)
@@ -96,11 +97,6 @@ const Tokens = () => {
         createNotifications(NOTI_TYPE.SUCCESS, 'Copied!')
     }
 
-    const dataTable = () => {
-        const data = tokenListing.filter((token: tokenType) => token.is_disabled === TOKEN_STATUS.ACTIVE)
-        return <BootstrapTable columns={columns} data={data} keyField='address' />
-    }
-
     const columns = [
         {
             text: 'Icon',
@@ -147,11 +143,7 @@ const Tokens = () => {
                 <Loading />
             ) : (
                 <>
-                    {tokenListing?.length > 0 ? (
-                        dataTable()
-                    ) : (
-                        <NoData />
-                    )}
+                    {tokenList?.length > 0 ? <BootstrapTable columns={columns} data={tokenList} keyField='address' /> : <NoData />}
                 </>
             )}
             {isVisible && (

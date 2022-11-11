@@ -1,10 +1,11 @@
 import ModalComponent from "common/Modal"
+import NoToken from "common/NoToken"
 import TokensList from "common/TokensList"
+import useTokensList from "hook/useTokensList"
 import confirmIcon from 'images/exclamation_icon.svg'
 import { useState } from "react"
-import { useSelector } from "react-redux"
-import { RootState } from "store"
 import { ButtonModal, ModalContent, ModalTitle } from "styled/common"
+import { GET_ACTIVE_HAS_COIN } from "utils/contants"
 
 type Props = {
     isVisible: boolean
@@ -13,27 +14,32 @@ type Props = {
 }
 
 const AddCampaignModal = ({ isVisible, toggleModal, onClick }: Props) => {
-    const { tokenListing, isLoading } = useSelector((state: RootState) => state.token)
-    const [token, setToken] = useState<string>(tokenListing[0]?.name)
+    const { tokenList, isLoading } = useTokensList(GET_ACTIVE_HAS_COIN)
+    const [token, setToken] = useState<string>(tokenList[0]?.name)
 
     return (
         <ModalComponent isVisible={isVisible} toggleModal={toggleModal}>
-            <div>
-                <ModalTitle>
-                    <img src={confirmIcon} className="title-icon" alt="confirm-Icon" width={30} />
-                    <p>Are you sure to create this candidate?</p>
-                </ModalTitle>
-                <ModalContent>
-                    <p className="modal-text-sm">The DApp will take 10 tokens from your wallet to perform this operation!</p>
-                    <TokensList
-                        onChooseCoin={(value: string) => setToken(value)}
-                        tokenType={token}
-                        isLoading={isLoading}
-                        tokenListing={tokenListing}
-                    />
-                </ModalContent>
-                <ButtonModal onClick={() => onClick(token)} disabled={isLoading} success>Create</ButtonModal>
-            </div>
+            {tokenList?.length > 0 ? (
+                <div>
+                    <ModalTitle>
+                        <img src={confirmIcon} className="title-icon" alt="confirm-Icon" width={30} />
+                        <p>Are you sure to create this candidate?</p>
+                    </ModalTitle>
+                    <ModalContent>
+                        <p className="modal-text-sm">The DApp will take 10 tokens from your wallet to perform this operation!</p>
+                        <TokensList
+                            onChooseCoin={(value: string) => setToken(value)}
+                            tokenType={token}
+                            isLoading={isLoading}
+                            tokenList={tokenList}
+                        />
+                    </ModalContent>
+                    <ButtonModal onClick={() => onClick(token)} disabled={isLoading || tokenList.length === 0} success>Create</ButtonModal>
+                </div>
+            ) : (
+                <NoToken />
+            )}
+
         </ModalComponent>
     )
 }
