@@ -16,7 +16,7 @@ import styled from "styled-components"
 import { ButtonModal, ModalContent, ModalTitle } from "styled/common"
 import { ErrorText, Input } from "styled/form"
 import { Loader } from "styled/loading"
-import { ERROR_MESSAGE, GET_ALL_ACTIVE, NETWORK_ERROR_MESSAGE, NOTI_TYPE, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "utils/contants"
+import { ERROR_MESSAGE, GET_ALL_ACTIVE, NETWORK_ERROR_MESSAGE, NOTI_TYPE, NO_SUPPORT_YET, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "utils/contants"
 import getTokenAddress from "utils/getTokenAddress"
 import { InputKeys } from "utils/types"
 import * as yup from "yup"
@@ -189,7 +189,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
                     </ButtonModal>
                 </form>
             ) : (
-                <NoToken />
+                <NoToken type={NO_SUPPORT_YET} />
             )}
 
         </ModalComponent>

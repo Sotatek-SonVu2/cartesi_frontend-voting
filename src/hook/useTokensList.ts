@@ -1,11 +1,11 @@
 import { DepositInfoType, tokenType } from "utils/interface";
-import { GET_ALL_HAS_COIN, GET_ACTIVE_HAS_COIN, TOKEN_STATUS, GET_ALL_ACTIVE } from "utils/contants";
+import { GET_ALL_HAS_TOKEN, GET_ACTIVE_HAS_TOKEN, TOKEN_STATUS, GET_ALL_ACTIVE } from "utils/contants";
 import { AppDispatch, RootState } from "store";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo } from "react";
 import { getTokens } from "reducers/tokenSlice";
 
-const useTokensList = (listType: 'GET_ACTIVE_HAS_COIN' | 'GET_ALL_HAS_COIN' | 'GET_ALL_ACTIVE') => {
+const useTokensList = (listType: 'GET_ACTIVE_HAS_TOKEN' | 'GET_ALL_HAS_TOKEN' | 'GET_ALL_ACTIVE') => {
     const dispatch = useDispatch<AppDispatch>()
     const deposit_info = useSelector((state: RootState) => state.auth.deposit_info)
     const { tokenListing, isLoading } = useSelector((state: RootState) => state.token)
@@ -20,7 +20,7 @@ const useTokensList = (listType: 'GET_ACTIVE_HAS_COIN' | 'GET_ALL_HAS_COIN' | 'G
             case GET_ALL_ACTIVE:
                 data = tokenListing.filter((token: tokenType) => token.is_disabled === TOKEN_STATUS.ACTIVE)
                 break;
-            case GET_ACTIVE_HAS_COIN:
+            case GET_ACTIVE_HAS_TOKEN:
                 tokenListing.forEach((token: tokenType) => {
                     let obj
                     deposit_info.forEach((deposit: DepositInfoType) => {
@@ -36,7 +36,7 @@ const useTokensList = (listType: 'GET_ACTIVE_HAS_COIN' | 'GET_ALL_HAS_COIN' | 'G
                     })
                 })
                 break;
-            case GET_ALL_HAS_COIN:
+            case GET_ALL_HAS_TOKEN:
                 tokenListing.forEach((token: tokenType) => {
                     let obj
                     deposit_info.forEach((deposit: DepositInfoType) => {

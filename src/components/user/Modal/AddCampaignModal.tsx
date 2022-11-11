@@ -5,7 +5,7 @@ import useTokensList from "hook/useTokensList"
 import confirmIcon from 'images/exclamation_icon.svg'
 import { useState } from "react"
 import { ButtonModal, ModalContent, ModalTitle } from "styled/common"
-import { GET_ACTIVE_HAS_COIN } from "utils/contants"
+import { GET_ACTIVE_HAS_TOKEN, NO_TOKEN } from "utils/contants"
 
 type Props = {
     isVisible: boolean
@@ -14,7 +14,7 @@ type Props = {
 }
 
 const AddCampaignModal = ({ isVisible, toggleModal, onClick }: Props) => {
-    const { tokenList, isLoading } = useTokensList(GET_ACTIVE_HAS_COIN)
+    const { tokenList, isLoading } = useTokensList(GET_ACTIVE_HAS_TOKEN)
     const [token, setToken] = useState<string>(tokenList[0]?.name)
 
     return (
@@ -37,7 +37,7 @@ const AddCampaignModal = ({ isVisible, toggleModal, onClick }: Props) => {
                     <ButtonModal onClick={() => onClick(token)} disabled={isLoading || tokenList.length === 0} success>Create</ButtonModal>
                 </div>
             ) : (
-                <NoToken />
+                <NoToken type={NO_TOKEN} />
             )}
 
         </ModalComponent>

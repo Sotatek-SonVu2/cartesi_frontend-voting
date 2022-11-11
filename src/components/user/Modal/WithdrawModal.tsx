@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form"
 import styled from "styled-components"
 import { ButtonModal, ModalContent, ModalTitle } from "styled/common"
 import { ErrorText, Input } from "styled/form"
-import { GET_ALL_HAS_COIN } from "utils/contants"
+import { GET_ALL_HAS_TOKEN, NO_TOKEN } from "utils/contants"
 import * as yup from "yup"
 
 const ErrorMessage = styled(ErrorText)`
@@ -38,7 +38,7 @@ const schema = yup.object({
 }).required();
 
 const WithdrawModal = ({ isVisible, toggleModal, onAddVoucher }: Props) => {
-    const { tokenList, isLoading } = useTokensList(GET_ALL_HAS_COIN)
+    const { tokenList, isLoading } = useTokensList(GET_ALL_HAS_TOKEN)
     const [token, setToken] = useState<string>(tokenList[0]?.name)
     const { register, handleSubmit, formState: { errors } }: any = useForm<{ amount: number }>({
         resolver: yupResolver(schema),
@@ -80,7 +80,7 @@ const WithdrawModal = ({ isVisible, toggleModal, onAddVoucher }: Props) => {
                     </ButtonModal>
                 </form>
             ) : (
-                <NoToken />
+                <NoToken type={NO_TOKEN} />
             )}
         </ModalComponent>
     )
