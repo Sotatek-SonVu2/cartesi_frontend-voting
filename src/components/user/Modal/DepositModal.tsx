@@ -91,18 +91,22 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
         try {
             setDepositLoading(true)
             // Check CTSI tokens in your account
+            const tokenAddress = getTokenAddress(tokenList, token)
+            if (!tokenAddress) {
+                return createNotifications(NOTI_TYPE.DANGER, NETWORK_ERROR_MESSAGE)
+            }
             const amount = dataForm.amount.toString()
-            const getBalanceOf = await tokenContract(token).balanceOf(addressWallet);
+            const getBalanceOf = await tokenContract(tokenAddress, token).balanceOf(addressWallet);
             const balanceOf = parseInt(ethers.utils.formatEther(getBalanceOf))
             if (balanceOf > 0 && balanceOf > parseInt(amount)) {
                 setCallMessage("Waiting for transaction...")
-                const allowance: any = await tokenContract(token).functions.allowance(addressWallet, SPENDER_ADDRESS);
+                const allowance: any = await tokenContract(tokenAddress, token).functions.allowance(addressWallet, SPENDER_ADDRESS);
                 // increase erc20 allowance first if necessary
                 const erc20Amount = ethers.utils.parseEther(`${amount}`);
                 if (allowance[0].lt(erc20Amount)) {
                     const allowanceApproveAmount =
                         ethers.BigNumber.from(erc20Amount).sub(allowance[0]);
-                    const tx = await tokenContract(token).approve(
+                    const tx = await tokenContract(tokenAddress, token).approve(
                         SPENDER_ADDRESS,
                         allowanceApproveAmount
                     );
@@ -113,10 +117,6 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
                 }
 
                 // send deposit transaction
-                const tokenAddress = getTokenAddress(tokenList, token)
-                if (!tokenAddress) {
-                    return createNotifications(NOTI_TYPE.DANGER, NETWORK_ERROR_MESSAGE)
-                }
                 const tx = await erc20Contract().erc20Deposit(tokenAddress, erc20Amount, "0x");
                 console.log(`Transaction: ${tx.hash}.`)
                 setCallMessage(WAITING_FOR_CONFIRMATION)

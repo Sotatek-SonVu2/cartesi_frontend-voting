@@ -9,7 +9,7 @@ const useTokensList = (listType: 'GET_ACTIVE_HAS_TOKEN' | 'GET_ALL_HAS_TOKEN' | 
     const dispatch = useDispatch<AppDispatch>()
     const deposit_info = useSelector((state: RootState) => state.auth.deposit_info)
     const { tokenListing, isLoading } = useSelector((state: RootState) => state.token)
-    console.log('tokenListing', tokenListing)
+
     useEffect(() => {
         dispatch(getTokens())
     }, [])

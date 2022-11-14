@@ -55,9 +55,10 @@ const DepositInfo = () => {
                                     <span>{item.name}: {item.amount - item.used_amount - item.withdrawn_amount || 0}</span>
                                 </TokenItem>
                                 <div className="tooltip-box">
-                                    <p>Deposits: {item.amount || 0} {item.symbol}</p>
-                                    <p>Used: {item.used_amount || 0} {item.symbol}</p>
-                                    <p>Withdraw: {item.withdrawn_amount || 0} {item.symbol}</p>
+                                    <p>Deposits: {item.amount || 0} {item.name}</p>
+                                    <p>Used: {item.used_amount || 0} {item.name}</p>
+                                    <p>Withdraw: {item.withdrawn_amount || 0} {item.name}</p>
+                                    <p>Fee: {item.fee || 0} {item.name}</p>
                                     <small>{item.is_disabled === TOKEN_STATUS.DISABLED ? '(Inactive Token)' : '(Active Token)'}</small>
                                 </div>
                             </DepositInfoBox>
