@@ -33,9 +33,6 @@ interface ModalStyled {
     width: string
 }
 
-interface TitleTextStyled {
-    titleStyle?: string
-}
 
 export const colorTheme = {
     background: 'radial-gradient(ellipse at bottom,#1b2735 0%,#090a0f 100%)',
@@ -50,7 +47,8 @@ export const colorTheme = {
     active: '#b4d5ffb3',
     error: '#d93025',
     danger: '#d9534f',
-    disabled: '#b3b3b3'
+    disabled: '#b3b3b3',
+    locked: '#aeaeae',
 }
 
 export const Button = styled.button<ButtonType>`
@@ -159,14 +157,12 @@ export const TitleWrapper = styled.div`
     align-items: center;
 `
 
-export const TitleText = styled.div<TitleTextStyled>`
+export const TitleText = styled.div`
     font-weight: 500;
     font-size: 1.5rem;
     line-height: 2rem;
     color: #fff;
     margin-right: 5px;
-
-    ${props => props.titleStyle}
 `
 
 export const TooltipWrapper = styled.div`
@@ -238,6 +234,7 @@ export const NoDataWrapper = styled.div`
         position: relative;
         display: block;
         margin: 0 auto;
+        width: 100px;
     }
 
     & p {

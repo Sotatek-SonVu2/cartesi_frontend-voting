@@ -1,13 +1,12 @@
 interface PropsType {
     label: string
-    onChange: any
-    checked: boolean
+    register: any
 }
 
-const Checkbox = ({ label, onChange, checked }: PropsType) => {
+const Checkbox = ({ label, register }: PropsType) => {
     return (
         <div>
-            <input type="checkbox" onChange={onChange} checked={checked} />
+            <input type="checkbox" {...register} />
             <label>{label}</label>
         </div>
     )

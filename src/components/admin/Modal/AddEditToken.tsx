@@ -1,15 +1,17 @@
 import { yupResolver } from '@hookform/resolvers/yup'
+import Checkbox from 'common/Checkbox'
 import ModalComponent from "common/Modal"
 import { createNotifications } from "common/Notification"
 import { handleResponse } from "helper/handleResponse"
 import { sendInput } from "helper/sendInput"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import styled from 'styled-components'
 import { ButtonModal } from "styled/common"
-import { ErrorText, FormItem, Input, WaitingMessage } from "styled/form"
+import { CheckboxGroup, ErrorText, FormItem, Input, RadioGroup, WaitingMessage } from "styled/form"
 import { Loader } from "styled/loading"
-import { ADD_TOKEN, ERROR_MESSAGE, NOTI_TYPE, NO_RESPONSE_ERROR, UPDATE_TOKEN, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "utils/contants"
-import { resInput, tokenType, tokenTypePayload } from "utils/interface"
+import { ADD_TOKEN, ERROR_MESSAGE, NOTI_TYPE, NO_RESPONSE_ERROR, TOKEN_ACTION_ARRAY, TOKEN_STATUS, TOKEN_STATUS_ARRAY, UPDATE_TOKEN, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "utils/contants"
+import { resInput, tokenType, TokenForm, tokenTypePayload } from "utils/interface"
 import * as yup from "yup"
 
 interface PropsType {
@@ -18,6 +20,10 @@ interface PropsType {
     data: tokenType | null
     getData: () => void
 }
+
+const Item = styled.div`
+    width: 41%;
+`
 
 const iconDefault = 'https://cdn-icons-png.flaticon.com/512/2927/2927910.png'
 
@@ -28,15 +34,19 @@ const schema = yup.object({
 }).required();
 
 const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
-    const { register, handleSubmit, formState: { errors } }: any = useForm<tokenType>({
+    const { register, handleSubmit, formState: { errors } }: any = useForm<TokenForm>({
         resolver: yupResolver(schema),
         defaultValues: {
             name: data ? data.name : '',
             address: data ? data.address : '',
             fee: data ? data.fee : 0,
             icon: data ? data.icon : '',
+            status: data ? data.status.toString() : '1',
+            can_create_campaign: data?.can_create_campaign === TOKEN_STATUS.ACTIVE,
+            can_vote: data?.can_vote === TOKEN_STATUS.ACTIVE,
         }
     });
+
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [callMessage, setCallMessage] = useState<string>('')
 
@@ -44,15 +54,18 @@ const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
         toggleModal()
     }
 
-    const onSubmit = async (dataForm: tokenType) => {
+    const onSubmit = async (dataForm: TokenForm) => {
         try {
-            const { name, fee, address, icon } = dataForm
+            const { name, fee, address, icon, can_vote, can_create_campaign, status } = dataForm
             const payload: tokenTypePayload = {
                 action: !data ? ADD_TOKEN : UPDATE_TOKEN,
                 id: data ? data.id : 0,
                 name,
                 fee: typeof fee === 'string' ? parseFloat(fee) : fee,
                 address,
+                can_vote: can_vote ? TOKEN_STATUS.ACTIVE : TOKEN_STATUS.DISABLED,
+                can_create_campaign: can_create_campaign ? TOKEN_STATUS.ACTIVE : TOKEN_STATUS.DISABLED,
+                status: parseInt(status),
                 icon: icon ? icon : iconDefault
             }
             setIsLoading(true)
@@ -93,7 +106,7 @@ const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <WaitingMessage>{callMessage}</WaitingMessage>
                 <FormItem>
-                    <label>Name</label>
+                    <label>Name:</label>
                     <Input
                         type="text"
                         {...register("name")}
@@ -102,7 +115,7 @@ const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
                     <ErrorText>{errors?.name?.message}</ErrorText>
                 </FormItem>
                 <FormItem>
-                    <label>Address</label>
+                    <label>Address:</label>
                     <Input
                         type="text"
                         {...register("address")}
@@ -112,7 +125,7 @@ const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
                 </FormItem>
 
                 <FormItem>
-                    <label>Image Link</label>
+                    <label>Image Link:</label>
                     <Input
                         type="text"
                         {...register("icon")}
@@ -121,13 +134,39 @@ const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
                 </FormItem>
 
                 <FormItem>
-                    <label>Fee</label>
+                    <label>Fee:</label>
                     <Input
                         type="string"
                         {...register("fee")}
                         placeholder="Enter the fee per transaction of the token..."
                     />
                     <ErrorText>{errors?.fee?.message}</ErrorText>
+                </FormItem>
+
+                <FormItem>
+                    <label>Status:</label>
+                    <RadioGroup>
+                        {TOKEN_STATUS_ARRAY.map((item, index) => (
+                            <Item key={index}>
+                                <input type="radio" {...register("status")} value={item.value} />
+                                <label>{item.label}</label>
+                            </Item>
+                        ))}
+                    </RadioGroup>
+                </FormItem>
+
+                <FormItem>
+                    <label>Actions:</label>
+                    <CheckboxGroup style={{ justifyContent: 'unset' }}>
+                        {TOKEN_ACTION_ARRAY.map((item, index) => (
+                            <Item key={index}>
+                                <Checkbox
+                                    label={item.label}
+                                    register={register(`${item.key}`)}
+                                />
+                            </Item>
+                        ))}
+                    </CheckboxGroup>
                 </FormItem>
 
                 <ButtonModal disabled={isLoading} type="submit" success>

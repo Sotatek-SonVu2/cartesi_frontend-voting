@@ -18,15 +18,12 @@ import { convertUtcToLocal } from "utils/common"
 import {
     CAMPAIGN_DETAIL,
     ERROR_MESSAGE,
-    FORMAT_DATETIME,
-    NOTI_TYPE,
+    FORMAT_DATETIME, NOTI_TYPE,
     NO_RESPONSE_ERROR, VOTE,
     WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE
 } from "utils/contants"
-import getTokenAddress from "utils/getTokenAddress"
-import { CampaignVotingType, CandidatesVotingType, MetadataType, resInput } from "utils/interface"
+import { CampaignVotingType, CandidatesVotingType, DepositInfoType, MetadataType, resInput, tokenType } from "utils/interface"
 import VotingItem from "./Item/Voting"
-import VotingModal from "./Modal/VotingModal"
 
 interface DataType {
     campaign: CampaignVotingType
@@ -44,7 +41,6 @@ const SubTitle = styled.div`
 
 const Voting = () => {
     const [candidateId, setCandidateId] = useState<number>(0)
-    const [isVisible, setIsVisible] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [callMessage, setCallMessage] = useState<string>('')
     const [isLoadVoting, setIsLoadVoting] = useState<boolean>(false)
@@ -57,6 +53,8 @@ const Voting = () => {
             id: 0,
             name: '',
             start_time: '',
+            fee: 0,
+            accept_token: ''
         },
         candidates: [],
         voted: {}
@@ -64,6 +62,7 @@ const Voting = () => {
     const [campaignType, setCampaignType, isActionButton, setIsActionButton] = useOutletContext<any>();
     const dispatch = useDispatch<AppDispatch>()
     const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
+    const deposit_info = useSelector((state: RootState) => state.auth.deposit_info)
     const { tokenListing } = useSelector((state: RootState) => state.token)
     const { campaignId } = useParams();
     const navigate = useNavigate();
@@ -120,44 +119,51 @@ const Voting = () => {
         setCandidateId(id)
     }
 
-    const toggleModal = () => {
-        setIsVisible(!isVisible);
+    const handleVoting = async () => {
+        const token: any = deposit_info.find((deposit: DepositInfoType) => deposit.contract_address === data.campaign?.accept_token)
+        const amount = token?.amount - token?.used_amount - token?.withdrawn_amount
+        if (amount && amount > data.campaign?.fee) {
+            try {
+                setIsLoadVoting(true)
+                const data = {
+                    action: VOTE,
+                    candidate_id: candidateId,
+                    campaign_id: campaignId && parseInt(campaignId),
+                }
+                setCallMessage(WAITING_FOR_CONFIRMATION)
+                const { epoch_index, input_index }: resInput = await sendInput(data);
+                handleResponse(epoch_index, input_index, ((payload: any) => {
+                    if (!payload || payload.message !== NO_RESPONSE_ERROR && !payload.error) {
+                        const message = payload ? 'Vote successfully!' : WAITING_RESPONSE_FROM_SERVER_MESSAGE
+                        createNotifications(NOTI_TYPE.SUCCESS, message)
+                        dispatch(getDepositInfo())
+                        navigate(`${ROUTER_PATH.RESULT}/${campaignId}`, { replace: true });
+                    } else if (payload.message === NO_RESPONSE_ERROR) {
+                        setCallMessage(`Waiting: ${payload.times}s.`)
+                    } else {
+                        createNotifications(NOTI_TYPE.DANGER, payload?.error || ERROR_MESSAGE)
+                        setCandidateId(0)
+                        setIsLoadVoting(false)
+                    }
+                }))
+            } catch (error: any) {
+                createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
+                setCandidateId(0)
+                setIsLoadVoting(false)
+                setCallMessage('')
+                throw error
+            }
+        } else {
+            createNotifications(NOTI_TYPE.DANGER, "Oops! You don't have enough tokens in the DApp!")
+        }
     }
 
-    const handleVoting = async (token: string) => {
-        toggleModal()
-        if (!candidateId) return createNotifications(NOTI_TYPE.DANGER, 'Please choose a candidate!')
-        try {
-            setIsLoadVoting(true)
-            const data = {
-                action: VOTE,
-                candidate_id: candidateId,
-                campaign_id: campaignId && parseInt(campaignId),
-                token_address: getTokenAddress(tokenListing, token)
-            }
-            setCallMessage(WAITING_FOR_CONFIRMATION)
-            const { epoch_index, input_index }: resInput = await sendInput(data);
-            handleResponse(epoch_index, input_index, ((payload: any) => {
-                if (!payload || payload.message !== NO_RESPONSE_ERROR && !payload.error) {
-                    const message = payload ? 'Vote successfully!' : WAITING_RESPONSE_FROM_SERVER_MESSAGE
-                    createNotifications(NOTI_TYPE.SUCCESS, message)
-                    dispatch(getDepositInfo())
-                    navigate(`${ROUTER_PATH.RESULT}/${campaignId}`, { replace: true });
-                } else if (payload.message === NO_RESPONSE_ERROR) {
-                    setCallMessage(`Waiting: ${payload.times}s.`)
-                } else {
-                    createNotifications(NOTI_TYPE.DANGER, payload?.error || ERROR_MESSAGE)
-                    setCandidateId(0)
-                    setIsLoadVoting(false)
-                }
-            }))
-        } catch (error: any) {
-            createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
-            setCandidateId(0)
-            setIsLoadVoting(false)
-            setCallMessage('')
-            throw error
-        }
+    const getInfo = () => {
+        const { campaign } = data
+        const token = tokenListing.find((token: tokenType) => token.address === campaign?.accept_token)?.name
+        return (
+            <p>To vote for this campaign, you need {campaign?.fee} {token}</p>
+        )
     }
 
     return (
@@ -169,6 +175,7 @@ const Voting = () => {
                     <Title text={data.campaign.name || '(NO DATA)'} userGuideType='vote' />
                     <SubTitle>
                         <p>{data.campaign.start_time} - {data.campaign.end_time}</p>
+                        {getInfo()}
                         {isCloseVoting && (
                             <span>This campaign is closed for voting!</span>
                         )}
@@ -189,20 +196,13 @@ const Voting = () => {
                             <DefaultButton type="button" onClick={() => navigate(ROUTER_PATH.HOMEPAGE)}>Back</DefaultButton>
                             <SuccessButton
                                 type="button"
-                                onClick={toggleModal}
+                                onClick={handleVoting}
                                 disabled={isCloseVoting || data.voted?.candidate_id || !candidateId || isLoadVoting}
                             >
                                 Vote
                             </SuccessButton>
                             <PrimaryButton type="button" onClick={() => navigate(`${ROUTER_PATH.RESULT}/${campaignId}`)}>Result</PrimaryButton>
                         </FlexLayoutBtn>
-                    )}
-                    {isVisible && (
-                        <VotingModal
-                            isVisible={isVisible}
-                            toggleModal={toggleModal}
-                            onClick={handleVoting}
-                        />
                     )}
                     {isLoadVoting && (
                         <Loading isScreenLoading={isLoadVoting} messages={callMessage} />

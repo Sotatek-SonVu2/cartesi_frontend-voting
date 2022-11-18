@@ -1,7 +1,7 @@
 import ConfimModal from 'common/ConfimModal';
 import Loading from 'common/Loading';
-import NoData from 'common/NoData';
 import { createNotifications } from 'common/Notification';
+import Table from 'common/Table';
 import Tooltip from 'common/Tooltip';
 import { handleInspectApi } from 'helper/handleInspectApi';
 import { handleResponse } from 'helper/handleResponse';
@@ -9,7 +9,6 @@ import { sendInput } from 'helper/sendInput';
 import DeleteButton from 'images/delete-button.png';
 import EditButton from 'images/edit-button.png';
 import { useEffect, useState } from 'react';
-import BootstrapTable from 'react-bootstrap-table-next';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
@@ -17,7 +16,7 @@ import styled from 'styled-components';
 import { colorTheme, SuccessButton } from 'styled/common';
 import { ActionColumn } from 'styled/form';
 import { formatAddress } from 'utils/common';
-import { DELETE_ROLE, ERROR_MESSAGE, LIST_ROLE, NOTI_TYPE, NO_RESPONSE_ERROR, USER_AUTH, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from 'utils/contants';
+import { ADMIN_ACTION, DELETE_ROLE, ERROR_MESSAGE, LIST_ROLE, NOTI_TYPE, NO_RESPONSE_ERROR, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from 'utils/contants';
 import { MetadataType, resInput, usersType } from 'utils/interface';
 import AddEditUser from './Modal/AddEditUser';
 
@@ -30,7 +29,7 @@ export const CreateButton = styled(SuccessButton)`
 `
 
 const checkBox = (cell: number) => {
-    return <input type="checkbox" checked={cell === USER_AUTH.YES} readOnly />
+    return <input type="checkbox" checked={cell === ADMIN_ACTION.YES} readOnly />
 }
 
 const Users = () => {
@@ -168,13 +167,11 @@ const Users = () => {
             {isLoading ? (
                 <Loading />
             ) : (
-                <>
-                    {items?.length > 0 ? (
-                        <BootstrapTable columns={columns} data={items} keyField='id' />
-                    ) : (
-                        <NoData />
-                    )}
-                </>
+                <Table
+                    columns={columns}
+                    data={items}
+                    keyField='id'
+                />
             )}
 
             {isVisible && (

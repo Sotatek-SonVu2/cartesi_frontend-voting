@@ -9,6 +9,7 @@ interface PropsType {
     tokenType: string
     tokenList: tokenType[]
     isLoading: boolean
+    style?: any
 }
 
 const CoinWrapper = styled(FlexLayout)`
@@ -18,9 +19,9 @@ const CoinWrapper = styled(FlexLayout)`
     margin-bottom: 15px;
 `
 
-const TokensList = ({ onChooseCoin, tokenType, tokenList, isLoading }: PropsType) => {
+const TokensList = ({ onChooseCoin, tokenType, tokenList, isLoading, style }: PropsType) => {
     return (
-        <CoinWrapper>
+        <CoinWrapper style={{ ...style }}>
             {!isLoading ? (
                 <>
                     {tokenList?.map(({ id, name, icon }) => (

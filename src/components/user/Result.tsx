@@ -80,6 +80,8 @@ const Result = () => {
         getData()
     }, [])
 
+    console.log('campaign', campaign)
+
     return (
         <>
             {isLoading ? (
@@ -90,9 +92,9 @@ const Result = () => {
                         text={title || '(NO DATA)'}
                         userGuideType='result'
                     />
-                    <p>Here is the reason, here is what you voted. The results by {campaign?.length > 0 ? campaign[0].total : 0} votes:</p>
+                    <p>The total votes is {campaign?.length > 0 ? campaign[0].total_vote : 0}.</p>
                     {voted_candidate?.name && (
-                        <span>Your voted is: {voted_candidate?.name}.</span>
+                        <span>You voted for: {voted_candidate?.name}.</span>
                     )}
                     {campaign?.length > 0 ? campaign.map((item) => (
                         <div key={item.id}>

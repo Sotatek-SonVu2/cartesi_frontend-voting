@@ -31,6 +31,9 @@ export const NOTIFICATION = 'NOTIFICATION'
 export const GET_ALL_ACTIVE = 'GET_ALL_ACTIVE'
 export const GET_ALL_HAS_TOKEN = 'GET_ALL_HAS_TOKEN'
 export const GET_ACTIVE_HAS_TOKEN = 'GET_ACTIVE_HAS_TOKEN'
+export const GET_CAN_CREATE = 'GET_CAN_CREATE'
+export const GET_CAN_VOTE = 'GET_CAN_VOTE'
+export const GET_CAN_VOTE_ACTIVE = 'GET_CAN_VOTE_ACTIVE'
 export const NO_TOKEN = 'NO_TOKEN'
 export const NO_SUPPORT_YET = 'NO_SUPPORT_YET'
 
@@ -55,9 +58,15 @@ export const NOTI_TYPE: any = {
     WARNING: 'warning'
 }
 
+export const STATUS = {
+    ACTIVE: 1,
+    DISABLED: 0
+}
+
 export const TOKEN_STATUS = {
-    ACTIVE: 0,
-    DISABLED: 1
+    ACTIVE: 1,
+    LOCKED: 2,
+    DISABLED: 0
 }
 
 export const WITHDRAW_RADIO_FILTER_STATUS = {
@@ -159,12 +168,12 @@ export const ITEM_TYPE = {
     ANSWER: 'ANSWER'
 }
 
-export const USER_AUTH = {
+export const ADMIN_ACTION = {
     YES: 1,
     NO: 0
 }
 
-export const USER_AUTH_ARRAY = [
+export const ADMIN_ACTION_ARRAY = [
     {
         label: 'User',
         key: 'manage_user',
@@ -180,5 +189,27 @@ export const USER_AUTH_ARRAY = [
     {
         label: 'System',
         key: 'manage_system',
+    },
+]
+
+export const TOKEN_STATUS_ARRAY = [
+    {
+        label: 'Active',
+        value: 1
+    },
+    {
+        label: 'Locked',
+        value: 2
+    },
+]
+
+export const TOKEN_ACTION_ARRAY = [
+    {
+        label: 'Vote campaign',
+        key: 'can_vote',
+    },
+    {
+        label: 'Create campaign',
+        key: 'can_create_campaign',
     },
 ]

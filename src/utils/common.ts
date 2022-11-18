@@ -1,4 +1,6 @@
 import { ethers } from "ethers";
+import moment from "moment";
+import { FORMAT_DATETIME } from "./contants";
 import { MetadataType } from "./interface";
 
 export const JsonStringifyFormat = (data: {}) => {
@@ -44,6 +46,12 @@ export const convertLocalToUtc = (date = new Date()) => {
     const result = date.setHours(date.getHours() + offset);
     convertUtcToLocal(date) // reverse the result
     return result;
+}
+
+export const convertUtcTimestamp = () => {
+    const datetime = moment(convertLocalToUtc()).format(FORMAT_DATETIME)
+    const timestamp = Date.parse(datetime) / 1000
+    return timestamp
 }
 
 export const convertPayload = (data: any, metadata: MetadataType) => {

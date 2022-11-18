@@ -40,8 +40,6 @@ const DepositInfo = () => {
                     }
                 })
             })
-        } else {
-            data = [...tokenListing]
         }
 
         return (
@@ -49,7 +47,11 @@ const DepositInfo = () => {
                 {!isLoading ? (
                     <>
                         {data?.length > 0 ? data.map((item: any) => (
-                            <DepositInfoBox key={item.id} is_disabled={item.is_disabled === TOKEN_STATUS.DISABLED}>
+                            <DepositInfoBox
+                                key={item.id}
+                                is_disabled={item.status === TOKEN_STATUS.DISABLED}
+                                is_locked={item.status === TOKEN_STATUS.LOCKED}
+                            >
                                 <TokenItem>
                                     <img src={item.icon} alt="token_icon" width={20} />
                                     <span>{item.name}: {item.amount - item.used_amount - item.withdrawn_amount || 0}</span>
@@ -59,12 +61,16 @@ const DepositInfo = () => {
                                     <p>Used: {item.used_amount || 0} {item.name}</p>
                                     <p>Withdraw: {item.withdrawn_amount || 0} {item.name}</p>
                                     <p>Fee: {item.fee || 0} {item.name}</p>
-                                    <small>{item.is_disabled === TOKEN_STATUS.DISABLED ? '(Inactive Token)' : '(Active Token)'}</small>
+                                    <small>
+                                        {item.status === TOKEN_STATUS.DISABLED ? '(Inactive Token)'
+                                            : item.status === TOKEN_STATUS.LOCKED ? '(Locked Token)'
+                                                : '(Active Token)'}
+                                    </small>
                                 </div>
                             </DepositInfoBox>
                         )) : (
                             <DepositInfoBox style={{ width: 'unset' }}>
-                                The DApp does not support any tokens yet!
+                                Oops! You don't have any tokens in the DApp yet. <br /> Let's deposit tokens now!
                             </DepositInfoBox>
                         )}
                     </>

@@ -9,8 +9,8 @@ import { useForm } from "react-hook-form"
 import { ButtonModal } from "styled/common"
 import { CheckboxGroup, ErrorText, FormItem, Input, WaitingMessage } from "styled/form"
 import { Loader } from "styled/loading"
-import { ADD_ROLE, ERROR_MESSAGE, NOTI_TYPE, NO_RESPONSE_ERROR, UPDATE_ROLE, USER_AUTH, USER_AUTH_ARRAY, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "utils/contants"
-import { resInput, usersType, usersTypePayload } from "utils/interface"
+import { ADD_ROLE, ERROR_MESSAGE, NOTI_TYPE, NO_RESPONSE_ERROR, UPDATE_ROLE, ADMIN_ACTION, ADMIN_ACTION_ARRAY, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from "utils/contants"
+import { resInput, UserForm, usersType, usersTypePayload } from "utils/interface"
 import * as yup from "yup"
 
 interface PropsType {
@@ -25,47 +25,34 @@ const schema = yup.object({
 }).required();
 
 const AddEditUser = ({ isVisible, toggleModal, data, getData }: PropsType) => {
-    const initialCheckbox = {
-        manage_post: data ? data.manage_post : 0,
-        manage_system: data ? data.manage_system : 0,
-        manage_token: data ? data.manage_token : 0,
-        manage_user: data ? data.manage_user : 0,
-    }
-
-    const { register, handleSubmit, formState: { errors } }: any = useForm<usersType>({
+    const { register, handleSubmit, formState: { errors } }: any = useForm<UserForm>({
         resolver: yupResolver(schema),
         defaultValues: {
             user: data ? data.user : '',
+            manage_post: data?.manage_post === ADMIN_ACTION.YES,
+            manage_token: data?.manage_token === ADMIN_ACTION.YES,
+            manage_user: data?.manage_user === ADMIN_ACTION.YES,
+            manage_system: data?.manage_system === ADMIN_ACTION.YES,
         }
     });
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [checkbox, setCheckbox] = useState(initialCheckbox)
     const [callMessage, setCallMessage] = useState<string>('')
-    const { manage_post, manage_system, manage_token, manage_user } = checkbox
-
-    const onChecked = (key: string) => (e: any) => {
-        const data: any = { ...checkbox }
-        data[key] = e.target.checked ? USER_AUTH.YES : USER_AUTH.NO
-        setCheckbox({
-            ...data
-        })
-    }
 
     const onCancel = () => {
-        setCheckbox({ ...initialCheckbox })
         toggleModal()
     }
 
     const onSubmit = async (dataForm: usersType) => {
         try {
+            const { user, manage_post, manage_system, manage_token, manage_user } = dataForm
             const payload: usersTypePayload = {
                 action: !data ? ADD_ROLE : UPDATE_ROLE,
                 id: data ? data.id : 0,
-                user: dataForm.user,
-                manage_post,
-                manage_system,
-                manage_token,
-                manage_user,
+                user,
+                manage_post: manage_post ? ADMIN_ACTION.YES : ADMIN_ACTION.NO,
+                manage_system: manage_system ? ADMIN_ACTION.YES : ADMIN_ACTION.NO,
+                manage_token: manage_token ? ADMIN_ACTION.YES : ADMIN_ACTION.NO,
+                manage_user: manage_user ? ADMIN_ACTION.YES : ADMIN_ACTION.NO,
             }
             setIsLoading(true)
             setCallMessage(WAITING_FOR_CONFIRMATION)
@@ -116,18 +103,13 @@ const AddEditUser = ({ isVisible, toggleModal, data, getData }: PropsType) => {
                 <FormItem>
                     <label>Permisstion:</label>
                     <CheckboxGroup>
-                        {USER_AUTH_ARRAY.map((item, index) => {
-                            const obj: any = { ...checkbox }
-                            const checked = obj[item.key] === USER_AUTH.YES
-                            return (
-                                <Checkbox
-                                    key={index}
-                                    label={item.label}
-                                    onChange={onChecked(item.key)}
-                                    checked={checked}
-                                />
-                            )
-                        })}
+                        {ADMIN_ACTION_ARRAY.map((item, index) => (
+                            <Checkbox
+                                key={index}
+                                label={item.label}
+                                register={register(`${item.key}`)}
+                            />
+                        ))}
                     </CheckboxGroup>
                 </FormItem>
 

@@ -75,6 +75,12 @@ export const CheckboxGroup = styled.div`
     margin-top: 10px;
 `
 
+export const RadioGroup = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+`
+
 export const WaitingMessage = styled.span`
     display: block;
     text-align: center;

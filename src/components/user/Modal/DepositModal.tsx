@@ -131,7 +131,7 @@ const DepositModal = ({ isVisible, toggleModal }: Props) => {
                 createNotifications(NOTI_TYPE.SUCCESS, WAITING_RESPONSE_FROM_SERVER_MESSAGE)
                 toggleModal()
             } else {
-                createNotifications(NOTI_TYPE.DANGER, "You don't have enough tokens in your Metamask wallet.")
+                createNotifications(NOTI_TYPE.DANGER, "Oops! You don't have enough tokens in your Metamask wallet.")
             }
         } catch (error: any) {
             createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)

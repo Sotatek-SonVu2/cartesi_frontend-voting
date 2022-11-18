@@ -14,6 +14,7 @@ import { ERROR_MESSAGE, LIST_CAMPAIGN, NOTI_TYPE } from "utils/contants";
 import { CampaignDataType, MetadataType } from "utils/interface";
 import CampaignItem from "./Item/Campaign";
 import { useOutletContext } from "react-router-dom";
+import { convertUtcTimestamp } from "utils/common";
 
 const CampaignsList = () => {
     const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)

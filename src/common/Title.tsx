@@ -8,19 +8,20 @@ interface PropsType {
     userGuideType?: string
     placement?: 'top' | 'right' | 'bottom' | 'left',
     type?: 'dark' | 'success' | 'warning' | 'error' | 'info' | 'light';
-    titleStyle?: string
+    titleStyle?: any
+    id?: string
     className?: string //'tooltip-sz-md' | 'tooltip-sz-sm' | 'tooltip-sz-max' | 'tooltip-modal ' | 'tooltip-admin-icon' (index.css)
 }
 
-const Title = ({ text, userGuideType, placement = 'top', type = "light", titleStyle, className }: PropsType) => {
+const Title = ({ text, userGuideType, placement = 'top', type = "light", titleStyle, className, id = 'title' }: PropsType) => {
     return (
         <TitleWrapper>
-            <TitleText titleStyle={titleStyle}>{text}</TitleText>
+            <TitleText style={{ ...titleStyle }}>{text}</TitleText>
             {userGuideType && (
                 <Tooltip
                     text={userGuide[userGuideType]}
                     placement={placement}
-                    id='title'
+                    id={id}
                     type={type}
                     className={className}
                 >

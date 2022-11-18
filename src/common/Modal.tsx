@@ -40,7 +40,9 @@ const ModalComponent = ({ isVisible, toggleModal, children, title, isLoading, wi
                             userGuideType={userGuideType}
                             placement="bottom"
                             type="dark"
-                            titleStyle='color: #000; font-size: 17px;'
+                            titleStyle={{
+                                color: '#000', fontSize: '17px'
+                            }}
                             className="tooltip-modal"
                         />
                         <img src={CloseIcon} alt="close icon" width={13} onClick={onToggleModal} />

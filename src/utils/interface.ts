@@ -40,6 +40,9 @@ export interface AddEditDataType {
     start_time: string,
     end_time: string,
     candidates: CadidatesType[]
+    accept_token?: string,
+    fee?: number
+    token_address?: string
 }
 
 export interface DescriptionType {
@@ -74,6 +77,8 @@ export interface CampaignVotingType {
     id: number
     name: string
     start_time: string
+    fee: number
+    accept_token: string
 }
 
 export interface CandidatesVotingType {
@@ -160,6 +165,15 @@ export interface usersType {
     user: string
 }
 
+export interface UserForm {
+    id?: number
+    manage_post: boolean
+    manage_system: boolean
+    manage_token: boolean
+    manage_user: boolean
+    user: string
+}
+
 export interface usersTypePayload {
     id: number | undefined
     action: string
@@ -175,9 +189,21 @@ export interface tokenType {
     fee: number
     name: string
     icon?: string
-    other_fee?: number
     address: string
-    is_disabled: number
+    can_vote: number
+    can_create_campaign: number
+    status: number
+}
+
+export interface TokenForm {
+    id?: number
+    fee: number
+    name: string
+    icon?: string
+    address: string
+    can_vote: boolean
+    can_create_campaign: boolean
+    status: string
 }
 
 export interface tokenTypePayload {
@@ -187,6 +213,9 @@ export interface tokenTypePayload {
     name: string
     address: string
     icon?: string
+    can_vote: number
+    can_create_campaign: number
+    status: number
 }
 
 

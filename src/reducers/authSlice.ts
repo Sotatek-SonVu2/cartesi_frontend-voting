@@ -1,35 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { convertUtcTimestamp } from 'utils/common';
 import { createNotifications } from '../common/Notification';
 import { handleInspectApi } from '../helper/handleInspectApi';
 import { ADDRESS_WALLET, USER_INFO, ERROR_MESSAGE, NOTI_TYPE } from '../utils/contants';
-import { AuthState, MetadataType } from '../utils/interface';
+import { AuthState } from '../utils/interface';
 
-export const getDepositInfo = createAsyncThunk(
-    'auth/depositInfo',
-    async () => {
-        try {
-            const data = {
-                action: USER_INFO,
-            }
-            const metadata: MetadataType = {
-                msg_sender: localStorage.getItem(ADDRESS_WALLET)?.toLowerCase() || '',
-                epoch_index: 0,
-                input_index: 0,
-                block_number: 0,
-                timestamp: Date.now() / 1000 // millisecond
-            }
-            const result = await handleInspectApi(data, metadata)
-            if (result && !result.error) {
-                return result
-            } else {
-                createNotifications(NOTI_TYPE.DANGER, result?.error || ERROR_MESSAGE)
-            }
-        } catch (error: any) {
-            createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
-            throw error
-        }
-    }
-)
 
 const initialState: AuthState = {
     address: localStorage.getItem(ADDRESS_WALLET) || '',
@@ -57,10 +32,30 @@ const initialState: AuthState = {
         epoch_index: 0,
         input_index: 0,
         block_number: 0,
-        timestamp: Date.now() / 1000  // millisecond
+        timestamp: convertUtcTimestamp()  // millisecond
     },
     isLoading: false
 };
+
+export const getDepositInfo = createAsyncThunk(
+    'auth/depositInfo',
+    async () => {
+        try {
+            const data = {
+                action: USER_INFO,
+            }
+            const result = await handleInspectApi(data, initialState.metadata)
+            if (result && !result.error) {
+                return result
+            } else {
+                createNotifications(NOTI_TYPE.DANGER, result?.error || ERROR_MESSAGE)
+            }
+        } catch (error: any) {
+            createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
+            throw error
+        }
+    }
+)
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -74,7 +69,7 @@ export const authSlice = createSlice({
                 metadata: {
                     ...state.metadata,
                     msg_sender: payload.toLowerCase(),
-                    timestamp: Date.now() / 1000  // millisecond
+                    timestamp: convertUtcTimestamp()  // millisecond
                 }
             }
             state = data

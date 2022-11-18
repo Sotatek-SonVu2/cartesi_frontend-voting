@@ -1,8 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { createNotifications } from "common/Notification";
 import { handleInspectApi } from "helper/handleInspectApi";
+import { convertUtcTimestamp } from "utils/common";
 import { ADDRESS_WALLET, ERROR_MESSAGE, LIST_TOKEN, NOTI_TYPE } from "utils/contants";
 import { MetadataType, TokenState } from "utils/interface";
+
+const initialState: TokenState = {
+    tokenListing: [],
+    isLoading: false
+};
 
 export const getTokens = createAsyncThunk(
     'token/getTokens',
@@ -16,7 +22,7 @@ export const getTokens = createAsyncThunk(
                 epoch_index: 0,
                 input_index: 0,
                 block_number: 0,
-                timestamp: Date.now() / 1000 // millisecond
+                timestamp: convertUtcTimestamp() // millisecond
             }
             const result = await handleInspectApi(data, metadata)
             if (result && !result.error) {
@@ -30,11 +36,6 @@ export const getTokens = createAsyncThunk(
         }
     }
 )
-
-const initialState: TokenState = {
-    tokenListing: [],
-    isLoading: false
-};
 
 export const tokenSlice = createSlice({
     name: 'token',

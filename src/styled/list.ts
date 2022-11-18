@@ -17,10 +17,12 @@ interface CoinBoxStyled {
 
 interface DepositInfoBoxType {
   is_disabled?: boolean
+  is_locked?: boolean
 }
 
 interface StatusTextType {
   is_disabled?: boolean
+  is_locked?: boolean
 }
 
 
@@ -358,7 +360,7 @@ export const DepositInfoBox = styled.div<DepositInfoBoxType>`
   color: #fff;
   text-align: center;
   margin-bottom: 10px;
-  background: ${props => props.is_disabled ? '#aeaeae8f' : '#216ba5ab'};
+  background: ${props => props.is_disabled ? `${colorTheme.error}` : props.is_locked ? `${colorTheme.locked}` : '#216ba5ab'};
   width: 180px;
   margin: 0px 12px 10px;
   border-radius: 4px;
@@ -395,7 +397,9 @@ export const DepositInfoBox = styled.div<DepositInfoBoxType>`
 
 
 export const StatusText = styled.small<StatusTextType>`
-    background: ${props => props.is_disabled ? `${colorTheme.error}` : `${colorTheme.success}`}; 
+    background: ${props => props.is_disabled ? `${colorTheme.error}`
+    : props.is_locked ? `${colorTheme.locked}`
+      : `${colorTheme.success}`}; 
     padding: 4px 10px;
     border-radius: 3px;
 `

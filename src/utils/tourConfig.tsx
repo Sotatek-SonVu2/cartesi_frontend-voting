@@ -5,28 +5,32 @@ const defaultSteps = [
     },
     {
         selector: '.deposit-step',
-        content: "Let's press this button to deposit tokens into the DApp.",
+        content: "Press this button to deposit tokens into the DApp.",
     },
     {
         selector: '.withdraw-step',
-        content: "Let's press this button to withdraw token to your wallet.",
+        content: "Press this button to withdraw token to your wallet.",
 
     },
     {
         selector: '.history-step',
-        content: "Let's press this button to view your activity history.",
+        content: "Press this button to view your activity history.",
     },
     {
         selector: '.tokens-step',
-        content: "Let's press this button to view the list of tokens that the system supports.",
+        content: "Press this button to view the list of tokens that the system supports.",
     },
     {
         selector: '.notification-step',
-        content: "Let's press this icon to view system notifications and your actions.",
+        content: "Press this icon to view system notifications and your actions.",
     },
     {
         selector: '.logout-step',
-        content: "Let's press this icon to logout of the DApp.",
+        content: "Press this icon to logout of the DApp.",
+    },
+    {
+        selector: '.deposit-info-step',
+        content: 'This is your deposit information in the DApp.',
     },
 ]
 
@@ -37,19 +41,19 @@ const campaignSteps = [
     },
     {
         selector: '.datetime-step',
-        content: 'This is campaign time for you to vote.',
+        content: 'This is the start time and end time of this campaign.',
     },
     {
         selector: '.highest-vote-step',
-        content: 'This is your deposit information in the DApp.',
+        content: 'The candidate with the highest number of vote.',
     },
     {
         selector: '.vote-number-step',
-        content: 'The candidate with the highest number of votes.',
+        content: 'Total votes of this campaign.',
     },
     {
         selector: '.description-step',
-        content: "Let's press this button to view the description of the campaign.",
+        content: "Press this button to view the description of the campaign.",
     },
 ]
 

@@ -1,7 +1,7 @@
 import ConfimModal from 'common/ConfimModal';
 import Loading from 'common/Loading';
-import NoData from 'common/NoData';
 import { createNotifications } from 'common/Notification';
+import Table from 'common/Table';
 import Tooltip from 'common/Tooltip';
 import { handleResponse } from 'helper/handleResponse';
 import { sendInput } from 'helper/sendInput';
@@ -9,7 +9,6 @@ import useTokensList from 'hook/useTokensList';
 import DeleteButton from 'images/delete-button.png';
 import EditButton from 'images/edit-button.png';
 import { useEffect, useState } from 'react';
-import BootstrapTable from 'react-bootstrap-table-next';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useDispatch } from 'react-redux';
 import { getTokens } from 'reducers/tokenSlice';
@@ -17,8 +16,9 @@ import { AppDispatch } from 'store';
 import styled from 'styled-components';
 import { colorTheme, SuccessButton } from 'styled/common';
 import { ActionColumn } from 'styled/form';
+import { StatusText } from 'styled/list';
 import { formatAddress } from 'utils/common';
-import { DELETE_TOKEN, ERROR_MESSAGE, GET_ALL_ACTIVE, NOTI_TYPE, NO_RESPONSE_ERROR, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from 'utils/contants';
+import { DELETE_TOKEN, ERROR_MESSAGE, GET_ALL_ACTIVE, NOTI_TYPE, NO_RESPONSE_ERROR, TOKEN_STATUS, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE } from 'utils/contants';
 import { resInput, tokenType } from 'utils/interface';
 import AddEditToken from './Modal/AddEditToken';
 
@@ -125,6 +125,29 @@ const Tokens = () => {
             dataField: 'fee',
         },
         {
+            text: '(To Create)',
+            dataField: 'can_create_campaign',
+            formatter: (cell: number) => (
+                <input type="checkbox" checked={cell === TOKEN_STATUS.ACTIVE} readOnly />
+            )
+        },
+        {
+            text: '(To Vote)',
+            dataField: 'can_vote',
+            formatter: (cell: number) => (
+                <input type="checkbox" checked={cell === TOKEN_STATUS.ACTIVE} readOnly />
+            )
+        },
+        {
+            text: 'Status',
+            dataField: 'status',
+            formatter: (cell: number) => (
+                <StatusText is_locked={cell === TOKEN_STATUS.LOCKED}>
+                    {cell === TOKEN_STATUS.LOCKED ? 'Locked' : 'Active'}
+                </StatusText>
+            )
+        },
+        {
             text: '',
             dataField: 'action',
             formatter: (_: number, row: tokenType) => (
@@ -142,9 +165,7 @@ const Tokens = () => {
             {isLoading ? (
                 <Loading />
             ) : (
-                <>
-                    {tokenList?.length > 0 ? <BootstrapTable columns={columns} data={tokenList} keyField='address' /> : <NoData />}
-                </>
+                <Table columns={columns} data={tokenList} keyField='address' />
             )}
             {isVisible && (
                 <AddEditToken
