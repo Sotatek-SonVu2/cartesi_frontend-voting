@@ -386,7 +386,7 @@ export const DepositInfoBox = styled.div<DepositInfoBoxType>`
 
       & small {
         font-size: 11px;
-        color: ${props => props.is_disabled ? `${colorTheme.error}` : `${colorTheme.success}`}; 
+        color: ${props => props.is_disabled ? `${colorTheme.error}` : props.is_locked ? `${colorTheme.locked}` : '#216ba5ab'};
       }
   }
 
