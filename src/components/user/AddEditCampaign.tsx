@@ -27,8 +27,7 @@ import {
     CREATE_CAMPAIGN,
     EDIT_CAMPAIGN,
     ERROR_MESSAGE,
-    FORMAT_DATETIME,
-    GET_CAN_CREATE, GET_CAN_VOTE_ACTIVE,
+    FORMAT_DATETIME, GET_CAN_CREATE_ACTIVE, GET_CAN_VOTE_ACTIVE,
     NOTI_TYPE,
     NO_RESPONSE_ERROR, WAITING_FOR_CONFIRMATION, WAITING_RESPONSE_FROM_SERVER_MESSAGE
 } from "utils/contants";
@@ -68,7 +67,7 @@ const optionSchema = {
 const schema = yup.object({
     name: yup.string().required('Name is a required field!').max(200),
     description: yup.string().required('Desciption is a required field!').max(400),
-    fee: yup.number().typeError('Fee must be a number!').positive('Fee must be a positive number!').required('Fee is a required field!'),
+    fee: yup.number().min(0).typeError('Fee must be a number!').required('Fee is a required field!'),
     options: yup.array().of(yup.object().shape(optionSchema))
 }).required();
 
@@ -77,7 +76,7 @@ const AddEditCampaign = () => {
     let navigate = useNavigate();
     const { campaignId } = useParams();
     const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
-    const token_to_create = useTokensList(GET_CAN_CREATE)
+    const token_to_create = useTokensList(GET_CAN_CREATE_ACTIVE)
     const token_to_vote = useTokensList(GET_CAN_VOTE_ACTIVE)
 
     const [tokenToCreate, setTokenToCreate] = useState<string>('')
@@ -98,6 +97,7 @@ const AddEditCampaign = () => {
         defaultValues: {
             name: '',
             description: '',
+            fee: 0,
             options: campaignId ? [] : OptionDefault
         }
     });

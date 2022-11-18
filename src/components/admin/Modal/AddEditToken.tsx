@@ -30,7 +30,7 @@ const iconDefault = 'https://cdn-icons-png.flaticon.com/512/2927/2927910.png'
 const schema = yup.object({
     name: yup.string().required('Name is a required field!').max(200),
     address: yup.string().required('Address is a required field!').max(42),
-    fee: yup.number().typeError('Fee must be a number!').positive('Fee must be a positive number!').required('Fee is a required field!'),
+    fee: yup.number().min(0).typeError('Fee must be a number!').required('Fee is a required field!'),
 }).required();
 
 const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {

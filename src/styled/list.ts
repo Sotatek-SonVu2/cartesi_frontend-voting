@@ -341,6 +341,7 @@ export const CoinItem = styled.div<CoinBoxStyled>`
   border-radius: 4px;
   cursor: pointer;
   margin-bottom: 10px;
+  margin-right: 10px;
 
   & span {
     margin-left: 5px;

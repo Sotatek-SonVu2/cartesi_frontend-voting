@@ -1,5 +1,5 @@
 import { DepositInfoType, tokenType } from "utils/interface";
-import { GET_ALL_HAS_TOKEN, GET_ACTIVE_HAS_TOKEN, TOKEN_STATUS, GET_ALL_ACTIVE, GET_CAN_CREATE, GET_CAN_VOTE, GET_CAN_VOTE_ACTIVE } from "utils/contants";
+import { GET_ALL_HAS_TOKEN, GET_ACTIVE_HAS_TOKEN, TOKEN_STATUS, GET_ALL_ACTIVE, GET_CAN_CREATE, GET_CAN_VOTE, GET_CAN_VOTE_ACTIVE, GET_CAN_CREATE_ACTIVE } from "utils/contants";
 import { AppDispatch, RootState } from "store";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo } from "react";
@@ -12,6 +12,7 @@ const useTokensList = (
         | 'GET_CAN_VOTE'
         | 'GET_CAN_CREATE'
         | 'GET_CAN_VOTE_ACTIVE'
+        | 'GET_CAN_CREATE_ACTIVE'
 ) => {
     const dispatch = useDispatch<AppDispatch>()
     const deposit_info = useSelector((state: RootState) => state.auth.deposit_info)
@@ -34,6 +35,9 @@ const useTokensList = (
                 data = tokenListing.filter((token: tokenType) => token.can_vote === TOKEN_STATUS.ACTIVE && token.status !== TOKEN_STATUS.DISABLED)
                 break;
             case GET_CAN_CREATE:
+                data = tokenListing.filter((token: tokenType) => token.can_create_campaign === TOKEN_STATUS.ACTIVE && token.status !== TOKEN_STATUS.DISABLED)
+                break;
+            case GET_CAN_CREATE_ACTIVE:
                 tokenListing.forEach((token: tokenType) => {
                     let obj
                     deposit_info.forEach((deposit: DepositInfoType) => {
