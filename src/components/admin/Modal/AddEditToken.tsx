@@ -5,7 +5,7 @@ import { createNotifications } from "common/Notification"
 import { handleResponse } from "helper/handleResponse"
 import { sendInput } from "helper/sendInput"
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import styled from 'styled-components'
 import { ButtonModal } from "styled/common"
 import { CheckboxGroup, ErrorText, FormItem, Input, RadioGroup, WaitingMessage } from "styled/form"
@@ -34,7 +34,7 @@ const schema = yup.object({
 }).required();
 
 const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
-    const { register, handleSubmit, formState: { errors } }: any = useForm<TokenForm>({
+    const { register, handleSubmit, control, formState: { errors } }: any = useForm<TokenForm>({
         resolver: yupResolver(schema),
         defaultValues: {
             name: data ? data.name : '',
@@ -49,19 +49,21 @@ const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [callMessage, setCallMessage] = useState<string>('')
+    const [isCreate, setIsCreate] = useState<boolean>(data?.can_create_campaign === TOKEN_STATUS.ACTIVE)
 
     const onCancel = () => {
         toggleModal()
     }
 
     const onSubmit = async (dataForm: TokenForm) => {
+
         try {
             const { name, fee, address, icon, can_vote, can_create_campaign, status } = dataForm
             const payload: tokenTypePayload = {
                 action: !data ? ADD_TOKEN : UPDATE_TOKEN,
                 id: data ? data.id : 0,
                 name,
-                fee: typeof fee === 'string' ? parseFloat(fee) : fee,
+                fee: isCreate ? fee : 0,
                 address,
                 can_vote: can_vote ? TOKEN_STATUS.ACTIVE : TOKEN_STATUS.DISABLED,
                 can_create_campaign: can_create_campaign ? TOKEN_STATUS.ACTIVE : TOKEN_STATUS.DISABLED,
@@ -134,11 +136,12 @@ const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
                 </FormItem>
 
                 <FormItem>
-                    <label>Fee:</label>
+                    <label>Campaign creation fee:</label>
                     <Input
                         type="string"
                         {...register("fee")}
-                        placeholder="Enter the fee per transaction of the token..."
+                        placeholder="Enter the fee per campaign creation..."
+                        disabled={!isCreate}
                     />
                     <ErrorText>{errors?.fee?.message}</ErrorText>
                 </FormItem>
@@ -157,16 +160,31 @@ const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
 
                 <FormItem>
                     <label>Actions:</label>
-                    <CheckboxGroup style={{ justifyContent: 'unset' }}>
-                        {TOKEN_ACTION_ARRAY.map((item, index) => (
-                            <Item key={index}>
-                                <Checkbox
-                                    label={item.label}
-                                    register={register(`${item.key}`)}
-                                />
-                            </Item>
-                        ))}
-                    </CheckboxGroup>
+                    <Controller
+                        control={control}
+                        name="actions"
+                        render={({
+                            field: { onChange },
+                        }) => (
+                            <CheckboxGroup style={{ justifyContent: 'unset' }}>
+                                {TOKEN_ACTION_ARRAY.map((item, index) => (
+                                    <Item key={index}>
+                                        <input
+                                            type="checkbox"
+                                            {...register(`${item.key}`)}
+                                            onChange={(e) => {
+                                                onChange(e.target.checked)
+                                                if (item.key === 'can_create_campaign') {
+                                                    setIsCreate(e.target.checked)
+                                                }
+                                            }}
+                                        />
+                                        <label>{item.label}</label>
+                                    </Item>
+                                ))}
+                            </CheckboxGroup>
+                        )}
+                    />
                 </FormItem>
 
                 <ButtonModal disabled={isLoading} type="submit" success>

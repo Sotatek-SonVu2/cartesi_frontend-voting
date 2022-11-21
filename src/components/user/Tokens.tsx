@@ -114,32 +114,29 @@ const Tokens = () => {
             ) : (
                 <Content>
                     <Title text='Tokens' userGuideType='tokens' />
-                    {TokenCreating.tokenList?.length > 0 || TokenVoting.tokenList?.length > 0 ? (
-                        <>
-                            <div>
-                                <p>The token you can use to create the campaign:</p>
-                                <div style={{ marginTop: '15px' }}>
-                                    <Table
-                                        columns={addColumns}
-                                        data={TokenCreating.tokenList}
-                                        keyField='address'
-                                    />
-                                </div>
+                    <>
+                        <div>
+                            <p>The token you can use to create the campaign:</p>
+                            <div style={{ marginTop: '15px' }}>
+                                <Table
+                                    columns={addColumns}
+                                    data={TokenCreating.tokenList}
+                                    keyField='address'
+                                />
                             </div>
-                            <div style={{ marginTop: '2rem' }}>
-                                <p>The token you can use to vote the campaign:</p>
-                                <div style={{ marginTop: '15px' }}>
-                                    <Table
-                                        columns={voteColumns}
-                                        data={TokenVoting.tokenList}
-                                        keyField='address'
-                                    />
-                                </div>
+                        </div>
+                        <div style={{ marginTop: '2rem' }}>
+                            <p>The token you can use to vote the campaign:</p>
+                            <div style={{ marginTop: '15px' }}>
+                                <Table
+                                    columns={voteColumns}
+                                    data={TokenVoting.tokenList}
+                                    keyField='address'
+                                />
                             </div>
-                        </>
-                    ) : (
-                        <NoData />
-                    )}
+                        </div>
+                    </>
+
                 </Content>
             )}
         </>

@@ -44,6 +44,10 @@ export const Input = styled.input`
     box-sizing: border-box;
     outline: none;
     font-family: monospace;
+
+    &:disabled {
+        background: #dddddd;
+    }
 `
 
 

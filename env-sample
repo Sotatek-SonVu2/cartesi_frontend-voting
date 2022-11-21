@@ -12,6 +12,6 @@ REACT_APP_GRAPHQL_URL=http://localhost:4000/graphql
 # Testnet
 # REACT_APP_CHAIN_ID=5
 # REACT_APP_NETWORK=testnet
-# REACT_APP_SPENDER_ADDRESS=0xe6364C43B41fb7F372A0FF8Ca2A96EfD5FFCb0f3
+# REACT_APP_SPENDER_ADDRESS=0xD2860F0E62B630096Be9c8FbCE1C307B6F839139
 # REACT_APP_INSPECT_URL_API=https://voting.goerli.rollups.staging.cartesi.io/inspect
 # REACT_APP_GRAPHQL_URL=https://voting.goerli.rollups.staging.cartesi.io/graphql
