@@ -103,7 +103,6 @@ const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
             title={!data ? 'Create new token' : 'Edit token'}
             isLoading={isLoading}
             width="500px"
-            userGuideType='depositModal'
         >
             <form onSubmit={handleSubmit(onSubmit)}>
                 <WaitingMessage>{callMessage}</WaitingMessage>
@@ -168,7 +167,7 @@ const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
                         }) => (
                             <CheckboxGroup style={{ justifyContent: 'unset' }}>
                                 {TOKEN_ACTION_ARRAY.map((item, index) => (
-                                    <Item key={index}>
+                                    <Item key={index} style={{ display: 'flex' }}>
                                         <input
                                             type="checkbox"
                                             {...register(`${item.key}`)}

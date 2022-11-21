@@ -1,3 +1,5 @@
+import { FlexLayout } from "styled/main"
+
 interface PropsType {
     label: string
     register: any
@@ -5,10 +7,10 @@ interface PropsType {
 
 const Checkbox = ({ label, register }: PropsType) => {
     return (
-        <div>
+        <FlexLayout>
             <input type="checkbox" {...register} />
             <label>{label}</label>
-        </div>
+        </FlexLayout>
     )
 }
 
