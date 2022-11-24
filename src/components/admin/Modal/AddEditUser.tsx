@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import Checkbox from "common/Checkbox"
+import Label from "common/Label"
 import ModalComponent from "common/Modal"
 import { createNotifications } from "common/Notification"
 import { handleResponse } from "helper/handleResponse"
@@ -91,7 +92,7 @@ const AddEditUser = ({ isVisible, toggleModal, data, getData }: PropsType) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <WaitingMessage>{callMessage}</WaitingMessage>
                 <FormItem>
-                    <label>User:</label>
+                    <Label required>User:</Label>
                     <Input
                         type="text"
                         {...register("user")}
@@ -101,7 +102,7 @@ const AddEditUser = ({ isVisible, toggleModal, data, getData }: PropsType) => {
                 </FormItem>
 
                 <FormItem>
-                    <label>Permisstion:</label>
+                    <Label>Permisstion:</Label>
                     <CheckboxGroup>
                         {ADMIN_ACTION_ARRAY.map((item, index) => (
                             <Checkbox

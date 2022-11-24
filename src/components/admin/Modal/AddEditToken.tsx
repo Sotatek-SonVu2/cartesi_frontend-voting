@@ -1,5 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import Checkbox from 'common/Checkbox'
+import Label from 'common/Label'
 import ModalComponent from "common/Modal"
 import { createNotifications } from "common/Notification"
 import { handleResponse } from "helper/handleResponse"
@@ -107,7 +108,7 @@ const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <WaitingMessage>{callMessage}</WaitingMessage>
                 <FormItem>
-                    <label>Name:</label>
+                    <Label required>Name:</Label>
                     <Input
                         type="text"
                         {...register("name")}
@@ -116,7 +117,7 @@ const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
                     <ErrorText>{errors?.name?.message}</ErrorText>
                 </FormItem>
                 <FormItem>
-                    <label>Address:</label>
+                    <Label required>Address:</Label>
                     <Input
                         type="text"
                         {...register("address")}
@@ -126,7 +127,7 @@ const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
                 </FormItem>
 
                 <FormItem>
-                    <label>Image Link:</label>
+                    <Label>Image Link:</Label>
                     <Input
                         type="text"
                         {...register("icon")}
@@ -135,7 +136,7 @@ const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
                 </FormItem>
 
                 <FormItem>
-                    <label>Campaign creation fee:</label>
+                    <Label required={isCreate}>Campaign creation fee:</Label>
                     <Input
                         type="string"
                         {...register("fee")}
@@ -146,7 +147,7 @@ const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
                 </FormItem>
 
                 <FormItem>
-                    <label>Status:</label>
+                    <Label required>Status:</Label>
                     <RadioGroup>
                         {TOKEN_STATUS_ARRAY.map((item, index) => (
                             <Item key={index}>
@@ -158,7 +159,7 @@ const AddEditToken = ({ isVisible, toggleModal, data, getData }: PropsType) => {
                 </FormItem>
 
                 <FormItem>
-                    <label>Actions:</label>
+                    <Label>Actions:</Label>
                     <Controller
                         control={control}
                         name="actions"

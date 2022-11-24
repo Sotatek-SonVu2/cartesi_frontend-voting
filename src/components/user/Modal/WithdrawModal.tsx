@@ -1,4 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
+import Label from "common/Label"
 import ModalComponent from "common/Modal"
 import NoToken from "common/NoToken"
 import TokensList from "common/TokensList"
@@ -53,7 +54,13 @@ const WithdrawModal = ({ isVisible, toggleModal, onAddVoucher }: Props) => {
     }
 
     return (
-        <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title='Withdraw Token' userGuideType='withdrawModal'>
+        <ModalComponent
+            isVisible={isVisible}
+            toggleModal={toggleModal}
+            title='Withdraw Token'
+            userGuideType='withdrawModal'
+            width="500px"
+        >
             {tokenList?.length > 0 ? (
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <ModalTitle>
@@ -66,7 +73,7 @@ const WithdrawModal = ({ isVisible, toggleModal, onAddVoucher }: Props) => {
                     </ModalTitle>
                     <ModalContent>
                         <FormItem>
-                            <label>Amount</label>
+                            <Label required>Amount:</Label>
                             <Input
                                 type="string"
                                 {...register("amount")}

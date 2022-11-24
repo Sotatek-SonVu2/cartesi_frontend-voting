@@ -1,5 +1,6 @@
 
 import { yupResolver } from "@hookform/resolvers/yup";
+import Label from "common/Label";
 import Loading from "common/Loading";
 import { createNotifications } from "common/Notification";
 import Title from "common/Title";
@@ -270,12 +271,12 @@ const AddEditCampaign = () => {
             {token_to_create.tokenList.length > 0 && token_to_vote.tokenList.length > 0 ? (
                 <Form onSubmit={handleSubmit(onSubmit)}>
                     <FormItem>
-                        <label>Name:</label>
+                        <Label required>Name:</Label>
                         <Input type="text"  {...register("name")} placeholder="Campaign's name.." />
                         <ErrorText>{errors?.name?.message}</ErrorText>
                     </FormItem>
                     <FormItem>
-                        <label>Start time:</label>
+                        <Label required>Start time:</Label>
                         <DatePicker
                             name="startDate"
                             selected={startDate}
@@ -287,7 +288,7 @@ const AddEditCampaign = () => {
                         <ErrorText>{formErrors.startDate}</ErrorText>
                     </FormItem>
                     <FormItem>
-                        <label>End time:</label>
+                        <Label required>End time:</Label>
                         <DatePicker
                             name="endDate"
                             selected={endDate}
@@ -300,7 +301,7 @@ const AddEditCampaign = () => {
                         <ErrorText>{formErrors.endDate}</ErrorText>
                     </FormItem>
                     <FormItem>
-                        <label>Description:</label>
+                        <Label required>Description:</Label>
                         <TextArea name="description" {...register("description")} placeholder="Description..." />
                         <ErrorText>{errors?.description?.message}</ErrorText>
                     </FormItem>

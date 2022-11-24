@@ -2,6 +2,7 @@ import { PrimaryButton } from "styled/common"
 import { ErrorText, Input, OptionLabel, TextArea, Wrapper } from "styled/form"
 import TrashIcon from 'images/trash.svg';
 import styled from "styled-components";
+import Label from "common/Label";
 
 interface PropsType {
     fields: any,
@@ -19,11 +20,11 @@ const CandidateOptions = ({ fields, register, errors, onAdd, onRemove }: PropsTy
     return (
         <>
             <Wrapper>
-                <label>Candidate options:</label>
+                <Label required>Candidate options:</Label>
                 {fields.map((_: any, index: number) => (
                     <div key={index}>
                         <OptionLabel>
-                            <label>Option {index + 1}:</label>
+                            <Label required>{`Option ${index + 1}:`}</Label>
                             {fields.length > 1 && (
                                 <img src={TrashIcon} alt="trash icon" width={25} onClick={() => onRemove(index)} />
                             )}
