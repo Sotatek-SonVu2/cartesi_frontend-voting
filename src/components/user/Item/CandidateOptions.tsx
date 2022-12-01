@@ -1,13 +1,16 @@
-import { PrimaryButton } from "styled/common"
-import { ErrorText, Input, OptionLabel, TextArea, Wrapper } from "styled/form"
-import TrashIcon from 'images/trash.svg';
-import styled from "styled-components";
+import MDEditor from "@uiw/react-md-editor";
 import Label from "common/Label";
+import TrashIcon from 'images/trash.svg';
+import { Controller } from "react-hook-form";
+import styled from "styled-components";
+import { PrimaryButton } from "styled/common";
+import { ErrorText, Input, OptionLabel, Wrapper } from "styled/form";
 
 interface PropsType {
     fields: any,
     register: any
     errors: any
+    control: any
     onAdd: () => void
     onRemove: (index: number) => void
 }
@@ -16,7 +19,7 @@ const AddButton = styled(PrimaryButton)`
     margin-top: 10px;
 `
 
-const CandidateOptions = ({ fields, register, errors, onAdd, onRemove }: PropsType) => {
+const CandidateOptions = ({ fields, register, errors, onAdd, onRemove, control }: PropsType) => {
     return (
         <>
             <Wrapper>
@@ -35,9 +38,22 @@ const CandidateOptions = ({ fields, register, errors, onAdd, onRemove }: PropsTy
                             placeholder="Option's name.."
                         />
                         <ErrorText>{errors?.options?.[index]?.name?.message}</ErrorText>
-                        <TextArea
+                        <Controller
+                            control={control}
                             {...register(`options.${index}.brief_introduction`)}
-                            placeholder="Brief Introduction..."
+                            render={({
+                                field: { value, onChange },
+                            }) => (
+                                <div style={{ margin: '10px 0px' }}>
+                                    <MDEditor
+                                        value={value}
+                                        onChange={onChange}
+                                        textareaProps={{
+                                            placeholder: 'Brief Introduction... (Markdown writing is supported)'
+                                        }}
+                                    />
+                                </div>
+                            )}
                         />
                         <ErrorText>{errors?.options?.[index]?.brief_introduction?.message}</ErrorText>
                     </div>

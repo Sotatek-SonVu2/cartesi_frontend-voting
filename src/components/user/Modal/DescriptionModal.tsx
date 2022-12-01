@@ -3,6 +3,7 @@ import ModalComponent from "common/Modal"
 import NoData from "common/NoData"
 import { ModalTitle } from "styled/common"
 import { FormItem } from "styled/form"
+import MDEditor from "@uiw/react-md-editor"
 
 const Content = styled.p`
     font-weight: 400;
@@ -10,8 +11,6 @@ const Content = styled.p`
     font-size: 16px;
     height: 200px;
     text-align: justify;
-
-    
 `
 
 type Props = {
@@ -25,9 +24,10 @@ const DescriptionModal = ({ isVisible, toggleModal, data }: Props) => {
         <ModalComponent isVisible={isVisible} toggleModal={toggleModal} title={data.name || '(NO DATA)'}>
             <ModalTitle>
                 <FormItem>
-                    <b>Description: </b>
                     {data?.description || data?.brief_introduction ? (
-                        <Content>{data.description || data?.brief_introduction}</Content>
+                        <Content>
+                            <MDEditor.Markdown source={data.description || data?.brief_introduction} />
+                        </Content>
                     ) : (
                         <NoData />
                     )}

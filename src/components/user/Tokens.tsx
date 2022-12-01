@@ -1,5 +1,4 @@
 import Loading from 'common/Loading'
-import NoData from 'common/NoData'
 import { createNotifications } from 'common/Notification'
 import Table from 'common/Table'
 import Title from 'common/Title'
@@ -136,7 +135,6 @@ const Tokens = () => {
                             </div>
                         </div>
                     </>
-
                 </Content>
             )}
         </>

@@ -49,7 +49,7 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 ## Running
-Before running the front-end application, you should run the [back-end](https://github.com/Sotatek-SonVu2/cartesi_frontend_voting/tree/master_complex_version_0.9#environments) and remember to configure the environment file for the front-end project by performing the following steps:
+Before running the front-end application, you should run the [back-end](https://github.com/Sotatek-ManhNguyen3/cartesi_voting_system/tree/master_0.9_custom_dapp_multiple_coin) and remember to configure the environment file for the front-end project by performing the following steps:
 
 ```shell
 Create .env file
@@ -59,7 +59,7 @@ Paste in the .env file and save
 
 In the .env file, you will see the configurations for the 3 environments: `Host mode | Production mode | Testnet mode`. Please pay attention to match the mode you want to use in the application. 
 
-In addition, you must also change the network on MetaMask to match each mode. [See details here](https://github.com/Sotatek-SonVu2/cartesi_frontend_voting/tree/master_complex_version_0.9#environments)
+In addition, you must also change the network on MetaMask to match each mode. [See details here](https://github.com/Sotatek-SonVu2/cartesi_frontend_voting#environments)
 
 Then, run the application by executing the following command:
 
@@ -75,7 +75,7 @@ You will also see any lint errors in the console.
 
 ## Environments
 As discussed above, this project demonstrates how to implement a frontend application to send inputs to a Cartesi Rollups DApp. The front-end and back-end parts of a Cartesi DApp communicate with each other through the Rollups framework. This is accomplished in practice by using a set of HTTP interfaces, which are specified in Cartesi's OpenAPI Interfaces repository. 
-[See details here](https://github.com/Sotatek-ManhNguyen3/cartesi_voting_system/tree/master_complex_version_0.9)
+[See details here](https://github.com/Sotatek-ManhNguyen3/cartesi_voting_system/tree/master_0.9_custom_dapp_multiple_coin)
 
 This application can be executed in Host, Production and Tetsnet modes, as explained below:
 
@@ -87,7 +87,7 @@ Network: Localhost 8545
 Chain id: 31337
 ```
 
-To run the backend for host mode, you can see the instructions [here](https://github.com/Sotatek-ManhNguyen3/cartesi_voting_system/tree/master_complex_version_0.9#host-mode)
+To run the backend for host mode, you can see the instructions [here](https://github.com/Sotatek-ManhNguyen3/cartesi_voting_system/tree/master_0.9_custom_dapp_multiple_coin#running-the-back-end-in-host-mode)
 
 ### Production mode
 On Metamask wallet, this mode is deployed on:
@@ -97,7 +97,7 @@ Network: Localhost 8545
 Chain id: 31337
 ```
 
-To run the backend for production mode, you can see the instructions [here](https://github.com/Sotatek-ManhNguyen3/cartesi_voting_system/tree/master_complex_version_0.9#production-mode)
+To run the backend for production mode, you can see the instructions [here](https://github.com/Sotatek-ManhNguyen3/cartesi_voting_system/tree/master_0.9_custom_dapp_multiple_coin#running)
 
 ### Testnet mode
 On Metamask wallet, this mode is deployed on:
@@ -107,7 +107,7 @@ Network: Goerli Test Network
 Chain id: 5
 ```
 
-To run the backend for Testnet mode, you can see the instructions [here](https://github.com/Sotatek-ManhNguyen3/cartesi_voting_system/tree/master_complex_version_0.9#using-testnets)
+To run the backend for Testnet mode, you can see the instructions [here](https://github.com/Sotatek-ManhNguyen3/cartesi_voting_system/tree/master_0.9_custom_dapp_multiple_coin#deploying-to-a-testnet)
 
 ## Testing
 

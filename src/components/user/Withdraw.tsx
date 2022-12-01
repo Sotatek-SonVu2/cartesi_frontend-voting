@@ -36,7 +36,7 @@ const BoxItemCustom = styled(BoxItem)`
     position: relative;
 `
 
-const WithdrawDefaut = styled(WithdrawContent)`
+const AddWithdraw = styled(WithdrawContent)`
     position: absolute;
     top: 50%;
     left: 50%;
@@ -239,10 +239,10 @@ const Withdraw = () => {
 
                     <FlexLayoutSwap>
                         <BoxItemCustom onClick={toggleModal}>
-                            <WithdrawDefaut>
+                            <AddWithdraw>
                                 <h1 style={{ marginTop: '0px' }}>+</h1>
                                 <h5>Withdraw token</h5>
-                            </WithdrawDefaut>
+                            </AddWithdraw>
                         </BoxItemCustom>
                         {vouchers.map((item: WithDrawType, index: number) => (
                             <BoxItem key={index}>

@@ -1,5 +1,6 @@
 
 import { yupResolver } from "@hookform/resolvers/yup";
+import MDEditor from "@uiw/react-md-editor";
 import Label from "common/Label";
 import Loading from "common/Loading";
 import { createNotifications } from "common/Notification";
@@ -12,7 +13,7 @@ import useTokensList from "hook/useTokensList";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
-import { useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { getDepositInfo } from "reducers/authSlice";
@@ -20,7 +21,7 @@ import { ROUTER_PATH } from "routes/contants";
 import { AppDispatch, RootState } from "store";
 import styled from "styled-components";
 import { Content, DefaultButton, FlexLayoutBtn, SuccessButton } from "styled/common";
-import { ErrorText, Form, FormItem, Input, TextArea } from "styled/form";
+import { ErrorText, Form, FormItem, Input } from "styled/form";
 import { Loader } from "styled/loading";
 import { convertLocalToUtc, convertUtcToLocal, randomColor } from "utils/common";
 import {
@@ -302,7 +303,23 @@ const AddEditCampaign = () => {
                     </FormItem>
                     <FormItem>
                         <Label required>Description:</Label>
-                        <TextArea name="description" {...register("description")} placeholder="Description..." />
+                        <Controller
+                            control={control}
+                            {...register("description")}
+                            render={({
+                                field: { value, onChange },
+                            }) => (
+                                <div style={{ margin: '10px 0px' }}>
+                                    <MDEditor
+                                        value={value}
+                                        onChange={onChange}
+                                        textareaProps={{
+                                            placeholder: "Description... (Markdown writing is supported)"
+                                        }}
+                                    />
+                                </div>
+                            )}
+                        />
                         <ErrorText>{errors?.description?.message}</ErrorText>
                     </FormItem>
                     {!campaignId && (
@@ -357,6 +374,7 @@ const AddEditCampaign = () => {
                             fields={fields}
                             errors={errors}
                             register={register}
+                            control={control}
                             onAdd={() => append(OptionDefault)}
                             onRemove={(index: number) => remove(index)}
                         />
