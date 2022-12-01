@@ -63,12 +63,12 @@ const OptionDefault: OptionType[] = [
 
 const optionSchema = {
     name: yup.string().required('Name is a required field!').max(200),
-    brief_introduction: yup.string().required('Brief introduction is a required field!').max(400),
+    brief_introduction: yup.string().required('Brief introduction is a required field!'),
 }
 
 const schema = yup.object({
     name: yup.string().required('Name is a required field!').max(200),
-    description: yup.string().required('Desciption is a required field!').max(400),
+    description: yup.string().required('Desciption is a required field!'),
     fee: yup.number().min(0).typeError('Fee must be a number!').required('Fee is a required field!'),
     options: yup.array().of(yup.object().shape(optionSchema))
 }).required();
