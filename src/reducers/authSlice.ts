@@ -38,13 +38,20 @@ const initialState: AuthState = {
 };
 
 export const getDepositInfo = createAsyncThunk(
-    'auth/depositInfo',
+    'auth/userInfo',
     async () => {
         try {
             const data = {
                 action: USER_INFO,
             }
-            const result = await handleInspectApi(data, initialState.metadata)
+            const metadata = {
+                msg_sender: localStorage.getItem(ADDRESS_WALLET)?.toLowerCase() || '',
+                epoch_index: 0,
+                input_index: 0,
+                block_number: 0,
+                timestamp: convertUtcTimestamp()  // millisecond
+            }
+            const result = await handleInspectApi(data, metadata)
             if (result && !result.error) {
                 return result
             } else {
