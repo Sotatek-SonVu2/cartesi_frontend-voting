@@ -1,3 +1,4 @@
+import MDEditor from "@uiw/react-md-editor"
 import Loading from "common/Loading"
 import NoData from "common/NoData"
 import { createNotifications } from "common/Notification"
@@ -13,7 +14,7 @@ import { getDepositInfo } from "reducers/authSlice"
 import { ROUTER_PATH } from "routes/contants"
 import { AppDispatch, RootState } from "store"
 import styled from "styled-components"
-import { Content, DefaultButton, FlexLayoutBtn, PrimaryButton, SuccessButton } from "styled/common"
+import { Button, Content, DefaultButton, FlexLayoutBtn, Line, PrimaryButton, SuccessButton } from "styled/common"
 import { convertUtcToLocal } from "utils/common"
 import {
     CAMPAIGN_DETAIL,
@@ -33,10 +34,20 @@ interface DataType {
 
 const SubTitle = styled.div`
     text-align: center;
+    margin-bottom: 1rem;
 
     & span {
         color: #FF4B3A;
     }
+`
+
+const ShowText = styled(Button)`
+    background: darkcyan;
+    border: none;
+    display: block;
+    margin: 0 auto;
+    padding: 6px 15px;
+    font-size: 13px;
 `
 
 const Voting = () => {
@@ -45,6 +56,7 @@ const Voting = () => {
     const [callMessage, setCallMessage] = useState<string>('')
     const [isLoadVoting, setIsLoadVoting] = useState<boolean>(false)
     const [isCloseVoting, setIsCloseVoting] = useState<boolean>(false)
+    const [isShowText, setIsShowText] = useState<boolean>(false)
     const [data, setData] = useState<DataType>({
         campaign: {
             creator: '',
@@ -181,6 +193,18 @@ const Voting = () => {
                         )}
                     </SubTitle>
 
+                    <div data-color-mode="dark" >
+                        <MDEditor.Markdown
+                            source={data.campaign.description}
+                            style={{
+                                backgroundColor: 'transparent',
+                                fontSize: '13px'
+                            }}
+                            className={!isShowText ? 'show-less' : 'show-more'}
+                        />
+                        <ShowText onClick={() => setIsShowText(!isShowText)}>{!isShowText ? 'Show more...' : 'Show less'}</ShowText>
+                    </div>
+                    <Line />
                     {data.voted?.name && (
                         <p>Your voted is: {data.voted?.name}.</p>
                     )}

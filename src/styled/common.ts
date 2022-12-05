@@ -204,6 +204,12 @@ export const BoxContent = styled.div<BoxContentType>`
     }
 `
 
+export const Line = styled.div`
+    height: 1px;
+    background-image: linear-gradient(to right,rgba(255,0,0,0), #ffffff, rgba(255,0,0,0));
+    margin-top: 25px;
+`
+
 export const ReloadImage = styled.img<ReloadType>`
     ${props => props.isLoading && `
         -webkit-animation: spin 2s linear infinite;

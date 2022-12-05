@@ -15,6 +15,20 @@ code {
         monospace;
 }
 
+.show-more {
+    margin-bottom: 5px;
+    overflow: hidden;
+}
+
+.show-less {
+    margin-bottom: 5px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    /* truncate to 4 lines */
+    -webkit-line-clamp: 4;
+}
+
 /* react-tooltip */
 .tooltip-sz-sm {
     width: 140px !important;
