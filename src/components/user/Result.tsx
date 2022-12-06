@@ -1,5 +1,6 @@
 import MDEditor from "@uiw/react-md-editor"
 import Loading from "common/Loading"
+import Markdown from "common/Markdown"
 import NoData from "common/NoData"
 import { createNotifications } from "common/Notification"
 import Title from "common/Title"
@@ -97,18 +98,7 @@ const Result = () => {
                             text={title || '(NO DATA)'}
                             userGuideType='result'
                         />
-                        <div data-color-mode="dark" >
-                            <MDEditor.Markdown
-                                source={description}
-                                style={{
-                                    backgroundColor: 'transparent',
-                                    fontSize: '13px',
-                                    marginTop: '1rem'
-                                }}
-                                className={!isShowText ? 'show-less' : 'show-more'}
-                            />
-                            <ShowText onClick={() => setIsShowText(!isShowText)}>{!isShowText ? 'Show more...' : 'Show less'}</ShowText>
-                        </div>
+                        <Markdown text={description} />
                         <Line />
                         <p>The total votes is {campaign?.length > 0 ? campaign[0].total_vote : 0}.</p>
                         {voted_candidate?.name && (

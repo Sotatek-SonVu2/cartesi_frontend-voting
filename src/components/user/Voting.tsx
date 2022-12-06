@@ -1,5 +1,6 @@
 import MDEditor from "@uiw/react-md-editor"
 import Loading from "common/Loading"
+import Markdown from "common/Markdown"
 import { createNotifications } from "common/Notification"
 import Title from "common/Title"
 import { handleInspectApi } from "helper/handleInspectApi"
@@ -48,8 +49,7 @@ const Voting = () => {
     const [callMessage, setCallMessage] = useState<string>('')
     const [isLoadVoting, setIsLoadVoting] = useState<boolean>(false)
     const [isCloseVoting, setIsCloseVoting] = useState<boolean>(false)
-    const [isShowText, setIsShowText] = useState<boolean>(false)
-    const [comment, setComment] = useState<string>('')
+    // const [comment, setComment] = useState<string>('')
     const [data, setData] = useState<DataType>({
         campaign: {
             creator: '',
@@ -132,7 +132,7 @@ const Voting = () => {
                 setIsLoadVoting(true)
                 const data = {
                     action: VOTE,
-                    comment,
+                    // comment,
                     candidate_id: candidateId,
                     campaign_id: campaignId && parseInt(campaignId),
                 }
@@ -186,20 +186,7 @@ const Voting = () => {
                             <span>This campaign is closed for voting!</span>
                         )}
                     </SubTitle>
-
-                    <div data-color-mode="dark" >
-                        <MDEditor.Markdown
-                            source={data.campaign.description}
-                            style={{
-                                backgroundColor: 'transparent',
-                                fontSize: '13px',
-                            }}
-                            className={!isShowText ? 'show-less' : 'show-more'}
-                        />
-                        {data.campaign.description.length > 400 && (
-                            <ShowText onClick={() => setIsShowText(!isShowText)}>{!isShowText ? 'Show more...' : 'Show less'}</ShowText>
-                        )}
-                    </div>
+                    <Markdown text={data.campaign.description} />
                     <Line />
                     {data.voted?.name && (
                         <p>Your voted is: {data.voted?.name}.</p>
@@ -209,8 +196,8 @@ const Voting = () => {
                             <VotingItem active={candidateId} data={item} handleClick={(id: number) => onChooseCandidate(id)} />
                         </div>
                     ))}
-                    <TextArea name="comment" placeholder="Why you choose that candidate? (optional)" value={comment} onChange={(e) => setComment(e.target.value)} />
-                    <Line />
+                    {/* <TextArea name="comment" placeholder="Why you choose that candidate? (optional)" value={comment} onChange={(e) => setComment(e.target.value)} />
+                    <Line /> */}
                     {data?.candidates.length > 0 && (
                         <FlexLayoutBtn>
                             <DefaultButton type="button" onClick={() => navigate(ROUTER_PATH.HOMEPAGE)}>Back</DefaultButton>
