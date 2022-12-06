@@ -207,7 +207,18 @@ export const BoxContent = styled.div<BoxContentType>`
 export const Line = styled.div`
     height: 1px;
     background-image: linear-gradient(to right,rgba(255,0,0,0), #ffffff, rgba(255,0,0,0));
-    margin-top: 25px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+`
+
+export const ShowText = styled(Button)`
+    background: darkcyan;
+    border: none;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    padding: 6px 15px;
+    font-size: 13px;
 `
 
 export const ReloadImage = styled.img<ReloadType>`

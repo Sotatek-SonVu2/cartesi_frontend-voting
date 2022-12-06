@@ -7,7 +7,8 @@ interface PropsType {
     keyField: string
 }
 
-const Table = ({ columns, data, keyField }: PropsType) => {
+const Table = (props: PropsType) => {
+    const { columns, data, keyField, ...rest } = props
     return (
         <div style={{ maxWidth: '100%' }}>
             <BootstrapTable
@@ -15,6 +16,7 @@ const Table = ({ columns, data, keyField }: PropsType) => {
                 data={data}
                 keyField={keyField}
                 noDataIndication={() => (<NoData style={{ minHeight: 'unset' }} iconStyle={{ width: '10%' }} />)}
+                {...rest}
             />
         </div>
     )

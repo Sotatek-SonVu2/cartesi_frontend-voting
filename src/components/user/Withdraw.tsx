@@ -17,7 +17,7 @@ import { AppDispatch, RootState } from "store";
 import styled from "styled-components";
 import { Content } from "styled/common";
 import { BoxItem, HeaderList, Radio, RadioGroup, WithdrawContent } from "styled/list";
-import { FlexLayout } from "styled/main";
+import { ContentWrapper, FlexLayout } from "styled/main";
 import {
     ERROR_MESSAGE,
     LIST_EXECUTED_VOUCHER,
@@ -217,7 +217,7 @@ const Withdraw = () => {
     }
 
     return (
-        <>
+        <ContentWrapper>
             {isLoading ? (
                 <Loading />
             ) : (
@@ -262,7 +262,7 @@ const Withdraw = () => {
                     )}
                 </Content>
             )}
-        </>
+        </ContentWrapper>
     )
 }
 

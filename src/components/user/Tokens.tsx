@@ -11,6 +11,7 @@ import { getTokens } from 'reducers/tokenSlice'
 import { AppDispatch } from 'store'
 import { Content } from 'styled/common'
 import { StatusText } from 'styled/list'
+import { ContentWrapper } from 'styled/main'
 import { formatAddress } from 'utils/common'
 import { GET_CAN_CREATE, GET_CAN_VOTE, NOTI_TYPE, TOKEN_STATUS } from 'utils/contants'
 import { tokenType } from 'utils/interface'
@@ -107,7 +108,7 @@ const Tokens = () => {
 
 
     return (
-        <>
+        <ContentWrapper>
             {TokenVoting.isLoading || TokenCreating.isLoading ? (
                 <Loading />
             ) : (
@@ -137,7 +138,7 @@ const Tokens = () => {
                     </>
                 </Content>
             )}
-        </>
+        </ContentWrapper>
     )
 }
 

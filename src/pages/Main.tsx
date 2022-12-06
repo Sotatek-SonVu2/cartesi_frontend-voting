@@ -1,20 +1,20 @@
+import Tooltip from "common/Tooltip";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Tour from 'reactour';
+import { RootState } from "store";
 import styled from "styled-components";
 import Header from "../common/Header";
-import UserGuideModal from "../components/user/Modal/UserGuideModal";
 import ActionButton from "../components/user/ActionButton";
 import DepositInfo from "../components/user/DepositInfo";
+import UserGuideModal from "../components/user/Modal/UserGuideModal";
+import SettingIcon from '../images/gear.png';
 import { ROUTER_PATH } from "../routes/contants";
 import { colorTheme, SuccessButton } from "../styled/common";
-import { Container, ContentWrapper, Setting, SubTitle, Title } from "../styled/main";
+import { Container, Setting, SubTitle, Title } from "../styled/main";
 import { LIST_STATUS, USER_GUIDE } from "../utils/contants";
 import { tourConfig } from "../utils/tourConfig";
-import SettingIcon from '../images/gear.png'
-import Tooltip from "common/Tooltip";
-import { useSelector } from "react-redux";
-import { RootState } from "store";
 
 const IS_USER_GUIDE_OPEN = 'false'
 
@@ -64,11 +64,9 @@ const Main = () => {
                     isActionButton={isActionButton}
                     onChangeType={(value: string) => setCampaignType(value)}
                 />
-                <ContentWrapper>
-                    <Outlet context={
-                        [campaignType, setCampaignType, isActionButton, setIsActionButton]}
-                    />
-                </ContentWrapper>
+                <Outlet context={
+                    [campaignType, setCampaignType, isActionButton, setIsActionButton]}
+                />
                 {is_admin && (
                     <Tooltip
                         text='Go to Admin page'

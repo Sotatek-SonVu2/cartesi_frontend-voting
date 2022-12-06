@@ -1,6 +1,5 @@
 import MDEditor from "@uiw/react-md-editor"
 import Loading from "common/Loading"
-import NoData from "common/NoData"
 import { createNotifications } from "common/Notification"
 import Title from "common/Title"
 import { handleInspectApi } from "helper/handleInspectApi"
@@ -14,7 +13,9 @@ import { getDepositInfo } from "reducers/authSlice"
 import { ROUTER_PATH } from "routes/contants"
 import { AppDispatch, RootState } from "store"
 import styled from "styled-components"
-import { Button, Content, DefaultButton, FlexLayoutBtn, Line, PrimaryButton, SuccessButton } from "styled/common"
+import { Content, DefaultButton, FlexLayoutBtn, Line, PrimaryButton, ShowText, SuccessButton } from "styled/common"
+import { TextArea } from "styled/form"
+import { ContentWrapper } from "styled/main"
 import { convertUtcToLocal } from "utils/common"
 import {
     CAMPAIGN_DETAIL,
@@ -41,15 +42,6 @@ const SubTitle = styled.div`
     }
 `
 
-const ShowText = styled(Button)`
-    background: darkcyan;
-    border: none;
-    display: block;
-    margin: 0 auto;
-    padding: 6px 15px;
-    font-size: 13px;
-`
-
 const Voting = () => {
     const [candidateId, setCandidateId] = useState<number>(0)
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -57,6 +49,7 @@ const Voting = () => {
     const [isLoadVoting, setIsLoadVoting] = useState<boolean>(false)
     const [isCloseVoting, setIsCloseVoting] = useState<boolean>(false)
     const [isShowText, setIsShowText] = useState<boolean>(false)
+    const [comment, setComment] = useState<string>('')
     const [data, setData] = useState<DataType>({
         campaign: {
             creator: '',
@@ -126,7 +119,7 @@ const Voting = () => {
         getData()
     }, [campaignId])
 
-    const onChooseAnswer = (id: number) => {
+    const onChooseCandidate = (id: number) => {
         if (data.voted?.candidate_id || isCloseVoting || isLoadVoting) return
         setCandidateId(id)
     }
@@ -139,6 +132,7 @@ const Voting = () => {
                 setIsLoadVoting(true)
                 const data = {
                     action: VOTE,
+                    comment,
                     candidate_id: candidateId,
                     campaign_id: campaignId && parseInt(campaignId),
                 }
@@ -179,7 +173,7 @@ const Voting = () => {
     }
 
     return (
-        <>
+        <ContentWrapper>
             {isLoading ? (
                 <Loading />
             ) : (
@@ -198,23 +192,25 @@ const Voting = () => {
                             source={data.campaign.description}
                             style={{
                                 backgroundColor: 'transparent',
-                                fontSize: '13px'
+                                fontSize: '13px',
                             }}
                             className={!isShowText ? 'show-less' : 'show-more'}
                         />
-                        <ShowText onClick={() => setIsShowText(!isShowText)}>{!isShowText ? 'Show more...' : 'Show less'}</ShowText>
+                        {data.campaign.description.length > 400 && (
+                            <ShowText onClick={() => setIsShowText(!isShowText)}>{!isShowText ? 'Show more...' : 'Show less'}</ShowText>
+                        )}
                     </div>
                     <Line />
                     {data.voted?.name && (
                         <p>Your voted is: {data.voted?.name}.</p>
                     )}
-                    {data?.candidates.length > 0 ? data.candidates.map(item => (
+                    {data.candidates.map(item => (
                         <div key={item.id}>
-                            <VotingItem active={candidateId} data={item} handleClick={(id: number) => onChooseAnswer(id)} />
+                            <VotingItem active={candidateId} data={item} handleClick={(id: number) => onChooseCandidate(id)} />
                         </div>
-                    )) : (
-                        <NoData />
-                    )}
+                    ))}
+                    <TextArea name="comment" placeholder="Why you choose that candidate? (optional)" value={comment} onChange={(e) => setComment(e.target.value)} />
+                    <Line />
                     {data?.candidates.length > 0 && (
                         <FlexLayoutBtn>
                             <DefaultButton type="button" onClick={() => navigate(ROUTER_PATH.HOMEPAGE)}>Back</DefaultButton>
@@ -233,7 +229,7 @@ const Voting = () => {
                     )}
                 </Content >
             )}
-        </>
+        </ContentWrapper>
     )
 }
 

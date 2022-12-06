@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
-import { useNavigate, useParams } from "react-router-dom"
+import MDEditor from "@uiw/react-md-editor"
 import Loading from "common/Loading"
 import NoData from "common/NoData"
 import { createNotifications } from "common/Notification"
 import Title from "common/Title"
 import { handleInspectApi } from "helper/handleInspectApi"
+import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import { useNavigate, useParams } from "react-router-dom"
 import { ROUTER_PATH } from "routes/contants"
 import { RootState } from "store"
-import { Content, DefaultButton, FlexLayoutBtn } from "styled/common"
+import { Content, DefaultButton, FlexLayoutBtn, Line, ShowText } from "styled/common"
+import { ContentWrapper } from "styled/main"
 import { CAMPAIGN_DETAIL, ERROR_MESSAGE, NOTI_TYPE, RESULT } from "utils/contants"
 import { CampaignType, MetadataType, VotedType } from "utils/interface"
 import ResultItem from "./Item/Result"
@@ -16,6 +18,7 @@ import ResultItem from "./Item/Result"
 interface DataType {
     campaign: CampaignType[]
     title: string
+    description: string
     voted_candidate: VotedType | null
 }
 
@@ -24,9 +27,11 @@ const Result = () => {
     const { campaignId } = useParams();
     const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isShowText, setIsShowText] = useState<boolean>(false)
     const [data, setData] = useState<DataType>({
         campaign: [],
         title: '',
+        description: '',
         voted_candidate: {
             campaign_id: 0,
             candidate_id: 0,
@@ -36,7 +41,7 @@ const Result = () => {
             name: ''
         }
     })
-    const { campaign, title, voted_candidate } = data
+    const { campaign, title, voted_candidate, description } = data
 
     useEffect(() => {
         const getData = async () => {
@@ -63,6 +68,7 @@ const Result = () => {
                         setData({
                             campaign,
                             title: detail?.campaign[0].name,
+                            description: detail?.campaign[0].description,
                             voted_candidate: result.voted_candidate
                         })
                     } else {
@@ -80,34 +86,47 @@ const Result = () => {
         getData()
     }, [])
 
-    console.log('campaign', campaign)
-
     return (
         <>
-            {isLoading ? (
-                <Loading />
-            ) : (
-                <Content>
-                    <Title
-                        text={title || '(NO DATA)'}
-                        userGuideType='result'
-                    />
-                    <p>The total votes is {campaign?.length > 0 ? campaign[0].total_vote : 0}.</p>
-                    {voted_candidate?.name && (
-                        <span>You voted for: {voted_candidate?.name}.</span>
-                    )}
-                    {campaign?.length > 0 ? campaign.map((item) => (
-                        <div key={item.id}>
-                            <ResultItem data={item} voted_candidate={voted_candidate} />
+            <ContentWrapper>
+                {isLoading ? (
+                    <Loading />
+                ) : (
+                    <Content>
+                        <Title
+                            text={title || '(NO DATA)'}
+                            userGuideType='result'
+                        />
+                        <div data-color-mode="dark" >
+                            <MDEditor.Markdown
+                                source={description}
+                                style={{
+                                    backgroundColor: 'transparent',
+                                    fontSize: '13px',
+                                    marginTop: '1rem'
+                                }}
+                                className={!isShowText ? 'show-less' : 'show-more'}
+                            />
+                            <ShowText onClick={() => setIsShowText(!isShowText)}>{!isShowText ? 'Show more...' : 'Show less'}</ShowText>
                         </div>
-                    )) : (
-                        <NoData />
-                    )}
-                    <FlexLayoutBtn>
-                        <DefaultButton type="button" onClick={() => navigate(`${ROUTER_PATH.VOTING}/${campaignId}`)}>Back</DefaultButton>
-                    </FlexLayoutBtn>
-                </Content>
-            )}
+                        <Line />
+                        <p>The total votes is {campaign?.length > 0 ? campaign[0].total_vote : 0}.</p>
+                        {voted_candidate?.name && (
+                            <span>You voted for: {voted_candidate?.name}.</span>
+                        )}
+                        {campaign?.length > 0 ? campaign.map((item) => (
+                            <div key={item.id}>
+                                <ResultItem data={item} voted_candidate={voted_candidate} />
+                            </div>
+                        )) : (
+                            <NoData />
+                        )}
+                        <FlexLayoutBtn>
+                            <DefaultButton type="button" onClick={() => navigate(`${ROUTER_PATH.VOTING}/${campaignId}`)}>Back</DefaultButton>
+                        </FlexLayoutBtn>
+                    </Content>
+                )}
+            </ContentWrapper>
         </>
     )
 }

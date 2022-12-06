@@ -23,6 +23,7 @@ import styled from "styled-components";
 import { Content, DefaultButton, FlexLayoutBtn, SuccessButton } from "styled/common";
 import { ErrorText, Form, FormItem, Input } from "styled/form";
 import { Loader } from "styled/loading";
+import { ContentWrapper } from "styled/main";
 import { convertLocalToUtc, convertUtcToLocal, randomColor } from "utils/common";
 import {
     CAMPAIGN_DETAIL,
@@ -261,140 +262,142 @@ const AddEditCampaign = () => {
     };
 
     return (
-        <Content>
-            {isWaiting && (
-                <Loading isScreenLoading={isWaiting} messages={callMessage} />
-            )}
-            <Title
-                text={!campaignId ? 'Create new campaign' : 'Edit campaign'}
-                userGuideType={!campaignId ? 'create' : 'edit'}
-            />
-            {token_to_create.tokenList.length > 0 && token_to_vote.tokenList.length > 0 ? (
-                <Form onSubmit={handleSubmit(onSubmit)}>
-                    <FormItem>
-                        <Label required>Name:</Label>
-                        <Input type="text"  {...register("name")} placeholder="Campaign's name.." />
-                        <ErrorText>{errors?.name?.message}</ErrorText>
-                    </FormItem>
-                    <FormItem>
-                        <Label required>Start time:</Label>
-                        <DatePicker
-                            name="startDate"
-                            selected={startDate}
-                            onChange={handleChangeDate('startDate')}
-                            customInput={<Input />}
-                            showTimeSelect
-                            dateFormat={FORMAT_DATE_PICKER}
-                        />
-                        <ErrorText>{formErrors.startDate}</ErrorText>
-                    </FormItem>
-                    <FormItem>
-                        <Label required>End time:</Label>
-                        <DatePicker
-                            name="endDate"
-                            selected={endDate}
-                            onChange={handleChangeDate('endDate')}
-                            customInput={<Input />}
-                            minDate={startDate}
-                            showTimeSelect
-                            dateFormat={FORMAT_DATE_PICKER}
-                        />
-                        <ErrorText>{formErrors.endDate}</ErrorText>
-                    </FormItem>
-                    <FormItem>
-                        <Label required>Description:</Label>
-                        <Controller
-                            control={control}
-                            {...register("description")}
-                            render={({
-                                field: { value, onChange },
-                            }) => (
-                                <div style={{ margin: '10px 0px' }}>
-                                    <MDEditor
-                                        value={value}
-                                        onChange={onChange}
-                                        textareaProps={{
-                                            placeholder: "Description... (Markdown writing is supported)"
-                                        }}
-                                    />
-                                </div>
-                            )}
-                        />
-                        <ErrorText>{errors?.description?.message}</ErrorText>
-                    </FormItem>
-                    {!campaignId && (
+        <ContentWrapper>
+            <Content>
+                {isWaiting && (
+                    <Loading isScreenLoading={isWaiting} messages={callMessage} />
+                )}
+                <Title
+                    text={!campaignId ? 'Create new campaign' : 'Edit campaign'}
+                    userGuideType={!campaignId ? 'create' : 'edit'}
+                />
+                {token_to_create.tokenList.length > 0 && token_to_vote.tokenList.length > 0 ? (
+                    <Form onSubmit={handleSubmit(onSubmit)}>
+                        <FormItem>
+                            <Label required>Name:</Label>
+                            <Input type="text"  {...register("name")} placeholder="Campaign's name.." />
+                            <ErrorText>{errors?.name?.message}</ErrorText>
+                        </FormItem>
+                        <FormItem>
+                            <Label required>Start time:</Label>
+                            <DatePicker
+                                name="startDate"
+                                selected={startDate}
+                                onChange={handleChangeDate('startDate')}
+                                customInput={<Input />}
+                                showTimeSelect
+                                dateFormat={FORMAT_DATE_PICKER}
+                            />
+                            <ErrorText>{formErrors.startDate}</ErrorText>
+                        </FormItem>
+                        <FormItem>
+                            <Label required>End time:</Label>
+                            <DatePicker
+                                name="endDate"
+                                selected={endDate}
+                                onChange={handleChangeDate('endDate')}
+                                customInput={<Input />}
+                                minDate={startDate}
+                                showTimeSelect
+                                dateFormat={FORMAT_DATE_PICKER}
+                            />
+                            <ErrorText>{formErrors.endDate}</ErrorText>
+                        </FormItem>
+                        <FormItem>
+                            <Label required>Description:</Label>
+                            <Controller
+                                control={control}
+                                {...register("description")}
+                                render={({
+                                    field: { value, onChange },
+                                }) => (
+                                    <div style={{ margin: '10px 0px' }}>
+                                        <MDEditor
+                                            value={value}
+                                            onChange={onChange}
+                                            textareaProps={{
+                                                placeholder: "Description... (Markdown writing is supported)"
+                                            }}
+                                        />
+                                    </div>
+                                )}
+                            />
+                            <ErrorText>{errors?.description?.message}</ErrorText>
+                        </FormItem>
+                        {!campaignId && (
+                            <FormItem>
+                                <Title
+                                    text='Payments:'
+                                    userGuideType='can_create_campaign'
+                                    id='can_create_campaign'
+                                    type="dark"
+                                    titleStyle={{
+                                        color: '#fff', fontSize: '16px', lineHeight: 'unset'
+                                    }}
+                                />
+                                <TokensList
+                                    onChooseCoin={(value: string) => setTokenToCreate(value)}
+                                    tokenType={tokenToCreate}
+                                    isLoading={token_to_create.isLoading}
+                                    tokenList={token_to_create.tokenList}
+                                    style={{
+                                        justifyContent: 'left',
+                                        marginTop: '10px',
+                                    }}
+                                />
+                            </FormItem>
+                        )}
                         <FormItem>
                             <Title
-                                text='Payments:'
-                                userGuideType='can_create_campaign'
-                                id='can_create_campaign'
+                                text='Voting fee:'
+                                userGuideType='can_vote'
                                 type="dark"
+                                id="can_vote"
                                 titleStyle={{
                                     color: '#fff', fontSize: '16px', lineHeight: 'unset'
                                 }}
                             />
                             <TokensList
-                                onChooseCoin={(value: string) => setTokenToCreate(value)}
-                                tokenType={tokenToCreate}
-                                isLoading={token_to_create.isLoading}
-                                tokenList={token_to_create.tokenList}
+                                onChooseCoin={(value: string) => setTokenToVote(value)}
+                                tokenType={tokenToVote}
+                                isLoading={token_to_vote.isLoading}
+                                tokenList={token_to_vote.tokenList}
                                 style={{
                                     justifyContent: 'left',
                                     marginTop: '10px',
+                                    marginBottom: '0px',
                                 }}
                             />
+                            <Input type="text"  {...register("fee")} placeholder="Voting fee.." />
+                            <ErrorText>{errors?.fee?.message}</ErrorText>
                         </FormItem>
-                    )}
-                    <FormItem>
-                        <Title
-                            text='Voting fee:'
-                            userGuideType='can_vote'
-                            type="dark"
-                            id="can_vote"
-                            titleStyle={{
-                                color: '#fff', fontSize: '16px', lineHeight: 'unset'
-                            }}
-                        />
-                        <TokensList
-                            onChooseCoin={(value: string) => setTokenToVote(value)}
-                            tokenType={tokenToVote}
-                            isLoading={token_to_vote.isLoading}
-                            tokenList={token_to_vote.tokenList}
-                            style={{
-                                justifyContent: 'left',
-                                marginTop: '10px',
-                                marginBottom: '0px',
-                            }}
-                        />
-                        <Input type="text"  {...register("fee")} placeholder="Voting fee.." />
-                        <ErrorText>{errors?.fee?.message}</ErrorText>
-                    </FormItem>
-                    <FormItem>
-                        <CandidateOptions
-                            fields={fields}
-                            errors={errors}
-                            register={register}
-                            control={control}
-                            onAdd={() => append(OptionDefault)}
-                            onRemove={(index: number) => remove(index)}
-                        />
-                    </FormItem>
+                        <FormItem>
+                            <CandidateOptions
+                                fields={fields}
+                                errors={errors}
+                                register={register}
+                                control={control}
+                                onAdd={() => append(OptionDefault)}
+                                onRemove={(index: number) => remove(index)}
+                            />
+                        </FormItem>
 
-                    <FlexLayoutBtn>
-                        <DefaultButton type="button" onClick={() => navigate(-1)}>Back</DefaultButton>
-                        <SubmitButton type="submit" disabled={isWaiting}>
-                            {isWaiting && (<Loader />)}
-                            {!campaignId ? 'Create' : 'Save'}
-                        </SubmitButton>
-                    </FlexLayoutBtn>
-                </Form>
-            ) : (
-                <NoTokens>
-                    You can't create campaign right row! <br />
-                    You can check out the Tokens page.
-                </NoTokens>
-            )}
-        </Content>
+                        <FlexLayoutBtn>
+                            <DefaultButton type="button" onClick={() => navigate(-1)}>Back</DefaultButton>
+                            <SubmitButton type="submit" disabled={isWaiting}>
+                                {isWaiting && (<Loader />)}
+                                {!campaignId ? 'Create' : 'Save'}
+                            </SubmitButton>
+                        </FlexLayoutBtn>
+                    </Form>
+                ) : (
+                    <NoTokens>
+                        You can't create campaign right row! <br />
+                        You can check out the Tokens page.
+                    </NoTokens>
+                )}
+            </Content>
+        </ContentWrapper>
     )
 }
 

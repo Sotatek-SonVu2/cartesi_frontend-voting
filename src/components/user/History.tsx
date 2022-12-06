@@ -11,7 +11,7 @@ import { handleInspectApi } from "helper/handleInspectApi";
 import { RootState } from "store";
 import { Content } from "styled/common";
 import { TimeLine } from "styled/list";
-import { FlexLayout } from "styled/main";
+import { ContentWrapper, FlexLayout } from "styled/main";
 import { ACTION_HISTORY, ERROR_MESSAGE, historyOptions, NOTI_TYPE } from "utils/contants";
 import { MetadataType } from "utils/interface";
 import HistoryItem from "./Item/History";
@@ -79,7 +79,7 @@ const History = () => {
     }
 
     return (
-        <>
+        <ContentWrapper>
             <Content>
                 <FlexLayoutBetween>
                     <Title text='History' userGuideType='history' />
@@ -113,7 +113,7 @@ const History = () => {
                     <Loading />
                 )}
             </Content>
-        </>
+        </ContentWrapper>
     )
 }
 
