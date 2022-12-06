@@ -98,7 +98,9 @@ const Result = () => {
                             text={title || '(NO DATA)'}
                             userGuideType='result'
                         />
-                        <Markdown text={description} />
+                        <div style={{ marginTop: '1rem' }}>
+                            <Markdown text={description} />
+                        </div>
                         <Line />
                         <p>The total votes is {campaign?.length > 0 ? campaign[0].total_vote : 0}.</p>
                         {voted_candidate?.name && (
