@@ -29,7 +29,6 @@ const Tokens = () => {
         createNotifications(NOTI_TYPE.SUCCESS, 'Copied!')
     }
 
-
     useEffect(() => {
         getData()
     }, [])

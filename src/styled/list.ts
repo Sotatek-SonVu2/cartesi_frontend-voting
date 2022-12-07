@@ -120,6 +120,17 @@ export const ItemIcon = styled.div`
   border-radius: 0px 7px 7px 0px;
 `
 
+export const VotesItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #5b5b5b;
+  padding: 9px 1.5rem;
+
+  &:last-child {
+    border-bottom: unset;
+  }
+`
+
 export const Avatar = styled.div<AvatarType>`
   position: relative;
   display: inline-block;

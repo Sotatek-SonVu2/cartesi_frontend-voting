@@ -15,6 +15,7 @@ import { ContentWrapper } from "styled/main"
 import { CAMPAIGN_DETAIL, ERROR_MESSAGE, NOTI_TYPE, RESULT } from "utils/contants"
 import { CampaignType, MetadataType, VotedType } from "utils/interface"
 import ResultItem from "./Item/Result"
+import VotersList from "./VotersList"
 
 interface DataType {
     campaign: CampaignType[]
@@ -119,6 +120,7 @@ const Result = () => {
                     </Content>
                 )}
             </ContentWrapper>
+            {/* <VotersList /> */}
         </>
     )
 }

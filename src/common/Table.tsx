@@ -1,13 +1,7 @@
 import BootstrapTable from 'react-bootstrap-table-next';
 import NoData from "./NoData";
 
-interface PropsType {
-    columns?: any
-    data?: any
-    keyField: string
-}
-
-const Table = (props: PropsType) => {
+const Table = (props: any) => {
     const { columns, data, keyField, ...rest } = props
     return (
         <div style={{ maxWidth: '100%' }}>

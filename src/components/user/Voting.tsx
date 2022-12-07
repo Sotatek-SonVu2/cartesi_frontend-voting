@@ -191,12 +191,17 @@ const Voting = () => {
                     {data.voted?.name && (
                         <p>Your voted is: {data.voted?.name}.</p>
                     )}
+                    {/* {data.voted?.comment && (
+                        <p>The reason you choose: {data.voted?.comment}</p>
+                    )} */}
                     {data.candidates.map(item => (
                         <div key={item.id}>
                             <VotingItem active={candidateId} data={item} handleClick={(id: number) => onChooseCandidate(id)} />
                         </div>
                     ))}
-                    {/* <TextArea name="comment" placeholder="Why you choose that candidate? (optional)" value={comment} onChange={(e) => setComment(e.target.value)} />
+                    {/* {!data.voted?.comment && (
+                        <TextArea name="comment" placeholder="Why you choose that candidate? (optional)" value={comment} onChange={(e) => setComment(e.target.value)} />
+                    )}
                     <Line /> */}
                     {data?.candidates.length > 0 && (
                         <FlexLayoutBtn>

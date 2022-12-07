@@ -206,6 +206,17 @@ export interface TokenForm {
     status: string
 }
 
+export interface VoterType {
+    avatar: string
+    brief_introduction: string
+    candidate_id: number
+    comment: string
+    name: string
+    user: string
+    votes: number
+    voting_time: string
+}
+
 export interface tokenTypePayload {
     action: string
     id?: number
