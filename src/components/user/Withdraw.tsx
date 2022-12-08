@@ -204,8 +204,8 @@ const Withdraw = () => {
                     token_address: token || ''
                 }
                 await sendInput(data)
-                await dispatch(getDepositInfo())
-                await getData()
+                dispatch(getDepositInfo())
+                getData()
                 createNotifications(NOTI_TYPE.SUCCESS, 'Withdraw token successfully!')
             }
         } catch (error: any) {
