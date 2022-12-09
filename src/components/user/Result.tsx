@@ -120,7 +120,7 @@ const Result = () => {
                     </Content>
                 )}
             </ContentWrapper>
-            {/* <VotersList /> */}
+            <VotersList />
         </>
     )
 }

@@ -49,7 +49,7 @@ const Voting = () => {
     const [callMessage, setCallMessage] = useState<string>('')
     const [isLoadVoting, setIsLoadVoting] = useState<boolean>(false)
     const [isCloseVoting, setIsCloseVoting] = useState<boolean>(false)
-    // const [comment, setComment] = useState<string>('')
+    const [comment, setComment] = useState<string>('')
     const [data, setData] = useState<DataType>({
         campaign: {
             creator: '',
@@ -132,7 +132,7 @@ const Voting = () => {
                 setIsLoadVoting(true)
                 const data = {
                     action: VOTE,
-                    // comment,
+                    comment,
                     candidate_id: candidateId,
                     campaign_id: campaignId && parseInt(campaignId),
                 }
@@ -191,18 +191,18 @@ const Voting = () => {
                     {data.voted?.name && (
                         <p>Your voted is: {data.voted?.name}.</p>
                     )}
-                    {/* {data.voted?.comment && (
+                    {data.voted?.comment && (
                         <p>The reason you choose: {data.voted?.comment}</p>
-                    )} */}
+                    )}
                     {data.candidates.map(item => (
                         <div key={item.id}>
                             <VotingItem active={candidateId} data={item} handleClick={(id: number) => onChooseCandidate(id)} />
                         </div>
                     ))}
-                    {/* {!data.voted?.comment && (
+                    {!data.voted?.comment && (
                         <TextArea name="comment" placeholder="Why you choose that candidate? (optional)" value={comment} onChange={(e) => setComment(e.target.value)} />
                     )}
-                    <Line /> */}
+                    <Line />
                     {data?.candidates.length > 0 && (
                         <FlexLayoutBtn>
                             <DefaultButton type="button" onClick={() => navigate(ROUTER_PATH.HOMEPAGE)}>Back</DefaultButton>
