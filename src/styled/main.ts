@@ -23,6 +23,10 @@ export const FlexLayout = styled.div`
     align-items: center;
 `
 
+export const FlexLayoutSwap = styled(FlexLayout)`
+    flex-wrap: wrap;
+`
+
 export const FlexItem = styled.div`
     width: 250px;
 `

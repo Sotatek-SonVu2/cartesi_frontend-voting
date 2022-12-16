@@ -107,5 +107,19 @@ export const randomColor = () => {
     return color;
 };
 
+export const onConvertDatetime = (start_time: Date | string, end_time: Date | string) => {
+    const localStartTime = moment(convertUtcToLocal(new Date(start_time))).format(FORMAT_DATETIME)
+    const localEndTime = moment(convertUtcToLocal(new Date(end_time))).format(FORMAT_DATETIME)
+    const now = moment(new Date()).format(FORMAT_DATETIME)
+    const isStartTime = moment(localStartTime).isBefore(now) // Compare start time with current datetime
+    const isEndTime = moment(localEndTime).isBefore(now) // Compare end time with current datetime
+    return {
+        localStartTime,
+        localEndTime,
+        isStartTime,
+        isEndTime
+    }
+}
+
 
 

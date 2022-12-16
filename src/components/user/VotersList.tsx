@@ -87,9 +87,11 @@ const VotersList = () => {
                         <VotesItem key={item.user}>
                             <div>{formatAddress(item.user)}</div>
                             <div>{item.name}</div>
-                            <Tooltip text={item.comment} id={item.user} placement='top'>
-                                <img src={CommentIcon} alt='comment' width={20} />
-                            </Tooltip>
+                            {item.comment && (
+                                <Tooltip text={item.comment} id={item.user} placement='top'>
+                                    <img src={CommentIcon} alt='comment' width={20} />
+                                </Tooltip>
+                            )}
                         </VotesItem>
                     )) : (
                         <NoData />

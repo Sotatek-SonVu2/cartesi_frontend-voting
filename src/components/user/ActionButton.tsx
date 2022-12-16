@@ -1,6 +1,6 @@
 import ConfimModal from "common/ConfimModal";
 import { createNotifications } from "common/Notification";
-import ReactSelect from "common/ReactSelect";
+import ReactSelect, { OptionsType } from "common/ReactSelect";
 import { handleResponse } from "helper/handleResponse";
 import { sendInput } from "helper/sendInput";
 import { useState } from "react";
@@ -51,7 +51,7 @@ const ActionButton = ({ onChangeType, isActionButton }: PropsType) => {
     const pathname = `/${location.pathname.split("/")[1]}`
     const paramId = location.pathname.split("/")[2]
 
-    const onChangeSelect = (opt: any) => {
+    const onChangeSelect = (opt: OptionsType) => {
         onChangeType(opt.value)
     }
 
@@ -99,9 +99,8 @@ const ActionButton = ({ onChangeType, isActionButton }: PropsType) => {
                     <ReactSelect
                         options={cadidateOptions}
                         onChange={onChangeSelect}
-                        className="basic-single"
                     />
-                    <CreateButton onClick={() => navigate(ROUTER_PATH.ADD_CAMPAIGN)}>Create new campaign</CreateButton>
+                    <CreateButton onClick={() => navigate(ROUTER_PATH.CREATE_CAMPAIGN)}>Create new campaign</CreateButton>
                 </FlexLayoutBetween>
             )
         } else if (pathname === ROUTER_PATH.VOTING && creator === addressWallet && isVisible) {

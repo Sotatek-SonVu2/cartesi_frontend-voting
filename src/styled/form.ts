@@ -33,6 +33,16 @@ export const OptionLabel = styled.div`
     }
 `
 
+export const InputGroup = styled.div`
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    & input {
+        width: 305px;
+    }
+`
+
 export const Input = styled.input`
     width: 100%;
     font-size: 16px;

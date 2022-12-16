@@ -6,13 +6,10 @@ import styled from "styled-components";
 import { FlexLayout } from "styled/main";
 import DescriptionModal from "../Modal/DescriptionModal";
 import { useState } from "react";
+import { CandidatesVotingType } from "utils/interface";
 
 interface PropsType {
-    data: {
-        id: number
-        name: string
-        avatar: string
-    },
+    data: CandidatesVotingType,
     handleClick: Function,
     active: number
 }

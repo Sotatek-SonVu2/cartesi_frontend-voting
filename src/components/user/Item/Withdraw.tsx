@@ -1,4 +1,4 @@
-import { WithdrawContent } from "styled/list"
+import { ContentBox } from "styled/list"
 import GiftIcon from "images/Gift-box-1.png"
 import GiftDisabledIcon from "images/Gift-box-2.png"
 import ClaimedIcon from 'images/claimed.png'
@@ -29,8 +29,8 @@ const WithdrawItem = ({ data, onClick }: PropsType) => {
     const name = tokenListing.find((item: tokenType) => item.address === token.toLowerCase())?.name
 
     return (
-        <WithdrawContent>
-            <img src={isExecuted || isAllowExecute ? GiftIcon : GiftDisabledIcon} className="giftIcon" alt="gift" width={'50%'} />
+        <ContentBox>
+            <img src={isExecuted || isAllowExecute ? GiftIcon : GiftDisabledIcon} className="image" alt="gift" width={'50%'} />
             <div></div>
             <h5>Gift {id}</h5>
             <span>{amount} {name}</span>
@@ -41,7 +41,7 @@ const WithdrawItem = ({ data, onClick }: PropsType) => {
                     Claim
                 </ClaimButton>
             )}
-        </WithdrawContent>
+        </ContentBox>
     )
 }
 

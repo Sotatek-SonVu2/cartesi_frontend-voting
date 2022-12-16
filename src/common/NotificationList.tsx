@@ -34,7 +34,7 @@ const PAGE_DEFAULTS = {
 const getMessage = (item: any) => {
     const { action, payload } = item
     const parse = JSON.parse(payload)
-    const { campaign, type, error, candidate, amount, reason, token } = parse
+    const { campaign, type, error, candidate, amount, reason, token, profile, time } = parse
     const tokenIcon = token?.icon || ''
     const tokenName = token?.name || ''
     const successMessage: any = {
@@ -53,6 +53,9 @@ const getMessage = (item: any) => {
         WITHDRAW: <Link to={ROUTER_PATH.WITHDRAW}>
             You requested to withdraw {amount} <img src={tokenIcon} alt='token_icon' width={10} /> {tokenName} tokens successfully.
         </Link>,
+        CREATE_PROFILE: <span>You created profile <Link to={`${ROUTER_PATH.PROFILE}/${profile?.id}`}>{profile?.name} </Link> successfully</span>,
+        UPDATE_PROFILE: <span>You edited info of profile <Link to={`${ROUTER_PATH.PROFILE}/${profile?.id}`}>{profile?.name} </Link> successfully</span>,
+        DELETE_PROFILE: <span>You deleted profile {profile?.name} at {time} successfully</span>,
     }
 
     const errorMessage: any = {
@@ -65,7 +68,10 @@ const getMessage = (item: any) => {
         EDIT_CAMPAIGN: <span>Edit campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> failed because {error}</span>,
         DELETE_CAMPAIGN: <span>Delete campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> failed because {error}</span>,
         WITHDRAW: <span>Withdraw {amount} <img src={tokenIcon} alt='token_icon' width={10} /> {tokenName} token failed because {error}</span>,
-        SYSTEM: <span>System error: {error}</span>
+        SYSTEM: <span>System error: {error}</span>,
+        CREATE_PROFILE: <span>Create profile {profile?.name} failed because {error}</span>,
+        UPDATE_PROFILE: <span>Edit profile <Link to={`${ROUTER_PATH.PROFILE}/${profile?.id}`}>{profile?.name} </Link> failed because {error}</span>,
+        DELETE_PROFILE: <span>Delete profile <Link to={`${ROUTER_PATH.PROFILE}/${profile?.id}`}>{profile?.name} </Link> failed because {error}</span>,
     }
     return {
         icon: type === 'error' ? BellError : BellSuccess,

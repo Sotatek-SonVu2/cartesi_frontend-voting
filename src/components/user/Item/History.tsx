@@ -10,7 +10,7 @@ import DecreseTokenIcon from 'images/decreseToken.png';
 import MinusIcon from 'images/minus-button.png';
 import { ROUTER_PATH } from "routes/contants";
 import { HistoryTitle } from "styled/list";
-import { CREATE_CAMPAIGN, DECREASE_TOKEN, DELETE_CAMPAIGN, DEPOSIT, EDIT_CAMPAIGN, EXECUTE_VOUCHER, VOTE, WITHDRAW } from "utils/contants";
+import { CREATE_CAMPAIGN, CREATE_PROFILE, DECREASE_TOKEN, DELETE_CAMPAIGN, DELETE_PROFILE, DEPOSIT, EDIT_CAMPAIGN, EXECUTE_VOUCHER, UPDATE_PROFILE, VOTE, WITHDRAW } from "utils/contants";
 
 interface PropsType {
     index: number
@@ -19,7 +19,7 @@ interface PropsType {
 
 const dataRender = (data: any) => {
     const { action, payload } = data
-    const { time, campaign, candidate, amount, voucher_id, reason, token } = payload
+    const { time, campaign, candidate, amount, voucher_id, reason, token, profile } = payload
     const tokenIcon = token?.icon || ''
     const tokenName = token?.name || ''
     switch (action) {
@@ -84,7 +84,7 @@ const dataRender = (data: any) => {
                 imageUrl: DeleteIcon,
                 title: 'Delete campaign',
                 times: `${time}`,
-                color: 'rgb(228 17 66 / 65%)',
+                color: 'rgb(238 69 108 / 50%)',
                 content: (
                     <span>You deleted campaing {campaign.name}</span>
                 )
@@ -107,6 +107,36 @@ const dataRender = (data: any) => {
                 color: 'rgb(255 192 83 / 50%)',
                 content: (
                     <span>You executed successfully voucher {voucher_id} with amount {amount} <img src={tokenIcon} alt='token_icon' width={15} /> {tokenName} tokens.</span>
+                )
+            }
+        case CREATE_PROFILE:
+            return {
+                imageUrl: VoucherIcon,
+                title: 'Create Profile',
+                times: `${time}`,
+                color: 'rgb(48 156 96 / 50%)',
+                content: (
+                    <span>You created profile {profile.name} at {time}</span>
+                )
+            }
+        case UPDATE_PROFILE:
+            return {
+                imageUrl: VoucherIcon,
+                title: 'Update profile',
+                times: `${time}`,
+                color: 'rgb(61 160 172 / 50%)',
+                content: (
+                    <span>You updated profile {profile.name} at {time}</span>
+                )
+            }
+        case DELETE_PROFILE:
+            return {
+                imageUrl: VoucherIcon,
+                title: 'Delete profile',
+                times: `${time}`,
+                color: 'rgb(228 17 66 / 50%)',
+                content: (
+                    <span>You deleted profile {profile.name} at {time}</span>
                 )
             }
         default:

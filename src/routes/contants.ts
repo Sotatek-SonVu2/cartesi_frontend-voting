@@ -6,9 +6,12 @@ export const ROUTER_PATH = {
     VOTING: '/voting',
     RESULT: '/result',
     LIST_CAMPAIGN: '/list-campaign',
-    ADD_CAMPAIGN: '/add-campaign',
+    CREATE_CAMPAIGN: '/create-campaign',
     EDIT_CAMPAIGN: '/edit-campaign',
     WITHDRAW: '/withdraw',
     HISTORY: '/history',
-    TOKENS: '/tokens'
+    TOKENS: '/tokens',
+    PROFILE: '/profile',
+    CREATE_PROFILE: '/create-profile',
+    EDIT_PROFILE: '/edit-profile',
 }

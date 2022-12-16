@@ -4,11 +4,12 @@ import { ShowText } from "styled/common"
 
 interface PropsType {
     text: string
+    isBreakWords?: boolean
 }
 
 const MAX_LENGTH = 400
 
-const Markdown = ({ text }: PropsType) => {
+const Markdown = ({ text, isBreakWords }: PropsType) => {
     const [isShowText, setIsShowText] = useState<boolean>(false)
 
     return (
@@ -19,9 +20,9 @@ const Markdown = ({ text }: PropsType) => {
                     backgroundColor: 'transparent',
                     fontSize: '13px',
                 }}
-                className={!isShowText && text.length > MAX_LENGTH ? 'show-less' : 'show-more'}
+                className={isBreakWords ? 'break-words' : !isShowText && text?.length > MAX_LENGTH ? 'show-less' : 'show-more'}
             />
-            {text.length > MAX_LENGTH && (
+            {!isBreakWords && text?.length > MAX_LENGTH && (
                 <ShowText onClick={() => setIsShowText(!isShowText)}>{!isShowText ? 'Show more...' : 'Show less'}</ShowText>
             )}
         </div>

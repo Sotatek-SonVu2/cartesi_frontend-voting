@@ -26,6 +26,12 @@ export interface OptionType {
     avatar: string
 }
 
+export interface ManagerType {
+    name: string
+}
+
+
+
 export interface CadidatesType {
     name: string
     avatar: string,
@@ -43,6 +49,7 @@ export interface AddEditDataType {
     accept_token?: string,
     fee?: number
     token_address?: string
+    profile_id?: number | null
 }
 
 export interface DescriptionType {
@@ -107,6 +114,28 @@ export interface CampaignDataType {
     winning_candidate_name: string
 }
 
+export interface ProfileCampaignDataType {
+    creator: string
+    accept_token: string
+    description: string
+    end_time: string
+    id: number
+    fee: number
+    name: string
+    start_time: string
+    total_vote: number
+    votes_of_candidate: number | null
+    winning_candidate_name: string
+    profile_creator: string
+    profile_description: string
+    profile_id: number
+    profile_name: string
+    profile_social_media: string | null
+    profile_thumbnail: string | null
+    profile_type: string
+    profile_website: string | null
+}
+
 export interface ListCampaignType {
     data: CampaignDataType[]
     limit: number
@@ -131,6 +160,96 @@ export interface WithDrawType {
     isExecuted?: boolean
     isAllowExecute?: boolean
     token: string
+}
+
+export interface ProfileType {
+    action?: string
+    id?: number
+    name: string
+    description: string
+    website: string | null
+    social_media: string | null
+    thumbnail: string | null
+    managers: string[]
+    creator?: string
+    type?: string
+}
+
+export interface CampaignHandleRes {
+    getLists: () => void
+    getProfileByUser: () => void
+    handleChangeDate: (key: string) => (value: Date) => void
+    getDataForm: () => void
+    onChangeSelect: any
+    onSubmit: any
+    setTokenToCreate: any
+    tokenToCreate: string
+    token_to_create: {
+        tokenList: tokenType[]
+        isLoading: boolean
+    }
+    setTokenToVote: any
+    tokenToVote: string
+    token_to_vote: {
+        tokenList: tokenType[]
+        isLoading: boolean
+    }
+    setIsMyCampaign: any
+    data: any
+    isMyCampaign: boolean
+    isLoading: boolean
+    paging: {
+        currentPage: number,
+        pageSize: number,
+        totalPage: number
+    }
+    dateTime: {
+        startDate: any
+        endDate: any
+        formErrors: {
+            startDate: string
+            endDate: string
+        }
+    }
+    setPaging: any
+    callMessage: string
+    campaignType: string
+    success: boolean
+}
+
+export interface ProfileHandleRes {
+    getProfileDetail: () => void
+    getCampaignByProfileId: () => void
+    onDeleteProfile: () => void
+    getLists: () => void
+    setPaging: any
+    onSubmit: (data: ProfileType) => void
+    toggleModal: () => void
+    isOpen: boolean
+    paging: {
+        currentPage: number,
+        pageSize: number,
+        totalPage: number
+    }
+    data: any,
+    campaigns: any
+    isLoading: boolean
+    callMessage: string
+}
+
+export interface VoteHandleRes {
+    getLists: () => void
+    handleVoting: () => void
+    onChooseCandidate: any
+    setComment: any
+    isLoadVoting: boolean
+    comment: string
+    isCloseVoting: boolean
+    candidateId: number
+    data: any
+    isLoading: boolean
+    callMessage: string
+    success: boolean
 }
 
 export interface DepositInfoType {

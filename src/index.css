@@ -15,6 +15,15 @@ code {
         monospace;
 }
 
+.break-words {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
 .show-more {
     margin-bottom: 5px;
     overflow: hidden;

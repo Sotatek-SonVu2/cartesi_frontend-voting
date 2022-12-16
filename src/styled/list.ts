@@ -184,8 +184,7 @@ export const VotingRate = styled.span`
 
 export const BoxItem = styled.div`
   background: rgb(195 195 195 / 14%);
-  width: 23%;
-  min-width: 137px;
+  min-width: 146px;
   min-height: 242px;
   margin-top: 20px;
   margin-right: 5px;
@@ -218,13 +217,17 @@ export const BoxItem = styled.div`
           transform: translate3d(4px, 0, 0);
       }
   };
+
+  @media(max-width: 700px){
+    min-width: 47%;
+  }
 `
 
-export const WithdrawContent = styled.div`
+export const ContentBox = styled.div`
   color: #fff;
   text-align: center;
 
-  & .giftIcon {
+  & .image {
     display: block;
     margin: 0 auto;
     margin-top: 24px;

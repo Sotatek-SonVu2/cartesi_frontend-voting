@@ -16,8 +16,8 @@ import { getDepositInfo } from "reducers/authSlice";
 import { AppDispatch, RootState } from "store";
 import styled from "styled-components";
 import { Content } from "styled/common";
-import { BoxItem, HeaderList, Radio, RadioGroup, WithdrawContent } from "styled/list";
-import { ContentWrapper, FlexLayout } from "styled/main";
+import { BoxItem, HeaderList, Radio, RadioGroup, ContentBox } from "styled/list";
+import { ContentWrapper, FlexLayoutSwap } from "styled/main";
 import {
     ERROR_MESSAGE,
     LIST_EXECUTED_VOUCHER,
@@ -36,7 +36,7 @@ const BoxItemCustom = styled(BoxItem)`
     position: relative;
 `
 
-const AddWithdraw = styled(WithdrawContent)`
+const AddWithdraw = styled(ContentBox)`
     position: absolute;
     top: 50%;
     left: 50%;
@@ -44,9 +44,7 @@ const AddWithdraw = styled(WithdrawContent)`
     width: 100%;
 `
 
-const FlexLayoutSwap = styled(FlexLayout)`
-    flex-wrap: wrap;
-`
+
 
 const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL || ''
 

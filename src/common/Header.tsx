@@ -97,6 +97,9 @@ const Header = ({ startTour }: Props) => {
                     <MenuTitle onClick={() => navigate(ROUTER_PATH.HISTORY, { replace: true })} className="history-step">
                         History
                     </MenuTitle>
+                    <MenuTitle onClick={() => navigate(ROUTER_PATH.PROFILE, { replace: true })} className="history-step">
+                        Profiles
+                    </MenuTitle>
                     {pathname !== ROUTER_PATH.ADMIN && (
                         <>
                             <MenuTitle onClick={() => navigate(ROUTER_PATH.TOKENS, { replace: true })} className="tokens-step">

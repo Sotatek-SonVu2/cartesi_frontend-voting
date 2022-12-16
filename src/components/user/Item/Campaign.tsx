@@ -1,17 +1,15 @@
-import moment from "moment"
+import Tooltip from "common/Tooltip"
+import BadgeIcon from 'images/badge.png'
+import StarIcon from 'images/favourites.png'
+import DescriptionIcon from 'images/script.png'
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import DescriptionIcon from 'images/script.png'
-import StarIcon from 'images/favourites.png'
-import BadgeIcon from 'images/badge.png'
+import { ROUTER_PATH } from "routes/contants"
 import { BoxContent, DateTimeBox } from "styled/common"
 import { Wrapper } from "styled/form"
 import { ActionItem, ActionList, CampaignName, WinnerCandidate, WinnerName } from "styled/list"
-import { convertUtcToLocal } from "utils/common"
-import { FORMAT_DATETIME } from "utils/contants"
-import { ROUTER_PATH } from "routes/contants"
+import { onConvertDatetime } from "utils/common"
 import DescriptionModal from "../Modal/DescriptionModal"
-import Tooltip from "common/Tooltip"
 
 interface PropsType {
     data: {
@@ -28,16 +26,11 @@ const CampaignItem = ({ data }: PropsType) => {
     const navigate = useNavigate();
     const [isVisible, setIsVisible] = useState<boolean>(false)
     const { id, name, total_vote, winning_candidate_name, end_time, start_time } = data
+    const { localStartTime, localEndTime, isStartTime, isEndTime } = onConvertDatetime(start_time, end_time)
 
     const toggleModal = () => {
         setIsVisible(!isVisible);
     }
-
-    const localStartTime = moment(convertUtcToLocal(new Date(start_time))).format(FORMAT_DATETIME)
-    const localEndTime = moment(convertUtcToLocal(new Date(end_time))).format(FORMAT_DATETIME)
-    const now = moment(new Date()).format(FORMAT_DATETIME)
-    const isStartTime = moment(localStartTime).isBefore(now) // Compare start time with current datetime
-    const isEndTime = moment(localEndTime).isBefore(now) // Compare end time with current datetime
 
     return (
         <Wrapper key={id} className="campaign-item-step">
