@@ -12,6 +12,8 @@ import { MetadataType, resInput } from "utils/interface"
 const useRequest = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [callMessage, setCallMessage] = useState<string>('')
+    const [isLoadVoting, setIsLoadVoting] = useState<boolean>(false)
+    const [candidateId, setCandidateId] = useState<number>(0)
     const [success, setSuccess] = useState<boolean>(false)
     const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
 
@@ -37,6 +39,7 @@ const useRequest = () => {
     const fetchNotices = async (data: any, handleSuccess?: Function) => {
         try {
             setIsLoading(true)
+            setIsLoadVoting(true)
             setCallMessage(WAITING_FOR_CONFIRMATION)
             const { epoch_index, input_index }: resInput = await sendInput(data);
             handleResponse(epoch_index, input_index, ((payload: any) => {
@@ -58,6 +61,8 @@ const useRequest = () => {
         } catch (error: any) {
             createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
             setIsLoading(false)
+            setIsLoadVoting(false)
+            setCandidateId(0)
             setCallMessage('')
             throw error
         }
@@ -67,6 +72,9 @@ const useRequest = () => {
         isLoading,
         success,
         callMessage,
+        isLoadVoting,
+        candidateId,
+        setCandidateId,
         setCallMessage,
         fetchApi,
         fetchNotices

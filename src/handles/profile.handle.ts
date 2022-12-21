@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ROUTER_PATH } from "routes/contants";
 import { CREATE_PROFILE, DELETE_PROFILE, DETAIL_PROFILE, LIST_CAMPAIGN_OF_PROFILE, LIST_PROFILE, UPDATE_PROFILE } from "utils/contants";
 import { ManagerType, ProfileCampaignDataType, ProfileHandleRes, ProfileType } from "utils/interface";
+import Thumbnail from 'images/profile.png'
 
 export default function ProfileHandle(
     setValue?: UseFormSetValue<FieldValues>
@@ -102,7 +103,6 @@ export default function ProfileHandle(
     }
 
     const onCreateProfile = async (data: ProfileType) => {
-        console.log('data', data)
         fetchNotices(data, handleCreateSuccess)
     }
     const onEditProfile = async (data: ProfileType) => {
@@ -134,7 +134,7 @@ export default function ProfileHandle(
             name,
             description,
             website,
-            thumbnail,
+            thumbnail: thumbnail ? thumbnail : Thumbnail,
             social_media: JSON.stringify(social_media),
             managers: managers.map((item: ManagerType) => {
                 return item.name

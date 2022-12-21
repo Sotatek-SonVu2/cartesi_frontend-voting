@@ -23,8 +23,9 @@ export default function VoteHandle(): VoteHandleRes {
     const deposit_info = useSelector((state: RootState) => state.auth.deposit_info)
     const { campaignId } = useParams();
     const navigate = useNavigate();
-    const [candidateId, setCandidateId] = useState<number>(0)
-    const [isLoadVoting, setIsLoadVoting] = useState<boolean>(false)
+
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
     const [isCloseVoting, setIsCloseVoting] = useState<boolean>(false)
     const [comment, setComment] = useState<string>('')
     const [data, setData] = useState<DataType>({
@@ -41,39 +42,46 @@ export default function VoteHandle(): VoteHandleRes {
         candidates: [],
         voted: {}
     })
-    const { isLoading, fetchApi, fetchNotices, callMessage, success, setCallMessage } = useRequest()
+    const { fetchApi, fetchNotices, callMessage, success, setCallMessage, setCandidateId, isLoadVoting, candidateId } = useRequest()
 
     const getLists = async () => {
         if (campaignId) {
-            const params = {
-                action: CAMPAIGN_DETAIL,
-                campaign_id: parseInt(campaignId)
+            try {
+                setIsLoading(true)
+                const params = {
+                    action: CAMPAIGN_DETAIL,
+                    campaign_id: parseInt(campaignId)
+                }
+                const result = await fetchApi(params)
+                if (result?.campaign?.length > 0) {
+                    // Convert UTC+0 datetime to local datetime and format
+                    const start_time = moment(convertUtcToLocal(new Date(result.campaign[0].start_time))).format(FORMAT_DATETIME)
+                    const end_time = moment(convertUtcToLocal(new Date(result.campaign[0].end_time))).format(FORMAT_DATETIME)
+                    const now = moment(new Date()).format(FORMAT_DATETIME)
+                    const isStartTime = moment(start_time).isBefore(now) // Compare start time with current datetime
+                    const isEndTime = moment(end_time).isBefore(now) // Compare end time with current datetime
+                    setIsCloseVoting(!isStartTime || isEndTime)
+                    setData({
+                        campaign: {
+                            ...result.campaign[0],
+                            start_time,
+                            end_time
+                        },
+                        candidates: result.candidates,
+                        voted: result.voted
+                    })
+                    setCandidateId(result.voted?.candidate_id)
+                    setIsActionButton({
+                        creator: result.campaign[0].creator,
+                        isVisible: !isStartTime
+                    })
+                }
+            } catch (error) {
+                throw error
+            } finally {
+                setIsLoading(false)
             }
-            const result = await fetchApi(params)
-            console.log('result', result)
-            if (result?.campaign?.length > 0) {
-                // Convert UTC+0 datetime to local datetime and format
-                const start_time = moment(convertUtcToLocal(new Date(result.campaign[0].start_time))).format(FORMAT_DATETIME)
-                const end_time = moment(convertUtcToLocal(new Date(result.campaign[0].end_time))).format(FORMAT_DATETIME)
-                const now = moment(new Date()).format(FORMAT_DATETIME)
-                const isStartTime = moment(start_time).isBefore(now) // Compare start time with current datetime
-                const isEndTime = moment(end_time).isBefore(now) // Compare end time with current datetime
-                setIsCloseVoting(!isStartTime || isEndTime)
-                setData({
-                    campaign: {
-                        ...result.campaign[0],
-                        start_time,
-                        end_time
-                    },
-                    candidates: result.candidates,
-                    voted: result.voted
-                })
-                setCandidateId(result.voted?.candidate_id)
-                setIsActionButton({
-                    creator: result.campaign[0].creator,
-                    isVisible: !isStartTime
-                })
-            }
+
         }
     }
 
@@ -91,22 +99,15 @@ export default function VoteHandle(): VoteHandleRes {
         const token: any = deposit_info.find((deposit: DepositInfoType) => deposit.contract_address === data.campaign?.accept_token)
         const amount = token?.amount - token?.used_amount - token?.withdrawn_amount
         if (amount && amount > data?.campaign?.fee) {
-            try {
-                setIsLoadVoting(true)
-                const params = {
-                    action: VOTE,
-                    comment,
-                    candidate_id: candidateId,
-                    campaign_id: campaignId && parseInt(campaignId),
-                }
-                fetchNotices(params, handleVoteSuccess)
-            } catch (error: any) {
-                createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
-                setCandidateId(0)
-                setCallMessage('')
-                setIsLoadVoting(false)
-                throw error
+
+            const params = {
+                action: VOTE,
+                comment,
+                candidate_id: candidateId,
+                campaign_id: campaignId && parseInt(campaignId),
             }
+            fetchNotices(params, handleVoteSuccess)
+
         } else {
             createNotifications(NOTI_TYPE.DANGER, "Oops! You don't have enough tokens in the DApp!")
         }

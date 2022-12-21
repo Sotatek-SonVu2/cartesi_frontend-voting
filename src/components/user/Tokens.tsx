@@ -21,16 +21,12 @@ const Tokens = () => {
     const TokenVoting = useTokensList(GET_CAN_VOTE)
     const TokenCreating = useTokensList(GET_CAN_CREATE)
 
-    const getData = async () => {
-        dispatch(getTokens())
-    }
-
     const handleCopy = () => {
         createNotifications(NOTI_TYPE.SUCCESS, 'Copied!')
     }
 
     useEffect(() => {
-        getData()
+        dispatch(getTokens())
     }, [])
 
     const addColumns = [

@@ -80,13 +80,13 @@ const Voting = () => {
                             <VotingItem active={candidateId} data={item} handleClick={(id: number) => onChooseCandidate(id)} />
                         </div>
                     ))}
-                    {data?.voted && Object.keys(data.voted)?.length === 0 && (
+                    {!data?.voted && (
                         <TextArea name="comment" placeholder="Why you choose that candidate? (optional)" value={comment} onChange={(e) => setComment(e.target.value)} />
                     )}
                     <Line />
                     {data.candidates?.length > 0 && (
                         <FlexLayoutBtn>
-                            <DefaultButton type="button" onClick={() => navigate(ROUTER_PATH.HOMEPAGE)}>Back</DefaultButton>
+                            <DefaultButton type="button" onClick={() => navigate(-1)}>Back</DefaultButton>
                             <SuccessButton
                                 type="button"
                                 onClick={handleVoting}

@@ -2,7 +2,6 @@ import ConfimModal from "common/ConfimModal"
 import Loading from "common/Loading"
 import Markdown from "common/Markdown"
 import ProfileHandle from "handles/profile.handle"
-import Thumbnail from 'images/profile.png'
 import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
@@ -46,7 +45,7 @@ const ProfileDetail = () => {
                 <Content>
                     <HeaderList>
                         <ProfileInfo>
-                            <img src={data?.thumbnail || Thumbnail} alt='thumbnail' width={75} height={75} />
+                            <img src={data?.thumbnail} alt='thumbnail' width={75} height={75} />
                             <div>
                                 <ProfileName>{data?.name}</ProfileName>
                                 <p>Creator: {data?.creator && formatAddress(data?.creator)}</p>
