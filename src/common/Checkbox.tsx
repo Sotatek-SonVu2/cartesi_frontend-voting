@@ -1,17 +1,17 @@
-import { FlexLayout } from "styled/main"
+import { FlexLayout } from 'styled/main'
 
 interface PropsType {
-    label: string
-    register: any
+	label: string
+	register: any
 }
 
 const Checkbox = ({ label, register }: PropsType) => {
-    return (
-        <FlexLayout>
-            <input type="checkbox" {...register} />
-            <label>{label}</label>
-        </FlexLayout>
-    )
+	return (
+		<FlexLayout>
+			<input type='checkbox' {...register} />
+			<label>{label}</label>
+		</FlexLayout>
+	)
 }
 
 export default Checkbox

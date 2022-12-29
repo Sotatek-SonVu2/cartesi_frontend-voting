@@ -10,6 +10,6 @@
 // specific language governing permissions and limitations under the License.
 
 export type InputKeys = {
-    epoch_index?: number;
-    input_index?: number;
-};
+	epoch_index?: number
+	input_index?: number
+}

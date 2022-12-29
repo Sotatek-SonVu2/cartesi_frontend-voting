@@ -1,45 +1,45 @@
-import { getVouchers } from "../graphql/vouchers";
-import { hex2str } from "../utils/common";
+import { getVouchers } from '../graphql/vouchers'
+import { hex2str } from '../utils/common'
 
 interface Args {
-    url?: string;
-    epoch?: number;
-    input?: number;
+	url?: string
+	epoch?: number
+	input?: number
 }
 
 const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL || ''
 
 export const getVoucher = async ({ url = GRAPHQL_URL, epoch, input }: Args) => {
-    // wait for vouchers to appear in reader
-    const vouchers = await getVouchers(url, {
-        epoch_index: epoch,
-        input_index: input,
-    });
+	// wait for vouchers to appear in reader
+	const vouchers = await getVouchers(url, {
+		epoch_index: epoch,
+		input_index: input,
+	})
 
-    // gathers outputs to print based on the retrieved vouchers
-    // - sorts vouchers because the query is not sortable
-    // - decodes the hex payload as an UTF-8 string, if possible
-    // - prints only destination, payload and indices for epoch, input and voucher
-    const outputs = vouchers
-        .sort((a, b) => {
-            // sort by epoch index and then by input index
-            const epochResult = a.input.epoch.index - b.input.epoch.index;
-            if (epochResult !== 0) {
-                return epochResult;
-            } else {
-                return a.input.index - b.input.index;
-            }
-        })
-        .map((n) => {
-            const output: any = {};
-            output.id = n.id;
-            output.epoch = n.input.epoch.index;
-            output.input = n.input.index;
-            output.voucher = n.index;
-            output.destination = n.destination;
-            output.payload = hex2str(n.payload);
-            return output;
-        });
+	// gathers outputs to print based on the retrieved vouchers
+	// - sorts vouchers because the query is not sortable
+	// - decodes the hex payload as an UTF-8 string, if possible
+	// - prints only destination, payload and indices for epoch, input and voucher
+	const outputs = vouchers
+		.sort((a, b) => {
+			// sort by epoch index and then by input index
+			const epochResult = a.input.epoch.index - b.input.epoch.index
+			if (epochResult !== 0) {
+				return epochResult
+			} else {
+				return a.input.index - b.input.index
+			}
+		})
+		.map((n) => {
+			const output: any = {}
+			output.id = n.id
+			output.epoch = n.input.epoch.index
+			output.input = n.input.index
+			output.voucher = n.index
+			output.destination = n.destination
+			output.payload = hex2str(n.payload)
+			return output
+		})
 
-    return JSON.stringify(outputs)
-};
+	return JSON.stringify(outputs)
+}

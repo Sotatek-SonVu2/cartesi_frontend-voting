@@ -9,50 +9,49 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
-import { getNotices } from "../graphql/notices";
-import { hex2str } from "../utils/common";
+import { getNotices } from '../graphql/notices'
+import { hex2str } from '../utils/common'
 
 interface Args {
-    url?: string;
-    epoch?: number;
-    input?: number;
+	url?: string
+	epoch?: number
+	input?: number
 }
 
-export const command = "notices";
-export const describe = "List notices of an epoch and input";
+export const command = 'notices'
+export const describe = 'List notices of an epoch and input'
 
 const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL || ''
 
 export const getNotice = async ({ url = GRAPHQL_URL, epoch, input }: Args) => {
-    // wait for notices to appear in reader
-    const notices = await getNotices(url, {
-        epoch_index: epoch,
-        input_index: input,
-    });
+	// wait for notices to appear in reader
+	const notices = await getNotices(url, {
+		epoch_index: epoch,
+		input_index: input,
+	})
 
-    // gathers outputs to print based on the retrieved notices
-    // - sorts notices because the query is not sortable
-    // - decodes the hex payload as an UTF-8 string, if possible
-    // - prints only payload and indices for epoch, input and notice
-    const outputs = notices
-        .sort((a, b) => {
-            // sort by epoch index and then by input index
-            const epochResult = a.input.epoch.index - b.input.epoch.index;
-            if (epochResult !== 0) {
-                return epochResult;
-            } else {
-                return a.input.index - b.input.index;
-            }
-        })
-        .map((n) => {
-            const output: any = {};
-            output.id = n.id;
-            output.epoch = n.input.epoch.index;
-            output.input = n.input.index;
-            output.notice = n.index;
-            output.payload = hex2str(n.payload);
-            return output;
-        });
-    return JSON.stringify(outputs)
-};
-
+	// gathers outputs to print based on the retrieved notices
+	// - sorts notices because the query is not sortable
+	// - decodes the hex payload as an UTF-8 string, if possible
+	// - prints only payload and indices for epoch, input and notice
+	const outputs = notices
+		.sort((a, b) => {
+			// sort by epoch index and then by input index
+			const epochResult = a.input.epoch.index - b.input.epoch.index
+			if (epochResult !== 0) {
+				return epochResult
+			} else {
+				return a.input.index - b.input.index
+			}
+		})
+		.map((n) => {
+			const output: any = {}
+			output.id = n.id
+			output.epoch = n.input.epoch.index
+			output.input = n.input.index
+			output.notice = n.index
+			output.payload = hex2str(n.payload)
+			return output
+		})
+	return JSON.stringify(outputs)
+}

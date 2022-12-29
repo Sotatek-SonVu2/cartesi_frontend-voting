@@ -17,124 +17,123 @@ import { GET_CAN_CREATE, GET_CAN_VOTE, NOTI_TYPE, TOKEN_STATUS } from 'utils/con
 import { tokenType } from 'utils/interface'
 
 const Tokens = () => {
-    const dispatch = useDispatch<AppDispatch>()
-    const TokenVoting = useTokensList(GET_CAN_VOTE)
-    const TokenCreating = useTokensList(GET_CAN_CREATE)
+	const dispatch = useDispatch<AppDispatch>()
+	const TokenVoting = useTokensList(GET_CAN_VOTE)
+	const TokenCreating = useTokensList(GET_CAN_CREATE)
 
-    const handleCopy = () => {
-        createNotifications(NOTI_TYPE.SUCCESS, 'Copied!')
-    }
+	const handleCopy = () => {
+		createNotifications(NOTI_TYPE.SUCCESS, 'Copied!')
+	}
 
-    useEffect(() => {
-        dispatch(getTokens())
-    }, [])
+	useEffect(() => {
+		dispatch(getTokens())
+	}, [])
 
-    const addColumns = [
-        {
-            text: 'Icon',
-            dataField: 'icon',
-            formatter: (cell: string) => (
-                <img src={cell} alt="token-icon" width={20} />
-            )
-        },
-        {
-            text: 'Token',
-            dataField: 'name',
-        },
-        {
-            text: 'Address',
-            dataField: 'address',
-            formatter: (cell: string, row: tokenType) => (
-                <Tooltip text={cell} placement="top" id={row.address} className="tooltip-sz-max">
-                    <CopyToClipboard text={cell} onCopy={handleCopy}>
-                        <div style={{ width: '100%' }}>{formatAddress(cell)}</div>
-                    </CopyToClipboard>
-                </Tooltip>
-            )
-        },
-        {
-            text: 'Fee',
-            dataField: 'fee',
-        },
-        {
-            text: 'Status',
-            dataField: 'status',
-            formatter: (cell: number) => (
-                <StatusText is_disabled={cell === TOKEN_STATUS.DISABLED} is_locked={cell === TOKEN_STATUS.LOCKED}>
-                    {cell === TOKEN_STATUS.DISABLED ? 'Inactive' : cell === TOKEN_STATUS.LOCKED ? 'Locked' : 'Active'}
-                </StatusText>
-            )
-        },
-    ];
+	const addColumns = [
+		{
+			text: 'Icon',
+			dataField: 'icon',
+			formatter: (cell: string) => <img src={cell} alt='token-icon' width={20} />,
+		},
+		{
+			text: 'Token',
+			dataField: 'name',
+		},
+		{
+			text: 'Address',
+			dataField: 'address',
+			formatter: (cell: string, row: tokenType) => (
+				<Tooltip text={cell} placement='top' id={row.address} className='tooltip-sz-max'>
+					<CopyToClipboard text={cell} onCopy={handleCopy}>
+						<div style={{ width: '100%' }}>{formatAddress(cell)}</div>
+					</CopyToClipboard>
+				</Tooltip>
+			),
+		},
+		{
+			text: 'Fee',
+			dataField: 'fee',
+		},
+		{
+			text: 'Status',
+			dataField: 'status',
+			formatter: (cell: number) => (
+				<StatusText
+					is_disabled={cell === TOKEN_STATUS.DISABLED}
+					is_locked={cell === TOKEN_STATUS.LOCKED}>
+					{cell === TOKEN_STATUS.DISABLED
+						? 'Inactive'
+						: cell === TOKEN_STATUS.LOCKED
+						? 'Locked'
+						: 'Active'}
+				</StatusText>
+			),
+		},
+	]
 
-    const voteColumns = [
-        {
-            text: 'Icon',
-            dataField: 'icon',
-            formatter: (cell: string) => (
-                <img src={cell} alt="token-icon" width={20} />
-            )
-        },
-        {
-            text: 'Token',
-            dataField: 'name',
-        },
-        {
-            text: 'Address',
-            dataField: 'address',
-            formatter: (cell: string, row: tokenType) => (
-                <Tooltip text={cell} placement="top" id={row.address} className="tooltip-sz-max">
-                    <CopyToClipboard text={cell} onCopy={handleCopy}>
-                        <div style={{ width: '100%' }}>{formatAddress(cell)}</div>
-                    </CopyToClipboard>
-                </Tooltip>
-            )
-        },
-        {
-            text: 'Status',
-            dataField: 'status',
-            formatter: (cell: number) => (
-                <StatusText is_disabled={cell === TOKEN_STATUS.DISABLED} is_locked={cell === TOKEN_STATUS.LOCKED}>
-                    {cell === TOKEN_STATUS.DISABLED ? 'Inactive' : cell === TOKEN_STATUS.LOCKED ? 'Locked' : 'Active'}
-                </StatusText>
-            )
-        },
-    ];
+	const voteColumns = [
+		{
+			text: 'Icon',
+			dataField: 'icon',
+			formatter: (cell: string) => <img src={cell} alt='token-icon' width={20} />,
+		},
+		{
+			text: 'Token',
+			dataField: 'name',
+		},
+		{
+			text: 'Address',
+			dataField: 'address',
+			formatter: (cell: string, row: tokenType) => (
+				<Tooltip text={cell} placement='top' id={row.address} className='tooltip-sz-max'>
+					<CopyToClipboard text={cell} onCopy={handleCopy}>
+						<div style={{ width: '100%' }}>{formatAddress(cell)}</div>
+					</CopyToClipboard>
+				</Tooltip>
+			),
+		},
+		{
+			text: 'Status',
+			dataField: 'status',
+			formatter: (cell: number) => (
+				<StatusText
+					is_disabled={cell === TOKEN_STATUS.DISABLED}
+					is_locked={cell === TOKEN_STATUS.LOCKED}>
+					{cell === TOKEN_STATUS.DISABLED
+						? 'Inactive'
+						: cell === TOKEN_STATUS.LOCKED
+						? 'Locked'
+						: 'Active'}
+				</StatusText>
+			),
+		},
+	]
 
-
-    return (
-        <ContentWrapper>
-            {TokenVoting.isLoading || TokenCreating.isLoading ? (
-                <Loading />
-            ) : (
-                <Content>
-                    <Title text='Tokens' userGuideType='tokens' />
-                    <>
-                        <div>
-                            <p>The token you can use to create the campaign:</p>
-                            <div style={{ marginTop: '15px' }}>
-                                <Table
-                                    columns={addColumns}
-                                    data={TokenCreating.tokenList}
-                                    keyField='address'
-                                />
-                            </div>
-                        </div>
-                        <div style={{ marginTop: '2rem' }}>
-                            <p>The token you can use to vote the campaign:</p>
-                            <div style={{ marginTop: '15px' }}>
-                                <Table
-                                    columns={voteColumns}
-                                    data={TokenVoting.tokenList}
-                                    keyField='address'
-                                />
-                            </div>
-                        </div>
-                    </>
-                </Content>
-            )}
-        </ContentWrapper>
-    )
+	return (
+		<ContentWrapper>
+			{TokenVoting.isLoading || TokenCreating.isLoading ? (
+				<Loading />
+			) : (
+				<Content>
+					<Title text='Tokens' userGuideType='tokens' />
+					<>
+						<div>
+							<p>The token you can use to create the campaign:</p>
+							<div style={{ marginTop: '15px' }}>
+								<Table columns={addColumns} data={TokenCreating.tokenList} keyField='address' />
+							</div>
+						</div>
+						<div style={{ marginTop: '2rem' }}>
+							<p>The token you can use to vote the campaign:</p>
+							<div style={{ marginTop: '15px' }}>
+								<Table columns={voteColumns} data={TokenVoting.tokenList} keyField='address' />
+							</div>
+						</div>
+					</>
+				</Content>
+			)}
+		</ContentWrapper>
+	)
 }
 
 export default Tokens

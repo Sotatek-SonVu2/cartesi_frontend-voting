@@ -54,171 +54,172 @@ export const CONNECT_METAMASK_ERROR_CODE = -32002
 export const CONNECT_METAMASK_ERROR_MESSAGE = 'Please connect the DApp with Metamask!'
 export const NETWORK_ERROR_MESSAGE = 'Please check your network and try again!'
 export const NUMBER_ERROR_MESSAGE = 'Please enter the number'
-export const WAITING_RESPONSE_FROM_SERVER_MESSAGE = 'The transaction is currently being processed. Please wait 3 to 5 minutes. Results will be returned as quickly as possible!'
+export const WAITING_RESPONSE_FROM_SERVER_MESSAGE =
+	'The transaction is currently being processed. Please wait 3 to 5 minutes. Results will be returned as quickly as possible!'
 export const NO_RESPONSE_ERROR = 'NO_RESPONSE_ERROR'
 export const WAITING_FOR_CONFIRMATION = 'Waiting for confirmation...'
 export const CARTESI_TOKEN = 'CTSI'
 
 export const NOTI_TYPE: any = {
-    SUCCESS: 'success',
-    DANGER: 'danger',
-    INFO: 'info',
-    DEFAULT: 'default',
-    WARNING: 'warning'
+	SUCCESS: 'success',
+	DANGER: 'danger',
+	INFO: 'info',
+	DEFAULT: 'default',
+	WARNING: 'warning',
 }
 
 export const STATUS = {
-    ACTIVE: 1,
-    DISABLED: 0
+	ACTIVE: 1,
+	DISABLED: 0,
 }
 
 export const TOKEN_STATUS = {
-    ACTIVE: 1,
-    LOCKED: 2,
-    DISABLED: 0
+	ACTIVE: 1,
+	LOCKED: 2,
+	DISABLED: 0,
 }
 
 export const WITHDRAW_RADIO_FILTER_STATUS = {
-    ALL: 'all',
-    CLAIMED: 'claimed',
-    NOT_CLAIM: 'not_claim'
+	ALL: 'all',
+	CLAIMED: 'claimed',
+	NOT_CLAIM: 'not_claim',
 }
 
 export const WITHDRAW_RADIO_FILTER = [
-    {
-        label: 'All',
-        value: WITHDRAW_RADIO_FILTER_STATUS.ALL,
-    },
-    {
-        label: 'Claimed',
-        value: WITHDRAW_RADIO_FILTER_STATUS.CLAIMED,
-    },
-    {
-        label: 'Not claim yet',
-        value: WITHDRAW_RADIO_FILTER_STATUS.NOT_CLAIM,
-    },
+	{
+		label: 'All',
+		value: WITHDRAW_RADIO_FILTER_STATUS.ALL,
+	},
+	{
+		label: 'Claimed',
+		value: WITHDRAW_RADIO_FILTER_STATUS.CLAIMED,
+	},
+	{
+		label: 'Not claim yet',
+		value: WITHDRAW_RADIO_FILTER_STATUS.NOT_CLAIM,
+	},
 ]
 
 export const LIST_STATUS = {
-    ALL: 'ALL',
-    ON_GOING: 'ON_GOING',
-    FINISHED: 'FINISHED',
-    VOTED: 'VOTED'
+	ALL: 'ALL',
+	ON_GOING: 'ON_GOING',
+	FINISHED: 'FINISHED',
+	VOTED: 'VOTED',
 }
 
 export const cadidateOptions = [
-    {
-        label: 'All Campaigns',
-        value: LIST_STATUS.ALL,
-    },
-    {
-        label: 'On-going Campaign',
-        value: LIST_STATUS.ON_GOING,
-    },
-    {
-        label: 'Finished Campaign',
-        value: LIST_STATUS.FINISHED,
-    },
-    {
-        label: 'Voted Campaign',
-        value: LIST_STATUS.VOTED,
-    },
+	{
+		label: 'All Campaigns',
+		value: LIST_STATUS.ALL,
+	},
+	{
+		label: 'On-going Campaign',
+		value: LIST_STATUS.ON_GOING,
+	},
+	{
+		label: 'Finished Campaign',
+		value: LIST_STATUS.FINISHED,
+	},
+	{
+		label: 'Voted Campaign',
+		value: LIST_STATUS.VOTED,
+	},
 ]
 
 export const historyOptions = [
-    {
-        label: 'All',
-        value: 'all',
-    },
-    {
-        label: 'Create campaign',
-        value: CREATE_CAMPAIGN,
-    },
-    {
-        label: 'Edit campaign',
-        value: EDIT_CAMPAIGN,
-    },
-    {
-        label: 'Delete campaign',
-        value: DELETE_CAMPAIGN,
-    },
-    {
-        label: 'Withdraw',
-        value: WITHDRAW,
-    },
-    {
-        label: 'Execute voucher',
-        value: EXECUTE_VOUCHER,
-    },
-    {
-        label: 'Deposit',
-        value: DEPOSIT,
-    },
-    {
-        label: 'Decrese Token',
-        value: DECREASE_TOKEN,
-    },
+	{
+		label: 'All',
+		value: 'all',
+	},
+	{
+		label: 'Create campaign',
+		value: CREATE_CAMPAIGN,
+	},
+	{
+		label: 'Edit campaign',
+		value: EDIT_CAMPAIGN,
+	},
+	{
+		label: 'Delete campaign',
+		value: DELETE_CAMPAIGN,
+	},
+	{
+		label: 'Withdraw',
+		value: WITHDRAW,
+	},
+	{
+		label: 'Execute voucher',
+		value: EXECUTE_VOUCHER,
+	},
+	{
+		label: 'Deposit',
+		value: DEPOSIT,
+	},
+	{
+		label: 'Decrese Token',
+		value: DECREASE_TOKEN,
+	},
 ]
 
 export const action = [
-    {
-        label: 'Delete',
-        value: 'DELETE'
-    },
-    {
-        label: 'Update',
-        value: 'UPDATE'
-    }
+	{
+		label: 'Delete',
+		value: 'DELETE',
+	},
+	{
+		label: 'Update',
+		value: 'UPDATE',
+	},
 ]
 
 export const ITEM_TYPE = {
-    LIST: 'LIST',
-    RESULT: 'RESULT',
-    ANSWER: 'ANSWER'
+	LIST: 'LIST',
+	RESULT: 'RESULT',
+	ANSWER: 'ANSWER',
 }
 
 export const ADMIN_ACTION = {
-    YES: 1,
-    NO: 0
+	YES: 1,
+	NO: 0,
 }
 
 export const ADMIN_ACTION_ARRAY = [
-    {
-        label: 'User',
-        key: 'manage_user',
-    },
-    {
-        label: 'Token',
-        key: 'manage_token',
-    },
-    {
-        label: 'Post',
-        key: 'manage_post',
-    },
-    {
-        label: 'System',
-        key: 'manage_system',
-    },
+	{
+		label: 'User',
+		key: 'manage_user',
+	},
+	{
+		label: 'Token',
+		key: 'manage_token',
+	},
+	{
+		label: 'Post',
+		key: 'manage_post',
+	},
+	{
+		label: 'System',
+		key: 'manage_system',
+	},
 ]
 
 export const TOKEN_STATUS_ARRAY = [
-    {
-        label: 'Active',
-        value: 1
-    },
-    {
-        label: 'Locked',
-        value: 2
-    },
+	{
+		label: 'Active',
+		value: 1,
+	},
+	{
+		label: 'Locked',
+		value: 2,
+	},
 ]
 
 export const TOKEN_ACTION_ARRAY = [
-    {
-        label: 'Vote campaign',
-        key: 'can_vote',
-    },
-    {
-        label: 'Create campaign',
-        key: 'can_create_campaign',
-    },
+	{
+		label: 'Vote campaign',
+		key: 'can_vote',
+	},
+	{
+		label: 'Create campaign',
+		key: 'can_create_campaign',
+	},
 ]

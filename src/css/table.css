@@ -1,16 +1,15 @@
 /* react-table */
 .react-bootstrap-table table {
-    width: 100%;
-    text-align: center;
+	width: 100%;
+	text-align: center;
 }
 
-
 .react-bootstrap-table thead tr th {
-    border-bottom: 1px solid #6c6b6b;
-    padding-bottom: 10px;
+	border-bottom: 1px solid #6c6b6b;
+	padding-bottom: 10px;
 }
 
 .react-bootstrap-table tbody tr td {
-    border-bottom: 1px solid #6c6b6b;
-    padding: 10px 0px;
+	border-bottom: 1px solid #6c6b6b;
+	padding: 10px 0px;
 }
