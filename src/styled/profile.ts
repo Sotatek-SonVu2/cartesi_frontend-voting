@@ -97,6 +97,13 @@ export const JoinButton = styled(SuccessButton)`
 	height: 40px;
 `
 
+export const LeaveButton = styled(DangerButton)`
+	padding: 0;
+	width: 120px;
+	border-radius: 23px;
+	height: 40px;
+`
+
 export const ProfileButton = styled(SuccessButton)`
 	display: block;
 	margin: 0 auto;

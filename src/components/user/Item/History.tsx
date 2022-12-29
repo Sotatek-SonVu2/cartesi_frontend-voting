@@ -8,6 +8,8 @@ import DeleteIcon from 'images/trash-bin.png'
 import WithdrawIcon from 'images/withdraw.png'
 import DecreseTokenIcon from 'images/decreseToken.png'
 import MinusIcon from 'images/minus-button.png'
+import JoinProfileIcon from 'images/join-profile.png'
+import LeaveProfileIcon from 'images/leave-profile.png'
 import { ROUTER_PATH } from 'routes/contants'
 import { HistoryTitle } from 'styled/list'
 import {
@@ -19,6 +21,8 @@ import {
 	DEPOSIT,
 	EDIT_CAMPAIGN,
 	EXECUTE_VOUCHER,
+	JOIN_PROFILE,
+	LEAVE_PROFILE,
 	UPDATE_PROFILE,
 	VOTE,
 	WITHDRAW,
@@ -169,6 +173,26 @@ const dataRender = (data: any) => {
 					<span>
 						You deleted profile {profile.name} at {time}
 					</span>
+				),
+			}
+		case JOIN_PROFILE:
+			return {
+				imageUrl: JoinProfileIcon,
+				title: 'Join profile',
+				times: `${time}`,
+				color: 'rgb(48 156 96 / 65%)',
+				content: (
+					<span>You joined profile {profile.name}</span>
+				),
+			}
+		case LEAVE_PROFILE:
+			return {
+				imageUrl: LeaveProfileIcon,
+				title: 'Leave profile',
+				times: `${time}`,
+				color: 'rgb(206 89 219 / 50%)',
+				content: (
+					<span>You left profile {profile.name}</span>
 				),
 			}
 		default:

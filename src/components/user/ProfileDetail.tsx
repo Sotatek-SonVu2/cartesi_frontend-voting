@@ -15,6 +15,7 @@ import {
 	DeleteButton,
 	EditButton,
 	JoinButton,
+	LeaveButton,
 	ProfileDesc,
 	ProfileInfo,
 	ProfileName,
@@ -37,7 +38,30 @@ const ProfileDetail = () => {
 		isOpen,
 		toggleModal,
 		getCampaignByProfileId,
+		handleJoinProfile,
+		handleLeaveProfile,
 	}: ProfileHandleRes = ProfileHandle()
+
+	const ButtonAction = () => {
+		if (data.managers?.indexOf(addressWallet) !== -1) {
+			return (
+				<div>
+					<EditButton onClick={() => navigate(`${ROUTER_PATH.EDIT_PROFILE}/${profileId}`)}>
+						Edit
+					</EditButton>
+					<DeleteButton onClick={toggleModal}>Delete</DeleteButton>
+				</div>
+			)
+		} else if (data?.has_joined) {
+			return (
+				<LeaveButton onClick={() => handleLeaveProfile(data?.id)}>Leave</LeaveButton>
+			)
+		} else {
+			return (
+				<JoinButton onClick={() => handleJoinProfile(data?.id)}>Join</JoinButton>
+			)
+		}
+	}
 
 	useEffect(() => {
 		getProfileDetail()
@@ -58,16 +82,7 @@ const ProfileDetail = () => {
 								<p>Creator: {data?.creator && formatAddress(data?.creator)}</p>
 							</div>
 						</ProfileInfo>
-						{data.managers?.indexOf(addressWallet) !== -1 ? (
-							<div>
-								<EditButton onClick={() => navigate(`${ROUTER_PATH.EDIT_PROFILE}/${profileId}`)}>
-									Edit
-								</EditButton>
-								<DeleteButton onClick={toggleModal}>Delete</DeleteButton>
-							</div>
-						) : (
-							<JoinButton>Join</JoinButton>
-						)}
+						{ButtonAction()}
 					</HeaderList>
 					<ProfileDesc>
 						<Markdown text={data?.description || ''} />

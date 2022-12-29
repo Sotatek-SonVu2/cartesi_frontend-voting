@@ -20,7 +20,7 @@ const ProfileItem = ({ data, onClick }: PropsType) => {
 			/>
 			<div></div>
 			<h5>{data?.name || '(No data)'}</h5>
-			<ProfileButton onClick={() => onClick()}>Join</ProfileButton>
+			{/* <ProfileButton onClick={() => onClick()}>Join</ProfileButton> */}
 		</ItemContent>
 	)
 }

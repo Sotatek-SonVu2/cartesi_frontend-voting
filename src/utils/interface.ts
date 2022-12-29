@@ -327,6 +327,8 @@ export interface ProfileHandleRes {
 	getCampaignByProfileId: () => void
 	onDeleteProfile: () => void
 	getLists: () => void
+	handleJoinProfile: (profile_id: number) => void
+	handleLeaveProfile: (profile_id: number) => void
 	setPaging: any
 	onSubmit: (data: ProfileType) => void
 	toggleModal: () => void

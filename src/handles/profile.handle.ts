@@ -7,6 +7,8 @@ import {
 	CREATE_PROFILE,
 	DELETE_PROFILE,
 	DETAIL_PROFILE,
+	JOIN_PROFILE,
+	LEAVE_PROFILE,
 	LIST_CAMPAIGN_OF_PROFILE,
 	LIST_PROFILE,
 	UPDATE_PROFILE,
@@ -77,6 +79,7 @@ export default function ProfileHandle(setValue?: UseFormSetValue<FieldValues>): 
 			setData(result)
 			if (typeof setValue === 'function') {
 				const { name, website, managers, social_media, description, thumbnail } = result
+				const parseSocialMedia = social_media && JSON.parse(social_media)
 				const arrManagers = managers.map((item: string) => {
 					return {
 						name: item,
@@ -86,8 +89,8 @@ export default function ProfileHandle(setValue?: UseFormSetValue<FieldValues>): 
 				setValue('website', website)
 				setValue('description', description)
 				setValue('thumbnail', thumbnail)
-				setValue('twitter', social_media?.twitter)
-				setValue('facebook', social_media?.facebook)
+				setValue('twitter', parseSocialMedia?.twitter)
+				setValue('facebook', parseSocialMedia?.facebook)
 				setValue('managers', [...arrManagers])
 			}
 		}
@@ -127,6 +130,27 @@ export default function ProfileHandle(setValue?: UseFormSetValue<FieldValues>): 
 		setIsOpen(!isOpen)
 	}
 
+	const handleProfileSuccess = () => {
+		getProfileDetail()
+		getCampaignByProfileId()
+	}
+
+	const handleJoinProfile = (profile_id: number) => {
+		const data = {
+			profile_id,
+			action: JOIN_PROFILE,
+		}
+		fetchNotices(data, handleProfileSuccess)
+	}
+
+	const handleLeaveProfile = (profile_id: number) => {
+		const data = {
+			profile_id,
+			action: LEAVE_PROFILE,
+		}
+		fetchNotices(data, handleProfileSuccess)
+	}
+
 	const onSubmit = async (dataForm: any) => {
 		const { name, description, website, thumbnail, managers, twitter, facebook } = dataForm
 		const data: ProfileType = {
@@ -136,8 +160,8 @@ export default function ProfileHandle(setValue?: UseFormSetValue<FieldValues>): 
 			website,
 			thumbnail: thumbnail ? thumbnail : Thumbnail,
 			social_media: {
-				twitter,
-				facebook,
+				twitter: twitter || '',
+				facebook: facebook || '',
 			},
 			managers: managers.map((item: ManagerType) => {
 				return item.name
@@ -163,6 +187,8 @@ export default function ProfileHandle(setValue?: UseFormSetValue<FieldValues>): 
 		setPaging,
 		onSubmit,
 		toggleModal,
+		handleJoinProfile,
+		handleLeaveProfile,
 		isOpen,
 		paging,
 		data,

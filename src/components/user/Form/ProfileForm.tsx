@@ -27,7 +27,6 @@ const schema = yup
 	.object({
 		name: yup.string().required('Name is a required field!').max(200),
 		description: yup.string().required('Desciption is a required field!'),
-		// fee: yup.number().min(0).typeError('Fee must be a number!').required('Fee is a required field!'),
 	})
 	.required()
 

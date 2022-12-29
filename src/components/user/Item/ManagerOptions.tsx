@@ -28,7 +28,7 @@ const ManagerOptions = ({ fields, register, errors, onAdd, onRemove }: PropsType
 	return (
 		<>
 			<Wrapper>
-				<Label required>Managers:</Label>
+				<Label>Managers:</Label>
 				{fields.map((_: any, index: number) => (
 					<div key={index}>
 						<Options>
