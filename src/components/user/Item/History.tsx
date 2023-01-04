@@ -181,9 +181,7 @@ const dataRender = (data: any) => {
 				title: 'Join profile',
 				times: `${time}`,
 				color: 'rgb(48 156 96 / 65%)',
-				content: (
-					<span>You joined profile {profile.name}</span>
-				),
+				content: <span>You joined profile {profile.name}</span>,
 			}
 		case LEAVE_PROFILE:
 			return {
@@ -191,9 +189,7 @@ const dataRender = (data: any) => {
 				title: 'Leave profile',
 				times: `${time}`,
 				color: 'rgb(206 89 219 / 50%)',
-				content: (
-					<span>You left profile {profile.name}</span>
-				),
+				content: <span>You left profile {profile.name}</span>,
 			}
 		default:
 			return {

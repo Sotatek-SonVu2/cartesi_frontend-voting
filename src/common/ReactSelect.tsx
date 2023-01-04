@@ -49,6 +49,11 @@ const ReactSelect = ({
 			padding: '5px 10px',
 			backgroundColor: state.isSelected ? colorTheme.primary : optionBackground,
 			color: optionColor,
+
+			'&:hover': {
+				background: '#a5d6ff',
+				fontWeight: '500',
+			},
 		}),
 		singleValue: (styles: any) => ({ ...styles, color: valueColor }),
 	}
@@ -64,6 +69,8 @@ const ReactSelect = ({
 				onChange={onChange}
 				className='basic-single'
 				value={value}
+				menuPlacement='auto'
+				menuPosition='fixed'
 				{...props}
 			/>
 		</div>

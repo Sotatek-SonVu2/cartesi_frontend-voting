@@ -1,8 +1,9 @@
 import ConfimModal from 'common/ConfimModal'
 import Loading from 'common/Loading'
 import Markdown from 'common/Markdown'
+import NoData from 'common/NoData'
+import Pagination from 'common/Pagination'
 import ProfileHandle from 'handles/profile.handle'
-import { disconnect } from 'process'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -22,7 +23,7 @@ import {
 } from 'styled/profile'
 import { formatAddress } from 'utils/common'
 import { ProfileCampaignDataType, ProfileHandleRes } from 'utils/interface'
-import ProfileDetailItem from './Item/ProfileDetail'
+import CampaignItem from './Item/Campaign'
 
 const ProfileDetail = () => {
 	const navigate = useNavigate()
@@ -32,6 +33,7 @@ const ProfileDetail = () => {
 		data,
 		campaigns,
 		isLoading,
+		isRequestLoading,
 		getProfileDetail,
 		callMessage,
 		onDeleteProfile,
@@ -40,7 +42,14 @@ const ProfileDetail = () => {
 		getCampaignByProfileId,
 		handleJoinProfile,
 		handleLeaveProfile,
+		paging,
+		setPaging,
 	}: ProfileHandleRes = ProfileHandle()
+
+	const handleDelete = () => {
+		onDeleteProfile()
+		toggleModal()
+	}
 
 	const ButtonAction = () => {
 		if (data.managers?.indexOf(addressWallet) !== -1) {
@@ -53,20 +62,16 @@ const ProfileDetail = () => {
 				</div>
 			)
 		} else if (data?.has_joined) {
-			return (
-				<LeaveButton onClick={() => handleLeaveProfile(data?.id)}>Leave</LeaveButton>
-			)
+			return <LeaveButton onClick={() => handleLeaveProfile(data?.id)}>Leave</LeaveButton>
 		} else {
-			return (
-				<JoinButton onClick={() => handleJoinProfile(data?.id)}>Join</JoinButton>
-			)
+			return <JoinButton onClick={() => handleJoinProfile(data?.id)}>Join</JoinButton>
 		}
 	}
 
 	useEffect(() => {
 		getProfileDetail()
 		getCampaignByProfileId()
-	}, [])
+	}, [paging.currentPage])
 
 	return (
 		<ContentWrapper>
@@ -74,6 +79,9 @@ const ProfileDetail = () => {
 				<Loading />
 			) : (
 				<Content>
+					{isRequestLoading && (
+						<Loading isScreenLoading={isRequestLoading} messages={callMessage} />
+					)}
 					<HeaderList>
 						<ProfileInfo>
 							<img src={data?.thumbnail} alt='thumbnail' width={75} height={75} />
@@ -87,20 +95,31 @@ const ProfileDetail = () => {
 					<ProfileDesc>
 						<Markdown text={data?.description || ''} />
 					</ProfileDesc>
-					{campaigns?.length > 0 &&
+					{campaigns?.length > 0 ? (
 						campaigns.map((item: ProfileCampaignDataType) => (
 							<div key={item.id}>
-								<ProfileDetailItem data={item} />
+								<CampaignItem data={item} />
 							</div>
-						))}
+						))
+					) : (
+						<NoData />
+					)}
+					<Pagination
+						currentPage={paging.currentPage}
+						totalCount={paging.totalPage}
+						pageSize={paging.pageSize}
+						onPageChange={(page: number) => {
+							setPaging({ ...paging, currentPage: page })
+						}}
+					/>
 				</Content>
 			)}
 			{isOpen && (
 				<ConfimModal
 					isVisible={isOpen}
 					toggleModal={toggleModal}
-					onClick={onDeleteProfile}
-					isLoading={isLoading}
+					onClick={handleDelete}
+					isLoading={isRequestLoading}
 					callMessage={callMessage}
 					buttonText='Delete'
 					title='Are you sure to delete this profile?'

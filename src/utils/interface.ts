@@ -126,14 +126,14 @@ export interface ProfileCampaignDataType {
 	total_vote: number
 	votes_of_candidate: number | null
 	winning_candidate_name: string
-	profile_creator: string
-	profile_description: string
-	profile_id: number
-	profile_name: string
-	profile_social_media: string | null
-	profile_thumbnail: string | null
-	profile_type: string
-	profile_website: string | null
+	profile_creator?: string
+	profile_description?: string
+	profile_id?: number
+	profile_name?: string
+	profile_social_media?: string | null
+	profile_thumbnail?: string | null
+	profile_type?: string
+	profile_website?: string | null
 }
 
 export interface ListCampaignType {

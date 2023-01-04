@@ -2,11 +2,6 @@ import styled from 'styled-components'
 import { DangerButton, PrimaryButton, SuccessButton } from './common'
 import { BoxItem, ContentBox } from './list'
 
-interface DetailItemStatusType {
-	isStartTime: boolean
-	isEndTime: boolean
-}
-
 export const ProfileInfo = styled.div`
 	display: flex;
 	align-items: center;
@@ -24,6 +19,12 @@ export const ProfileInfo = styled.div`
 `
 
 export const ItemContent = styled(ContentBox)`
+	& h5 {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
 	& .image {
 		border-radius: 9999px;
 		object-fit: cover;
@@ -44,43 +45,11 @@ export const ProfileDesc = styled.div`
 `
 
 export const ProfileBox = styled(BoxItem)`
-	min-width: 188px;
+	width: 178px;
+	padding: 0 10px;
+	min-width: 178px;
 	margin-right: 10px;
 	margin-left: 10px;
-`
-
-export const DetailItemHeader = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-`
-
-export const DetailItemContent = styled.div`
-	border-radius: 10px;
-	border: 1px solid #242527;
-	padding: 24px;
-	cursor: pointer;
-	background: rgb(25 6 6 / 50%);
-	margin-bottom: 1rem;
-
-	&:hover {
-		border: 1px solid #e5e7eb;
-	}
-`
-
-export const DetailItemStatus = styled.div<DetailItemStatusType>`
-	background: linear-gradient(to right, #288bdb, #38b2ff, #69ceff);
-	font-size: 13px;
-	height: 26px;
-	vertical-align: middle;
-	padding: 0 12px;
-	border-radius: 16px;
-	line-height: 26px;
-
-	${(props) =>
-		props.isStartTime && `background: linear-gradient(to right, #31AF25, #4CCC33, #80E062);`}
-	${(props) =>
-		props.isEndTime && `background: linear-gradient(to right, #DB2B2A, #FF4B3A, #FF846B);`}
 `
 
 export const AddButton = styled(SuccessButton)`

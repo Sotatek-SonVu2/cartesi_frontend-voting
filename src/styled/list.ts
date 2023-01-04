@@ -53,15 +53,6 @@ export const VotingName = styled.div`
 	border-right: 1px solid #ccc;
 `
 
-export const CampaignName = styled.div`
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-	text-align: justify;
-	padding: 15px 10px;
-	position: relative;
-`
-
 export const HistoryTitle = styled.div`
 	display: flex;
 	align-items: center;
@@ -75,40 +66,6 @@ export const HistoryTitle = styled.div`
 	& p {
 		margin: 0px;
 	}
-`
-
-export const ActionList = styled.div`
-	display: flex;
-	justify-content: space-between;
-	font-size: 13px;
-	border-top: 1px solid ${colorTheme.gray};
-	align-items: center;
-	background: #f3f4f6;
-	border-radius: 0px 0px 7px 7px;
-`
-
-export const ActionItem = styled.div`
-	display: flex;
-	justify-content: center;
-	padding: 5px;
-	text-align: center;
-	width: 100%;
-
-	& img {
-		margin-right: 5px;
-	}
-`
-
-export const WinnerCandidate = styled.div`
-	display: flex;
-	margin-left: 7px;
-	width: 180px;
-`
-
-export const WinnerName = styled.div`
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
 `
 
 export const ItemIcon = styled.div`

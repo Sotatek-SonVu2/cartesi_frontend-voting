@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import { Content } from 'styled/common'
 import { HeaderList } from 'styled/list'
 import { ContentWrapper, FlexLayout } from 'styled/main'
-import { CampaignDataType, CampaignHandleRes } from 'utils/interface'
+import { CampaignHandleRes, ProfileCampaignDataType } from 'utils/interface'
 import CampaignItem from './Item/Campaign'
 
 const CampaignsList = () => {
@@ -52,7 +52,7 @@ const CampaignsList = () => {
 					</HeaderList>
 
 					{data?.length > 0 ? (
-						data?.map((item: CampaignDataType) => (
+						data?.map((item: ProfileCampaignDataType) => (
 							<div key={item.id}>
 								<CampaignItem data={item} />
 							</div>

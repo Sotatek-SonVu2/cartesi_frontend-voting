@@ -161,6 +161,26 @@ export const historyOptions = [
 		label: 'Decrese Token',
 		value: DECREASE_TOKEN,
 	},
+	{
+		label: 'Create Profile',
+		value: CREATE_PROFILE,
+	},
+	{
+		label: 'Update Profile',
+		value: UPDATE_PROFILE,
+	},
+	{
+		label: 'Delete Profile',
+		value: DELETE_PROFILE,
+	},
+	{
+		label: 'Join Profile',
+		value: JOIN_PROFILE,
+	},
+	{
+		label: 'Leave Profile',
+		value: LEAVE_PROFILE,
+	},
 ]
 
 export const action = [

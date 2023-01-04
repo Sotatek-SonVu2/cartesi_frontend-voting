@@ -1,82 +1,85 @@
+import Markdown from 'common/Markdown'
 import Tooltip from 'common/Tooltip'
-import BadgeIcon from 'images/badge.png'
-import StarIcon from 'images/favourites.png'
-import DescriptionIcon from 'images/script.png'
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER_PATH } from 'routes/contants'
-import { BoxContent, DateTimeBox } from 'styled/common'
-import { Wrapper } from 'styled/form'
-import { ActionItem, ActionList, CampaignName, WinnerCandidate, WinnerName } from 'styled/list'
-import { onConvertDatetime } from 'utils/common'
-import DescriptionModal from '../Modal/DescriptionModal'
+import {
+	UserInfo,
+	DateTime,
+	Wrapper,
+	Header,
+	Status,
+	ActionItem,
+	ActionList,
+	WinnerCandidate,
+	WinnerName,
+	Content,
+} from 'styled/campaigns'
+import { formatAddress, onConvertDatetime } from 'utils/common'
+import { ProfileCampaignDataType } from 'utils/interface'
+import BadgeIcon from 'images/badge.png'
+import StarIcon from 'images/favourites.png'
 
 interface PropsType {
-	data: {
-		name: string
-		id: number
-		total_vote: number
-		winning_candidate_name: string | null
-		start_time: string
-		end_time: string
-	}
+	data: ProfileCampaignDataType
 }
 
 const CampaignItem = ({ data }: PropsType) => {
 	const navigate = useNavigate()
-	const [isVisible, setIsVisible] = useState<boolean>(false)
-	const { id, name, total_vote, winning_candidate_name, end_time, start_time } = data
-	const { localStartTime, localEndTime, isStartTime, isEndTime } = onConvertDatetime(
+	const {
 		start_time,
-		end_time
-	)
-
-	const toggleModal = () => {
-		setIsVisible(!isVisible)
-	}
-
+		end_time,
+		id,
+		creator,
+		description,
+		name,
+		winning_candidate_name,
+		total_vote,
+	} = data
+	const { isStartTime, isEndTime } = onConvertDatetime(start_time, end_time)
 	return (
-		<Wrapper key={id} className='campaign-item-step'>
-			<DateTimeBox isStartTime={isStartTime} isEndTime={isEndTime} className='datetime-step'>
-				{isStartTime && !isEndTime ? 'Starting ' : isEndTime ? 'Finished ' : 'Not start yet '}(
-				{localStartTime} - {localEndTime})
-			</DateTimeBox>
-			<BoxContent>
-				<CampaignName onClick={() => navigate(`${ROUTER_PATH.VOTING}/${id}`)}>{name}</CampaignName>
-				<ActionList>
-					<ActionItem className='highest-vote-step'>
-						<Tooltip
-							text='The candidate with the highest number of votes.'
-							id='highest-vote'
-							className='tooltip-sz-sm'>
-							<WinnerCandidate>
-								<img src={StarIcon} alt='star icon' width={17} />
-								<WinnerName>{winning_candidate_name || '(No data)'}</WinnerName>
-							</WinnerCandidate>
-						</Tooltip>
-					</ActionItem>
+		<Wrapper key={id} onClick={() => navigate(`${ROUTER_PATH.VOTING}/${id}`)}>
+			<Content>
+				<Header>
+					<UserInfo>
+						<img
+							src='https://cdn.stamp.fyi/avatar/eth:0xBB7B59Afa3A0E5Be143b8fE9C641F00c1ecB9d69?s=36'
+							alt=''
+						/>
+						<span>{formatAddress(creator)}</span>
+					</UserInfo>
+					<Status isStartTime={isStartTime} isEndTime={isEndTime}>
+						{isStartTime && !isEndTime ? 'Starting ' : isEndTime ? 'Finished ' : 'Not start yet '}
+					</Status>
+				</Header>
+				<h3>{name}</h3>
+				<Markdown text={description || ''} isBreakWords={true} />
+				<DateTime>
+					{start_time} - {end_time}
+				</DateTime>
+			</Content>
 
-					<ActionItem className='vote-number-step'>
-						<Tooltip text='Total votes of the campaign.' id='vote-number' className='tooltip-sz-sm'>
-							<>
-								<img src={BadgeIcon} alt='badge icon' width={17} />
-								{total_vote || 0} vote
-							</>
-						</Tooltip>
-					</ActionItem>
-					<ActionItem onClick={toggleModal} className='description-step'>
-						<Tooltip text='Description of the campaign.' id='description' className='tooltip-sz-sm'>
-							<>
-								<img src={DescriptionIcon} alt='description icon' width={17} />
-								<span>Description</span>
-							</>
-						</Tooltip>
-					</ActionItem>
-				</ActionList>
-			</BoxContent>
-			{isVisible && (
-				<DescriptionModal isVisible={isVisible} toggleModal={toggleModal} data={data} />
-			)}
+			<ActionList>
+				<ActionItem className='highest-vote-step'>
+					<Tooltip
+						text='The candidate with the highest number of votes.'
+						id='highest-vote'
+						className='tooltip-sz-sm'>
+						<WinnerCandidate>
+							<img src={StarIcon} alt='star icon' width={17} />
+							<WinnerName>{winning_candidate_name || '(No data)'}</WinnerName>
+						</WinnerCandidate>
+					</Tooltip>
+				</ActionItem>
+
+				<ActionItem className='vote-number-step'>
+					<Tooltip text='Total votes of the campaign.' id='vote-number' className='tooltip-sz-sm'>
+						<>
+							<img src={BadgeIcon} alt='badge icon' width={17} />
+							{total_vote || 0} vote
+						</>
+					</Tooltip>
+				</ActionItem>
+			</ActionList>
 		</Wrapper>
 	)
 }

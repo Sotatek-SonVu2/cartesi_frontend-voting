@@ -4,13 +4,14 @@ import { NoDataWrapper } from 'styled/common'
 interface PropsType {
 	style?: any
 	iconStyle?: any
+	text?: string
 }
 
-const NoData = ({ style, iconStyle }: PropsType) => {
+const NoData = ({ style, iconStyle, text }: PropsType) => {
 	return (
 		<NoDataWrapper style={{ ...style }}>
 			<img src={EmptyIcon} alt='empty icon' style={{ ...iconStyle }} />
-			<p>No Data</p>
+			<p>{text || 'No Data'}</p>
 		</NoDataWrapper>
 	)
 }
