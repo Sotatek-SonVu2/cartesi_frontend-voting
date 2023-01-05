@@ -40,9 +40,6 @@ const getMessage = (item: any) => {
 	const { action, payload } = item
 	const parse = JSON.parse(payload)
 	const { campaign, type, error, candidate, amount, reason, token, profile, time } = parse
-	console.log('profile', profile)
-	console.log('action', action)
-	console.log('type', type)
 	const tokenIcon = token?.icon || ''
 	const tokenName = token?.name || ''
 	const successMessage: any = {

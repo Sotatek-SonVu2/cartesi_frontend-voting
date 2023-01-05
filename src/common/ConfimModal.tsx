@@ -11,7 +11,7 @@ type Props = {
 	toggleModal: any
 	onClick: () => void
 	callMessage?: string
-	isLoading: boolean
+	isLoading?: boolean
 }
 
 const ConfimModal = ({

@@ -2,20 +2,18 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import MDEditor from '@uiw/react-md-editor'
 import Label from 'common/Label'
 import Loading from 'common/Loading'
-import ReactSelect, { OptionsType } from 'common/ReactSelect'
 import Title from 'common/Title'
 import TokensList from 'common/TokensList'
 import CampaignHandle from 'handles/campaign.handle'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import DatePicker from 'react-datepicker'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { Content, DefaultButton, FlexLayoutBtn, SuccessButton } from 'styled/common'
 import { ErrorText, Form, FormItem, Input } from 'styled/form'
-import { Loader } from 'styled/loading'
-import { ContentWrapper } from 'styled/main'
-import { CampaignHandleRes, OptionType, ProfileType } from 'utils/interface'
+import { Container, ContentWrapper } from 'styled/main'
+import { CampaignHandleRes, OptionType } from 'utils/interface'
 import * as yup from 'yup'
 import CandidateOptions from '../Item/CandidateOptions'
 
@@ -26,11 +24,11 @@ const SubmitButton = styled(SuccessButton)`
 	align-items: center;
 `
 
-const NoTokens = styled.p`
-	background: #dc3545;
-	padding: 5px;
-	border-radius: 5px;
-	text-align: center;
+const EmptyToken = styled(ErrorText)`
+	background: #d93025;
+	color: #fff;
+	padding: 10px;
+	margin: 10px 0 20px;
 `
 
 const OptionDefault: OptionType[] = [
@@ -95,68 +93,35 @@ const CampaignForm = () => {
 		tokenToVote,
 		token_to_vote,
 		dateTime,
-		isRequestLoading,
 		isLoading,
-		callMessage,
-		data: profileLists,
 	}: CampaignHandleRes = CampaignHandle(setValue)
 
 	const { startDate, endDate, formErrors } = dateTime
-	const profileOptions =
-		profileLists?.length > 0 &&
-		profileLists.map((item: ProfileType) => {
-			return {
-				label: item.name,
-				value: item.id,
-			}
-		})
 
 	useEffect(() => {
-		getDataForm()
-		getProfileByUser()
+		if (campaignId) {
+			getDataForm()
+		}
 	}, [campaignId, token_to_vote.isLoading, token_to_create.isLoading])
 
+	const NoToken = () => {
+		return <EmptyToken>You don't have any tokens in the system!</EmptyToken>
+	}
+
 	return (
-		<ContentWrapper>
-			<Content>
-				{isRequestLoading && <Loading isScreenLoading={isRequestLoading} messages={callMessage} />}
-				{isLoading && <Loading isScreenLoading={isLoading} />}
-				<Title
-					text={!campaignId ? 'Create new campaign' : 'Edit campaign'}
-					userGuideType={!campaignId ? 'create' : 'edit'}
-				/>
-				{token_to_create.tokenList.length > 0 && token_to_vote.tokenList.length > 0 ? (
+		<Container>
+			<ContentWrapper>
+				<Content>
+					{isLoading && <Loading isScreenLoading={isLoading} />}
+					<Title
+						text={!campaignId ? 'Create new campaign' : 'Edit campaign'}
+						userGuideType={!campaignId ? 'create' : 'edit'}
+					/>
 					<Form onSubmit={handleSubmit(onSubmit)}>
 						<FormItem>
 							<Label required>Name:</Label>
 							<Input type='text' {...register('name')} placeholder="Campaign's name.." />
 							<ErrorText>{errors?.name?.message}</ErrorText>
-						</FormItem>
-						<FormItem>
-							<Label>Profile:</Label>
-							<Controller
-								control={control}
-								name='profile_id'
-								render={({ field: { onChange, value } }) => {
-									return (
-										<ReactSelect
-											onChange={onChange}
-											options={profileOptions.length > 0 ? profileOptions : []}
-											value={value}
-											width='100%'
-											controlBackground='#fff'
-											valueColor='#000'
-											controlColor='#000'
-											styleWrapper={{
-												marginTop: '10px',
-											}}
-											props={{
-												isClearable: true,
-											}}
-										/>
-									)
-								}}
-							/>
 						</FormItem>
 						<FormItem>
 							<Label required>Start time:</Label>
@@ -215,16 +180,20 @@ const CampaignForm = () => {
 										lineHeight: 'unset',
 									}}
 								/>
-								<TokensList
-									onChooseCoin={(value: string) => setTokenToCreate(value)}
-									tokenType={tokenToCreate}
-									isLoading={token_to_create.isLoading}
-									tokenList={token_to_create.tokenList}
-									style={{
-										justifyContent: 'left',
-										marginTop: '10px',
-									}}
-								/>
+								{token_to_create.tokenList?.length > 0 ? (
+									<TokensList
+										onChooseCoin={(value: string) => setTokenToCreate(value)}
+										tokenType={tokenToCreate || token_to_create?.tokenList[0]?.name}
+										isLoading={token_to_create.isLoading}
+										tokenList={token_to_create.tokenList}
+										style={{
+											justifyContent: 'left',
+											marginTop: '10px',
+										}}
+									/>
+								) : (
+									NoToken()
+								)}
 							</FormItem>
 						)}
 						<FormItem>
@@ -239,19 +208,25 @@ const CampaignForm = () => {
 									lineHeight: 'unset',
 								}}
 							/>
-							<TokensList
-								onChooseCoin={(value: string) => setTokenToVote(value)}
-								tokenType={tokenToVote}
-								isLoading={token_to_vote.isLoading}
-								tokenList={token_to_vote.tokenList}
-								style={{
-									justifyContent: 'left',
-									marginTop: '10px',
-									marginBottom: '0px',
-								}}
-							/>
-							<Input type='text' {...register('fee')} placeholder='Voting fee..' />
-							<ErrorText>{errors?.fee?.message}</ErrorText>
+							{token_to_vote.tokenList.length > 0 ? (
+								<>
+									<TokensList
+										onChooseCoin={(value: string) => setTokenToVote(value)}
+										tokenType={tokenToVote || token_to_vote?.tokenList[0]?.name}
+										isLoading={token_to_vote.isLoading}
+										tokenList={token_to_vote.tokenList}
+										style={{
+											justifyContent: 'left',
+											marginTop: '10px',
+											marginBottom: '0px',
+										}}
+									/>
+									<Input type='text' {...register('fee')} placeholder='Voting fee..' />
+									<ErrorText>{errors?.fee?.message}</ErrorText>
+								</>
+							) : (
+								NoToken()
+							)}
 						</FormItem>
 						<FormItem>
 							<CandidateOptions
@@ -268,20 +243,18 @@ const CampaignForm = () => {
 							<DefaultButton type='button' onClick={() => navigate(-1)}>
 								Back
 							</DefaultButton>
-							<SubmitButton type='submit' disabled={isRequestLoading}>
-								{isRequestLoading && <Loader />}
+							<SubmitButton
+								type='submit'
+								disabled={
+									token_to_vote.tokenList.length === 0 || token_to_create.tokenList.length === 0
+								}>
 								{!campaignId ? 'Create' : 'Save'}
 							</SubmitButton>
 						</FlexLayoutBtn>
 					</Form>
-				) : (
-					<NoTokens>
-						You can't create campaign right row! <br />
-						You can check out the Tokens page.
-					</NoTokens>
-				)}
-			</Content>
-		</ContentWrapper>
+				</Content>
+			</ContentWrapper>
+		</Container>
 	)
 }
 

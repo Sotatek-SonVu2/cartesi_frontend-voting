@@ -32,7 +32,7 @@ export default function ProfileHandle(setValue?: UseFormSetValue<FieldValues>): 
 		pageSize: 10,
 		totalPage: 1,
 	})
-	const { isLoading, fetchApi, fetchNotices, callMessage, isRequestLoading } = useRequest()
+	const { isLoading, fetchApi, fetchNotices } = useRequest()
 
 	const getLists = async () => {
 		const params = {
@@ -106,7 +106,7 @@ export default function ProfileHandle(setValue?: UseFormSetValue<FieldValues>): 
 	}
 
 	const handleDeleteSuccess = () => {
-		navigate(`${ROUTER_PATH.PROFILE}`)
+		navigate(ROUTER_PATH.PROFILE)
 	}
 
 	const onCreateProfile = async (data: ProfileType) => {
@@ -194,7 +194,5 @@ export default function ProfileHandle(setValue?: UseFormSetValue<FieldValues>): 
 		data,
 		campaigns,
 		isLoading,
-		isRequestLoading,
-		callMessage,
 	}
 }

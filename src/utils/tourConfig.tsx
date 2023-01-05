@@ -50,10 +50,10 @@ const campaignSteps = [
 		selector: '.vote-number-step',
 		content: 'Total votes of this campaign.',
 	},
-	{
-		selector: '.description-step',
-		content: 'Press this button to view the description of the campaign.',
-	},
+	// {
+	// 	selector: '.description-step',
+	// 	content: 'Press this button to view the description of the campaign.',
+	// },
 ]
 
 export const tourConfig = () => {

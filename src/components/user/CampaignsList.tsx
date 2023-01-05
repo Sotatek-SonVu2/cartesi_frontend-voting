@@ -6,7 +6,7 @@ import CampaignHandle from 'handles/campaign.handle'
 import { useEffect } from 'react'
 import { Content } from 'styled/common'
 import { HeaderList } from 'styled/list'
-import { ContentWrapper, FlexLayout } from 'styled/main'
+import { Container, ContentWrapper, FlexLayout } from 'styled/main'
 import { CampaignHandleRes, ProfileCampaignDataType } from 'utils/interface'
 import CampaignItem from './Item/Campaign'
 
@@ -31,7 +31,7 @@ const CampaignsList = () => {
 	}, [paging.currentPage, campaignType, isMyCampaign])
 
 	return (
-		<ContentWrapper>
+		<>
 			{isLoading ? (
 				<Loading />
 			) : (
@@ -70,7 +70,7 @@ const CampaignsList = () => {
 					/>
 				</Content>
 			)}
-		</ContentWrapper>
+		</>
 	)
 }
 

@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
 	transition-delay: 0.1s;
 
 	&:hover {
-		border: 1px solid #e5e7eb;
+		border: 1.5px solid #e5e7eb;
 	}
 `
 

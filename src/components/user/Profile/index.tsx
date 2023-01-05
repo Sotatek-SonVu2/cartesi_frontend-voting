@@ -5,13 +5,13 @@ import Title from 'common/Title'
 import ProfileHandle from 'handles/profile.handle'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ROUTER_PATH } from 'routes/contants'
+import { PROSOSAL, ROUTER_PATH } from 'routes/contants'
 import { Content } from 'styled/common'
 import { HeaderList } from 'styled/list'
-import { ContentWrapper, FlexLayoutSwap } from 'styled/main'
+import { Container, ContentWrapper, FlexLayoutSwap } from 'styled/main'
 import { AddButton, ProfileBox } from 'styled/profile'
 import { ProfileHandleRes, ProfileType } from 'utils/interface'
-import ProfileItem from './Item/Profile'
+import ProfileItem from '../Item/Profile'
 
 const Profile = () => {
 	const navigate = useNavigate()
@@ -22,7 +22,7 @@ const Profile = () => {
 	}, [])
 
 	return (
-		<ContentWrapper>
+		<>
 			{isLoading ? (
 				<Loading />
 			) : (
@@ -37,7 +37,7 @@ const Profile = () => {
 							data.map((item: ProfileType) => (
 								<ProfileBox
 									key={item.id}
-									onClick={() => navigate(`${ROUTER_PATH.PROFILE}/${item.id}`)}>
+									onClick={() => navigate(`${ROUTER_PATH.PROFILE}/${item.id}${PROSOSAL}`)}>
 									<ProfileItem data={item} />
 								</ProfileBox>
 							))
@@ -55,7 +55,7 @@ const Profile = () => {
 					/>
 				</Content>
 			)}
-		</ContentWrapper>
+		</>
 	)
 }
 

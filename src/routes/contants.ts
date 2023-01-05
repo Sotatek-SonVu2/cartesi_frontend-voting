@@ -4,7 +4,8 @@ export const ROUTER_PATH = {
 	LOGIN: '/login',
 	VOTING: '/voting',
 	RESULT: '/result',
-	LIST_CAMPAIGN: '/list-campaign',
+	FOLLOWING: '/your-following',
+	LIST_CAMPAIGN: '/explore',
 	CREATE_CAMPAIGN: '/create-campaign',
 	EDIT_CAMPAIGN: '/edit-campaign',
 	WITHDRAW: '/withdraw',
@@ -14,3 +15,6 @@ export const ROUTER_PATH = {
 	CREATE_PROFILE: '/create-profile',
 	EDIT_PROFILE: '/edit-profile',
 }
+
+export const PROSOSAL = '/prososal'
+export const ABOUT = '/about'

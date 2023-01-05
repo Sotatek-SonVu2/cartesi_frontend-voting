@@ -39,7 +39,7 @@ export const InputGroup = styled.div`
 	flex-wrap: wrap;
 
 	& input {
-		width: 305px;
+		width: 370px;
 	}
 `
 

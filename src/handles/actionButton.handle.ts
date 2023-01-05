@@ -1,7 +1,7 @@
 import { OptionsType } from 'common/ReactSelect'
 import useRequest from 'hook/useRequest'
 import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { ROUTER_PATH } from 'routes/contants'
 import { DELETE_CAMPAIGN } from 'utils/contants'
 import { ActionButtonHandleRes } from 'utils/interface'
@@ -10,9 +10,10 @@ export default function ActionButtonHandle(onChangeType: any): ActionButtonHandl
 	const [isOpen, setIsOpen] = useState<boolean>(false)
 	const navigate = useNavigate()
 	const location = useLocation()
+	const { campaignId, profileId } = useParams()
 	const pathname = `/${location.pathname.split('/')[1]}`
-	const paramId = location.pathname.split('/')[2]
-	const { isRequestLoading, fetchNotices, callMessage } = useRequest()
+
+	const { fetchNotices } = useRequest()
 
 	const onChangeSelect = (opt: OptionsType) => {
 		onChangeType(opt.value)
@@ -34,8 +35,9 @@ export default function ActionButtonHandle(onChangeType: any): ActionButtonHandl
 	const onDelete = async () => {
 		const params = {
 			action: DELETE_CAMPAIGN,
-			id: paramId && parseInt(paramId),
+			id: campaignId && parseInt(campaignId),
 		}
+		toggleModal()
 		fetchNotices(params, handleDeleteSuccess, handleDeleteError)
 	}
 
@@ -44,9 +46,8 @@ export default function ActionButtonHandle(onChangeType: any): ActionButtonHandl
 		toggleModal,
 		onChangeSelect,
 		pathname,
-		paramId,
+		campaignId,
+		profileId,
 		isOpen,
-		isRequestLoading,
-		callMessage,
 	}
 }

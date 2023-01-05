@@ -176,6 +176,8 @@ export interface ProfileType {
 	managers: string[]
 	creator?: string
 	type?: string
+	members?: number
+	has_joined?: boolean
 }
 
 export interface ResultDataType {
@@ -270,10 +272,9 @@ export interface ActionButtonHandleRes {
 	toggleModal: () => void
 	onChangeSelect: (opt: OptionsType) => void
 	pathname: string
-	paramId: string
+	campaignId: string | undefined
+	profileId: string | undefined
 	isOpen: boolean
-	isRequestLoading: boolean
-	callMessage: string
 }
 
 export interface VoterHandleRes {
@@ -306,7 +307,6 @@ export interface CampaignHandleRes {
 	data: any
 	isMyCampaign: boolean
 	isLoading: boolean
-	isRequestLoading: boolean
 	paging: PagingType
 	dateTime: {
 		startDate: any
@@ -317,7 +317,6 @@ export interface CampaignHandleRes {
 		}
 	}
 	setPaging: any
-	callMessage: string
 	campaignType: string
 	success: boolean
 }
@@ -337,8 +336,6 @@ export interface ProfileHandleRes {
 	data: any
 	campaigns: any
 	isLoading: boolean
-	isRequestLoading: boolean
-	callMessage: string
 }
 
 export interface VoteHandleRes {
@@ -346,14 +343,20 @@ export interface VoteHandleRes {
 	handleVoting: () => void
 	onChooseCandidate: any
 	setComment: any
-	isRequestLoading: boolean
 	comment: string
 	isCloseVoting: boolean
 	candidateId: number
 	data: any
 	isLoading: boolean
-	callMessage: string
 	success: boolean
+}
+
+export interface YourFollowingHandleRes {
+	data: ProfileCampaignDataType[]
+	isLoading: boolean
+	paging: PagingType
+	setPaging: any
+	getLists: () => void
 }
 
 export interface DepositInfoType {
@@ -374,7 +377,7 @@ export interface tokenListType {
 }
 
 export interface tabItemType {
-	key: number
+	key: number | string
 	label: string
 	content: JSX.Element
 }

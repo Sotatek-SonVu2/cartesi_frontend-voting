@@ -3,8 +3,9 @@ import { handleResponse } from 'helper/handleResponse'
 import { getInspect } from 'helper/inspect'
 import { sendInput } from 'helper/sendInput'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from 'store'
+import { useDispatch, useSelector } from 'react-redux'
+import { setLoading } from 'reducers/loadingSlice'
+import { AppDispatch, RootState } from 'store'
 import { convertPayload } from 'utils/common'
 import {
 	ERROR_MESSAGE,
@@ -16,9 +17,8 @@ import {
 import { MetadataType, resInput } from 'utils/interface'
 
 const useRequest = () => {
+	const dispatch = useDispatch<AppDispatch>()
 	const [isLoading, setIsLoading] = useState<boolean>(false)
-	const [callMessage, setCallMessage] = useState<string>('')
-	const [isRequestLoading, setIsRequestLoading] = useState<boolean>(false)
 	const [candidateId, setCandidateId] = useState<number>(0)
 	const [success, setSuccess] = useState<boolean>(false)
 	const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
@@ -44,23 +44,41 @@ const useRequest = () => {
 
 	const fetchNotices = async (data: any, handleSuccess?: Function, handleError?: Function) => {
 		try {
-			setIsRequestLoading(true)
-			setCallMessage(WAITING_FOR_CONFIRMATION)
+			dispatch(
+				setLoading({
+					isLoading: true,
+					callMessage: WAITING_FOR_CONFIRMATION,
+				})
+			)
 			const { epoch_index, input_index }: resInput = await sendInput(data)
 			handleResponse(epoch_index, input_index, (payload: any) => {
 				if (!payload || (payload.message !== NO_RESPONSE_ERROR && !payload.error)) {
 					const message = payload ? payload.message : WAITING_RESPONSE_FROM_SERVER_MESSAGE
 					createNotifications(NOTI_TYPE.SUCCESS, message)
-					setCallMessage('')
-					setIsRequestLoading(false)
+					dispatch(
+						setLoading({
+							isLoading: false,
+							callMessage: '',
+						})
+					)
 					if (typeof handleSuccess === 'function') {
 						return handleSuccess(payload)
 					}
 				} else if (payload.message === NO_RESPONSE_ERROR) {
-					setCallMessage(`Waiting: ${payload.times}s.`)
+					dispatch(
+						setLoading({
+							isLoading: true,
+							callMessage: `Waiting: ${payload.times}s.`,
+						})
+					)
 				} else {
 					createNotifications(NOTI_TYPE.DANGER, payload?.error || ERROR_MESSAGE)
-					setIsRequestLoading(false)
+					dispatch(
+						setLoading({
+							isLoading: false,
+							callMessage: '',
+						})
+					)
 				}
 			})
 		} catch (error: any) {
@@ -68,9 +86,13 @@ const useRequest = () => {
 				return handleError()
 			}
 			createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
-			setIsRequestLoading(false)
+			dispatch(
+				setLoading({
+					isLoading: false,
+					callMessage: '',
+				})
+			)
 			setCandidateId(0)
-			setCallMessage('')
 			throw error
 		}
 	}
@@ -78,12 +100,8 @@ const useRequest = () => {
 	return {
 		isLoading,
 		success,
-		callMessage,
-		isRequestLoading,
 		candidateId,
-		setIsRequestLoading,
 		setCandidateId,
-		setCallMessage,
 		fetchApi,
 		fetchNotices,
 	}

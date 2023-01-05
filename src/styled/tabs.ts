@@ -11,6 +11,15 @@ export const TabPane = styled.div`
 	cursor: pointer;
 `
 
+export const TabUserLabel = styled.p<TabLabelType>`
+	margin: 0;
+	padding: 13px 0;
+	border-bottom: ${(props) => (props.active ? '1px solid #1890ff' : '0px')};
+	color: ${(props) => (props.active ? '#1890ff' : '#fff')};
+	width: 100%;
+	text-align: center;
+`
+
 export const TabLabel = styled.p<TabLabelType>`
 	margin: 0;
 	padding: 0 0 5px;

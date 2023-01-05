@@ -10,8 +10,9 @@ import DeleteButton from 'images/delete-button.png'
 import EditButton from 'images/edit-button.png'
 import { useEffect, useState } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
-import { useSelector } from 'react-redux'
-import { RootState } from 'store'
+import { useDispatch, useSelector } from 'react-redux'
+import { setLoading } from 'reducers/loadingSlice'
+import { AppDispatch, RootState } from 'store'
 import styled from 'styled-components'
 import { colorTheme, SuccessButton } from 'styled/common'
 import { ActionColumn } from 'styled/form'
@@ -42,13 +43,13 @@ const checkBox = (cell: number) => {
 }
 
 const Users = () => {
+	const dispatch = useDispatch<AppDispatch>()
 	const metadata: MetadataType = useSelector((state: RootState) => state.auth.metadata)
 	const [items, setItems] = useState<usersType[]>([])
 	const [rowData, setRowData] = useState<usersType | null>(null)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [isVisible, setIsVisible] = useState<boolean>(false)
 	const [isDelete, setIsDelete] = useState<boolean>(false)
-	const [callMessage, setCallMessage] = useState<string>('')
 
 	const getData = async () => {
 		try {
@@ -82,8 +83,12 @@ const Users = () => {
 
 	const onDelete = async () => {
 		try {
-			setIsLoading(true)
-			setCallMessage(WAITING_FOR_CONFIRMATION)
+			dispatch(
+				setLoading({
+					isLoading: true,
+					callMessage: WAITING_FOR_CONFIRMATION,
+				})
+			)
 			const payload = {
 				action: DELETE_ROLE,
 				user: rowData && rowData.user,
@@ -93,22 +98,40 @@ const Users = () => {
 				if (!payload || (payload.message !== NO_RESPONSE_ERROR && !payload.error)) {
 					const message = payload ? payload.message : WAITING_RESPONSE_FROM_SERVER_MESSAGE
 					createNotifications(NOTI_TYPE.SUCCESS, message)
-					setIsLoading(false)
 					setIsDelete(false)
 					getData()
+					dispatch(
+						setLoading({
+							isLoading: false,
+							callMessage: '',
+						})
+					)
 				} else if (payload.message === NO_RESPONSE_ERROR) {
-					setCallMessage(`Waiting: ${payload.times}s.`)
+					dispatch(
+						setLoading({
+							isLoading: true,
+							callMessage: `Waiting: ${payload.times}s.`,
+						})
+					)
 				} else {
 					createNotifications(NOTI_TYPE.DANGER, payload?.error || ERROR_MESSAGE)
-					setIsLoading(false)
+					dispatch(
+						setLoading({
+							isLoading: false,
+							callMessage: '',
+						})
+					)
 				}
 			})
 		} catch (error: any) {
 			createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
-			setIsLoading(false)
+			dispatch(
+				setLoading({
+					isLoading: false,
+					callMessage: '',
+				})
+			)
 			throw error
-		} finally {
-			setCallMessage('')
 		}
 	}
 
@@ -187,9 +210,10 @@ const Users = () => {
 				<ConfimModal
 					isVisible={isDelete}
 					toggleModal={() => setIsDelete(false)}
-					onClick={onDelete}
-					isLoading={isLoading}
-					callMessage={callMessage}
+					onClick={() => {
+						setIsDelete(false)
+						onDelete()
+					}}
 					buttonText='Delete'
 					title='Are you sure to delete this user?'
 				/>

@@ -1,18 +1,21 @@
 import styled from 'styled-components'
 import { colorTheme } from './common'
 
+interface ContainerType {
+	isFullWrapper?: string | undefined
+}
+
 export const MainWrapper = styled.div`
 	background: ${colorTheme.background};
 	min-height: 100vh;
 	overflow: hidden;
 `
 
-export const Container = styled.div`
+export const Container = styled.div<ContainerType>`
 	margin-left: auto;
 	margin-right: auto;
-	max-width: 42rem;
-	padding-bottom: 3rem;
-
+	max-width: 50rem;
+	${(props) => props.isFullWrapper && `max-width: 1012px;`}
 	@media (max-width: 742px) {
 		margin: 10px;
 	}
@@ -40,6 +43,7 @@ export const ContentWrapper = styled.div`
 	border-radius: 8px;
 	transition: 0.2s;
 	overflow: hidden;
+	margin-bottom: 3rem;
 `
 
 export const Title = styled.h3`

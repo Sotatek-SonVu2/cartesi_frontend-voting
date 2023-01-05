@@ -7,7 +7,7 @@ import { ROUTER_PATH } from 'routes/contants'
 import { RootState } from 'store'
 import styled from 'styled-components'
 import { DangerButton, PrimaryButton, SuccessButton } from 'styled/common'
-import { FlexLayout } from 'styled/main'
+import { Container, FlexLayout } from 'styled/main'
 import { cadidateOptions } from 'utils/contants'
 import { ActionButtonHandleRes } from 'utils/interface'
 
@@ -47,14 +47,21 @@ const ActionButton = ({ onChangeType, isActionButton }: PropsType) => {
 		toggleModal,
 		onChangeSelect,
 		pathname,
-		paramId,
+		campaignId,
+		profileId,
 		isOpen,
-		isRequestLoading,
-		callMessage,
 	}: ActionButtonHandleRes = ActionButtonHandle(onChangeType)
 
+	const onRedirect = () => {
+		if (profileId) {
+			navigate(`${ROUTER_PATH.EDIT_CAMPAIGN}/${campaignId}/profile/${profileId}`)
+		} else {
+			navigate(`${ROUTER_PATH.EDIT_CAMPAIGN}/${campaignId}`)
+		}
+	}
+
 	const render = () => {
-		if (pathname === ROUTER_PATH.HOMEPAGE) {
+		if (pathname === ROUTER_PATH.HOMEPAGE || pathname === ROUTER_PATH.LIST_CAMPAIGN) {
 			return (
 				<FlexLayoutBetween>
 					<ReactSelect
@@ -71,9 +78,7 @@ const ActionButton = ({ onChangeType, isActionButton }: PropsType) => {
 			return (
 				<>
 					<FlexLayoutRight>
-						<EditButton onClick={() => navigate(`${ROUTER_PATH.EDIT_CAMPAIGN}/${paramId}`)}>
-							Edit
-						</EditButton>
+						<EditButton onClick={onRedirect}>Edit</EditButton>
 						<DangerButton onClick={toggleModal}>Delete</DangerButton>
 					</FlexLayoutRight>
 					{isOpen && (
@@ -81,8 +86,6 @@ const ActionButton = ({ onChangeType, isActionButton }: PropsType) => {
 							isVisible={isOpen}
 							toggleModal={toggleModal}
 							onClick={onDelete}
-							isLoading={isRequestLoading}
-							callMessage={callMessage}
 							buttonText='Delete'
 							title='Are you sure to delete this campaign?'
 						/>
@@ -93,7 +96,7 @@ const ActionButton = ({ onChangeType, isActionButton }: PropsType) => {
 		return <></>
 	}
 
-	return render()
+	return <Container isFullWrapper={profileId}>{render()}</Container>
 }
 
 export default ActionButton

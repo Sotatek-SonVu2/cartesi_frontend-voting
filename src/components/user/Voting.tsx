@@ -1,6 +1,7 @@
 import Loading from 'common/Loading'
 import Markdown from 'common/Markdown'
 import Title from 'common/Title'
+import ProfileHandle from 'handles/profile.handle'
 import VoteHandle from 'handles/vote.handle'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -17,9 +18,11 @@ import {
 	SuccessButton,
 } from 'styled/common'
 import { TextArea } from 'styled/form'
-import { ContentWrapper } from 'styled/main'
-import { CandidatesVotingType, tokenType, VoteHandleRes } from 'utils/interface'
+import { Container, ContentWrapper } from 'styled/main'
+import { VotingContainer, VotingWrapper } from 'styled/voting'
+import { CandidatesVotingType, ProfileHandleRes, tokenType, VoteHandleRes } from 'utils/interface'
 import VotingItem from './Item/Voting'
+import ProfileInfor from './Profile/Infor'
 
 const SubTitle = styled.div`
 	text-align: center;
@@ -32,25 +35,32 @@ const SubTitle = styled.div`
 
 const Voting = () => {
 	const { tokenListing } = useSelector((state: RootState) => state.token)
-	const { campaignId } = useParams()
+	const { campaignId, profileId } = useParams()
 	const navigate = useNavigate()
 	const {
 		getLists,
 		data,
 		isLoading,
 		isCloseVoting,
-		isRequestLoading,
 		handleVoting,
 		onChooseCandidate,
 		setComment,
 		comment,
-		callMessage,
 		candidateId,
 	}: VoteHandleRes = VoteHandle()
 
+	const {
+		data: profileData,
+		isLoading: profileLoading,
+		getProfileDetail,
+	}: ProfileHandleRes = ProfileHandle()
+
 	useEffect(() => {
 		getLists()
-	}, [campaignId])
+		if (profileId) {
+			getProfileDetail()
+		}
+	}, [campaignId, profileId])
 
 	const getInfo = () => {
 		const { campaign } = data
@@ -65,67 +75,65 @@ const Voting = () => {
 	}
 
 	return (
-		<ContentWrapper>
-			{isLoading ? (
-				<Loading />
-			) : (
-				<Content>
-					<Title text={data.campaign.name || '(NO DATA)'} userGuideType='vote' />
-					<SubTitle>
-						<p>
-							{data.campaign.start_time} - {data.campaign.end_time}
-						</p>
-						{getInfo()}
-						{isCloseVoting && <span>This campaign is closed for voting!</span>}
-					</SubTitle>
-					<Markdown text={data.campaign.description} />
-					<Line />
-					{data.voted?.name && <p>Your voted is: {data.voted?.name}.</p>}
-					{data.voted?.comment && <p>The reason you choose: {data.voted.comment}</p>}
-					{data?.candidates?.map((item: CandidatesVotingType) => (
-						<div key={item.id}>
-							<VotingItem
-								active={candidateId}
-								data={item}
-								handleClick={(id: number) => onChooseCandidate(id)}
+		<VotingContainer>
+			{profileId && <ProfileInfor data={profileData} isLoading={profileLoading} />}
+			<VotingWrapper isFullWrapper={profileId}>
+				{isLoading ? (
+					<Loading />
+				) : (
+					<Content>
+						<Title text={data.campaign.name || '(NO DATA)'} userGuideType='vote' />
+						<SubTitle>
+							<p>
+								{data.campaign.start_time} - {data.campaign.end_time}
+							</p>
+							{getInfo()}
+							{isCloseVoting && <span>This campaign is closed for voting!</span>}
+						</SubTitle>
+						<Markdown text={data.campaign.description} />
+						<Line />
+						{data.voted?.name && <p>Your voted is: {data.voted?.name}.</p>}
+						{data.voted?.comment && <p>The reason you choose: {data.voted.comment}</p>}
+						{data?.candidates?.map((item: CandidatesVotingType) => (
+							<div key={item.id}>
+								<VotingItem
+									active={candidateId}
+									data={item}
+									handleClick={(id: number) => onChooseCandidate(id)}
+								/>
+							</div>
+						))}
+						{!data?.voted && (
+							<TextArea
+								name='comment'
+								placeholder='Why you choose that candidate? (optional)'
+								value={comment}
+								onChange={(e) => setComment(e.target.value)}
 							/>
-						</div>
-					))}
-					{!data?.voted && (
-						<TextArea
-							name='comment'
-							placeholder='Why you choose that candidate? (optional)'
-							value={comment}
-							onChange={(e) => setComment(e.target.value)}
-						/>
-					)}
-					<Line />
-					{data.candidates?.length > 0 && (
-						<FlexLayoutBtn>
-							<DefaultButton type='button' onClick={() => navigate(-1)}>
-								Back
-							</DefaultButton>
-							<SuccessButton
-								type='button'
-								onClick={handleVoting}
-								disabled={
-									isCloseVoting || data.voted?.candidate_id || !candidateId || isRequestLoading
-								}>
-								Vote
-							</SuccessButton>
-							<PrimaryButton
-								type='button'
-								onClick={() => navigate(`${ROUTER_PATH.RESULT}/${campaignId}`)}>
-								Result
-							</PrimaryButton>
-						</FlexLayoutBtn>
-					)}
-					{isRequestLoading && (
-						<Loading isScreenLoading={isRequestLoading} messages={callMessage} />
-					)}
-				</Content>
-			)}
-		</ContentWrapper>
+						)}
+						<Line />
+						{data.candidates?.length > 0 && (
+							<FlexLayoutBtn>
+								<DefaultButton type='button' onClick={() => navigate(-1)}>
+									Back
+								</DefaultButton>
+								<SuccessButton
+									type='button'
+									onClick={handleVoting}
+									disabled={isCloseVoting || data.voted?.candidate_id || !candidateId}>
+									Vote
+								</SuccessButton>
+								<PrimaryButton
+									type='button'
+									onClick={() => navigate(`${ROUTER_PATH.RESULT}/${campaignId}`)}>
+									Result
+								</PrimaryButton>
+							</FlexLayoutBtn>
+						)}
+					</Content>
+				)}
+			</VotingWrapper>
+		</VotingContainer>
 	)
 }
 

@@ -1,4 +1,7 @@
 import Header from 'common/Header'
+import Loading from 'common/Loading'
+import { useSelector } from 'react-redux'
+import { RootState } from 'store'
 import styled from 'styled-components'
 import { tabItemType } from 'utils/interface'
 import Tabs from '../common/Tabs'
@@ -31,8 +34,10 @@ const items: tabItemType[] = [
 ]
 
 const Admin = () => {
+	const { isLoading, callMessage } = useSelector((state: RootState) => state.loading)
 	return (
 		<>
+			{isLoading && <Loading isScreenLoading={isLoading} messages={callMessage} />}
 			<Header />
 			<Container>
 				<Title>Welcome to Admin page!</Title>

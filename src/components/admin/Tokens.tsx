@@ -10,9 +10,10 @@ import DeleteButton from 'images/delete-button.png'
 import EditButton from 'images/edit-button.png'
 import { useEffect, useState } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setLoading } from 'reducers/loadingSlice'
 import { getTokens } from 'reducers/tokenSlice'
-import { AppDispatch } from 'store'
+import { AppDispatch, RootState } from 'store'
 import styled from 'styled-components'
 import { colorTheme, SuccessButton } from 'styled/common'
 import { ActionColumn } from 'styled/form'
@@ -42,11 +43,9 @@ export const CreateButton = styled(SuccessButton)`
 const Tokens = () => {
 	const dispatch = useDispatch<AppDispatch>()
 	const { tokenList, isLoading } = useTokensList(GET_ALL_ACTIVE)
-	const [loading, setLoading] = useState<boolean>(false)
 	const [isVisible, setIsVisible] = useState<boolean>(false)
 	const [isDelete, setIsDelete] = useState<boolean>(false)
 	const [rowData, setRowData] = useState<tokenType | null>(null)
-	const [callMessage, setCallMessage] = useState<string>('')
 
 	const getData = async () => {
 		dispatch(getTokens())
@@ -63,8 +62,12 @@ const Tokens = () => {
 
 	const onDelete = async () => {
 		try {
-			setLoading(true)
-			setCallMessage(WAITING_FOR_CONFIRMATION)
+			dispatch(
+				setLoading({
+					isLoading: true,
+					callMessage: WAITING_FOR_CONFIRMATION,
+				})
+			)
 			const payload = {
 				action: DELETE_TOKEN,
 				address: rowData && rowData.address,
@@ -74,20 +77,39 @@ const Tokens = () => {
 				if (!payload || (payload.message !== NO_RESPONSE_ERROR && !payload.error)) {
 					const message = payload ? payload.message : WAITING_RESPONSE_FROM_SERVER_MESSAGE
 					createNotifications(NOTI_TYPE.SUCCESS, message)
-					setLoading(false)
 					setIsDelete(false)
 					getData()
+					dispatch(
+						setLoading({
+							isLoading: false,
+							callMessage: '',
+						})
+					)
 				} else if (payload.message === NO_RESPONSE_ERROR) {
-					setCallMessage(`Waiting: ${payload.times}s.`)
+					dispatch(
+						setLoading({
+							isLoading: true,
+							callMessage: `Waiting: ${payload.times}s.`,
+						})
+					)
 				} else {
 					createNotifications(NOTI_TYPE.DANGER, payload?.error || ERROR_MESSAGE)
-					setLoading(false)
+					dispatch(
+						setLoading({
+							isLoading: false,
+							callMessage: '',
+						})
+					)
 				}
 			})
 		} catch (error: any) {
 			createNotifications(NOTI_TYPE.DANGER, error?.message || ERROR_MESSAGE)
-			setLoading(false)
-			setCallMessage('')
+			dispatch(
+				setLoading({
+					isLoading: false,
+					callMessage: '',
+				})
+			)
 			throw error
 		}
 	}
@@ -182,9 +204,10 @@ const Tokens = () => {
 				<ConfimModal
 					isVisible={isDelete}
 					toggleModal={() => setIsDelete(false)}
-					onClick={onDelete}
-					isLoading={loading}
-					callMessage={callMessage}
+					onClick={() => {
+						setIsDelete(false)
+						onDelete()
+					}}
 					buttonText='Delete'
 					title='Are you sure to delete this token?'
 				/>

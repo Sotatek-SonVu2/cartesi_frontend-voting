@@ -45,15 +45,7 @@ export default function VoteHandle(): VoteHandleRes {
 		candidates: [],
 		voted: {},
 	})
-	const {
-		fetchApi,
-		fetchNotices,
-		callMessage,
-		success,
-		setCandidateId,
-		isRequestLoading,
-		candidateId,
-	} = useRequest()
+	const { fetchApi, fetchNotices, success, setCandidateId, candidateId } = useRequest()
 
 	const getLists = async () => {
 		if (campaignId) {
@@ -100,7 +92,7 @@ export default function VoteHandle(): VoteHandleRes {
 	}
 
 	const onChooseCandidate = (id: number) => {
-		if (data.voted?.candidate_id || isCloseVoting || isRequestLoading) return
+		if (data.voted?.candidate_id || isCloseVoting) return
 		setCandidateId(id)
 	}
 
@@ -132,13 +124,11 @@ export default function VoteHandle(): VoteHandleRes {
 		handleVoting,
 		onChooseCandidate,
 		setComment,
-		isRequestLoading,
 		comment,
 		isCloseVoting,
 		candidateId,
 		data,
 		isLoading,
-		callMessage,
 		success,
 	}
 }

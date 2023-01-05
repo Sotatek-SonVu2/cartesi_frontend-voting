@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import styled from 'styled-components'
 import { Content } from 'styled/common'
 import { BoxItem, ContentBox, HeaderList, Radio, RadioGroup } from 'styled/list'
-import { ContentWrapper, FlexLayoutSwap } from 'styled/main'
+import { Container, ContentWrapper, FlexLayoutSwap } from 'styled/main'
 import { WITHDRAW_RADIO_FILTER } from 'utils/contants'
 import { WithdrawHandleRes, WithDrawType } from 'utils/interface'
 import WithdrawItem from './Item/Withdraw'
@@ -32,9 +32,7 @@ const Withdraw = () => {
 		onWithdraw,
 		vouchers,
 		isLoading,
-		callMessage,
 		isVisible,
-		isRequestLoading,
 		isChecked,
 	}: WithdrawHandleRes = WithdrawHandle()
 
@@ -43,56 +41,55 @@ const Withdraw = () => {
 	}, [isChecked])
 
 	return (
-		<ContentWrapper>
-			{isLoading ? (
-				<Loading />
-			) : (
-				<Content>
-					<HeaderList>
-						<Title text='Withdraw' userGuideType='withdraw' />
-						<RadioGroup>
-							{WITHDRAW_RADIO_FILTER.map(({ value, label }, index: number) => (
-								<Radio key={index}>
-									<input
-										type='radio'
-										id={`radio_${index}`}
-										checked={isChecked === value}
-										name={label}
-										value={value}
-										onChange={onChangeRadio}
-									/>
-									{label}
-								</Radio>
-							))}
-						</RadioGroup>
-					</HeaderList>
+		<Container>
+			<ContentWrapper>
+				{isLoading ? (
+					<Loading />
+				) : (
+					<Content>
+						<HeaderList>
+							<Title text='Withdraw' userGuideType='withdraw' />
+							<RadioGroup>
+								{WITHDRAW_RADIO_FILTER.map(({ value, label }, index: number) => (
+									<Radio key={index}>
+										<input
+											type='radio'
+											id={`radio_${index}`}
+											checked={isChecked === value}
+											name={label}
+											value={value}
+											onChange={onChangeRadio}
+										/>
+										{label}
+									</Radio>
+								))}
+							</RadioGroup>
+						</HeaderList>
 
-					<FlexLayoutSwap>
-						<BoxItemCustom onClick={toggleModal}>
-							<AddWithdraw>
-								<h1 style={{ marginTop: '0px' }}>+</h1>
-								<h5>Withdraw token</h5>
-							</AddWithdraw>
-						</BoxItemCustom>
-						{vouchers.map((item: WithDrawType, index: number) => (
-							<BoxItem key={index}>
-								<WithdrawItem data={item} onClick={onWithdraw} />
-							</BoxItem>
-						))}
-					</FlexLayoutSwap>
-					{isRequestLoading && (
-						<Loading isScreenLoading={isRequestLoading} messages={callMessage} />
-					)}
-					{isVisible && (
-						<WithdrawModal
-							isVisible={isVisible}
-							toggleModal={toggleModal}
-							onAddVoucher={onAddVoucher}
-						/>
-					)}
-				</Content>
-			)}
-		</ContentWrapper>
+						<FlexLayoutSwap>
+							<BoxItemCustom onClick={toggleModal}>
+								<AddWithdraw>
+									<h1 style={{ marginTop: '0px' }}>+</h1>
+									<h5>Withdraw token</h5>
+								</AddWithdraw>
+							</BoxItemCustom>
+							{vouchers.map((item: WithDrawType, index: number) => (
+								<BoxItem key={index}>
+									<WithdrawItem data={item} onClick={onWithdraw} />
+								</BoxItem>
+							))}
+						</FlexLayoutSwap>
+						{isVisible && (
+							<WithdrawModal
+								isVisible={isVisible}
+								toggleModal={toggleModal}
+								onAddVoucher={onAddVoucher}
+							/>
+						)}
+					</Content>
+				)}
+			</ContentWrapper>
+		</Container>
 	)
 }
 

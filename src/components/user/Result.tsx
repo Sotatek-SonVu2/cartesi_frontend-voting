@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTER_PATH } from 'routes/contants'
 import { Content, DefaultButton, FlexLayoutBtn, Line } from 'styled/common'
-import { ContentWrapper } from 'styled/main'
+import { Container, ContentWrapper } from 'styled/main'
 import { CampaignType, ResultHandleRes } from 'utils/interface'
 import ResultItem from './Item/Result'
 import VotersList from './VotersList'
@@ -23,7 +23,7 @@ const Result = () => {
 	}, [])
 
 	return (
-		<>
+		<Container>
 			<ContentWrapper>
 				{isLoading ? (
 					<Loading />
@@ -46,9 +46,7 @@ const Result = () => {
 							<NoData />
 						)}
 						<FlexLayoutBtn>
-							<DefaultButton
-								type='button'
-								onClick={() => navigate(`${ROUTER_PATH.VOTING}/${campaignId}`)}>
+							<DefaultButton type='button' onClick={() => navigate(-1)}>
 								Back
 							</DefaultButton>
 						</FlexLayoutBtn>
@@ -56,7 +54,7 @@ const Result = () => {
 				)}
 			</ContentWrapper>
 			<VotersList />
-		</>
+		</Container>
 	)
 }
 

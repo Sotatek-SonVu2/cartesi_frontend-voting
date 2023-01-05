@@ -11,7 +11,7 @@ import { getTokens } from 'reducers/tokenSlice'
 import { AppDispatch } from 'store'
 import { Content } from 'styled/common'
 import { StatusText } from 'styled/list'
-import { ContentWrapper } from 'styled/main'
+import { Container, ContentWrapper } from 'styled/main'
 import { formatAddress } from 'utils/common'
 import { GET_CAN_CREATE, GET_CAN_VOTE, NOTI_TYPE, TOKEN_STATUS } from 'utils/contants'
 import { tokenType } from 'utils/interface'
@@ -110,29 +110,31 @@ const Tokens = () => {
 	]
 
 	return (
-		<ContentWrapper>
-			{TokenVoting.isLoading || TokenCreating.isLoading ? (
-				<Loading />
-			) : (
-				<Content>
-					<Title text='Tokens' userGuideType='tokens' />
-					<>
-						<div>
-							<p>The token you can use to create the campaign:</p>
-							<div style={{ marginTop: '15px' }}>
-								<Table columns={addColumns} data={TokenCreating.tokenList} keyField='address' />
+		<Container>
+			<ContentWrapper>
+				{TokenVoting.isLoading || TokenCreating.isLoading ? (
+					<Loading />
+				) : (
+					<Content>
+						<Title text='Tokens' userGuideType='tokens' />
+						<>
+							<div>
+								<p>The token you can use to create the campaign:</p>
+								<div style={{ marginTop: '15px' }}>
+									<Table columns={addColumns} data={TokenCreating.tokenList} keyField='address' />
+								</div>
 							</div>
-						</div>
-						<div style={{ marginTop: '2rem' }}>
-							<p>The token you can use to vote the campaign:</p>
-							<div style={{ marginTop: '15px' }}>
-								<Table columns={voteColumns} data={TokenVoting.tokenList} keyField='address' />
+							<div style={{ marginTop: '2rem' }}>
+								<p>The token you can use to vote the campaign:</p>
+								<div style={{ marginTop: '15px' }}>
+									<Table columns={voteColumns} data={TokenVoting.tokenList} keyField='address' />
+								</div>
 							</div>
-						</div>
-					</>
-				</Content>
-			)}
-		</ContentWrapper>
+						</>
+					</Content>
+				)}
+			</ContentWrapper>
+		</Container>
 	)
 }
 

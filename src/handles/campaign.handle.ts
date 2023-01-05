@@ -28,7 +28,7 @@ import { validateDate } from 'utils/validate'
 
 export default function CampaignHandle(setValue?: UseFormSetValue<FieldValues>): CampaignHandleRes {
 	const navigate = useNavigate()
-	const { campaignId } = useParams()
+	const { campaignId, profileId } = useParams()
 	const dispatch = useDispatch<AppDispatch>()
 	const [data, setData] = useState(null)
 	const [isMyCampaign, setIsMyCampaign] = useState<boolean>(false)
@@ -50,7 +50,7 @@ export default function CampaignHandle(setValue?: UseFormSetValue<FieldValues>):
 	const [campaignType] = useOutletContext<any>()
 	const token_to_create = useTokensList(GET_CAN_CREATE_ACTIVE)
 	const token_to_vote = useTokensList(GET_CAN_VOTE_ACTIVE)
-	const { isLoading, fetchApi, fetchNotices, callMessage, success, isRequestLoading } = useRequest()
+	const { isLoading, fetchApi, fetchNotices, success } = useRequest()
 	const { startDate, endDate, formErrors } = dateTime
 
 	const getLists = async () => {
@@ -72,22 +72,17 @@ export default function CampaignHandle(setValue?: UseFormSetValue<FieldValues>):
 
 	const getDataForm = async () => {
 		if (campaignId) {
-			const params_detail = {
+			const params = {
 				action: CAMPAIGN_DETAIL,
 				campaign_id: parseInt(campaignId),
 			}
-			const params_profile = {
-				action: LIST_PROFILE_OF_CURRENT_USER,
-			}
-			const result_profile = await fetchApi(params_profile)
-			const result_detail = await fetchApi(params_detail)
-			if (!result_detail.error && !result_profile.error) {
-				const { start_time, end_time, name, description, fee, accept_token, profile_id } =
-					result_detail.campaign[0]
+			const result = await fetchApi(params)
+			if (!result.error) {
+				const { start_time, end_time, name, description, fee, accept_token } = result.campaign[0]
 				const token = token_to_vote.tokenList?.find(
 					(token: tokenType) => token.address === accept_token
 				)?.name
-				const options = result_detail.candidates.map((item: OptionType) => {
+				const options = result.candidates.map((item: OptionType) => {
 					return {
 						name: item.name,
 						brief_introduction: item.brief_introduction,
@@ -100,28 +95,15 @@ export default function CampaignHandle(setValue?: UseFormSetValue<FieldValues>):
 					endDate: new Date(convertUtcToLocal(new Date(end_time))),
 					formErrors: { startDate: '', endDate: '' },
 				})
-				setData(result_profile.data)
 				if (typeof setValue === 'function') {
-					const profile =
-						result_profile.data?.length > 0 &&
-						result_profile.data.find(
-							(profile: any) => profile?.id === result_detail?.campaign[0].profile_id
-						)
 					setValue('name', name)
 					setValue('description', description)
 					setValue('fee', fee)
 					setValue('options', [...options])
-					setValue('profile_id', {
-						value: profile.id,
-						label: profile.name,
-					})
 				}
 			} else {
-				createNotifications(NOTI_TYPE.DANGER, result_detail?.error || result_profile?.error)
+				createNotifications(NOTI_TYPE.DANGER, result?.error)
 			}
-		} else {
-			setTokenToCreate(token_to_create.tokenList[0]?.name)
-			setTokenToVote(token_to_vote.tokenList[0]?.name)
 		}
 	}
 
@@ -163,15 +145,17 @@ export default function CampaignHandle(setValue?: UseFormSetValue<FieldValues>):
 
 	const onSubmit = async (dataForm: any) => {
 		const checkDate = validateDate('startDate', startDate, endDate, startDate)
+		const accept_token = tokenToVote || token_to_vote?.tokenList[0]?.name
+		const token_address = tokenToCreate || token_to_create?.tokenList[0]?.name
 		if (!checkDate?.startDate) {
 			const data: AddEditDataType = {
 				action: !campaignId ? CREATE_CAMPAIGN : EDIT_CAMPAIGN,
 				name: dataForm.name,
 				description: dataForm.description,
-				profile_id: dataForm?.profile_id?.value || null,
+				profile_id: profileId ? parseInt(profileId) : null,
 				start_time: moment(convertLocalToUtc(startDate)).format(FORMAT_DATETIME), // Convert local datetime to UTC+0 datetime and format
 				end_time: moment(convertLocalToUtc(endDate)).format(FORMAT_DATETIME), // Convert local datetime to UTC+0 datetime and format
-				accept_token: getTokenAddress(token_to_vote.tokenList, tokenToVote),
+				accept_token: getTokenAddress(token_to_vote.tokenList, accept_token),
 				fee: dataForm.fee,
 				candidates: dataForm.options.map((item: OptionType) => {
 					return {
@@ -181,9 +165,10 @@ export default function CampaignHandle(setValue?: UseFormSetValue<FieldValues>):
 					}
 				}),
 			}
+			console.log('data', data)
 			if (!campaignId) {
 				const newData: AddEditDataType = {
-					token_address: getTokenAddress(token_to_create.tokenList, tokenToCreate),
+					token_address: getTokenAddress(token_to_create.tokenList, token_address),
 					...data,
 				}
 				createCampaign(newData)
@@ -221,9 +206,7 @@ export default function CampaignHandle(setValue?: UseFormSetValue<FieldValues>):
 		data,
 		isMyCampaign,
 		isLoading,
-		isRequestLoading,
 		paging,
-		callMessage,
 		campaignType,
 		success,
 	}

@@ -148,6 +148,7 @@ export const FlexLayoutBtn = styled.div`
 
 export const Content = styled.div`
 	padding: 1.5rem;
+	height: 100%;
 	position: relative;
 	animation: mymove 1s;
 	animation-fill-mode: forwards;

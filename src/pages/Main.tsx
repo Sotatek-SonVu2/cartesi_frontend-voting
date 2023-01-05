@@ -1,3 +1,4 @@
+import Loading from 'common/Loading'
 import Tooltip from 'common/Tooltip'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -28,6 +29,7 @@ const Main = () => {
 	const location = useLocation()
 	const navigate = useNavigate()
 	const is_admin = useSelector((state: RootState) => state.auth.is_admin)
+	const { isLoading, callMessage } = useSelector((state: RootState) => state.loading)
 	const pathname = `/${location.pathname.split('/')[1]}`
 	const user_guide =
 		localStorage.getItem(USER_GUIDE) === IS_USER_GUIDE_OPEN || pathname !== ROUTER_PATH.HOMEPAGE
@@ -57,32 +59,32 @@ const Main = () => {
 	}
 
 	return (
-		<>
+		<div>
+			{isLoading && <Loading isScreenLoading={isLoading} messages={callMessage} />}
 			<Header startTour={() => setIsTourOpen(true)} />
-			<Container>
-				<Title>DApp Voting</Title>
-				<SubTitle>Where your opinion matters!</SubTitle>
-				<DepositInfo />
-				<ActionButton
-					isActionButton={isActionButton}
-					onChangeType={(value: string) => setCampaignType(value)}
-				/>
-				<Outlet context={[campaignType, setCampaignType, isActionButton, setIsActionButton]} />
-				{is_admin && (
-					<Tooltip
-						text='Go to Admin page'
-						id='admin'
-						className='tooltip-sz-sm tooltip-admin-icon'
-						placement='right'>
-						<Setting
-							src={SettingIcon}
-							alt='settingIcon'
-							width={40}
-							onClick={() => navigate(ROUTER_PATH.ADMIN, { replace: true })}
-						/>
-					</Tooltip>
-				)}
-			</Container>
+			<Title>DApp Voting</Title>
+			<SubTitle>Where your opinion matters!</SubTitle>
+			<DepositInfo />
+			<ActionButton
+				isActionButton={isActionButton}
+				onChangeType={(value: string) => setCampaignType(value)}
+			/>
+			<Outlet context={[campaignType, setCampaignType, isActionButton, setIsActionButton]} />
+			{is_admin && (
+				<Tooltip
+					text='Go to Admin page'
+					id='admin'
+					className='tooltip-sz-sm tooltip-admin-icon'
+					placement='right'>
+					<Setting
+						src={SettingIcon}
+						alt='settingIcon'
+						width={40}
+						onClick={() => navigate(ROUTER_PATH.ADMIN, { replace: true })}
+					/>
+				</Tooltip>
+			)}
+
 			{isVisible && (
 				<UserGuideModal toggleModal={onToggle} isVisible={isVisible} startTour={startTour} />
 			)}
@@ -93,7 +95,7 @@ const Main = () => {
 				disableInteraction
 				lastStepNextButton={<Button>Done!</Button>}
 			/>
-		</>
+		</div>
 	)
 }
 

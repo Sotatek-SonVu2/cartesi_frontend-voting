@@ -33,15 +33,9 @@ export default function WithdrawHandle(): WithdrawHandleRes {
 	const [vouchers, setVouchers] = useState<WithDrawType[]>([])
 	const [isVisible, setIsVisible] = useState<boolean>(false)
 	const [isChecked, setIsChecked] = useState<string>(WITHDRAW_RADIO_FILTER_STATUS.ALL)
-	const {
-		isLoading,
-		fetchApi,
-		fetchNotices,
-		callMessage,
-		setCallMessage,
-		setIsRequestLoading,
-		isRequestLoading,
-	} = useRequest()
+	const [callMessage, setCallMessage] = useState<string>('')
+	const [isRequestLoading, setIsRequestLoading] = useState<boolean>(false)
+	const { isLoading, fetchApi, fetchNotices } = useRequest()
 
 	const toggleModal = () => {
 		setIsVisible(!isVisible)

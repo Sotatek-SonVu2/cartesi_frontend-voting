@@ -8,7 +8,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import styled from 'styled-components'
 import { Content } from 'styled/common'
 import { TimeLine } from 'styled/list'
-import { ContentWrapper, FlexLayout } from 'styled/main'
+import { Container, ContentWrapper, FlexLayout } from 'styled/main'
 import { historyOptions } from 'utils/contants'
 import { HistoryHandleRes } from 'utils/interface'
 import HistoryItem from './Item/History'
@@ -29,38 +29,40 @@ const History = () => {
 	}, [type])
 
 	return (
-		<ContentWrapper>
-			<Content>
-				<FlexLayoutBetween>
-					<Title text='History' userGuideType='history' />
-					<ReactSelect
-						defaultValue={historyOptions[0]}
-						options={historyOptions}
-						onChange={onChangeSelect}
-					/>
-				</FlexLayoutBetween>
-				<InfiniteScroll
-					dataLength={items.length}
-					next={getData}
-					hasMore={items.length === totalPage ? false : true}
-					loader={<></>}>
-					<TimeLine>
-						<ul>
-							{!isLoading && items.length === 0 ? (
-								<NoData />
-							) : (
-								items.map((item: any, index: number) => (
-									<div key={index}>
-										<HistoryItem data={item} index={index} />
-									</div>
-								))
-							)}
-						</ul>
-					</TimeLine>
-				</InfiniteScroll>
-				{isLoading && <Loading />}
-			</Content>
-		</ContentWrapper>
+		<Container>
+			<ContentWrapper>
+				<Content>
+					<FlexLayoutBetween>
+						<Title text='History' userGuideType='history' />
+						<ReactSelect
+							defaultValue={historyOptions[0]}
+							options={historyOptions}
+							onChange={onChangeSelect}
+						/>
+					</FlexLayoutBetween>
+					<InfiniteScroll
+						dataLength={items.length}
+						next={getData}
+						hasMore={items.length === totalPage ? false : true}
+						loader={<></>}>
+						<TimeLine>
+							<ul>
+								{!isLoading && items.length === 0 ? (
+									<NoData />
+								) : (
+									items.map((item: any, index: number) => (
+										<div key={index}>
+											<HistoryItem data={item} index={index} />
+										</div>
+									))
+								)}
+							</ul>
+						</TimeLine>
+					</InfiniteScroll>
+					{isLoading && <Loading />}
+				</Content>
+			</ContentWrapper>
+		</Container>
 	)
 }
 

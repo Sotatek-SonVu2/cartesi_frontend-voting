@@ -38,12 +38,19 @@ export const LoadingWrapper = styled.div<LoadingType>`
 	${(props) =>
 		props.isScreenLoading &&
 		`
-      position: absolute;
-      left: 0;
-      top: 0;
-      background: rgb(0 0 0 / 38%);
-      z-index: 10;
-    `}
+			position: fixed;
+			left: 0;
+			top: 0;
+			background: rgb(0 0 0 / 38%);
+			z-index: 10;
+			overflow: hidden;
+
+			& p {
+				font-weight: 700;
+				background: #000;
+				padding: 10px;
+			}
+		`}
 
 	display: flex;
 	flex-direction: column;

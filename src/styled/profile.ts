@@ -1,8 +1,90 @@
 import styled from 'styled-components'
-import { DangerButton, PrimaryButton, SuccessButton } from './common'
+import { colorTheme, Content, DangerButton, PrimaryButton, SuccessButton } from './common'
 import { BoxItem, ContentBox } from './list'
+import { Container } from './main'
 
-export const ProfileInfo = styled.div`
+interface TabsType {
+	isActive?: boolean
+}
+
+export const ProfileContainer = styled(Container)`
+	position: relative;
+	max-width: 1012px;
+`
+
+export const ProfileInforWrapper = styled.div`
+	float: left;
+	background: ${colorTheme.tranparent};
+	width: 240px;
+	padding: 1.5rem;
+	margin-bottom: 3rem;
+`
+
+export const ProfileDetailWrapper = styled.div`
+	background: ${colorTheme.tranparent};
+	float: right;
+	width: 69%;
+	min-height: 0;
+	border-radius: 8px;
+	transition: 0.2s;
+	overflow: hidden;
+	margin-bottom: 3rem;
+`
+
+export const ProfileDetailContent = styled(Content)`
+	padding: 0 1.5rem;
+`
+
+export const ProfileInforContent = styled.div`
+	position: relative;
+	color: #fff;
+	text-align: center;
+	height: 100%;
+
+	& .thumbnail {
+		margin-bottom: 1rem;
+		object-fit: cover;
+		border-radius: 9999px;
+	}
+
+	& p {
+		margin: 1rem;
+		font-size: 15px;
+	}
+`
+
+export const ProfileInforBottom = styled.div`
+	// position: absolute;
+	// bottom: 0;
+	width: 100%;
+`
+
+export const BtnAction = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`
+
+export const Tabs = styled.p<TabsType>`
+	background: ${(props) => (props.isActive ? colorTheme.active : '')};
+	padding: 7px 0;
+	cursor: pointer;
+
+	&:hover {
+		background: ${colorTheme.active};
+	}
+`
+
+export const Links = styled.div`
+	text-align: center;
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
+	margin-top: 20px;
+`
+
+export const ProfileDetailHeader = styled.div`
+	color: #fff;
 	display: flex;
 	align-items: center;
 
@@ -45,9 +127,8 @@ export const ProfileDesc = styled.div`
 `
 
 export const ProfileBox = styled(BoxItem)`
-	width: 178px;
 	padding: 0 10px;
-	min-width: 178px;
+	min-width: 148px;
 	margin-right: 10px;
 	margin-left: 10px;
 `
@@ -61,16 +142,20 @@ export const AddButton = styled(SuccessButton)`
 
 export const JoinButton = styled(SuccessButton)`
 	padding: 0;
-	width: 120px;
+	width: 100%;
 	border-radius: 23px;
-	height: 40px;
+	height: 33px;
+	font-size: 13px;
+	margin: 15px 0;
 `
 
 export const LeaveButton = styled(DangerButton)`
 	padding: 0;
-	width: 120px;
+	width: 100%;
 	border-radius: 23px;
-	height: 40px;
+	height: 33px;
+	font-size: 13px;
+	margin-bottom: 15px;
 `
 
 export const ProfileButton = styled(SuccessButton)`
@@ -84,21 +169,31 @@ export const ProfileButton = styled(SuccessButton)`
 	border-radius: 23px;
 `
 
-export const EditButton = styled(PrimaryButton)`
+export const CreateButton = styled(SuccessButton)`
 	padding: 0;
-	width: 70px;
+	width: 100%;
 	border-radius: 23px;
 	height: 33px;
 	font-size: 13px;
-	margin-right: 10px;
+	margin: 15px 0;
+`
+
+export const EditButton = styled(PrimaryButton)`
+	padding: 0;
+	width: 100%;
+	border-radius: 23px;
+	height: 33px;
+	font-size: 13px;
+	margin-bottom: 15px;
 `
 
 export const DeleteButton = styled(DangerButton)`
 	padding: 0;
-	width: 70px;
+	width: 100%;
 	border-radius: 23px;
 	height: 33px;
 	font-size: 13px;
+	margin-bottom: 15px;
 `
 
 export const SubmitButton = styled(SuccessButton)`
