@@ -168,10 +168,27 @@ export interface ProfileType {
 	name: string
 	description: string
 	website: string | null
-	social_media: {
-		facebook: string | null
-		twitter: string | null
-	}
+	social_media: string
+	thumbnail: string | null
+	managers: string[]
+	creator?: string
+	type?: string
+	members?: number
+	has_joined?: boolean
+}
+
+export interface ProfileParams {
+	action?: string
+	id?: number
+	name: string
+	description: string
+	website: string | null
+	social_media:
+		| string
+		| {
+				facebook: string | null
+				twitter: string | null
+		  }
 	thumbnail: string | null
 	managers: string[]
 	creator?: string
@@ -274,6 +291,7 @@ export interface ActionButtonHandleRes {
 	pathname: string
 	campaignId: string | undefined
 	profileId: string | undefined
+	type: string | undefined
 	isOpen: boolean
 }
 

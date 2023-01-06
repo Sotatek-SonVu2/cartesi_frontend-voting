@@ -10,7 +10,7 @@ export default function ActionButtonHandle(onChangeType: any): ActionButtonHandl
 	const [isOpen, setIsOpen] = useState<boolean>(false)
 	const navigate = useNavigate()
 	const location = useLocation()
-	const { campaignId, profileId } = useParams()
+	const { campaignId, profileId, type } = useParams()
 	const pathname = `/${location.pathname.split('/')[1]}`
 
 	const { fetchNotices } = useRequest()
@@ -48,6 +48,7 @@ export default function ActionButtonHandle(onChangeType: any): ActionButtonHandl
 		pathname,
 		campaignId,
 		profileId,
+		type,
 		isOpen,
 	}
 }

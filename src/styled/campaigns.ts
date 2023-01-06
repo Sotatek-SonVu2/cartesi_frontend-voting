@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { colorTheme } from './common'
 
 interface StatusType {
 	isStartTime: boolean

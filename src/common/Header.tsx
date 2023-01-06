@@ -96,9 +96,7 @@ const Header = ({ startTour }: Props) => {
 					</CopyToClipboard>
 				</InforUser>
 				<MenuList>
-					<MenuTitle
-						onClick={() => navigate(ROUTER_PATH.HOMEPAGE, { replace: true })}
-					>
+					<MenuTitle onClick={() => navigate(ROUTER_PATH.HOMEPAGE, { replace: true })}>
 						Home
 					</MenuTitle>
 					<MenuTitle onClick={toggleModal} className='deposit-step'>

@@ -1,6 +1,10 @@
+import CampaignForm from 'components/user/Form/CampaignForm'
+import ProfileForm from 'components/user/Form/ProfileForm'
+import Homepage from 'components/user/Homepage'
+import ProfileDetail from 'components/user/Profile/Detail'
+import Tokens from 'components/user/Tokens'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Background from './common/Background'
-import CampaignsList from './components/user/CampaignsList'
 import History from './components//user/History'
 import Result from './components//user/Result'
 import Voting from './components/user/Voting'
@@ -11,12 +15,6 @@ import Login from './pages/Login'
 import Main from './pages/Main'
 import { ABOUT, PROSOSAL, ROUTER_PATH } from './routes/contants'
 import { MainWrapper } from './styled/main'
-import Tokens from 'components/user/Tokens'
-import CampaignForm from 'components/user/Form/CampaignForm'
-import ProfileForm from 'components/user/Form/ProfileForm'
-import Profile from 'components/user/Profile'
-import ProfileDetail from 'components/user/Profile/Detail'
-import Homepage from 'components/user/Homepage'
 
 function App() {
 	useAuth() //check connected with metamask
@@ -32,18 +30,21 @@ function App() {
 						<Route element={<Homepage />} path={ROUTER_PATH.PROFILE} />
 						<Route element={<Homepage />} path={ROUTER_PATH.FOLLOWING} />
 						<Route element={<CampaignForm />} path={ROUTER_PATH.CREATE_CAMPAIGN} />
-						<Route element={<CampaignForm />} path={ROUTER_PATH.EDIT_CAMPAIGN + '/:campaignId'} />
 						<Route element={<CampaignForm />} path={ROUTER_PATH.CREATE_CAMPAIGN + '/:profileId'} />
 						<Route
 							element={<CampaignForm />}
-							path={ROUTER_PATH.EDIT_CAMPAIGN + '/:campaignId' + '/profile' + '/:profileId'}
+							path={
+								ROUTER_PATH.EDIT_CAMPAIGN + '/:campaignId' + '/profile' + '/:profileId' + '/:type'
+							}
 						/>
-						<Route element={<Voting />} path={ROUTER_PATH.VOTING + '/:campaignId'} />
 						<Route
 							element={<Voting />}
-							path={ROUTER_PATH.VOTING + '/:campaignId' + '/profile' + '/:profileId'}
+							path={ROUTER_PATH.VOTING + '/:campaignId' + '/profile' + '/:profileId' + '/:type'}
 						/>
-						<Route element={<Result />} path={ROUTER_PATH.RESULT + '/:campaignId'} />
+						<Route
+							element={<Result />}
+							path={ROUTER_PATH.RESULT + '/:campaignId' + '/profile' + '/:profileId' + '/:type'}
+						/>
 						<Route element={<Withdraw />} path={ROUTER_PATH.WITHDRAW} />
 						<Route element={<History />} path={ROUTER_PATH.HISTORY} />
 						<Route element={<Tokens />} path={ROUTER_PATH.TOKENS} />

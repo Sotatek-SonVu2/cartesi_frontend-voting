@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Container } from './main'
 
 interface BoxContentType {
 	active?: boolean
@@ -31,6 +32,10 @@ interface DateTimeBoxType {
 
 interface ModalStyled {
 	width: string
+}
+
+interface WrapperType {
+	isFullWrapper?: boolean
 }
 
 export const colorTheme = {

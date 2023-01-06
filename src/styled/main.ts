@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { colorTheme } from './common'
 
 interface ContainerType {
-	isFullWrapper?: string | undefined
+	isFullWrapper?: boolean
 }
 
 export const MainWrapper = styled.div`
@@ -18,6 +18,36 @@ export const Container = styled.div<ContainerType>`
 	${(props) => props.isFullWrapper && `max-width: 1012px;`}
 	@media (max-width: 742px) {
 		margin: 10px;
+	}
+`
+
+export const LargeContainer = styled(Container)`
+	position: relative;
+	max-width: 1012px;
+`
+
+export const RightWrapper = styled.div<ContainerType>`
+	background: ${colorTheme.tranparent};
+	${(props) =>
+		props.isFullWrapper
+			? `
+            display: block;
+            width: 80%;
+            margin: 0 auto;
+        `
+			: `
+			float: right;
+            width: 69%;
+        `}
+	min-height: 0;
+	border-radius: 8px;
+	transition: 0.2s;
+	overflow: hidden;
+	margin-bottom: 3rem;
+
+	@media (max-width: 1000px) {
+		width: 100%;
+		float: unset;
 	}
 `
 

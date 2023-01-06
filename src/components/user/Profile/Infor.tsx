@@ -30,6 +30,7 @@ interface PropsType {
 	toggleModal?: () => void
 	handleJoinProfile?: (profile_id: number) => void
 	handleLeaveProfile?: (profile_id: number) => void
+	isActionButton?: boolean
 }
 
 const ProfileInfor = ({
@@ -39,11 +40,13 @@ const ProfileInfor = ({
 	toggleModal,
 	handleJoinProfile,
 	handleLeaveProfile,
+	isActionButton = true,
 }: PropsType) => {
 	const navigate = useNavigate()
 	const { profileId } = useParams()
 	const addressWallet = useSelector((state: RootState) => state.auth.address).toLowerCase()
 	const { id, has_joined, thumbnail, name, creator, members, website, social_media } = data
+	const social_links = social_media && JSON.parse(social_media)
 
 	const ButtonAction = () => {
 		if (data.managers?.indexOf(addressWallet) !== -1) {
@@ -63,9 +66,6 @@ const ProfileInfor = ({
 			return (
 				<div>
 					<Line />
-					<CreateButton onClick={() => navigate(`${ROUTER_PATH.CREATE_CAMPAIGN}/${profileId}`)}>
-						Create
-					</CreateButton>
 					<LeaveButton onClick={() => handleLeaveProfile(id)}>Leave</LeaveButton>
 				</div>
 			)
@@ -107,21 +107,21 @@ const ProfileInfor = ({
 							onClick={() => navigate(`${ROUTER_PATH.PROFILE}/${profileId}/about`)}>
 							About
 						</Tabs>
-						{ButtonAction()}
+						{isActionButton && ButtonAction()}
 						<ProfileInforBottom>
 							<Line />
 							<Links>
 								<a href={website || ''} target='_blank'>
 									<img src={WorldwideIcon} alt='' width={25} height={25} />
 								</a>
-								{social_media?.facebook && (
-									<a href={social_media.facebook} target='_blank'>
+								{social_links?.facebook && (
+									<a href={social_links.facebook} target='_blank'>
 										{' '}
 										<img src={FacebookIcon} alt='' width={25} height={25} />
 									</a>
 								)}
-								{social_media?.twitter && (
-									<a href={social_media.twitter} target='_blank'>
+								{social_links?.twitter && (
+									<a href={social_links.twitter} target='_blank'>
 										{' '}
 										<img src={TwitterIcon} alt='' width={25} height={25} />
 									</a>

@@ -2,7 +2,7 @@ import useRequest from 'hook/useRequest'
 import { useState } from 'react'
 import { FieldValues, UseFormSetValue } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ROUTER_PATH } from 'routes/contants'
+import { PROSOSAL, ROUTER_PATH } from 'routes/contants'
 import {
 	CREATE_PROFILE,
 	DELETE_PROFILE,
@@ -17,6 +17,7 @@ import {
 	ManagerType,
 	ProfileCampaignDataType,
 	ProfileHandleRes,
+	ProfileParams,
 	ProfileType,
 } from 'utils/interface'
 import Thumbnail from 'images/profile.png'
@@ -102,17 +103,17 @@ export default function ProfileHandle(setValue?: UseFormSetValue<FieldValues>): 
 	}
 
 	const handleEditSuccess = () => {
-		navigate(`${ROUTER_PATH.PROFILE}/${profileId}`)
+		navigate(`${ROUTER_PATH.PROFILE}/${profileId}${PROSOSAL}`)
 	}
 
 	const handleDeleteSuccess = () => {
 		navigate(ROUTER_PATH.PROFILE)
 	}
 
-	const onCreateProfile = async (data: ProfileType) => {
+	const onCreateProfile = async (data: ProfileParams) => {
 		fetchNotices(data, handleCreateSuccess)
 	}
-	const onEditProfile = async (data: ProfileType) => {
+	const onEditProfile = async (data: ProfileParams) => {
 		fetchNotices(data, handleEditSuccess)
 	}
 
@@ -153,7 +154,7 @@ export default function ProfileHandle(setValue?: UseFormSetValue<FieldValues>): 
 
 	const onSubmit = async (dataForm: any) => {
 		const { name, description, website, thumbnail, managers, twitter, facebook } = dataForm
-		const data: ProfileType = {
+		const data: ProfileParams = {
 			action: !profileId ? CREATE_PROFILE : UPDATE_PROFILE,
 			name,
 			description,
@@ -171,7 +172,7 @@ export default function ProfileHandle(setValue?: UseFormSetValue<FieldValues>): 
 		if (!profileId) {
 			onCreateProfile(data)
 		} else {
-			const newData: ProfileType = {
+			const newData: ProfileParams = {
 				id: parseInt(profileId),
 				...data,
 			}

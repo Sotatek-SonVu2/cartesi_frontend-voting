@@ -8,7 +8,7 @@ import { FieldValues, UseFormSetValue } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom'
 import { getDepositInfo } from 'reducers/authSlice'
-import { ROUTER_PATH } from 'routes/contants'
+import { PROSOSAL, ROUTER_PATH } from 'routes/contants'
 import { AppDispatch } from 'store'
 import { convertLocalToUtc, convertUtcToLocal, randomColor } from 'utils/common'
 import {
@@ -28,7 +28,7 @@ import { validateDate } from 'utils/validate'
 
 export default function CampaignHandle(setValue?: UseFormSetValue<FieldValues>): CampaignHandleRes {
 	const navigate = useNavigate()
-	const { campaignId, profileId } = useParams()
+	const { campaignId, profileId, type } = useParams()
 	const dispatch = useDispatch<AppDispatch>()
 	const [data, setData] = useState(null)
 	const [isMyCampaign, setIsMyCampaign] = useState<boolean>(false)
@@ -125,14 +125,22 @@ export default function CampaignHandle(setValue?: UseFormSetValue<FieldValues>):
 	}
 
 	const handleCreateSuccess = (payload: any) => {
-		const router = payload ? `${ROUTER_PATH.VOTING}/${payload.id}` : ROUTER_PATH.HOMEPAGE
+		let router = ''
+		if (payload) {
+			const { id, campaign } = payload
+			router = `${ROUTER_PATH.VOTING}/${id}/profile/${campaign.profile_id}/${campaign.profile_type}`
+		} else if (profileId && !payload) {
+			router = `${ROUTER_PATH.PROFILE}/${profileId}${PROSOSAL}`
+		} else {
+			router = ROUTER_PATH.HOMEPAGE
+		}
 		dispatch(getDepositInfo())
 		navigate(`${router}`)
 	}
 
 	const handleEditSuccess = () => {
 		dispatch(getDepositInfo())
-		navigate(`${ROUTER_PATH.VOTING}/${campaignId}`)
+		navigate(`${ROUTER_PATH.VOTING}/${campaignId}/profile/${profileId}/${type}`)
 	}
 
 	const createCampaign = async (data: AddEditDataType) => {
@@ -165,7 +173,6 @@ export default function CampaignHandle(setValue?: UseFormSetValue<FieldValues>):
 					}
 				}),
 			}
-			console.log('data', data)
 			if (!campaignId) {
 				const newData: AddEditDataType = {
 					token_address: getTokenAddress(token_to_create.tokenList, token_address),

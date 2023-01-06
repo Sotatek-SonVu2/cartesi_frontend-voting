@@ -18,8 +18,7 @@ import {
 	SuccessButton,
 } from 'styled/common'
 import { TextArea } from 'styled/form'
-import { Container, ContentWrapper } from 'styled/main'
-import { VotingContainer, VotingWrapper } from 'styled/voting'
+import { LargeContainer, RightWrapper } from 'styled/main'
 import { CandidatesVotingType, ProfileHandleRes, tokenType, VoteHandleRes } from 'utils/interface'
 import VotingItem from './Item/Voting'
 import ProfileInfor from './Profile/Infor'
@@ -35,7 +34,7 @@ const SubTitle = styled.div`
 
 const Voting = () => {
 	const { tokenListing } = useSelector((state: RootState) => state.token)
-	const { campaignId, profileId } = useParams()
+	const { campaignId, profileId, type } = useParams()
 	const navigate = useNavigate()
 	const {
 		getLists,
@@ -75,9 +74,11 @@ const Voting = () => {
 	}
 
 	return (
-		<VotingContainer>
-			{profileId && <ProfileInfor data={profileData} isLoading={profileLoading} />}
-			<VotingWrapper isFullWrapper={profileId}>
+		<LargeContainer>
+			{profileData?.type === 'org' && (
+				<ProfileInfor data={profileData} isLoading={profileLoading} isActionButton={false} />
+			)}
+			<RightWrapper isFullWrapper={profileData?.type === 'user'}>
 				{isLoading ? (
 					<Loading />
 				) : (
@@ -125,15 +126,17 @@ const Voting = () => {
 								</SuccessButton>
 								<PrimaryButton
 									type='button'
-									onClick={() => navigate(`${ROUTER_PATH.RESULT}/${campaignId}`)}>
+									onClick={() =>
+										navigate(`${ROUTER_PATH.RESULT}/${campaignId}/profile/${profileId}/${type}`)
+									}>
 									Result
 								</PrimaryButton>
 							</FlexLayoutBtn>
 						)}
 					</Content>
 				)}
-			</VotingWrapper>
-		</VotingContainer>
+			</RightWrapper>
+		</LargeContainer>
 	)
 }
 

@@ -26,7 +26,7 @@ export default function VoteHandle(): VoteHandleRes {
 	const [campaignType, setCampaignType, isActionButton, setIsActionButton] = useOutletContext<any>()
 	const dispatch = useDispatch<AppDispatch>()
 	const deposit_info = useSelector((state: RootState) => state.auth.deposit_info)
-	const { campaignId } = useParams()
+	const { campaignId, profileId, type } = useParams()
 	const navigate = useNavigate()
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [isCloseVoting, setIsCloseVoting] = useState<boolean>(false)
@@ -98,7 +98,7 @@ export default function VoteHandle(): VoteHandleRes {
 
 	const handleVoteSuccess = () => {
 		dispatch(getDepositInfo())
-		navigate(`${ROUTER_PATH.RESULT}/${campaignId}`, { replace: true })
+		navigate(`${ROUTER_PATH.RESULT}/${campaignId}/profile/${profileId}/${type}`)
 	}
 
 	const handleVoting = async () => {

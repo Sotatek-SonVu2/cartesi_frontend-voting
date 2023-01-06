@@ -18,6 +18,12 @@ export const ProfileInforWrapper = styled.div`
 	width: 240px;
 	padding: 1.5rem;
 	margin-bottom: 3rem;
+
+	@media (max-width: 1000px) {
+		width: 100%;
+		float: unset;
+		padding: 1.5rem 0;
+	}
 `
 
 export const ProfileDetailWrapper = styled.div`
@@ -29,6 +35,11 @@ export const ProfileDetailWrapper = styled.div`
 	transition: 0.2s;
 	overflow: hidden;
 	margin-bottom: 3rem;
+
+	@media (max-width: 1000px) {
+		width: 100%;
+		float: unset;
+	}
 `
 
 export const ProfileDetailContent = styled(Content)`
@@ -155,7 +166,7 @@ export const LeaveButton = styled(DangerButton)`
 	border-radius: 23px;
 	height: 33px;
 	font-size: 13px;
-	margin-bottom: 15px;
+	margin: 15px 0;
 `
 
 export const ProfileButton = styled(SuccessButton)`

@@ -35,15 +35,12 @@ const CampaignItem = ({ data }: PropsType) => {
 		winning_candidate_name,
 		total_vote,
 		profile_id,
+		profile_type,
 	} = data
 	const { isStartTime, isEndTime } = onConvertDatetime(start_time, end_time)
 
 	const onRedirect = () => {
-		if (profile_id) {
-			navigate(`${ROUTER_PATH.VOTING}/${id}/profile/${profile_id}`)
-		} else {
-			navigate(`${ROUTER_PATH.VOTING}/${id}`)
-		}
+		navigate(`${ROUTER_PATH.VOTING}/${id}/profile/${profile_id}/${profile_type}`)
 	}
 
 	return (

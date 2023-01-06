@@ -50,14 +50,11 @@ const ActionButton = ({ onChangeType, isActionButton }: PropsType) => {
 		campaignId,
 		profileId,
 		isOpen,
+		type,
 	}: ActionButtonHandleRes = ActionButtonHandle(onChangeType)
 
 	const onRedirect = () => {
-		if (profileId) {
-			navigate(`${ROUTER_PATH.EDIT_CAMPAIGN}/${campaignId}/profile/${profileId}`)
-		} else {
-			navigate(`${ROUTER_PATH.EDIT_CAMPAIGN}/${campaignId}`)
-		}
+		navigate(`${ROUTER_PATH.EDIT_CAMPAIGN}/${campaignId}/profile/${profileId}/${type}`)
 	}
 
 	const render = () => {
@@ -96,7 +93,7 @@ const ActionButton = ({ onChangeType, isActionButton }: PropsType) => {
 		return <></>
 	}
 
-	return <Container isFullWrapper={profileId}>{render()}</Container>
+	return <Container isFullWrapper={type === 'org'}>{render()}</Container>
 }
 
 export default ActionButton

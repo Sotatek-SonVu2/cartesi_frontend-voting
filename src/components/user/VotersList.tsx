@@ -14,7 +14,7 @@ import { VoterHandleRes, VoterType } from 'utils/interface'
 
 const Wrapper = styled(ContentWrapper)`
 	border-radius: 4px;
-	margin-top: 2rem;
+	margin-top: 25px;
 	color: #fff;
 `
 

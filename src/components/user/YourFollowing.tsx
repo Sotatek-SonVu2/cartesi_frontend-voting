@@ -15,7 +15,7 @@ const YourFollowing = () => {
 	useEffect(() => {
 		getLists()
 	}, [paging.currentPage])
-
+	console.log('data', data)
 	return (
 		<>
 			{isLoading ? (
