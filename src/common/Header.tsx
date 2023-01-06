@@ -96,6 +96,11 @@ const Header = ({ startTour }: Props) => {
 					</CopyToClipboard>
 				</InforUser>
 				<MenuList>
+					<MenuTitle
+						onClick={() => navigate(ROUTER_PATH.HOMEPAGE, { replace: true })}
+					>
+						Home
+					</MenuTitle>
 					<MenuTitle onClick={toggleModal} className='deposit-step'>
 						Deposit
 					</MenuTitle>
@@ -108,11 +113,6 @@ const Header = ({ startTour }: Props) => {
 						onClick={() => navigate(ROUTER_PATH.HISTORY, { replace: true })}
 						className='history-step'>
 						History
-					</MenuTitle>
-					<MenuTitle
-						onClick={() => navigate(ROUTER_PATH.PROFILE, { replace: true })}
-						className='history-step'>
-						Profiles
 					</MenuTitle>
 					{pathname !== ROUTER_PATH.ADMIN && (
 						<>
