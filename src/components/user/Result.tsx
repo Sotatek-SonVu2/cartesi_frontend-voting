@@ -24,7 +24,7 @@ const ResultStyled = styled.div`
 
 const Result = () => {
 	const navigate = useNavigate()
-	const { profileId } = useParams()
+	const { profileId, type } = useParams()
 	const { getLists, data, isLoading }: ResultHandleRes = ResultHandle()
 	const {
 		data: profileData,
@@ -42,10 +42,10 @@ const Result = () => {
 
 	return (
 		<LargeContainer>
-			{profileData?.type === 'org' && (
+			{type === 'org' && (
 				<ProfileInfor data={profileData} isLoading={profileLoading} isActionButton={false} />
 			)}
-			<Wrapper isFullWrapper={profileData?.type === 'user'}>
+			<Wrapper isFullWrapper={type === 'user'}>
 				<ResultStyled>
 					{isLoading ? (
 						<Loading />

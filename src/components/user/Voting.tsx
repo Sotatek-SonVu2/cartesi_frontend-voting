@@ -75,10 +75,10 @@ const Voting = () => {
 
 	return (
 		<LargeContainer>
-			{profileData?.type === 'org' && (
+			{type === 'org' && (
 				<ProfileInfor data={profileData} isLoading={profileLoading} isActionButton={false} />
 			)}
-			<RightWrapper isFullWrapper={profileData?.type === 'user'}>
+			<RightWrapper isFullWrapper={type === 'user'}>
 				{isLoading ? (
 					<Loading />
 				) : (

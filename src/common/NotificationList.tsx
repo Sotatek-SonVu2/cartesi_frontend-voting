@@ -6,7 +6,7 @@ import BellSuccess from 'images/notify_success.svg'
 import reloadIcon from 'images/reload.png'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ROUTER_PATH } from 'routes/contants'
+import { PROSOSAL, ROUTER_PATH } from 'routes/contants'
 import styled from 'styled-components'
 import { NoDataWrapper, ReloadImage } from 'styled/common'
 import {
@@ -45,16 +45,12 @@ const getMessage = (item: any) => {
 	const successMessage: any = {
 		CREATE_CAMPAIGN: (
 			<span>
-				You created campaign{' '}
-				<Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> successfully
+				You created campaign successfully!
 			</span>
 		),
 		VOTE: (
 			<span>
-				You voted for candidate
-				<Link to={`${ROUTER_PATH.RESULT}/${campaign?.id}`}> {candidate?.name} </Link>
-				in campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link>{' '}
-				successfully
+				You voted for candidate {candidate?.name} in campaign successfully!
 			</span>
 		),
 		DEPOSIT: (
@@ -65,8 +61,7 @@ const getMessage = (item: any) => {
 		),
 		EDIT_CAMPAIGN: (
 			<span>
-				You edited info of campaign{' '}
-				<Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link> successfully
+				You edited info of campaign {campaign?.name} successfully
 			</span>
 		),
 		DECREASE_TOKEN: (
@@ -85,13 +80,13 @@ const getMessage = (item: any) => {
 		CREATE_PROFILE: (
 			<span>
 				You created profile{' '}
-				<Link to={`${ROUTER_PATH.PROFILE}/${profile?.id}`}>{profile?.name} </Link> successfully
+				<Link to={`${ROUTER_PATH.PROFILE}/${profile?.id}${PROSOSAL}`}>{profile?.name} </Link> successfully
 			</span>
 		),
 		UPDATE_PROFILE: (
 			<span>
 				You edited info of profile{' '}
-				<Link to={`${ROUTER_PATH.PROFILE}/${profile?.id}`}>{profile?.name} </Link> successfully
+				<Link to={`${ROUTER_PATH.PROFILE}/${profile?.id}${PROSOSAL}`}>{profile?.name} </Link> successfully
 			</span>
 		),
 		DELETE_PROFILE: (
@@ -102,12 +97,12 @@ const getMessage = (item: any) => {
 		JOIN_PROFILE: (
 			<span>
 				You joined profile:{' '}
-				<Link to={`${ROUTER_PATH.PROFILE}/${profile?.id}`}>{profile?.name} </Link>
+				<Link to={`${ROUTER_PATH.PROFILE}/${profile?.id}${PROSOSAL}`}>{profile?.name} </Link>
 			</span>
 		),
 		LEAVE_PROFILE: (
 			<span>
-				You left profile: <Link to={`${ROUTER_PATH.PROFILE}/${profile?.id}`}>{profile?.name} </Link>
+				You left profile: <Link to={`${ROUTER_PATH.PROFILE}/${profile?.id}${PROSOSAL}`}>{profile?.name} </Link>
 			</span>
 		),
 	}
@@ -120,10 +115,7 @@ const getMessage = (item: any) => {
 		),
 		VOTE: (
 			<span>
-				Vote for candidate{' '}
-				<Link to={`${ROUTER_PATH.RESULT}/${campaign?.id}`}> {candidate?.name} </Link>
-				in campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link>{' '}
-				failed because {error}
+				Vote for candidate in campaign {campaign?.name} failed because {error}
 			</span>
 		),
 		DEPOSIT: (
@@ -134,14 +126,12 @@ const getMessage = (item: any) => {
 		),
 		EDIT_CAMPAIGN: (
 			<span>
-				Edit campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link>{' '}
-				failed because {error}
+				Edit campaign {campaign?.name} failed because {error}
 			</span>
 		),
 		DELETE_CAMPAIGN: (
 			<span>
-				Delete campaign <Link to={`${ROUTER_PATH.VOTING}/${campaign?.id}`}>{campaign?.name} </Link>{' '}
-				failed because {error}
+				Delete campaign {campaign?.name} failed because {error}
 			</span>
 		),
 		WITHDRAW: (
@@ -158,13 +148,13 @@ const getMessage = (item: any) => {
 		),
 		UPDATE_PROFILE: (
 			<span>
-				Edit profile <Link to={`${ROUTER_PATH.PROFILE}/${profile?.id}`}>{profile?.name} </Link>{' '}
+				Edit profile <Link to={`${ROUTER_PATH.PROFILE}/${profile?.id}${PROSOSAL}`}>{profile?.name} </Link>{' '}
 				failed because {error}
 			</span>
 		),
 		DELETE_PROFILE: (
 			<span>
-				Delete profile <Link to={`${ROUTER_PATH.PROFILE}/${profile?.id}`}>{profile?.name} </Link>{' '}
+				Delete profile <Link to={`${ROUTER_PATH.PROFILE}/${profile?.id}${PROSOSAL}`}>{profile?.name} </Link>{' '}
 				failed because {error}
 			</span>
 		),
